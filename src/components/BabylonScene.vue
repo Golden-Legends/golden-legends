@@ -1,10 +1,12 @@
 <template>
   <canvas ref="bjsCanvas" />
+  <MainOptions />
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { createScene } from "../scenes/MainScene.ts";
+import MainOptions from "./MainOptions.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 
