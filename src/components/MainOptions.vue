@@ -6,10 +6,11 @@
   </Transition>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {onBeforeUnmount, onMounted, ref} from 'vue';
+import {Ref} from "vue";
 
-const isMenuVisible = ref(false);
+const isMenuVisible : Ref<Boolean> = ref(false);
 
 // Toggle menu on O key (default)
 const toggleMenu = (event = { code: 'KeyO' }) => {
