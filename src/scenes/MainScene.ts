@@ -10,10 +10,15 @@ import {
     KeyboardEventTypes, SceneOptimizer, SceneOptimizerOptions, Camera
 } from "@babylonjs/core";
 import Player from "../models/player/Player.ts";
+import {havokModule} from "../models/physics/Havok.ts";
+import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins/havokPlugin";
 
 const createScene = async (canvas: HTMLCanvasElement, fpsCallback: (fps: string) => void, nbMeshCallback: (nbMesh: number) => void) => {
     const engine = new Engine(canvas);
     const scene = new Scene(engine);
+    const gravity = new Vector3(0, -9.81, 0);
+    const havokPlugin = new HavokPlugin(true, await havokModule);
+    scene.enablePhysics(gravity, havokPlugin);
 
     let options = new SceneOptimizerOptions(60, 1000);
     // Optimizer
@@ -28,6 +33,9 @@ const createScene = async (canvas: HTMLCanvasElement, fpsCallback: (fps: string)
 
     // Create a floor
     const ground = MeshBuilder.CreateGround("ground", {width: 16, height: 16}, scene);
+    // TODO : Add physics to the ground (see fix ?)
+    // ground.physicsImpostor = new PhysicsImpostor(ground, PhysicsImpostor.BoxImpostor, {mass: 0}, scene);
+
     const groundMaterial = new StandardMaterial("ground-material", scene);
     groundMaterial.diffuseColor = Color3.Green();
     ground.material = groundMaterial;
