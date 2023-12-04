@@ -7,13 +7,14 @@ import {
     StandardMaterial,
     Color3,
     HemisphericLight,
-    KeyboardEventTypes, Mesh, SceneOptimizer, SceneOptimizerOptions
+    KeyboardEventTypes, SceneOptimizer, SceneOptimizerOptions, Camera
 } from "@babylonjs/core";
+import Player from "../models/player/Player.ts";
 
-const createScene = (canvas: HTMLCanvasElement, fpsCallback, nbMeshCallback) => {
+const createScene = async (canvas: HTMLCanvasElement, fpsCallback: (fps: string) => void, nbMeshCallback: (nbMesh: number) => void) => {
     const engine = new Engine(canvas);
-
     const scene = new Scene(engine);
+
     let options = new SceneOptimizerOptions(60, 1000);
     // Optimizer
     let optimizer = new SceneOptimizer(scene, options);
@@ -25,33 +26,11 @@ const createScene = (canvas: HTMLCanvasElement, fpsCallback, nbMeshCallback) => 
 
     new HemisphericLight("light", Vector3.Up(), scene);
 
-    // Generate 1000 boxes that form a cube
-    const boxes = [] as Mesh[];
-    for (let i = 0; i < 10; i++) {
-        for (let j = 0; j < 10; j ++) {
-            for (let k = 0; k < 10; k++) {
-                const box = MeshBuilder.CreateBox("box", { size: 4 }, scene);
-                const material = new StandardMaterial("box-material", scene);
-                material.diffuseColor = Color3.Random();
-                box.material = material;
-                box.position = new Vector3(i * 4, j * 4, k * 4);
-                boxes.push(box);
-            }
-        }
-    }
-
-    // Make an invisible plane to stop the boxes from falling forever
-    const plane = MeshBuilder.CreatePlane("plane", { size: 1000 }, scene);
-    plane.isVisible = false;
-
-    // Rotate the plane so it's horizontal
-    plane.position.y = -2;
-    plane.rotation.x = Math.PI / 2;
-
-    const material = new StandardMaterial("box-material", scene);
-    material.diffuseColor = Color3.Blue();
-    plane.material = material;
-
+    // Create a floor
+    const ground = MeshBuilder.CreateGround("ground", {width: 16, height: 16}, scene);
+    const groundMaterial = new StandardMaterial("ground-material", scene);
+    groundMaterial.diffuseColor = Color3.Green();
+    ground.material = groundMaterial;
 
     engine.runRenderLoop(() => {
         scene.render();
@@ -65,11 +44,10 @@ const createScene = (canvas: HTMLCanvasElement, fpsCallback, nbMeshCallback) => 
         }
     });
 
-    // Move all the boxes with the arrow keys
-    handleMoves(scene, boxes);
+    let players: Player[] = [];
 
-    // When ENTER is pressed, create a new Box and add it to the scene (random color) and place it at the camera's position
-    createNewBox(scene, boxes, camera);
+    // When ENTER is pressed, create a new Player and add it to the scene (random color) and place it at the camera's position
+    addNewPlayer(scene, players, camera);
 
     // Add resize listener
     window.addEventListener("resize", () => {
@@ -77,49 +55,19 @@ const createScene = (canvas: HTMLCanvasElement, fpsCallback, nbMeshCallback) => 
     });
 };
 
-const handleMoves = (scene, boxes) => {
-    scene.onKeyboardObservable.add((kbInfo) => {
-        switch (kbInfo.type) {
-            case KeyboardEventTypes.KEYDOWN:
-                switch (kbInfo.event.key) {
-                    case "z":
-                        boxes.forEach((box) => {
-                            box.position.z -= 1;
-                        });
-                        break;
-                    case "s":
-                        boxes.forEach((box) => {
-                            box.position.z += 1;
-                        });
-                        break;
-                    case "q":
-                        boxes.forEach((box) => {
-                            box.position.x -= 1;
-                        });
-                        break;
-                    case "d":
-                        boxes.forEach((box) => {
-                            box.position.x += 1;
-                        });
-                        break;
-                }
-                break;
-        }
-    });
-}
-
-const createNewBox = (scene, boxes, camera) => {
+const addNewPlayer = (scene: Scene, players: Player[], camera: Camera) => {
     scene.onKeyboardObservable.add((kbInfo) => {
         switch (kbInfo.type) {
             case KeyboardEventTypes.KEYDOWN:
                 switch (kbInfo.event.key) {
                     case "Enter":
-                        const newBox = MeshBuilder.CreateBox("box", { size: 4 }, scene);
-                        const newMaterial = new StandardMaterial("box-material", scene);
-                        newMaterial.diffuseColor = Color3.Random();
-                        newBox.material = newMaterial;
-                        newBox.position = camera.position;
-                        boxes.push(newBox);
+                        const player = new Player("Player " + (players.length + 1));
+                        players.push(player);
+                        const box = MeshBuilder.CreateBox(player.name, { size: 1 }, scene);
+                        box.position = camera.position;
+                        const material = new StandardMaterial(player.name + "-material", scene);
+                        material.diffuseColor = new Color3(Math.random(), Math.random(), Math.random());
+                        box.material = material;
                         break;
                 }
                 break;
