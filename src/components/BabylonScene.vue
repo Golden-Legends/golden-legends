@@ -6,9 +6,9 @@
 
 <script setup lang="ts">
 import {ref, onMounted, Ref} from "vue";
-import { createScene } from "../scenes/MainScene.ts";
 import MainOptions from "./MainOptions.vue";
 import StatsInfos from "./StatsInfos.vue";
+import App from "../../src/models/scene/App.ts";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 const fps : Ref<string> = ref("");
@@ -22,7 +22,8 @@ onMounted(() => {
     const nbMeshCallback = (nbMeshParam: number) => {
       nbMesh.value = nbMeshParam;
     };
-    createScene(bjsCanvas.value, fpsCallback, nbMeshCallback);
+
+    const app = new App(bjsCanvas.value);
 
   }
 });
