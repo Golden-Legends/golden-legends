@@ -84,9 +84,6 @@ export default class App {
         let scene = new Scene(this._engine);
         scene.clearColor = new Color4(0, 0, 0, 1);
 
-        const light = new PointLight("sparklight", new Vector3(0, 0, 0), scene);
-        const shadowGenerator = new ShadowGenerator(1024, light);
-
         // Add player
         this._player = new Player(scene, this._input);
 
@@ -117,9 +114,6 @@ export default class App {
         light.diffuse = new Color3(0.08627450980392157, 0.10980392156862745, 0.15294117647058825);
         light.intensity = 35;
         light.radius = 1;
-
-        const shadowGenerator = new ShadowGenerator(1024, light);
-        shadowGenerator.darkness = 0.4;
 
         //Create the player
         this._player = new Player(scene, this._input, "Swayyys");
