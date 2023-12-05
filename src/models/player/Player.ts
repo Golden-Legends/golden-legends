@@ -1,10 +1,31 @@
-export default class Player {
+import {Scene, TransformNode, UniversalCamera} from "@babylonjs/core";
+import { PlayerInput } from "./inputController";
 
-    private readonly _name: string;
-    constructor(name: string) {
+export default class Player extends TransformNode {
+    public camera: UniversalCamera;
+    public scene: Scene;
+    private _input: PlayerInput;
+    private _name: string;
+
+    constructor(scene: Scene, input?: PlayerInput, name: string) {
+        super("player", scene);
+        this.scene = scene;
         this._name = name;
+
+        //camera
+        this.activatePlayerCamera();
+        this._input = input;
     }
-    public get name(): string {
-        return this._name;
+
+    //--GAME UPDATES--
+    private _beforeRenderUpdate(): void {
+        // Update player position
+    }
+
+    public activatePlayerCamera(): UniversalCamera {
+        this.scene.registerBeforeRender(() => {
+            this._beforeRenderUpdate();
+        })
+        return this.camera;
     }
 }
