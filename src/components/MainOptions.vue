@@ -1,4 +1,4 @@
-<template>
+  <template>
   <Transition>
     <div class="absolute top-1/3 left-1/2 bg-white p-12 -translate-x-1/2 transition-opacity" v-if="isMenuVisible">
       <h1 class="text-4xl">Options</h1>
