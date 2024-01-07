@@ -1,6 +1,6 @@
 import { Engine } from "@babylonjs/core";
 import { GameState } from "./GameState";
-import { StartState } from "./scene/StartState";
+import { InGameState } from "./scene/InGameState";
 
 export class Game {
     public engine: Engine;
@@ -8,7 +8,7 @@ export class Game {
 
     constructor(canvas: HTMLCanvasElement) {
         this.engine = new Engine(canvas, true);
-        this.changeState(new StartState(this));
+        this.changeState(new InGameState(this));
 
         // Initialiser la boucle de rendu ici
         this.engine.runRenderLoop(() => {
