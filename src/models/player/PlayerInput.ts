@@ -40,7 +40,7 @@ export class PlayerInput {
 		this.scene.actionManager.registerAction(
 			new ExecuteCodeAction(ActionManager.OnKeyDownTrigger, evt => {
 				this.inputMap[evt.sourceEvent.code] = true;
-				// console.log(evt.sourceEvent.code); // Affiche le code de la touche enfoncée dans la console
+				console.log(evt.sourceEvent.code); // Affiche le code de la touche enfoncée dans la console
 			}),
 		);
 		this.scene.actionManager.registerAction(

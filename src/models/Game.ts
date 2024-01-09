@@ -8,7 +8,7 @@ export class Game {
 
     constructor(canvas: HTMLCanvasElement) {
         this.engine = new Engine(canvas, true);
-        this.changeState(new InGameState(this));
+        this.changeState(new InGameState(this, canvas));
 
         // Initialiser la boucle de rendu ici
         this.engine.runRenderLoop(() => {

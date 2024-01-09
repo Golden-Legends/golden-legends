@@ -11,6 +11,8 @@
   "dependencies": {
     "@babylonjs/core": "^6.30.0",
     "@babylonjs/havok": "^1.3.0",
+    "babylonjs": "^6.37.1",
+    "babylonjs-serializers": "^6.37.1",
     "vue": "^3.3.8"
   },
   "devDependencies": {

@@ -4,9 +4,11 @@ import { Game } from "./Game";
 export abstract class GameState {
     protected game: Game;
     protected scene: Scene;
+    protected canvas: HTMLCanvasElement;
 
-    constructor(game: Game) {
+    constructor(game: Game, canvas: HTMLCanvasElement) {
         this.game = game;
+        this.canvas = canvas;
         this.scene = new Scene(game.engine);
     }
 

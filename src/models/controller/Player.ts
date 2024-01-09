@@ -99,7 +99,7 @@ export class Player extends TransformNode {
 	private _walkingSfx !: Sound;
 	private _jumpingSfx !: Sound;
 
-	constructor(assets, scene: Scene, /* shadowGenerator: ShadowGenerator, */ input?) {
+	constructor(assets, scene: Scene, shadowGenerator: ShadowGenerator, input?) {
 		super("player", scene);
 		this.scene = scene;
 		this._setupPlayerCamera();
@@ -107,6 +107,7 @@ export class Player extends TransformNode {
 		//set up sounds
 		// this._loadSounds(this.scene);
 
+		console.log(assets.mesh);
 		this.mesh = assets.mesh;
 		this.mesh.parent = this;
 		this.mesh.rotationQuaternion = Quaternion.Identity();
@@ -120,17 +121,17 @@ export class Player extends TransformNode {
 
 		//--SOUNDS--
 		//observable for when to play the walking sfx
-		this.onRun.add(play => {
-			if (play && !this._walkingSfx.isPlaying) {
-				this._walkingSfx.play();
-			} else if (!play && this._walkingSfx.isPlaying) {
-				this._walkingSfx.stop();
-				this._walkingSfx.isPlaying = false; // make sure that walkingsfx.stop is called only once
-			}
-		});
+		// this.onRun.add(play => {
+		// 	if (play && !this._walkingSfx.isPlaying) {
+		// 		this._walkingSfx.play();
+		// 	} else if (!play && this._walkingSfx.isPlaying) {
+		// 		this._walkingSfx.stop();
+		// 		this._walkingSfx.isPlaying = false; // make sure that walkingsfx.stop is called only once
+		// 	}
+		// });
 
-		this._setUpAnimations();
-		// shadowGenerator.addShadowCaster(assets.mesh); //the player mesh will cast shadows
+		// this._setUpAnimations();
+		shadowGenerator.addShadowCaster(assets.mesh); //the player mesh will cast shadows
 
 		this._input = input;
 
