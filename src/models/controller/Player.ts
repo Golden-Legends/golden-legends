@@ -43,8 +43,8 @@ export class Player extends TransformNode {
 	public mesh: Mesh; //outer collisionbox of player
 
 	//Camera
-	private _camRoot !: TransformNode;
-	private _yTilt !: TransformNode;
+	private _camRoot!: TransformNode;
+	private _yTilt!: TransformNode;
 
 	//const values
 	private static readonly PLAYER_SPEED: number = 0.7;
@@ -65,10 +65,10 @@ export class Player extends TransformNode {
 	private _v: number;
 
 	private _moveDirection: Vector3 = new Vector3();
-	private _inputAmt !: number;
+	private _inputAmt!: number;
 
 	//dashing
-	private _dashPressed !: boolean;
+	private _dashPressed!: boolean;
 	private _canDash: boolean = true;
 
 	//animations
@@ -80,7 +80,7 @@ export class Player extends TransformNode {
 
 	// animation trackers
 	private _currentAnim: AnimationGroup | null = null;
-	private _prevAnim !: AnimationGroup;
+	private _prevAnim!: AnimationGroup;
 	private _isFalling: boolean = false;
 	private _jumped: boolean = false;
 
@@ -90,24 +90,17 @@ export class Player extends TransformNode {
 	//gravity, ground detection, jumping
 	private _gravity: Vector3 = new Vector3();
 	private _lastGroundPos: Vector3 = Vector3.Zero(); // keep track of the last grounded position
-	private _grounded !: boolean;
+	private _grounded!: boolean;
 	private _jumpCount: number = 1;
 
 	private readonly CAMERA_MIN_ANGLE = -Math.PI / 14; // Limite de rotation vers le haut
 	private readonly CAMERA_MAX_ANGLE = Math.PI / 8; // Limite de rotation vers le bas
-
-	private _walkingSfx !: Sound;
-	private _jumpingSfx !: Sound;
 
 	constructor(assets, scene: Scene, shadowGenerator: ShadowGenerator, input?) {
 		super("player", scene);
 		this.scene = scene;
 		this._setupPlayerCamera();
 
-		//set up sounds
-		// this._loadSounds(this.scene);
-
-		console.log(assets.mesh);
 		this.mesh = assets.mesh;
 		this.mesh.parent = this;
 		this.mesh.rotationQuaternion = Quaternion.Identity();
@@ -119,28 +112,12 @@ export class Player extends TransformNode {
 		this._land = assets.animationGroups.find(ag => ag.name === "falling");
 		this._dance = assets.animationGroups.find(ag => ag.name === "dance");
 
-		//--SOUNDS--
-		//observable for when to play the walking sfx
-		// this.onRun.add(play => {
-		// 	if (play && !this._walkingSfx.isPlaying) {
-		// 		this._walkingSfx.play();
-		// 	} else if (!play && this._walkingSfx.isPlaying) {
-		// 		this._walkingSfx.stop();
-		// 		this._walkingSfx.isPlaying = false; // make sure that walkingsfx.stop is called only once
-		// 	}
-		// });
-
 		// this._setUpAnimations();
 		shadowGenerator.addShadowCaster(assets.mesh); //the player mesh will cast shadows
 
 		this._input = input;
 
-		// this.mesh.position = new Vector3(446.86, 17.51, 221.142); // foret spawn
-		// this.mesh.position = new Vector3(-492, 6, 244); // mer spawn
-		// this.mesh.position = new Vector3(-9.5, 17.5, 232.16); // foret spawn
-		this.mesh.position = new Vector3(
-			-16.26805468679126, 18, 226.66962649509972
-		); 
+		this.mesh.position = new Vector3(0, 100, 0);
 
 		//--COLLISIONS--
 		this.mesh.actionManager = new ActionManager(this.scene);
@@ -150,23 +127,13 @@ export class Player extends TransformNode {
 		this._input = input;
 	}
 
-	private _setUpAnimations(): void {
-		this.scene.stopAllAnimations();
-		this._run.loopAnimation = true;
-		this._idle.loopAnimation = true;
-
-		//initialize current and previous
-		this._currentAnim = this._land;
-		this._prevAnim = this._idle;
-	}
-
 	private _animatePlayer(): void {
 		if (
 			!this._dashPressed &&
 			!this._isFalling &&
 			!this._jumped &&
-            !!this._input &&
-                (this._input.inputMap[KEY_UP] ||
+			!!this._input &&
+			(this._input.inputMap[KEY_UP] ||
 				this._input.inputMap[KEY_DOWN] ||
 				this._input.inputMap[KEY_LEFT] ||
 				this._input.inputMap[KEY_RIGHT])
@@ -179,8 +146,8 @@ export class Player extends TransformNode {
 				this._jumped = false;
 			}
 		} else if (!this._isFalling && this._grounded) {
-			this._currentAnim = this._idle;
-			//only notify observer if it's playing
+			// this._currentAnim = this._idle;
+			// only notify observer if it's playing
 			// if (this.scene.getSoundByName("walking").isPlaying) {
 			// 	this.onRun.notifyObservers(false);
 			// }
@@ -200,7 +167,7 @@ export class Player extends TransformNode {
 	private _updateFromControls(): void {
 		if (this._input) {
 			this._deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
-			// console.log(this.mesh.position); // utilie pour récup les positions du joueur
+			// console.log(this.mesh.position); // utile pour récup les positions du joueur
 			this._moveDirection = Vector3.Zero(); // vector that holds movement information
 			this._h = this._input.horizontal; //x-axis
 			this._v = this._input.vertical; //z-axis
@@ -298,20 +265,20 @@ export class Player extends TransformNode {
 			}
 
 			// Rotation based on input & the camera angle
-let angle = Math.atan2(
-    this._input.horizontalAxis,
-    this._input.verticalAxis,
-);
-angle += this._camRoot.rotation.y + Math.PI;
-let targ = Quaternion.FromEulerAngles(0, angle, 0);
+			let angle = Math.atan2(
+				this._input.horizontalAxis,
+				this._input.verticalAxis,
+			);
+			angle += this._camRoot.rotation.y + Math.PI;
+			let targ = Quaternion.FromEulerAngles(0, angle, 0);
 
-if (this.mesh.rotationQuaternion) {
-    this.mesh.rotationQuaternion = Quaternion.Slerp(
-        this.mesh.rotationQuaternion,
-        targ,
-        10 * this._deltaTime,
-    );
-}
+			if (this.mesh.rotationQuaternion) {
+				this.mesh.rotationQuaternion = Quaternion.Slerp(
+					this.mesh.rotationQuaternion,
+					targ,
+					10 * this._deltaTime,
+				);
+			}
 		}
 	}
 
@@ -463,14 +430,13 @@ if (this.mesh.rotationQuaternion) {
 		}
 
 		//Jump detection
-		if (this._input.jumpKeyDown && this._jumpCount > 0) {
+		if (this._input?.jumpKeyDown && this._jumpCount > 0) {
 			this._gravity.y = Player.JUMP_FORCE;
 			this._jumpCount--;
 
 			//jumping and falling animation flags
 			this._jumped = true;
 			this._isFalling = false;
-			this._jumpingSfx.play();
 		}
 	}
 
@@ -525,29 +491,5 @@ if (this.mesh.rotationQuaternion) {
 
 		this.scene.activeCamera = this.camera;
 		return this.camera;
-	}
-
-	private _loadSounds(scene: Scene): void {
-		this._walkingSfx = new Sound(
-			"walking",
-			"./sounds/Concrete 2.wav",
-			scene,
-			function () {},
-			{
-				loop: true,
-				volume: 0.025,
-				playbackRate: 0.6,
-			},
-		);
-
-		this._jumpingSfx = new Sound(
-			"jumping",
-			"./sounds/187024__lloydevans09__jump2.wav",
-			scene,
-			function () {},
-			{
-				volume: 0.05,
-			},
-		);
 	}
 }

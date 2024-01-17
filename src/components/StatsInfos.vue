@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute top-0 left-0  text-white bg-neutral-800 p-4 text-lg">
+  <div class="absolute top-0 left-0 text-white bg-neutral-800 p-4 text-lg">
     <div class="flex flex-col gap-2">
       <span>FPS : {{ fps }}</span>
       <span>NB_MESH : {{ nbMesh }}</span>
@@ -15,5 +15,5 @@ defineProps({
   nbMesh: {
     type: Number,
   },
-})
+});
 </script>
