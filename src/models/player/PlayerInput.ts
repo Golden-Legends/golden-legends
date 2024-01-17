@@ -5,14 +5,6 @@ import {
 	Scalar,
 } from "@babylonjs/core";
 
-// clavier anglais (qwerty)
-// const KEY_UP = "KeyW";
-// const KEY_DOWN = "KeyS";
-// const KEY_LEFT = "KeyA";
-// const KEY_RIGHT = "KeyD";
-// const KEY_DASH = "KeyP";
-// const KEY_JUMP = "Space";
-
 // clavier français (azerty)
 const KEY_UP = "KeyW";
 const KEY_DOWN = "KeyS";

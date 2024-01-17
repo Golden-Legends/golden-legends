@@ -9,7 +9,6 @@ import {
 	Ray,
 	AnimationGroup,
 	Observable,
-	Sound,
 	ActionManager,
 } from "@babylonjs/core";
 import { PlayerInput } from "../player/PlayerInput";
@@ -106,13 +105,6 @@ export class Player extends TransformNode {
 		this.mesh.rotationQuaternion = Quaternion.Identity();
 		// this.mesh.checkCollisions = false;
 
-		this._idle = assets.animationGroups.find(ag => ag.name === "idle");
-		this._jump = assets.animationGroups.find(ag => ag.name === "jump");
-		this._run = assets.animationGroups.find(ag => ag.name === "running");
-		this._land = assets.animationGroups.find(ag => ag.name === "falling");
-		this._dance = assets.animationGroups.find(ag => ag.name === "dance");
-
-		// this._setUpAnimations();
 		shadowGenerator.addShadowCaster(assets.mesh); //the player mesh will cast shadows
 
 		this._input = input;
@@ -125,43 +117,6 @@ export class Player extends TransformNode {
 
 	public setInput(input: PlayerInput | null) {
 		this._input = input;
-	}
-
-	private _animatePlayer(): void {
-		if (
-			!this._dashPressed &&
-			!this._isFalling &&
-			!this._jumped &&
-			!!this._input &&
-			(this._input.inputMap[KEY_UP] ||
-				this._input.inputMap[KEY_DOWN] ||
-				this._input.inputMap[KEY_LEFT] ||
-				this._input.inputMap[KEY_RIGHT])
-		) {
-			this._currentAnim = this._run;
-			this.onRun.notifyObservers(true);
-		} else if (this._jumped && !this._isFalling && !this._dashPressed) {
-			this._currentAnim = this._jump;
-			if (!this._jump.play()) {
-				this._jumped = false;
-			}
-		} else if (!this._isFalling && this._grounded) {
-			// this._currentAnim = this._idle;
-			// only notify observer if it's playing
-			// if (this.scene.getSoundByName("walking").isPlaying) {
-			// 	this.onRun.notifyObservers(false);
-			// }
-		} else if (this._isFalling) {
-			// rajouter une anim land
-			this._currentAnim = this._land;
-		}
-
-		//Animations
-		if (this._currentAnim != null && this._prevAnim !== this._currentAnim) {
-			this._prevAnim.stop();
-			this._currentAnim.play(this._currentAnim.loopAnimation);
-			this._prevAnim = this._currentAnim;
-		}
 	}
 
 	private _updateFromControls(): void {
@@ -378,7 +333,6 @@ export class Player extends TransformNode {
 
 		// Stocker le résultat de la première invocation de _isGrounded()
 		const isGrounded = this._isGrounded();
-
 		//if not grounded
 		if (!isGrounded) {
 			//if the body isnt grounded, check if it's on a slope and was either falling or walking onto it
@@ -444,7 +398,6 @@ export class Player extends TransformNode {
 		if (this._input) {
 			this._updateFromControls();
 			this._updateGroundDetection();
-			this._animatePlayer();
 		}
 	}
 
