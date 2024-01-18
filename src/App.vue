@@ -1,5 +1,5 @@
 <template>
-  <BabylonScene/>
+  <BabylonScene />
 </template>
 
 <script setup lang="ts">
