@@ -1,20 +1,36 @@
 import { Scene } from "@babylonjs/core";
 import { Game } from "./Game";
+import { Player } from "./controller/Player";
+import { PlayerInput } from "./player/PlayerInput";
+import { Environment } from "./environments/environments";
 
 export abstract class GameState {
   protected game: Game;
   protected scene: Scene;
   protected canvas: HTMLCanvasElement;
+  protected _player : Player | null ; 
+	protected _input : PlayerInput | null ; 
+	protected _environment : Environment | null;
+
+  // pointer 
+	public alreadylocked: boolean = false;
+
 
   constructor(game: Game, canvas: HTMLCanvasElement) {
     this.game = game;
     this.canvas = canvas;
     this.scene = new Scene(game.engine);
+    this._player = null;
+    this._input = null;
+    this._environment = null;
+
+    this.handlePointerLockChange();
   }
 
   abstract enter(): void;
   abstract exit(): void;
   abstract update(): void;
+  abstract setEnvironment() : void;
 
   // Méthode pour nettoyer la scène
   protected clearScene(): void {
@@ -23,5 +39,23 @@ export abstract class GameState {
 
   getScene(): Scene {
     return this.scene;
+  }
+  
+  handlePointerLockChange() : void {
+    this.scene.onPointerDown = () => {
+      if (!this.alreadylocked) {
+        this.canvas.requestPointerLock();
+      }
+    };
+  
+    document.addEventListener("pointerlockchange", () => {
+      let element = document.pointerLockElement || null;
+      if (element) {
+        // lets create a custom attribute
+        this.alreadylocked = true;
+      } else {
+        this.alreadylocked = false;
+      }
+    });
   }
 }
