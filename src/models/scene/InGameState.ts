@@ -59,7 +59,7 @@ export class InGameState extends GameState {
 			//collision mesh
 			const outer = MeshBuilder.CreateBox(
 				"outer",
-				{ width: 3.5, depth: 2.5, height: 20 },
+				{ width: 3.5, depth: 2.5, height: 15 },
 				scene,
 			);
 			// pour afficher la box qui sert de collision
@@ -67,7 +67,7 @@ export class InGameState extends GameState {
 			outer.isPickable = false;
 			outer.checkCollisions = true;
 			//move origin of box collider to the bottom of the mesh (to match player mesh)
-			outer.bakeTransformIntoVertices(Matrix.Translation(0, 4, 0));
+			outer.bakeTransformIntoVertices(Matrix.Translation(0, 7, 0));
 			//for collisions
 			outer.ellipsoid = new Vector3(1, 1.5, 1);
 			outer.ellipsoidOffset = new Vector3(0, 1.5, 0);
