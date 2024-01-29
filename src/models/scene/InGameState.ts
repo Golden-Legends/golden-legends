@@ -10,7 +10,7 @@ import {
 	SceneLoader,
 } from "@babylonjs/core";
 import { GameState } from "../GameState";
-import { PlayerInput } from "../player/PlayerInput";
+import { PlayerInput } from "../inputsMangement/PlayerInput";
 import { Player } from "../controller/Player";
 import { Environment } from "../environments/environments";
 import { Character } from "../intefaces/Character";
@@ -19,7 +19,7 @@ export class InGameState extends GameState {
 	public assets; // asset du joueur
 	private character: Character = {
 		fileName: "amy.glb",
-		scalingVector3: new Vector3(0.5, 0.5, 0.5),
+		scalingVector3: new Vector3(0.1, 0.1, 0.1),
 	};
 
 	async enter() {
@@ -31,11 +31,16 @@ export class InGameState extends GameState {
 		// création des controlles du joueur
 		this._input = new PlayerInput(this.scene);
 
-		this._initPlayer(this.scene).then(() => {
+		this._initPlayer(this.scene).then(async () => {
 			if (!!this._player) {
-				this._player.activatePlayerCamera();
+				await this._player.activatePlayerCamera();
 			}
 		});
+
+		// lancer la boucle de rendu
+		this.runRender();
+		// si besoin lancer la boucle de mise à jour
+		// this.runUpdate();
 	}
 
 	exit() {
@@ -45,6 +50,7 @@ export class InGameState extends GameState {
 
 	update() {
 		// Logique de mise à jour pour InGameState
+		
 	}
 
 	private async _loadCharacterAssets(scene){
@@ -68,8 +74,8 @@ export class InGameState extends GameState {
 
 			//--IMPORTING MESH--
 			return SceneLoader.ImportMeshAsync(
-				["amy"],
-				".",
+				null,
+				"./models/characters/",
 				characterFileAndScaling.fileName,
 				scene,
 			).then(result => {

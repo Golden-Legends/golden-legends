@@ -11,7 +11,7 @@ import {
 	Observable,
 	ActionManager,
 } from "@babylonjs/core";
-import { PlayerInput } from "../player/PlayerInput";
+import { PlayerInput } from "../inputsMangement/PlayerInput";
 
 // clavier anglais (qwerty)
 // const KEY_UP = "KeyW";

@@ -1,7 +1,7 @@
 import { Scene } from "@babylonjs/core";
 import { Game } from "./Game";
 import { Player } from "./controller/Player";
-import { PlayerInput } from "./player/PlayerInput";
+import { PlayerInput } from "./inputsMangement/PlayerInput";
 import { Environment } from "./environments/environments";
 
 export abstract class GameState {
@@ -37,9 +37,21 @@ export abstract class GameState {
     this.scene.dispose();
   }
 
-  getScene(): Scene {
-    return this.scene;
+  runRender () {
+    this.game.engine.runRenderLoop(() => {
+      if (this) {
+        this.scene.render();
+      }
+    });
   }
+
+  runUpdate() {
+    this.game.engine.runRenderLoop(() => {
+      if (this) {
+        this.update();
+      }
+    });
+  } 
   
   handlePointerLockChange() : void {
     this.scene.onPointerDown = () => {
