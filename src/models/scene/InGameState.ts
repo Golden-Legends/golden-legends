@@ -14,12 +14,13 @@ import { PlayerInput } from "../inputsMangement/PlayerInput";
 import { Player } from "../controller/Player";
 import { Environment } from "../environments/environments";
 import { Character } from "../intefaces/Character";
+import {Scaling} from "../../utils/Scaling.ts";
 
 export class InGameState extends GameState {
 	public assets; // asset du joueur
 	private character: Character = {
 		fileName: "amy.glb",
-		scalingVector3: new Vector3(0.1, 0.1, 0.1),
+		scalingVector3: new Scaling(0.02)
 	};
 
 	async enter() {
