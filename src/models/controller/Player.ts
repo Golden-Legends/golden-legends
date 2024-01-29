@@ -42,8 +42,8 @@ export class Player extends TransformNode {
 	public mesh: Mesh; //outer collisionbox of player
 
 	//Camera
-	private _camRoot!: TransformNode;
-	private _yTilt!: TransformNode;
+	private _camRoot: TransformNode;
+	private _yTilt: TransformNode;
 
 	//const values
 	private static readonly PLAYER_SPEED: number = 0.7;
@@ -64,10 +64,10 @@ export class Player extends TransformNode {
 	private _v: number;
 
 	private _moveDirection: Vector3 = new Vector3();
-	private _inputAmt!: number;
+	private _inputAmt: number;
 
 	//dashing
-	private _dashPressed!: boolean;
+	private _dashPressed: boolean;
 	private _canDash: boolean = true;
 
 	//animations
@@ -79,7 +79,7 @@ export class Player extends TransformNode {
 
 	// animation trackers
 	private _currentAnim: AnimationGroup | null = null;
-	private _prevAnim!: AnimationGroup;
+	private _prevAnim: AnimationGroup;
 	private _isFalling: boolean = false;
 	private _jumped: boolean = false;
 
@@ -89,7 +89,7 @@ export class Player extends TransformNode {
 	//gravity, ground detection, jumping
 	private _gravity: Vector3 = new Vector3();
 	private _lastGroundPos: Vector3 = Vector3.Zero(); // keep track of the last grounded position
-	private _grounded!: boolean;
+	private _grounded: boolean;
 	private _jumpCount: number = 1;
 
 	private readonly CAMERA_MIN_ANGLE = -Math.PI / 14; // Limite de rotation vers le haut
@@ -103,13 +103,17 @@ export class Player extends TransformNode {
 		this.mesh = assets.mesh;
 		this.mesh.parent = this;
 		this.mesh.rotationQuaternion = Quaternion.Identity();
-		// this.mesh.checkCollisions = false;
 
+		this._idle = assets.animationGroups.find(ag => ag.name === "idle");
+		this._jump = assets.animationGroups.find(ag => ag.name === "jump");
+		this._run = assets.animationGroups.find(ag => ag.name === "running");
+		this._land = assets.animationGroups.find(ag => ag.name === "falling");
+		this._dance = assets.animationGroups.find(ag => ag.name === "dance");
+
+		this._setUpAnimations();
 		shadowGenerator.addShadowCaster(assets.mesh); //the player mesh will cast shadows
 
 		this._input = input;
-
-		this.mesh.position = new Vector3(0, 100, 0);
 
 		//--COLLISIONS--
 		this.mesh.actionManager = new ActionManager(this.scene);
@@ -119,10 +123,56 @@ export class Player extends TransformNode {
 		this._input = input;
 	}
 
+	private _setUpAnimations(): void {
+		this.scene.stopAllAnimations();
+		this._run.loopAnimation = true;
+		this._idle.loopAnimation = true;
+
+		//initialize current and previous
+		this._currentAnim = this._land;
+		this._prevAnim = this._idle;
+	}
+
+	private _animatePlayer(): void {
+		if (
+			!this._dashPressed &&
+			!this._isFalling &&
+			!this._jumped &&
+			(this._input.inputMap[KEY_UP] ||
+				this._input.inputMap[KEY_DOWN] ||
+				this._input.inputMap[KEY_LEFT] ||
+				this._input.inputMap[KEY_RIGHT])
+		) {
+			this._currentAnim = this._run;
+			this.onRun.notifyObservers(true);
+		} else if (this._jumped && !this._isFalling && !this._dashPressed) {
+			this._currentAnim = this._jump;
+			if (!this._jump.play()) {
+				this._jumped = false;
+			}
+		} else if (!this._isFalling && this._grounded) {
+			this._currentAnim = this._idle;
+			//only notify observer if it's playing
+			// if (this.scene.getSoundByName("walking").isPlaying) {
+			// 	this.onRun.notifyObservers(false);
+			// }
+		} else if (this._isFalling) {
+			// rajouter une anim land
+			this._currentAnim = this._land;
+		}
+
+		//Animations
+		if (this._currentAnim != null && this._prevAnim !== this._currentAnim) {
+			this._prevAnim.stop();
+			this._currentAnim.play(this._currentAnim.loopAnimation);
+			this._prevAnim = this._currentAnim;
+		}
+	}
+
 	private _updateFromControls(): void {
 		if (this._input) {
 			this._deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
-			// console.log(this.mesh.position); // utile pour récup les positions du joueur
+			// console.log(this.mesh.position); // utilie pour récup les positions du joueur
 			this._moveDirection = Vector3.Zero(); // vector that holds movement information
 			this._h = this._input.horizontal; //x-axis
 			this._v = this._input.vertical; //z-axis
@@ -227,13 +277,11 @@ export class Player extends TransformNode {
 			angle += this._camRoot.rotation.y + Math.PI;
 			let targ = Quaternion.FromEulerAngles(0, angle, 0);
 
-			if (this.mesh.rotationQuaternion) {
-				this.mesh.rotationQuaternion = Quaternion.Slerp(
-					this.mesh.rotationQuaternion,
-					targ,
-					10 * this._deltaTime,
-				);
-			}
+			this.mesh.rotationQuaternion = Quaternion.Slerp(
+				this.mesh.rotationQuaternion,
+				targ,
+				10 * this._deltaTime,
+			);
 		}
 	}
 
@@ -254,7 +302,7 @@ export class Player extends TransformNode {
 		};
 		let pick = this.scene.pickWithRay(ray, predicate);
 
-		if (pick && pick.hit) {
+		if (pick.hit) {
 			return pick.pickedPoint;
 		} else {
 			return Vector3.Zero();
@@ -333,6 +381,7 @@ export class Player extends TransformNode {
 
 		// Stocker le résultat de la première invocation de _isGrounded()
 		const isGrounded = this._isGrounded();
+
 		//if not grounded
 		if (!isGrounded) {
 			//if the body isnt grounded, check if it's on a slope and was either falling or walking onto it
@@ -384,7 +433,7 @@ export class Player extends TransformNode {
 		}
 
 		//Jump detection
-		if (this._input?.jumpKeyDown && this._jumpCount > 0) {
+		if (this._input.jumpKeyDown && this._jumpCount > 0) {
 			this._gravity.y = Player.JUMP_FORCE;
 			this._jumpCount--;
 
@@ -398,6 +447,7 @@ export class Player extends TransformNode {
 		if (this._input) {
 			this._updateFromControls();
 			this._updateGroundDetection();
+			this._animatePlayer();
 		}
 	}
 

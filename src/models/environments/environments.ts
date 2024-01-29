@@ -1,34 +1,39 @@
 import {
 	Scene,
+	Mesh,
 	SceneLoader,
 	MeshBuilder,
-    Vector3,
 } from "@babylonjs/core";
 import { SkyMaterial } from "@babylonjs/materials";
 
 export class Environment {
-    private _scene: Scene;
+	private _scene: Scene;
 
-    constructor(scene: Scene) {
+	constructor(scene: Scene) {
 		this._scene = scene;
+	}
+
+	public async load() {
+		// var ground = Mesh.CreateBox("ground", 24, this._scene);
+		// ground.scaling = new Vector3(1,.02,1);
+
+		const assets = await this._loadAsset();
+		//Loop through all environment meshes that were imported
+		assets.allMeshes.forEach(m => {
+			// m.receiveShadows = true;
+			m.checkCollisions = true;
+		});
 		this.createSkybox(this._scene);
 	}
 
-    public async load() {
-        var ground = MeshBuilder.CreateBox("ground", {size: 75}, this._scene);
-        ground.scaling = new Vector3(1,.02,1);
-    }
-
-    //Load all necessary meshes for the environment
+	//Load all necessary meshes for the environment
 	public async _loadAsset() {
 		const result = await SceneLoader.ImportMeshAsync(
 			null,
-			"./models/",
-			"MAPJeu.glb",
+			"./models/maps/games/",
+			"Athle.glb",
 			this._scene,
 		);
-
-		console.log(result);
 
 		let env = result.meshes[0];
 		let allMeshes = env.getChildMeshes();
@@ -39,7 +44,7 @@ export class Environment {
 		};
 	}
 
-    public createSkybox(scene: Scene): void {
+	public createSkybox(scene: Scene): void {
 		const skyMaterial = new SkyMaterial("skyMaterial", scene);
 		skyMaterial.backFaceCulling = false;
 		skyMaterial.turbidity = 10;
