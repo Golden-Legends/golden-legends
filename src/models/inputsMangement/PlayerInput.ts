@@ -54,7 +54,7 @@ export class PlayerInput {
 
 	private updateMovementInput(): void {
 		const movementLerpSpeed = 0.2;
-
+		
 		// Forward/backward movement
 		if (this.inputMap[KEY_UP]) {
 			this.verticalAxis = 1;
