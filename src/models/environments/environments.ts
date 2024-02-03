@@ -30,8 +30,8 @@ export class Environment {
 	public async _loadAsset() {
 		const result = await SceneLoader.ImportMeshAsync(
 			null,
-			"./models/maps/games/",
-			"Athle.glb",
+			"./models/maps/",
+			"V1_JO.glb",
 			this._scene,
 		);
 

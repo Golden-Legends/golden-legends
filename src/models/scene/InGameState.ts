@@ -15,6 +15,8 @@ import { Player } from "../controller/Player";
 import { Environment } from "../environments/environments";
 import { Character } from "../intefaces/Character";
 import {Scaling} from "../../utils/Scaling.ts";
+import { Inspector } from '@babylonjs/inspector';
+
 
 export class InGameState extends GameState {
 	public assets; // asset du joueur
@@ -38,6 +40,7 @@ export class InGameState extends GameState {
 			}
 		});
 
+		Inspector.Show(this.scene, {});
 		// lancer la boucle de rendu
 		this.runRenderLoop();
 		// si besoin lancer la boucle de mise à jour
