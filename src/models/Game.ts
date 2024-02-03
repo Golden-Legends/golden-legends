@@ -1,7 +1,7 @@
 import { Engine } from "@babylonjs/core";
 import { GameState } from "./GameState";
-import { InGameState } from "./scene/InGameState";
 import "@babylonjs/loaders/glTF";
+import { MainMenuState } from "./scene/MainMenuState";
 
 export class Game {
   public engine: Engine;
@@ -10,7 +10,7 @@ export class Game {
   constructor(canvas: HTMLCanvasElement) {
     this.engine = new Engine(canvas, true);
     // Initialiser le premier état du jeu ici
-    this.changeState(new InGameState(this, canvas));
+    this.changeState(new MainMenuState(this, canvas));
   }
 
   changeState(newState: GameState) {
