@@ -24,7 +24,6 @@ export abstract class GameState {
     this._input = null;
     this._environment = null;
 
-    this.handlePointerLockChange();
   }
 
   abstract enter(): void;
@@ -38,6 +37,10 @@ export abstract class GameState {
   }
 
   runRender () {
+   this.scene.render();
+  }
+
+  runRenderLoop () {
     this.game.engine.runRenderLoop(() => {
       if (this) {
         this.scene.render();
