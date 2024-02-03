@@ -51,10 +51,10 @@ export class MainMenuState extends GameState {
 
 	activateStartButton(): void {
 		this.mainMenuGui.getStartButton().onPointerUpObservable.add(() => {
-			console.info("Start button clicked");
+			this.game.engine.loadingScreen.displayLoadingUI();
 			this.mainMenuGui.dispose();
-			this.exit();
 			this.game.changeState(new InGameState(this.game, this.canvas));
+			this.game.engine.loadingScreen.hideLoadingUI();
 		}
 		);
 	}
