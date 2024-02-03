@@ -31,6 +31,7 @@ export class MainMenuState extends GameState {
 	exit() {
 		// Nettoyer la scène lors de la sortie de cet état
 		this.clearScene();
+		this.mainMenuGui.dispose();
 	}
 
 	update() {

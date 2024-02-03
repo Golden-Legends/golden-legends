@@ -16,19 +16,22 @@ import { Environment } from "../environments/environments";
 import { Character } from "../intefaces/Character";
 import {Scaling} from "../../utils/Scaling.ts";
 import { Inspector } from '@babylonjs/inspector';
+import { RunningGame } from "./games/RunningGame.ts";
+import { AdvancedDynamicTexture } from "@babylonjs/gui";
 
 
 export class InGameState extends GameState {
 	public assets; // asset du joueur
+	private loadedGui: AdvancedDynamicTexture | undefined;
 	private character: Character = {
 		fileName: "amy.glb",
 		scalingVector3: new Scaling(0.02)
 	};
 
 	async enter() {
-		// set environments
-		await this.setEnvironment();
-
+		this.loadedGui = await AdvancedDynamicTexture.ParseFromFileAsync("public/gui/guiTexture.json", true);
+		this.initButtons(this.loadedGui);
+		this.closeGui(this.loadedGui);
 		await this._loadCharacterAssets(this.scene);
 
 		// création des controlles du joueur
@@ -37,14 +40,18 @@ export class InGameState extends GameState {
 		this._initPlayer(this.scene).then(async () => {
 			if (!!this._player) {
 				await this._player.activatePlayerCamera();
+				
 			}
 		});
 
-		Inspector.Show(this.scene, {});
+		// set environments
+		await this.setEnvironment();
+
+		// Inspector.Show(this.scene, {});
+
 		// lancer la boucle de rendu
-		this.runRenderLoop();
-		// si besoin lancer la boucle de mise à jour
-		// this.runUpdate();
+		this.runUpdateAndRender();
+		this.handlePointerLockChange();
 	}
 
 	exit() {
@@ -54,7 +61,6 @@ export class InGameState extends GameState {
 
 	update() {
 		// Logique de mise à jour pour InGameState
-		
 	}
 
 	private async _loadCharacterAssets(scene){
@@ -132,9 +138,48 @@ export class InGameState extends GameState {
 
 	async setEnvironment(): Promise<void> {
 		// ENVIRONMENT
-		const environment = new Environment(this.scene);
+		const environment = new Environment(this.scene, this._player, this);
         this._environment = environment;
         await this._environment.load();
 	}
 
+	public goToRunningGame() {
+		this.game.changeState(new RunningGame(this.game, this.canvas));
+	}
+
+
+	private initButtons (gui: AdvancedDynamicTexture) {
+		const exitButton = gui.getControlByName("DeclineButton");
+		if (exitButton) {
+			exitButton.onPointerClickObservable.add( () => {  
+				// dont display the gui 
+				this.closeGui(gui);
+			});
+		}
+
+		const enterButton = gui.getControlByName("ValidateButton");
+		if (enterButton) {
+			enterButton.onPointerClickObservable.add( () => {  
+				alert("prout !")
+			});
+		}
+		
+	}
+
+	public closeGui(gui : AdvancedDynamicTexture) {
+		gui.getChildren().forEach((c) => {
+			c.isVisible = false;
+		});
+	}
+
+	public openGui (gui : AdvancedDynamicTexture) {
+		gui.getChildren().forEach((c) => {
+			c.isVisible = true;
+		});
+	}
+
+	public getGui() {
+		return this.loadedGui;
+	}
+	
 }

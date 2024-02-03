@@ -19,11 +19,10 @@ export abstract class GameState {
   constructor(game: Game, canvas: HTMLCanvasElement) {
     this.game = game;
     this.canvas = canvas;
-    this.scene = new Scene(game.engine);
+    this.scene = new Scene(this.game.engine);
     this._player = null;
     this._input = null;
     this._environment = null;
-
   }
 
   abstract enter(): void;
@@ -48,9 +47,10 @@ export abstract class GameState {
     });
   }
 
-  runUpdate() {
+  runUpdateAndRender() {
     this.game.engine.runRenderLoop(() => {
       if (this) {
+        this.scene.render();
         this.update();
       }
     });
