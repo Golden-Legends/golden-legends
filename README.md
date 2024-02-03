@@ -1,4 +1,4 @@
-# Golden Legends
+![CleanShot 2024-02-03 at 10 49 30@2x](https://github.com/Golden-Legends/golden-legends-back/assets/50367862/c8367dbe-8e97-4e44-9c80-23615743695a)
 
 ## 🚀 Project
 This is the frontend part of Golden Legends: a video game built with BabylonJS for the Games On Web 2024 contest.
