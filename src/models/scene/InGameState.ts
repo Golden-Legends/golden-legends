@@ -39,7 +39,7 @@ export class InGameState extends GameState {
 		});
 
 		// lancer la boucle de rendu
-		this.runRender();
+		this.runRenderLoop();
 		// si besoin lancer la boucle de mise à jour
 		// this.runUpdate();
 	}
