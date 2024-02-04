@@ -8,6 +8,7 @@ import {
 	ShadowGenerator,
 	Matrix,
 	SceneLoader,
+	Nullable,
 } from "@babylonjs/core";
 import { GameState } from "../GameState";
 import { PlayerInput } from "../inputsMangement/PlayerInput";
@@ -17,21 +18,25 @@ import { Character } from "../intefaces/Character";
 import {Scaling} from "../../utils/Scaling.ts";
 import { Inspector } from '@babylonjs/inspector';
 import { RunningGame } from "./games/RunningGame.ts";
-import { AdvancedDynamicTexture } from "@babylonjs/gui";
+import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
 
 
 export class InGameState extends GameState {
 	public assets; // asset du joueur
 	private loadedGui: AdvancedDynamicTexture | undefined;
+	private background : Nullable<Control> = null;;
 	private character: Character = {
 		fileName: "amy.glb",
 		scalingVector3: new Scaling(0.02)
 	};
 
 	async enter() {
-		this.loadedGui = await AdvancedDynamicTexture.ParseFromFileAsync("public/gui/guiTexture.json", true);
+		this.loadedGui = await AdvancedDynamicTexture.ParseFromFileAsync("public/gui/gui_gate_runningGame.json", true);
+		this.background = this.loadedGui.getControlByName("CONTAINER");
 		this.initButtons(this.loadedGui);
-		this.closeGui(this.loadedGui);
+		if (this.background) {
+			this.closeGui(this.background);
+		}
 		await this._loadCharacterAssets(this.scene);
 
 		// création des controlles du joueur
@@ -57,6 +62,7 @@ export class InGameState extends GameState {
 	exit() {
 		// Nettoyer la scène lors de la sortie de cet état
 		this.clearScene();
+		this.loadedGui?.dispose();
 	}
 
 	update() {
@@ -149,37 +155,36 @@ export class InGameState extends GameState {
 
 
 	private initButtons (gui: AdvancedDynamicTexture) {
-		const exitButton = gui.getControlByName("DeclineButton");
+		const exitButton = gui.getControlByName("NO_BUTTON-bjs");
 		if (exitButton) {
 			exitButton.onPointerClickObservable.add( () => {  
 				// dont display the gui 
-				this.closeGui(gui);
+				if (this.background) {
+					this.closeGui(this.background);
+				}
+
 			});
 		}
 
-		const enterButton = gui.getControlByName("ValidateButton");
+		const enterButton = gui.getControlByName("YES_BUTTON-bjs");
 		if (enterButton) {
 			enterButton.onPointerClickObservable.add( () => {  
-				alert("prout !")
+				this.game.changeState(new RunningGame(this.game, this.canvas));
 			});
 		}
 		
 	}
 
-	public closeGui(gui : AdvancedDynamicTexture) {
-		gui.getChildren().forEach((c) => {
-			c.isVisible = false;
-		});
+	public closeGui(background : Control) {
+		background.isVisible = false;
 	}
 
-	public openGui (gui : AdvancedDynamicTexture) {
-		gui.getChildren().forEach((c) => {
-			c.isVisible = true;
-		});
+	public openGui (background : Control) {
+		background.isVisible = true;
 	}
 
-	public getGui() {
-		return this.loadedGui;
+	public getBackground() : Nullable<Control> {
+		return this.background;
 	}
 	
 }

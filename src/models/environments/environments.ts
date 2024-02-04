@@ -77,7 +77,7 @@ export class Environment {
 	}
 
 	private createRunningGates (scene: Scene) {
-		const guiFromInGameState = this.inGameState.getGui();
+		const guiFromInGameState = this.inGameState.getBackground();
 		// retrieves gateInformations.length once
 		for (let i = 0, n = this.gateInformations.length ;i < n; i++) {
 			const gateInformation = this.gateInformations[i];
@@ -89,7 +89,7 @@ export class Environment {
 			const logPickUpMessage = () => {
 				if (guiFromInGameState && !this.messageDisplayed) {
 					// ICI 
-					console.log(this.inGameState);
+					this.inGameState.removeHandlePointerLock();
 					this.inGameState.openGui(guiFromInGameState);
 					this.currentGate = gate;
 					this.messageDisplayed = true;

@@ -33,6 +33,7 @@ export abstract class GameState {
   // Méthode pour nettoyer la scène
   protected clearScene(): void {
     this.scene.dispose();
+    this.scene.detachControl();
   }
 
   runRender () {
@@ -72,5 +73,10 @@ export abstract class GameState {
         this.alreadylocked = false;
       }
     });
+  }
+  
+  // enlever le handlepointerlock
+  removeHandlePointerLock() : void {
+    document.exitPointerLock();
   }
 }
