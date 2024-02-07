@@ -8,7 +8,7 @@ import {
 	ShadowGenerator,
 	Matrix,
 	SceneLoader,
-	Nullable,
+	Nullable, Scene,
 } from "@babylonjs/core";
 import { GameState } from "../GameState";
 import { PlayerInput } from "../inputsMangement/PlayerInput";
@@ -31,6 +31,7 @@ export class InGameState extends GameState {
 		fileName: "amy.glb",
 		scalingVector3: new Scaling(0.01)
 	};
+	private players: Mesh[] = [];
 
 	async enter() {
 		// Request to server to tell that the user is in game
@@ -54,7 +55,7 @@ export class InGameState extends GameState {
 		this._initPlayer(this.scene).then(async () => {
 			if (!!this._player) {
 				await this._player.activatePlayerCamera();
-				
+
 			}
 		});
 
@@ -66,9 +67,18 @@ export class InGameState extends GameState {
 		// lancer la boucle de rendu
 		this.runUpdateAndRender();
 		this.handlePointerLockChange();
-		// Use socket.io to detect new players joining the game
+
 		socket.on("joinMainLobby", (playerName: string) => {
-			console.log(playerName + " has joined the main lobby");
+			console.log("NEW PLAYER JOINED THE GAME", playerName);
+			const light = new PointLight("sparklight", new Vector3(0, 0, 0), this.scene);
+			// Create a new player
+			const shadowGenerator = new ShadowGenerator(1024, light);
+			shadowGenerator.darkness = 0.4;
+
+			const box = MeshBuilder.CreateBox("box", {size: 2}, this.scene);
+			box.position = new Vector3(-4.49, 2.50, -35.24);
+			box.rotation = new Vector3(0, 89.58, 0);
+			this.players.push(box);
 		});
 	}
 
@@ -81,7 +91,7 @@ export class InGameState extends GameState {
 	update() {
 	}
 
-	private async _loadCharacterAssets(scene){
+	private async _loadCharacterAssets(scene: Scene){
 
 		async function loadCharacter(characterFileAndScaling: Character){
 			//collision mesh
