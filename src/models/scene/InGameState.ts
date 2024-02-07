@@ -27,7 +27,7 @@ export class InGameState extends GameState {
 	private background : Nullable<Control> = null;
 	private character: Character = {
 		fileName: "amy.glb",
-		scalingVector3: new Scaling(0.02)
+		scalingVector3: new Scaling(0.01)
 	};
 
 	async enter() {
@@ -140,7 +140,7 @@ export class InGameState extends GameState {
 
 		//Create the player
 		this._player = new Player(this.assets, scene, shadowGenerator, this._input);
-		this._player.mesh.position = new Vector3(0, 90, 0);
+		this._player.mesh.position = new Vector3(-50,10,90);
 	}
 
 	async setEnvironment(): Promise<void> {

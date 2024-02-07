@@ -11,9 +11,7 @@ export class Game {
 
   constructor(canvas: HTMLCanvasElement) {
     this.engine = new Engine(canvas, true);
-    // this.changeState(new MainMenuState(this, canvas));
-    this.changeState(new RunningGame(this, canvas));
-
+    this.changeState(new MainMenuState(this, canvas));
   }
 
   public setLoadingScreen (customLoadingScreen : ILoadingScreen) {

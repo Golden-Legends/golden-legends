@@ -46,7 +46,7 @@ export class Player extends TransformNode {
 	private _yTilt: TransformNode;
 
 	//const values
-	private static readonly PLAYER_SPEED: number = 0.7;
+	private static readonly PLAYER_SPEED: number = 0.3;
 	private static readonly JUMP_FORCE: number = 0.8;
 	private static readonly GRAVITY: number = -2.8;
 	private static readonly DASH_FACTOR: number = 2.5;
@@ -485,11 +485,11 @@ export class Player extends TransformNode {
 		//our actual camera that's pointing at our root's position
 		this.camera = new UniversalCamera(
 			"cam",
-			new Vector3(0, -30, -90),
+			new Vector3(0, -10, -20),
 			this.scene,
 		);
 		this.camera.lockedTarget = this._camRoot.position;
-		this.camera.fov = 0.47350045992678597;
+		this.camera.fov = 0.5;
 		this.camera.parent = yTilt;
 
 		this.scene.activeCamera = this.camera;
