@@ -19,6 +19,8 @@ import {Scaling} from "../../utils/Scaling.ts";
 import { Inspector } from '@babylonjs/inspector';
 import { RunningGame } from "./games/RunningGame.ts";
 import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
+import ky from "ky";
+import {socket} from "../../utils/socket.ts";
 
 
 export class InGameState extends GameState {
@@ -31,6 +33,13 @@ export class InGameState extends GameState {
 	};
 
 	async enter() {
+		// Request to server to tell that the user is in game
+		ky.post("http://localhost:3333/join-main-lobby", {
+			json: {
+				playerName: "test",
+			},
+		});
+
 		this.loadedGui = await AdvancedDynamicTexture.ParseFromFileAsync("public/gui/gui_gate_runningGame.json", true);
 		this.background = this.loadedGui.getControlByName("CONTAINER");
 		this.initButtons(this.loadedGui);
@@ -57,6 +66,10 @@ export class InGameState extends GameState {
 		// lancer la boucle de rendu
 		this.runUpdateAndRender();
 		this.handlePointerLockChange();
+		// Use socket.io to detect new players joining the game
+		socket.on("joinMainLobby", (playerName: string) => {
+			console.log(playerName + " has joined the main lobby");
+		});
 	}
 
 	exit() {
@@ -66,7 +79,6 @@ export class InGameState extends GameState {
 	}
 
 	update() {
-		// Logique de mise à jour pour InGameState
 	}
 
 	private async _loadCharacterAssets(scene){

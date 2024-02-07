@@ -2,8 +2,6 @@ import { Engine, ILoadingScreen } from "@babylonjs/core";
 import { GameState } from "./GameState";
 import "@babylonjs/loaders/glTF";
 import { MainMenuState } from "./scene/MainMenuState";
-import { CustomLoadingScreen } from "./loadingScreen/customLoadingScreen";
-import { RunningGame } from "./scene/games/RunningGame";
 
 export class Game {
   public engine: Engine;
