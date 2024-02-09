@@ -8,12 +8,13 @@ import { RunningGame } from "./scene/games/RunningGame";
 export class Game {
   public engine: Engine;
   private currentState: GameState | null = null;
+  public loadingScreen: CustomLoadingScreen;
 
   constructor(canvas: HTMLCanvasElement) {
     this.engine = new Engine(canvas, true);
-    // this.changeState(new MainMenuState(this, canvas));
+    this.loadingScreen = new CustomLoadingScreen("Loading...");
+    this.setLoadingScreen(this.loadingScreen);
     this.changeState(new RunningGame(this, canvas));
-
   }
 
   public setLoadingScreen (customLoadingScreen : ILoadingScreen) {
@@ -25,6 +26,6 @@ export class Game {
       this.currentState.exit();
     }
     this.currentState = newState;
-    this.currentState.enter();
+    await this.currentState.enter();
   }
 }
