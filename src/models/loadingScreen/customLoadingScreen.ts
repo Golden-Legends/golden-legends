@@ -27,20 +27,17 @@ export class CustomLoadingScreen implements ILoadingScreen {
         
     }
 
-    public hideLoadingUI(time : number = 2000) {
-        console.log("Loaded !")
+    public hideLoadingUI() {
         setTimeout(() => {
             if (this.background) { 
                 this.background.isVisible = false;
             }            
-        }, time);
+        }, 200);
     }
     
     public asyncHideLoadingUI(promiseArray : Promise<any>[]) {
         Promise.all(promiseArray).then(() => {
-            setTimeout(() => {
-                this.hideLoadingUI();
-            }, 4000);
+            this.hideLoadingUI();
         });
 
     }

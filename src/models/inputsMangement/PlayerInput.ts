@@ -4,14 +4,6 @@ import {
 } from "@babylonjs/core";
 import { InputManager } from "./InputManager";
 
-// clavier français (azerty)
-const KEY_UP = "KeyW";
-const KEY_DOWN = "KeyS";
-const KEY_LEFT = "KeyA";
-const KEY_RIGHT = "KeyD";
-const KEY_DASH = "KeyP";
-const KEY_JUMP = "Space";
-
 export class PlayerInput extends InputManager {
     public horizontal: number = 0;
     public vertical: number = 0;
@@ -19,6 +11,15 @@ export class PlayerInput extends InputManager {
     public verticalAxis: number = 0;
     public jumpKeyDown: boolean = false;
     public dashing: boolean = false;
+
+    readonly keys = {
+        KEY_UP: "KeyW",
+        KEY_DOWN: "KeyS",
+        KEY_LEFT: "KeyA",
+        KEY_RIGHT: "KeyD",
+		KEY_DASH : "KeyP",
+		KEY_JUMP : "Space",
+    };
 
 	constructor(scene: Scene) {
 		super(scene);
@@ -35,10 +36,10 @@ export class PlayerInput extends InputManager {
         const movementLerpSpeed = 0.2;
         
         // Forward/backward movement
-        if (this.inputMap[KEY_UP]) {
+        if (this.inputMap[this.keys.KEY_UP]) {
             this.verticalAxis = 1;
             this.vertical = Scalar.Lerp(this.vertical, 1, movementLerpSpeed);
-        } else if (this.inputMap[KEY_DOWN]) {
+        } else if (this.inputMap[this.keys.KEY_DOWN]) {
             this.vertical = Scalar.Lerp(this.vertical, -1, movementLerpSpeed);
             this.verticalAxis = -1;
         } else {
@@ -47,10 +48,10 @@ export class PlayerInput extends InputManager {
         }
 
         // Left/right movement
-        if (this.inputMap[KEY_LEFT]) {
+        if (this.inputMap[this.keys.KEY_LEFT]) {
             this.horizontal = Scalar.Lerp(this.horizontal, -1, movementLerpSpeed);
             this.horizontalAxis = -1;
-        } else if (this.inputMap[KEY_RIGHT]) {
+        } else if (this.inputMap[this.keys.KEY_RIGHT]) {
             this.horizontal = Scalar.Lerp(this.horizontal, 1, movementLerpSpeed);
             this.horizontalAxis = 1;
         } else {
@@ -60,7 +61,7 @@ export class PlayerInput extends InputManager {
     }
 
     private updateJumpInput(): void {
-        if (this.inputMap[KEY_JUMP]) {
+        if (this.inputMap[this.keys.KEY_JUMP]) {
             this.jumpKeyDown = true;
         } else {
             this.jumpKeyDown = false;
@@ -68,7 +69,7 @@ export class PlayerInput extends InputManager {
     }
 
     private updateDashInput(): void {
-        if (this.inputMap[KEY_DASH]) {
+        if (this.inputMap[this.keys.KEY_DASH]) {
             this.dashing = true;
         } else {
             this.dashing = false;

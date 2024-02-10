@@ -6,6 +6,7 @@ export abstract class InputManager {
 
     // est une propriété de la classe InputManager et non une methode
     protected abstract updateFromKeyboard;
+    abstract readonly keys: { [key: string]: string };
 
     constructor(scene: Scene) {
 		this.scene = scene;

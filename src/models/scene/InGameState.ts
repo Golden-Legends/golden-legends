@@ -29,6 +29,12 @@ export class InGameState extends GameState {
 		fileName: "amy.glb",
 		scalingVector3: new Scaling(0.02)
 	};
+	private _input: PlayerInput;
+
+	constructor(game, canvas) {
+		super(game, canvas);
+		this._input = new PlayerInput(this.scene);
+	}
 
 	async enter() {
 		this.loadedGui = await AdvancedDynamicTexture.ParseFromFileAsync("public/gui/gui_gate_runningGame.json", true);
@@ -140,7 +146,7 @@ export class InGameState extends GameState {
 
 		//Create the player
 		this._player = new Player(this.assets, scene, shadowGenerator, this._input);
-		this._player.mesh.position = new Vector3(0, 90, 0);
+		this._player.mesh.position = new Vector3(-50, 10, 90);
 	}
 
 	async setEnvironment(): Promise<void> {
