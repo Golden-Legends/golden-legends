@@ -5,7 +5,7 @@ import { PlayerInputRunningGame } from "../../inputsMangement/PlayerInputRunning
 import { Game } from "../../Game";
 
 
-export class RunningGame extends GameState {
+export class RunningGameState extends GameState {
     private mesh : Mesh;
     private _input : PlayerInputRunningGame;
     public _camera !: FreeCamera;
