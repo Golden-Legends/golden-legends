@@ -34,6 +34,7 @@ export class RunningGameState extends GameState {
     private idle : AnimationGroup = new AnimationGroup("idle");
 
     private readonly MIN_RUN_SPEED = 0.23;
+    private raceStartTime: number = 0;
 
     constructor(game: Game, canvas: HTMLCanvasElement) {
         super(game, canvas);
@@ -75,10 +76,14 @@ export class RunningGameState extends GameState {
                     () => {
                         this.endGame = true;
                         this.stopAnimations();
+                        const raceEndTime = performance.now();
+                        const raceDurationInSeconds = (raceEndTime - this.raceStartTime) / 1000; // Convert milliseconds to seconds
+                        console.log("Durée de la course :", raceDurationInSeconds, "secondes");
                     }
                 )
             );
-
+            
+            this.raceStartTime = performance.now();
         } catch (error) {
             throw new Error("erreur.");
         }
@@ -105,7 +110,12 @@ export class RunningGameState extends GameState {
                 this.processInput();
                 this.movePlayer();
                 this.animationPlayer();
+                const raceEndTime = performance.now();
+                const raceDurationInSeconds = (raceEndTime - this.raceStartTime) / 1000; // Convert milliseconds to seconds
+                console.log(raceDurationInSeconds.toFixed(3), "secondes");
             }
+
+            
         } catch (error) 
         {
             throw new Error("error : Running game class update." + error);
