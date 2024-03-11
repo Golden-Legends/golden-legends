@@ -52,7 +52,7 @@ export class RunningGameState extends GameState {
             this.game.engine.displayLoadingUI();
 
             // Inspector.Show(this.scene, {});
-            await this.createRunningMap();
+            await this.setEnvironment();
 
             // crounch
             await this.createPlayerMesh();
@@ -73,7 +73,6 @@ export class RunningGameState extends GameState {
                         parameter: endMesh
                     },
                     () => {
-                        console.log("end of the game");
                         this.endGame = true;
                         this.stopAnimations();
                     }
@@ -181,8 +180,13 @@ export class RunningGameState extends GameState {
         }
     }
 
-    setEnvironment(): void {
-        throw new Error("Method not implemented.");
+    async setEnvironment(): Promise<void> {
+        try {
+            const maps = new runningGameEnv(this.scene);
+            await maps.load();
+        } catch (error) {
+            throw new Error("Method not implemented.");
+        }
     }
 
     private async createPlayerMesh () : Promise<void>{
@@ -190,7 +194,7 @@ export class RunningGameState extends GameState {
         //collision mesh
         const outer = MeshBuilder.CreateBox(
             "outer",
-            { width: 3.5, depth: 2.5, height: 4 },
+            { width: 3, depth: 1, height: 4 },
             this.scene,
         );
         // pour afficher la box qui sert de collision
@@ -240,11 +244,6 @@ export class RunningGameState extends GameState {
         const crouch = this.animations.find(ag => ag.name.includes("crouch"));
         const idle = this.animations.find(ag => ag.name.includes("idle"));
         return {run: sprint!, walk: walk!, crouch: crouch!, idle: idle!};
-    }
-
-    private async createRunningMap () {
-        const maps = new runningGameEnv(this.scene);
-        await maps.load();
     }
 
     private createCamera(mesh : Mesh) : FreeCamera{ 
