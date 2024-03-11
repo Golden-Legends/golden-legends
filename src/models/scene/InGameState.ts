@@ -17,7 +17,7 @@ import { Environment } from "../environments/environments";
 import { Character } from "../intefaces/Character";
 import {Scaling} from "../../utils/Scaling.ts";
 import { Inspector } from '@babylonjs/inspector';
-import { RunningGame } from "./games/RunningGame.ts";
+import { RunningGameState } from "./games/RunningGame.ts";
 import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
 
 
@@ -157,7 +157,7 @@ export class InGameState extends GameState {
 	}
 
 	public goToRunningGame() {
-		this.game.changeState(new RunningGame(this.game, this.canvas));
+		this.game.changeState(new RunningGameState(this.game, this.canvas));
 	}
 
 
@@ -176,7 +176,7 @@ export class InGameState extends GameState {
 		const enterButton = gui.getControlByName("YES_BUTTON-bjs");
 		if (enterButton) {
 			enterButton.onPointerClickObservable.add( () => {  
-				this.game.changeState(new RunningGame(this.game, this.canvas));
+				this.game.changeState(new RunningGameState(this.game, this.canvas));
 			});
 		}
 		
