@@ -1,6 +1,5 @@
 import { FreeCamera, HemisphericLight, MeshBuilder, Vector3 } from "@babylonjs/core";
 import { GameState } from "../../GameState";
-import { Inspector } from '@babylonjs/inspector';
 import { CustomLoadingScreen } from "../../loadingScreen/customLoadingScreen";
 import { runningGameEnv } from "../../environments/runningGameEnv";
 
@@ -9,7 +8,6 @@ export class RunningGame extends GameState {
 
     async enter(): Promise<void> {
         try {
-            // Inspector.Show(this.scene, {});
 
             // Initialiser le premier état du jeu ici
             const loadingScreen = new CustomLoadingScreen("Loading...");
