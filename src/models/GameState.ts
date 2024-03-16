@@ -19,12 +19,10 @@ export abstract class GameState {
   constructor(game: Game, canvas: HTMLCanvasElement) {
     this.game = game;
     this.canvas = canvas;
-    this.scene = new Scene(game.engine);
+    this.scene = new Scene(this.game.engine);
     this._player = null;
     this._input = null;
     this._environment = null;
-
-    this.handlePointerLockChange();
   }
 
   abstract enter(): void;
@@ -35,9 +33,14 @@ export abstract class GameState {
   // Méthode pour nettoyer la scène
   protected clearScene(): void {
     this.scene.dispose();
+    this.scene.detachControl();
   }
 
   runRender () {
+   this.scene.render();
+  }
+
+  runRenderLoop () {
     this.game.engine.runRenderLoop(() => {
       if (this) {
         this.scene.render();
@@ -45,9 +48,10 @@ export abstract class GameState {
     });
   }
 
-  runUpdate() {
+  runUpdateAndRender() {
     this.game.engine.runRenderLoop(() => {
       if (this) {
+        this.scene.render();
         this.update();
       }
     });
@@ -69,5 +73,10 @@ export abstract class GameState {
         this.alreadylocked = false;
       }
     });
+  }
+  
+  // enlever le handlepointerlock
+  removeHandlePointerLock() : void {
+    document.exitPointerLock();
   }
 }

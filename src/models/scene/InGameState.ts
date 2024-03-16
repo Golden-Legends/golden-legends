@@ -8,6 +8,7 @@ import {
 	ShadowGenerator,
 	Matrix,
 	SceneLoader,
+	Nullable, Scene,
 } from "@babylonjs/core";
 import { GameState } from "../GameState";
 import { PlayerInput } from "../inputsMangement/PlayerInput";
@@ -15,18 +16,35 @@ import { Player } from "../controller/Player";
 import { Environment } from "../environments/environments";
 import { Character } from "../intefaces/Character";
 import {Scaling} from "../../utils/Scaling.ts";
+import { RunningGame } from "./games/RunningGame.ts";
+import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
+import ky from "ky";
+import {socket} from "../../utils/socket.ts";
+
 
 export class InGameState extends GameState {
 	public assets; // asset du joueur
+	private loadedGui: AdvancedDynamicTexture | undefined;
+	private background : Nullable<Control> = null;
 	private character: Character = {
 		fileName: "amy.glb",
-		scalingVector3: new Scaling(0.02)
+		scalingVector3: new Scaling(0.01)
 	};
 
 	async enter() {
-		// set environments
-		await this.setEnvironment();
+		// Request to server to tell that the user is in game
+		ky.post("http://localhost:3333/join-main-lobby", {
+			json: {
+				playerName: "test",
+			},
+		});
 
+		this.loadedGui = await AdvancedDynamicTexture.ParseFromFileAsync("public/gui/gui_gate_runningGame.json", true);
+		this.background = this.loadedGui.getControlByName("CONTAINER");
+		this.initButtons(this.loadedGui);
+		if (this.background) {
+			this.closeGui(this.background);
+		}
 		await this._loadCharacterAssets(this.scene);
 
 		// création des controlles du joueur
@@ -38,23 +56,30 @@ export class InGameState extends GameState {
 			}
 		});
 
+		// set environments
+		await this.setEnvironment();
+
+		// Inspector.Show(this.scene, {});
+
 		// lancer la boucle de rendu
-		this.runRender();
-		// si besoin lancer la boucle de mise à jour
-		// this.runUpdate();
+		this.runUpdateAndRender();
+		this.handlePointerLockChange();
+
+		socket.on("joinMainLobby", (playerName: string) => {
+			console.log("NEW PLAYER JOINED THE GAME: ", playerName);
+		});
 	}
 
 	exit() {
 		// Nettoyer la scène lors de la sortie de cet état
 		this.clearScene();
+		this.loadedGui?.dispose();
 	}
 
 	update() {
-		// Logique de mise à jour pour InGameState
-		
 	}
 
-	private async _loadCharacterAssets(scene){
+	private async _loadCharacterAssets(scene: Scene){
 
 		async function loadCharacter(characterFileAndScaling: Character){
 			//collision mesh
@@ -125,13 +150,52 @@ export class InGameState extends GameState {
 
 		//Create the player
 		this._player = new Player(this.assets, scene, shadowGenerator, this._input);
+		this._player.mesh.position = new Vector3(-50,10,90);
 	}
 
 	async setEnvironment(): Promise<void> {
 		// ENVIRONMENT
-		const environment = new Environment(this.scene);
+		const environment = new Environment(this.scene, this._player, this);
         this._environment = environment;
         await this._environment.load();
 	}
 
+	public goToRunningGame() {
+		this.game.changeState(new RunningGame(this.game, this.canvas));
+	}
+
+
+	private initButtons (gui: AdvancedDynamicTexture) {
+		const exitButton = gui.getControlByName("NO_BUTTON-bjs");
+		if (exitButton) {
+			exitButton.onPointerClickObservable.add( () => {  
+				// dont display the gui 
+				if (this.background) {
+					this.closeGui(this.background);
+				}
+
+			});
+		}
+
+		const enterButton = gui.getControlByName("YES_BUTTON-bjs");
+		if (enterButton) {
+			enterButton.onPointerClickObservable.add( () => {  
+				this.game.changeState(new RunningGame(this.game, this.canvas));
+			});
+		}
+		
+	}
+
+	public closeGui(background : Control) {
+		background.isVisible = false;
+	}
+
+	public openGui (background : Control) {
+		background.isVisible = true;
+	}
+
+	public getBackground() : Nullable<Control> {
+		return this.background;
+	}
+	
 }
