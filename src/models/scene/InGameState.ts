@@ -17,7 +17,7 @@ import { Environment } from "../environments/environments";
 import { Character } from "../intefaces/Character";
 import {Scaling} from "../../utils/Scaling.ts";
 import { Inspector } from '@babylonjs/inspector';
-import { RunningGameState } from "./games/RunningGame.ts";
+import { RunningGameState } from "./games/RunningGameState.ts";
 import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
 
 
