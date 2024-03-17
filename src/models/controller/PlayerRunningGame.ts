@@ -1,4 +1,4 @@
-import { AnimationGroup, Camera, FreeCamera, Mesh, MeshBuilder, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
+import { AnimationGroup, Camera, Color3, FreeCamera, Mesh, MeshBuilder, Ray, RayHelper, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
 import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGame";
 
@@ -7,6 +7,8 @@ const PLAYER_RADIUS = 0.5;
 const PLAYER_SCALING = 3;
 
 export class PlayerRunningGame {
+
+    private static readonly GRAVITY: number = -2.8;
 
     // posiution of the player
     private _x : number;
@@ -53,6 +55,12 @@ export class PlayerRunningGame {
     // camera
     private _camera ?: Camera;
 
+	private _deltaTime: number = 0;
+    private _gravity: Vector3 = new Vector3();
+	private _lastGroundPos: Vector3 = Vector3.Zero(); // keep track of the last grounded position
+	private _grounded: boolean = true;
+	private _jumpCount: number = 1;
+
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, input : PlayerInputRunningGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
@@ -62,7 +70,7 @@ export class PlayerRunningGame {
         this._input = input ;
         this._camera
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
-        this.transform.position = new Vector3(this._x, this._y * 5 , this._z);
+        this.transform.position = new Vector3(this._x, this._y * 5  , this._z);
         this.transform.isVisible = true; // mettre à faux par la suites
         if (activeCamera) {
             this._camera = this.createCameraPlayer(this.transform);
@@ -77,6 +85,10 @@ export class PlayerRunningGame {
         this.gameObject.rotate(Vector3.UpReadOnly, Math.PI);
         this.gameObject.bakeCurrentTransformIntoVertices();
         this.gameObject.parent = this.transform;
+        this.gameObject.isPickable = false;
+        this.gameObject.getChildMeshes().forEach(m => {
+            m.isPickable = false;
+        });
         this.animationsGroup = result.animationGroups;
         this.animationsGroup[0].stop();
         // set animation
@@ -141,13 +153,60 @@ export class PlayerRunningGame {
         }
     }
 
+    
+    private _floorRaycast(
+		offsetx: number,
+		offsetz: number,
+		raycastlen: number,
+	): Vector3 {
+		let raycastFloorPos = new Vector3(
+			this.transform.position.x + offsetx,
+			this.transform.position.y + 0.5,
+			this.transform.position.z + offsetz,
+		);
+		let ray = new Ray(raycastFloorPos, Vector3.Up().scale(-1), raycastlen);
+
+		let predicate = function (mesh) {
+			return mesh.isPickable && mesh.isEnabled();
+		};
+		let pick = this.scene.pickWithRay(ray, predicate);
+
+        return pick?.pickedPoint || Vector3.Zero();
+	}
+
+    private _isGrounded(): boolean {
+		if (this._floorRaycast(0, 0, 0.6).equals(Vector3.Zero())) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+    public _updateGroundDetection(): void {
+		this._deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
+
+		// Stocker le résultat de la première invocation de _isGrounded()
+		const isGrounded = this._isGrounded();
+        console.log(isGrounded);
+
+        if (!isGrounded) {
+			//if the body isnt grounded, check if it's on a slope and was either falling or walking onto it
+            //keep applying gravity
+            this._gravity = this._gravity.addInPlace(
+                Vector3.Up().scale(this._deltaTime * PlayerRunningGame.GRAVITY),
+            );
+            this._grounded = false;
+			
+		}
+	}
+
+
     public movePlayer(): void {
         // Applique le mouvement en fonction de la direction et de la vitesse
         this.transform.position.z += this.direction * this.baseSpeed;
         if (this._camera) {
             this._camera.position.z += this.direction * this.baseSpeed;
         }
-        
     }
 
     public animationPlayer(): void {

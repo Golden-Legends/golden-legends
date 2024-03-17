@@ -94,6 +94,7 @@ export class RunningGameState extends GameState {
         try 
         {  
             if (!this.endGame) {
+                this.player._updateGroundDetection();
                 this.player.processInput();
                 this.player.movePlayer();
                 this.player.animationPlayer();
