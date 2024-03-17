@@ -17,7 +17,7 @@ export class RunningGameState extends GameState {
     private idle : AnimationGroup = new AnimationGroup("idle");
     private raceStartTime: number = 0;
 
-    private player : PlayerRunningGame;
+    private player !: PlayerRunningGame;
 
     constructor(game: Game, canvas: HTMLCanvasElement) {
         super(game, canvas);

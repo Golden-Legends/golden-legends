@@ -62,7 +62,7 @@ export class PlayerRunningGame {
         this._input = input ;
         this._camera
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
-        this.transform.position = new Vector3(this._x, this._y * 5, this._z);
+        this.transform.position = new Vector3(this._x, this._y * 5 , this._z);
         this.transform.isVisible = true; // mettre à faux par la suites
         if (activeCamera) {
             this._camera = this.createCameraPlayer(this.transform);
@@ -70,15 +70,12 @@ export class PlayerRunningGame {
     }
 
     public async init () {
-        console.log(this.assetPath);
         const result = await SceneLoader.ImportMeshAsync("", "", this.assetPath, this.scene);
         this.gameObject = result.meshes[0] as Mesh;
         this.gameObject.scaling = new Scaling(PLAYER_SCALING);
         this.gameObject.position = new Vector3(0, -PLAYER_HEIGHT / 2, 0);
-        console.log(this.gameObject.position, this.transform.position);
         this.gameObject.rotate(Vector3.UpReadOnly, Math.PI);
         this.gameObject.bakeCurrentTransformIntoVertices();
-        console.log(this.gameObject);
         this.gameObject.parent = this.transform;
         this.animationsGroup = result.animationGroups;
         this.animationsGroup[0].stop();
