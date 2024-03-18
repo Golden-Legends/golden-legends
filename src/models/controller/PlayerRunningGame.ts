@@ -16,7 +16,7 @@ export class PlayerRunningGame {
     private _z : number;
 
     // Position dans le monde
-    private transform : Mesh;
+    public transform : Mesh;
     // Mesh
     private gameObject : Mesh = new Mesh("player");
 
@@ -56,7 +56,6 @@ export class PlayerRunningGame {
     private _camera ?: Camera;
 
 	private _deltaTime: number = 0;
-    private _gravity: Vector3 = new Vector3();
 
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, input : PlayerInputRunningGame, activeCamera: boolean) {
         this._x = x;
@@ -67,8 +66,8 @@ export class PlayerRunningGame {
         this._input = input ;
         this._camera
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
-        this.transform.position = new Vector3(this._x, this._y * 5  , this._z);
-        this.transform.isVisible = true; // mettre à faux par la suites
+        this.transform.position = new Vector3(this._x, this._y * 3, this._z);
+        this.transform.isVisible = false; // mettre à faux par la suites
         if (activeCamera) {
             this._camera = this.createCameraPlayer(this.transform);
         }
@@ -95,9 +94,7 @@ export class PlayerRunningGame {
         this.crouchAnim = crouch;
         this.idleAnim = idle;
         this.crouchAnim.start();
-        this._isCrouching = true;
-
-        
+        this._isCrouching = true;        
     }
 
     private setAnimation () : {run: AnimationGroup, walk: AnimationGroup, crouch: AnimationGroup, idle: AnimationGroup} { 
@@ -113,7 +110,8 @@ export class PlayerRunningGame {
             this.walkAnim.stop();
             this.runAnim.stop();
             this.crouchAnim.stop();
-            this.idleAnim.start();            
+            this.idleAnim.start();
+            this._isIdle = true;            
         } catch (error) {
             throw new Error("Method not implemented.");
         }
