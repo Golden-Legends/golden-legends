@@ -3,6 +3,7 @@ import { GameState } from "../../GameState";import { runningGameEnv } from "../.
 import { PlayerInputRunningGame } from "../../inputsMangement/PlayerInputRunningGame";
 import { Game } from "../../Game";
 import { PlayerRunningGame } from "../../controller/PlayerRunningGame";
+import { Inspector } from "@babylonjs/inspector";
 
 
 export class RunningGameState extends GameState {

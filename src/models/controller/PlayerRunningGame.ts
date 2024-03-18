@@ -8,7 +8,7 @@ const PLAYER_SCALING = 3;
 
 export class PlayerRunningGame {
 
-    private static readonly GRAVITY: number = -2.8;
+    private static readonly GRAVITY: number = -0.25;
 
     // posiution of the player
     private _x : number;
@@ -57,9 +57,6 @@ export class PlayerRunningGame {
 
 	private _deltaTime: number = 0;
     private _gravity: Vector3 = new Vector3();
-	private _lastGroundPos: Vector3 = Vector3.Zero(); // keep track of the last grounded position
-	private _grounded: boolean = true;
-	private _jumpCount: number = 1;
 
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, input : PlayerInputRunningGame, activeCamera: boolean) {
         this._x = x;
@@ -81,7 +78,7 @@ export class PlayerRunningGame {
         const result = await SceneLoader.ImportMeshAsync("", "", this.assetPath, this.scene);
         this.gameObject = result.meshes[0] as Mesh;
         this.gameObject.scaling = new Scaling(PLAYER_SCALING);
-        this.gameObject.position = new Vector3(0, -PLAYER_HEIGHT / 2, 0);
+        this.gameObject.position = new Vector3(0, (-PLAYER_HEIGHT / 2) + 0.5, 0);
         this.gameObject.rotate(Vector3.UpReadOnly, Math.PI);
         this.gameObject.bakeCurrentTransformIntoVertices();
         this.gameObject.parent = this.transform;
@@ -183,22 +180,16 @@ export class PlayerRunningGame {
 	}
 
     public _updateGroundDetection(): void {
-		this._deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
-
-		// Stocker le résultat de la première invocation de _isGrounded()
-		const isGrounded = this._isGrounded();
-        console.log(isGrounded);
-
+        this._deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
+    
+        // Stocker le résultat de la première invocation de _isGrounded()
+        const isGrounded = this._isGrounded();
+    
         if (!isGrounded) {
-			//if the body isnt grounded, check if it's on a slope and was either falling or walking onto it
-            //keep applying gravity
-            this._gravity = this._gravity.addInPlace(
-                Vector3.Up().scale(this._deltaTime * PlayerRunningGame.GRAVITY),
-            );
-            this._grounded = false;
-			
-		}
-	}
+            this.transform.moveWithCollisions(new Vector3(0, PlayerRunningGame.GRAVITY, 0));
+        }
+    }
+    
 
 
     public movePlayer(): void {
