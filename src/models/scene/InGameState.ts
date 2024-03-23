@@ -16,7 +16,7 @@ import { Player } from "../controller/Player";
 import { Environment } from "../environments/environments";
 import { Character } from "../intefaces/Character";
 import {Scaling} from "../../utils/Scaling.ts";
-import { RunningGame } from "./games/RunningGame.ts";
+import { RunningGameState } from "./games/RunningGameState.ts";
 import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
 import ky from "ky";
 import {socket} from "../../utils/socket.ts";
@@ -28,8 +28,14 @@ export class InGameState extends GameState {
 	private background : Nullable<Control> = null;
 	private character: Character = {
 		fileName: "amy.glb",
-		scalingVector3: new Scaling(0.01)
+		scalingVector3: new Scaling(0.02)
 	};
+	private _input: PlayerInput;
+
+	constructor(game, canvas) {
+		super(game, canvas);
+		this._input = new PlayerInput(this.scene);
+	}
 
 	async enter() {
 		// Request to server to tell that the user is in game
@@ -161,7 +167,7 @@ export class InGameState extends GameState {
 	}
 
 	public goToRunningGame() {
-		this.game.changeState(new RunningGame(this.game, this.canvas));
+		this.game.changeState(new RunningGameState(this.game, this.canvas));
 	}
 
 
@@ -180,7 +186,7 @@ export class InGameState extends GameState {
 		const enterButton = gui.getControlByName("YES_BUTTON-bjs");
 		if (enterButton) {
 			enterButton.onPointerClickObservable.add( () => {  
-				this.game.changeState(new RunningGame(this.game, this.canvas));
+				this.game.changeState(new RunningGameState(this.game, this.canvas));
 			});
 		}
 		

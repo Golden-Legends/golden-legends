@@ -9,11 +9,14 @@ export class CustomLoadingScreen implements ILoadingScreen {
         this.loadingUIBackgroundColor = "black";
     }
 
-    public async loadGui() : Promise<AdvancedDynamicTexture> {
-        const loadedscreen = await AdvancedDynamicTexture.ParseFromFileAsync("gui/gui_loading_screen.json", true);
-        this.background = loadedscreen.getControlByName("Rectangle");
-        this.background!.isVisible = false; // peut être améliorer la gestioon du loading screen
-        return loadedscreen;
+    public async loadGui() : Promise<void> {
+        try {
+            const loadedscreen = await AdvancedDynamicTexture.ParseFromFileAsync("gui/gui_loading_screen.json", true);
+            this.background = loadedscreen.getControlByName("Rectangle");
+            this.background!.isVisible = false; // peut être améliorer la gestioon du loading screen
+        } catch (e) {
+            console.error(e);
+        }
     }
     
     public displayLoadingUI() {
@@ -25,17 +28,16 @@ export class CustomLoadingScreen implements ILoadingScreen {
     }
 
     public hideLoadingUI() {
-        console.log("Loaded !")
-        if (this.background) { 
-            this.background.isVisible = false;
-        }
+        setTimeout(() => {
+            if (this.background) { 
+                this.background.isVisible = false;
+            }            
+        }, 200);
     }
     
     public asyncHideLoadingUI(promiseArray : Promise<any>[]) {
         Promise.all(promiseArray).then(() => {
-            setTimeout(() => {
-                this.hideLoadingUI();
-            }, 5000);
+            this.hideLoadingUI();
         });
 
     }

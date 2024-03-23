@@ -1,15 +1,12 @@
 import { Scene } from "@babylonjs/core";
 import { Game } from "./Game";
 import { Player } from "./controller/Player";
-import { PlayerInput } from "./inputsMangement/PlayerInput";
 import { Environment } from "./environments/environments";
-
 export abstract class GameState {
   protected game: Game;
   protected scene: Scene;
   protected canvas: HTMLCanvasElement;
   protected _player : Player | null ; 
-	protected _input : PlayerInput | null ; 
 	protected _environment : Environment | null;
 
   // pointer 
@@ -21,11 +18,10 @@ export abstract class GameState {
     this.canvas = canvas;
     this.scene = new Scene(this.game.engine);
     this._player = null;
-    this._input = null;
     this._environment = null;
   }
 
-  abstract enter(): void;
+  abstract enter(): Promise<void>;
   abstract exit(): void;
   abstract update(): void;
   abstract setEnvironment() : void;
