@@ -1,34 +1,36 @@
 import {
-	Vector3,
-	HemisphericLight,
-	MeshBuilder,
-	Mesh,
-	PointLight,
 	Color3,
-	ShadowGenerator,
+	HemisphericLight,
 	Matrix,
+	Mesh,
+	MeshBuilder,
+	Nullable,
+	PointLight,
+	Scene,
 	SceneLoader,
-	Nullable, Scene,
+	ShadowGenerator,
+	Vector3,
 } from "@babylonjs/core";
-import { GameState } from "../GameState";
-import { PlayerInput } from "../inputsMangement/PlayerInput";
-import { Player } from "../controller/Player";
-import { Environment } from "../environments/environments";
-import { Character } from "../intefaces/Character";
+import {GameState} from "../GameState";
+import {PlayerInput} from "../inputsMangement/PlayerInput";
+import {Player} from "../controller/Player";
+import {Environment} from "../environments/environments";
+import {Character} from "../intefaces/Character";
 import {Scaling} from "../../utils/Scaling.ts";
-import { RunningGameState } from "./games/RunningGameState.ts";
-import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
+import {RunningGameState} from "./games/RunningGameState.ts";
+import {AdvancedDynamicTexture, Control} from "@babylonjs/gui";
 import ky from "ky";
 import {socket} from "../../utils/socket.ts";
+import {BACK_URL} from "../../utils/constants.ts";
 
 
 export class InGameState extends GameState {
-	public assets; // asset du joueur
+	public assets;
 	private loadedGui: AdvancedDynamicTexture | undefined;
 	private background : Nullable<Control> = null;
 	private character: Character = {
 		fileName: "amy.glb",
-		scalingVector3: new Scaling(0.02)
+		scalingVector3: new Scaling(0.01)
 	};
 	private _input: PlayerInput;
 
@@ -39,7 +41,7 @@ export class InGameState extends GameState {
 
 	async enter() {
 		// Request to server to tell that the user is in game
-		ky.post("http://localhost:3333/join-main-lobby", {
+		ky.post(`${BACK_URL}/join-main-lobby`, {
 			json: {
 				playerName: "test",
 			},
@@ -139,7 +141,7 @@ export class InGameState extends GameState {
 
 	}
 
-	private async _initPlayer(scene): Promise<void> {
+	private async _initPlayer(scene: Scene): Promise<void> {
 		new HemisphericLight("HemiLight", new Vector3(0, 3, 0), scene);
 
 		const light = new PointLight("sparklight", new Vector3(0, 0, 0), scene);
@@ -161,8 +163,7 @@ export class InGameState extends GameState {
 
 	async setEnvironment(): Promise<void> {
 		// ENVIRONMENT
-		const environment = new Environment(this.scene, this._player, this);
-        this._environment = environment;
+		this._environment = new Environment(this.scene, this._player, this);
         await this._environment.load();
 	}
 
@@ -186,7 +187,7 @@ export class InGameState extends GameState {
 		const enterButton = gui.getControlByName("YES_BUTTON-bjs");
 		if (enterButton) {
 			enterButton.onPointerClickObservable.add( () => {  
-				this.game.changeState(new RunningGameState(this.game, this.canvas));
+				this.goToRunningGame()
 			});
 		}
 		
