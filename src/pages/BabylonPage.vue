@@ -1,9 +1,10 @@
 <script setup lang="ts">
 
+import BabylonScene from "../components/BabylonScene.vue";
 </script>
 
 <template>
-  $END$
+  <BabylonScene />
 </template>
 
 <style scoped>
