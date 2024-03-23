@@ -1,9 +1,8 @@
-import { ActionManager, AnimationGroup, ExecuteCodeAction, FreeCamera, HemisphericLight,  Mesh, Vector3 } from "@babylonjs/core";
+import { ActionManager, ExecuteCodeAction, FreeCamera, HemisphericLight, Vector3 } from "@babylonjs/core";
 import { GameState } from "../../GameState";import { runningGameEnv } from "../../environments/runningGameEnv";
 import { PlayerInputRunningGame } from "../../inputsMangement/PlayerInputRunningGame";
 import { Game } from "../../Game";
 import { PlayerRunningGame } from "../../controller/PlayerRunningGame";
-import { Inspector } from "@babylonjs/inspector";
 
 
 export class RunningGameState extends GameState {
