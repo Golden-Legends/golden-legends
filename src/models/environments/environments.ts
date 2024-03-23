@@ -53,7 +53,7 @@ export class Environment {
 		const result = await SceneLoader.ImportMeshAsync(
 			null,
 			"./models/maps/",
-			"map_JO.glb",
+			"V3_JO.glb",
 			this._scene,
 		);
 

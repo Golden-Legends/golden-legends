@@ -8,7 +8,7 @@ import {
 	ShadowGenerator,
 	Matrix,
 	SceneLoader,
-	Nullable,
+	Nullable, Scene,
 } from "@babylonjs/core";
 import { GameState } from "../GameState";
 import { PlayerInput } from "../inputsMangement/PlayerInput";
@@ -16,9 +16,10 @@ import { Player } from "../controller/Player";
 import { Environment } from "../environments/environments";
 import { Character } from "../intefaces/Character";
 import {Scaling} from "../../utils/Scaling.ts";
-import { Inspector } from '@babylonjs/inspector';
 import { RunningGameState } from "./games/RunningGameState.ts";
 import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
+import ky from "ky";
+import {socket} from "../../utils/socket.ts";
 
 
 export class InGameState extends GameState {
@@ -37,6 +38,13 @@ export class InGameState extends GameState {
 	}
 
 	async enter() {
+		// Request to server to tell that the user is in game
+		ky.post("http://localhost:3333/join-main-lobby", {
+			json: {
+				playerName: "test",
+			},
+		});
+
 		this.loadedGui = await AdvancedDynamicTexture.ParseFromFileAsync("public/gui/gui_gate_runningGame.json", true);
 		this.background = this.loadedGui.getControlByName("CONTAINER");
 		this.initButtons(this.loadedGui);
@@ -51,7 +59,6 @@ export class InGameState extends GameState {
 		this._initPlayer(this.scene).then(async () => {
 			if (!!this._player) {
 				await this._player.activatePlayerCamera();
-				
 			}
 		});
 
@@ -63,6 +70,10 @@ export class InGameState extends GameState {
 		// lancer la boucle de rendu
 		this.runUpdateAndRender();
 		this.handlePointerLockChange();
+
+		socket.on("joinMainLobby", (playerName: string) => {
+			console.log("NEW PLAYER JOINED THE GAME: ", playerName);
+		});
 	}
 
 	exit() {
@@ -72,10 +83,9 @@ export class InGameState extends GameState {
 	}
 
 	update() {
-		// Logique de mise à jour pour InGameState
 	}
 
-	private async _loadCharacterAssets(scene){
+	private async _loadCharacterAssets(scene: Scene){
 
 		async function loadCharacter(characterFileAndScaling: Character){
 			//collision mesh
@@ -146,7 +156,7 @@ export class InGameState extends GameState {
 
 		//Create the player
 		this._player = new Player(this.assets, scene, shadowGenerator, this._input);
-		this._player.mesh.position = new Vector3(-50, 10, 90);
+		this._player.mesh.position = new Vector3(-50,10,90);
 	}
 
 	async setEnvironment(): Promise<void> {

@@ -3,7 +3,6 @@ import { GameState } from "./GameState";
 import "@babylonjs/loaders/glTF";
 import { MainMenuState } from "./scene/MainMenuState";
 import { CustomLoadingScreen } from "./loadingScreen/customLoadingScreen";
-import { RunningGameState } from "./scene/games/RunningGameState";
 
 export class Game {
   public engine: Engine;
@@ -14,7 +13,7 @@ export class Game {
     this.engine = new Engine(canvas, true);
     this.loadingScreen = new CustomLoadingScreen("Loading...");
     this.setLoadingScreen(this.loadingScreen);
-    this.changeState(new RunningGameState(this, canvas));
+    this.changeState(new MainMenuState(this, canvas));
   }
 
   public setLoadingScreen (customLoadingScreen : ILoadingScreen) {
@@ -26,6 +25,6 @@ export class Game {
       this.currentState.exit();
     }
     this.currentState = newState;
-    await this.currentState.enter();
+    this.currentState.enter();
   }
 }

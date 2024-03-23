@@ -15,7 +15,9 @@
     "@babylonjs/havok": "^1.3.0",
     "@babylonjs/loaders": "^6.40.0",
     "@babylonjs/materials": "^6.40.0",
+    "ky": "^1.2.0",
     "prettier": "^3.1.1",
+    "socket.io-client": "^4.7.4",
     "vue": "^3.3.8"
   },
   "devDependencies": {
