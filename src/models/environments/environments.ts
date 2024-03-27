@@ -46,6 +46,11 @@ export class Environment {
 			m.checkCollisions = true;
 		});
 		this.createSkybox(this._scene);
+
+		this.disableBuild(1,173);
+		this.invisibleBox(1,170);
+		this.disableCar(1,63);
+		this.invisibleBoxCar(1,37);
 	}
 
 	//Load all necessary meshes for the environment
@@ -128,4 +133,123 @@ export class Environment {
 		}
 
 	}
+
+
+	public disableBuild(startNumber: number, endNumber: number) {
+		for (let i = startNumber; i <= endNumber; i++) {
+			if(i in [8, 9, 16, 17, 22, 26, 30, 32, 105]){
+				for(let j = 0; j <= 1; j++){
+					let mesh = this._scene.getMeshByName("build" + i + "_primitive" + j);
+					if(mesh){
+						mesh.checkCollisions = false;
+						mesh.isPickable = false;
+					}	
+				}
+			}
+			else if(i in [1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 
+					18, 19, 20, 21, 23, 25, 27, 28, 29,
+					33, 34, 35, 36, 37, 38, 39, 40, 43, 44]){
+				for(let j = 0; j <= 2; j++){
+					let mesh = this._scene.getMeshByName("build" + i + "_primitive" + j);
+					if(mesh){
+						mesh.checkCollisions = false;
+						mesh.isPickable = false;
+					}	
+				}
+			}
+			else if(i == 24){
+				for(let j = 0; j <= 3; j++){
+					let mesh = this._scene.getMeshByName("build" + i + "_primitive" + j);
+					if(mesh){
+						mesh.checkCollisions = false;
+						mesh.isPickable = false;
+					}	
+				}
+			}
+			else if(i == 45){
+				for(let j = 0; j <= 5; j++){
+					let mesh = this._scene.getMeshByName("build" + i + "_primitive" + j);
+					if(mesh){
+						mesh.checkCollisions = false;
+						mesh.isPickable = false;
+					}	
+				}
+			}
+			else{
+				let mesh = this._scene.getMeshByName("build" + i);
+				if(mesh){
+					mesh.checkCollisions = false;
+					mesh.isPickable = false;
+				}	
+			}
+		}
+	}
+
+
+	public disableCar(startNumber: number, endNumber: number) {
+		for (let i = startNumber; i <= endNumber; i++) {
+			if(i in [1, 7, 13, 21]){
+				for(let j = 0; j <= 5; j++){
+					let mesh = this._scene.getMeshByName("car" + i + "_primitive" + j);
+					if(mesh){
+						mesh.checkCollisions = false;
+						mesh.isPickable = false;
+					}	
+				}
+			}
+			else if(i in [3, 4, 8, 9, 12, 15, 17, 18, 20, 24, 27]){
+				for(let j = 0; j <= 7; j++){
+					let mesh = this._scene.getMeshByName("car" + i + "_primitive" + j);
+					if(mesh){
+						mesh.checkCollisions = false;
+						mesh.isPickable = false;
+					}	
+				}
+			}
+			else if(i in [2, 5, 6, 10, 11, 14, 16, 19, 22, 23, 25, 26, 28, 29]){
+				for(let j = 0; j <= 8; j++){
+					let mesh = this._scene.getMeshByName("car" + i + "_primitive" + j);
+					if(mesh){
+						mesh.checkCollisions = false;
+						mesh.isPickable = false;
+					}	
+				}
+			}
+			else if(i>=34 && i<=63){
+				for(let j = 0; j <= 10; j++){
+					let mesh = this._scene.getMeshByName("car" + i + "_primitive" + j);
+					if(mesh){
+						mesh.checkCollisions = false;
+						mesh.isPickable = false;
+					}	
+				}
+			}
+			else{
+				let mesh = this._scene.getMeshByName("car" + i);
+				if(mesh){
+					mesh.checkCollisions = false;
+					mesh.isPickable = false;
+				}	
+			}
+		}
+	}
+
+	public invisibleBox(startNumber: number, endNumber: number) {
+		for (let i = startNumber; i <= endNumber; i++) {
+			let mesh = this._scene.getMeshByName("coverB" + i);
+			if (mesh) {
+				mesh.isVisible = false;
+			}
+		}
+	}
+
+	public invisibleBoxCar(startNumber: number, endNumber: number) {
+		for (let i = startNumber; i <= endNumber; i++) {
+			let mesh = this._scene.getMeshByName("coverC" + i);
+			if (mesh) {
+				mesh.isVisible = false;
+			}
+		}
+	}
+
 }
