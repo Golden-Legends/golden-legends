@@ -1,4 +1,4 @@
-import { ActionManager, Animation, AnimationGroup, ExecuteCodeAction, FreeCamera, HemisphericLight, Vector3 } from "@babylonjs/core";
+import { ActionManager, Animation, ExecuteCodeAction, FreeCamera, HemisphericLight, Vector3 } from "@babylonjs/core";
 import { GameState } from "../../GameState";import { runningGameEnv } from "../../environments/runningGameEnv";
 import { PlayerInputRunningGame } from "../../inputsMangement/PlayerInputRunningGame";
 import { Game } from "../../Game";
