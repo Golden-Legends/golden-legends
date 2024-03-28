@@ -1,4 +1,4 @@
-import { ActionManager, Animation, ExecuteCodeAction, FreeCamera, HemisphericLight, Vector3 } from "@babylonjs/core";
+import { ActionManager, Animation, AnimationGroup, ExecuteCodeAction, FreeCamera, HemisphericLight, Vector3 } from "@babylonjs/core";
 import { GameState } from "../../GameState";import { runningGameEnv } from "../../environments/runningGameEnv";
 import { PlayerInputRunningGame } from "../../inputsMangement/PlayerInputRunningGame";
 import { Game } from "../../Game";
@@ -72,6 +72,7 @@ export class RunningGameState extends GameState {
             this._camera = new FreeCamera("camera100m", new Vector3(-12, 10, 20), this.scene);
             this._camera.setTarget(this.player.transform.position);
 
+            this.AnimPublic();
             this.CreateCameraMouv();
 
         
@@ -165,7 +166,7 @@ export class RunningGameState extends GameState {
     //     this._camera.setTarget(this.player.transform.position);
     // }
 
-    async CreateCameraMouv() {
+    async CreateCameraMouv(): Promise<void> {
         const fps = 60;
         const camAnim = new Animation("camAnim", 
                                     "position", 
@@ -184,22 +185,25 @@ export class RunningGameState extends GameState {
         camAnim.setKeys(camKeys);
         this._camera.animations.push(camAnim);
 
-        this.scene.beginAnimation(this._camera, 0, 14 * fps);
-        
+        await this.scene.beginAnimation(this._camera, 0, 14 * fps).waitAsync();
 
+        this.AfterCamAnim();
+    }
 
-        await new Promise<void>(resolve => {
-            setTimeout(() => {
-                resolve();
-            }, 15 * 1000); // Durée de l'animation en millisecondes
-        });
-
-        console.log("tot");
-        // Définir la nouvelle position de la caméra
+    AfterCamAnim(): void {
+        this._camera.attachControl();
+        // this._camera.attachControl(this.player.transform, true);
         this._camera.position = new Vector3(22.72, 22.07, -31.21);
         this._camera.setTarget(this.player.transform.position);
-        console.log("tota");
+    }
 
+
+    AnimPublic() {
+        let animationGroup = this.scene.getAnimationGroupByName("idle");
+        if (animationGroup) {
+            animationGroup.loopAnimation = true;
+            animationGroup.play(true);
+        }
     }
 
 }
