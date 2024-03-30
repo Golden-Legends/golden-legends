@@ -22,6 +22,7 @@ import {AdvancedDynamicTexture, Control} from "@babylonjs/gui";
 import ky from "ky";
 import {socket} from "../../utils/socket.ts";
 import {BACK_URL} from "../../utils/constants.ts";
+import { JumpGame } from "./miniGames/JumpGame.ts";
 
 
 export class InGameState extends GameState {
@@ -33,6 +34,7 @@ export class InGameState extends GameState {
 		scalingVector3: new Scaling(0.01)
 	};
 	private _input: PlayerInput;
+	private jumpGame!: JumpGame;
 
 	constructor(game, canvas) {
 		super(game, canvas);
@@ -61,6 +63,7 @@ export class InGameState extends GameState {
 		this._initPlayer(this.scene).then(async () => {
 			if (!!this._player) {
 				await this._player.activatePlayerCamera();
+				this.jumpGame = new JumpGame(this.scene, this._player.mesh, this._input);
 			}
 		});
 
@@ -72,6 +75,12 @@ export class InGameState extends GameState {
 		// lancer la boucle de rendu
 		this.runUpdateAndRender();
 		this.handlePointerLockChange();
+
+		// lancer le mini jeu
+		if (this.jumpGame){
+			this.jumpGame.init();
+		}
+
 
 		socket.on("joinMainLobby", (playerName: string) => {
 			console.log("NEW PLAYER JOINED THE GAME: ", playerName);
@@ -85,6 +94,7 @@ export class InGameState extends GameState {
 	}
 
 	update() {
+		
 	}
 
 	private async _loadCharacterAssets(scene: Scene){
@@ -158,7 +168,7 @@ export class InGameState extends GameState {
 
 		//Create the player
 		this._player = new Player(this.assets, scene, shadowGenerator, this._input);
-		this._player.mesh.position = new Vector3(-50,30,90);
+		this._player.mesh.position = new Vector3(-65, 3, -130);
 	}
 
 	async setEnvironment(): Promise<void> {
