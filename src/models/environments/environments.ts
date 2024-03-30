@@ -6,6 +6,7 @@ import {
 	ExecuteCodeAction,
 	ActionManager,
 	Mesh,
+	AssetsManager,
 } from "@babylonjs/core";
 import { SkyMaterial } from "@babylonjs/materials";
 import { gateInformation } from "../intefaces/EnvironmentsInterfaces";
@@ -45,12 +46,13 @@ export class Environment {
 			// m.receiveShadows = true;
 			m.checkCollisions = true;
 		});
-		this.createSkybox(this._scene);
+		// this.createSkybox(this._scene);
 
 		this.disableBuild(1,173);
 		this.invisibleBox(1,170);
 		this.disableCar(1,63);
 		this.invisibleBoxCar(1,37);
+		this.loadSky();
 	}
 
 	//Load all necessary meshes for the environment
@@ -71,15 +73,27 @@ export class Environment {
 		};
 	}
 
-	public createSkybox(scene: Scene): void {
-		const skyMaterial = new SkyMaterial("skyMaterial", scene);
-		skyMaterial.backFaceCulling = false;
-		skyMaterial.turbidity = 10;
-		skyMaterial.luminance = 1;
-		skyMaterial.inclination = 0;
-		const skyBox = MeshBuilder.CreateBox("skyBox", { size: 2500.0 }, scene);
-		skyBox.material = skyMaterial;
+	public loadSky(){
+		var loader = new AssetsManager(this._scene);
+		var gltfLoader = loader.addMeshTask("gltf task", "", "", "./models/maps/skyV2.glb");
+		gltfLoader.onSuccess = function (task) {
+			task.loadedMeshes.forEach(function(mesh) {
+				mesh.position = new Vector3(-200, 10, -60);
+				mesh.scaling = new Vector3(0.6, 0.6, 0.6);
+			});
+		};
+		loader.load();
 	}
+
+	// public createSkybox(scene: Scene): void {
+	// 	const skyMaterial = new SkyMaterial("skyMaterial", scene);
+	// 	skyMaterial.backFaceCulling = false;
+	// 	skyMaterial.turbidity = 10;
+	// 	skyMaterial.luminance = 1;
+	// 	skyMaterial.inclination = 0;
+	// 	const skyBox = MeshBuilder.CreateBox("skyBox", { size: 2500.0 }, scene);
+	// 	skyBox.material = skyMaterial;
+	// }
 
 	private createRunningGates (scene: Scene) {
 		const guiFromInGameState = this.inGameState.getBackground();
