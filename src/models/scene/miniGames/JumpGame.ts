@@ -14,6 +14,10 @@ export class JumpGame {
     private playerInput: PlayerInput;
     private platformsJumped: number = 0;
     private platformsAlreadyJump: string[] = [];
+    private readonly TOTAL_PLATFORMS: number = 20;
+    private defeatMessage?: TextBlock;
+    private victoryMessage?: TextBlock;
+    private gameRunning: boolean = false;
     
 
 
@@ -41,12 +45,15 @@ export class JumpGame {
         this.scene.registerBeforeRender(() => {
             if (this.isPlayerInsideTrigger && this.playerInput.inputMap["Space"]) {
                 this.visiblePlatform(1, 20);
+                if (!this.gameRunning) {
+                    this.miniGame(); // Lancer le mini-jeu uniquement si le jeu n'est pas déjà en cours
+                }
             }
         });
 
 
         //Mini jeu
-        this.miniGame();
+        
 
 
         //compteur pour arriver au nombre de plateformes
@@ -59,19 +66,104 @@ export class JumpGame {
     }
 
 
+    private resetGame() {
+        // Réinitialiser les compteurs et les états du jeu
+        this.platformsJumped = 0;
+        this.platformsAlreadyJump = [];
+        // Réinitialiser les messages affichés à l'écran
+        if (this.defeatMessage) {
+            this.guiTextureButton.removeControl(this.defeatMessage);
+            this.defeatMessage.dispose(); // Libérer les ressources
+            this.defeatMessage = undefined;
+        }
+        if (this.victoryMessage) {
+            this.guiTextureButton.removeControl(this.victoryMessage);
+            this.victoryMessage.dispose(); // Libérer les ressources
+            this.victoryMessage = undefined;
+        }
+        // Le jeu n'est plus en cours
+        this.gameRunning = false;
+    }
 
-    miniGame(){
+
+    miniGame() {
+        // Réinitialiser les compteurs et les états du jeu si le jeu est relancé
+        this.resetGame();
+        this.gameRunning = true;
+    
         this.player.onCollide = (collidedMesh?: AbstractMesh) => {
-            // console.log("Collision détectée: ", collidedMesh?.name);
             if (collidedMesh && collidedMesh.name.startsWith("platform") && !this.platformsAlreadyJump.includes(collidedMesh.name)) {
                 // Plateforme visible et collision détectée
+                this.platformsAlreadyJump.push(collidedMesh.name);
                 this.platformsJumped++; // Incrémenter le compteur de plateformes sautées
                 console.log("Plateforme sautée: ", this.platformsJumped);
+    
+                // Vérifier si toutes les plateformes ont été sautées
+                if (this.platformsJumped === this.TOTAL_PLATFORMS) {
+                    // Afficher un message de victoire et réinitialiser le jeu
+                    this.showVictoryMessage();
+                    this.resetGame();
+                    this.stopMiniGame();
+                }
             }
-            if (collidedMesh && collidedMesh.name.startsWith("Cube.063")){
+    
+            if (collidedMesh && collidedMesh.name === "Cube.063") {
+                // Afficher un message de défaite et réinitialiser le jeu
+                this.showDefeatMessage();
                 console.log("endgame");
+                this.resetGame();
+                this.invisiblePlatform(1,20);
+                this.gameRunning = false;
+                this.stopMiniGame();
             }
         };
+    
+        // Le jeu est en cours
+        this.gameRunning = true;
+    }
+
+
+    showVictoryMessage() {
+        // Créer un message de victoire à afficher à l'écran
+        const victoryMessage = new TextBlock();
+        victoryMessage.text = "Gagné !";
+        victoryMessage.fontSize = 36;
+        victoryMessage.color = "#00FF00";
+        victoryMessage.fontFamily = "Arial";
+        victoryMessage.textHorizontalAlignment = TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
+        victoryMessage.textVerticalAlignment = TextBlock.VERTICAL_ALIGNMENT_CENTER;
+    
+        // Ajouter le message à l'écran
+        this.guiTextureButton.addControl(victoryMessage);
+    
+        // Supprimer le message après 5 secondes
+        setTimeout(() => {
+            this.guiTextureButton.removeControl(victoryMessage);
+        }, 5000);
+    }
+
+
+    showDefeatMessage() {
+        // Créer un message de défaite à afficher à l'écran
+        const defeatMessage = new TextBlock();
+        defeatMessage.text = "Perdu !";
+        defeatMessage.fontSize = 36;
+        defeatMessage.color = "#FF0000";
+        defeatMessage.fontFamily = "Arial";
+        defeatMessage.textHorizontalAlignment = TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
+        defeatMessage.textVerticalAlignment = TextBlock.VERTICAL_ALIGNMENT_CENTER;
+    
+        // Ajouter le message à l'écran
+        this.guiTextureButton.addControl(defeatMessage);
+
+        setTimeout(() => {
+            this.guiTextureButton.removeControl(defeatMessage);
+        }, 5000);
+    }
+
+    stopMiniGame() {
+        // Mettre fin au mini-jeu en désactivant la détection de collision du joueur
+        this.player.onCollide = () => {};
     }
 
 
