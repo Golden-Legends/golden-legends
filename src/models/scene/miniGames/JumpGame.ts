@@ -1,4 +1,4 @@
-import { AbstractMesh, ActionManager, ExecuteCodeAction, Mesh, MeshBuilder, Scene, Vector3 } from "@babylonjs/core";
+import { AbstractMesh, ActionManager, Color4, ExecuteCodeAction, Mesh, MeshBuilder, ParticleSystem, Scene, Texture, Vector3 } from "@babylonjs/core";
 import { AdvancedDynamicTexture, TextBlock } from "@babylonjs/gui";
 import { PlayerInput } from "../../inputsMangement/PlayerInput";
 
@@ -40,29 +40,17 @@ export class JumpGame {
         this.registerBoxPickUpActions();
 
 
-
         //apparition des plateformes
         this.scene.registerBeforeRender(() => {
             if (this.isPlayerInsideTrigger && this.playerInput.inputMap["Space"]) {
                 this.visiblePlatform(1, 20);
                 if (!this.gameRunning) {
+                    //compteur pour arriver au nombre de plateformes
+                    //si touche l'eau, le jeu se termine et s'il arrive au bon nombre, apparition du message de fin de jeu
                     this.miniGame(); // Lancer le mini-jeu uniquement si le jeu n'est pas déjà en cours
                 }
             }
         });
-
-
-        //Mini jeu
-        
-
-
-        //compteur pour arriver au nombre de plateformes
-        //si touche l'eau, le jeu se termine et s'il arrive au bon nombre, apparition du message de fin de jeu
-
-
-
-
-
     }
 
 
@@ -103,7 +91,10 @@ export class JumpGame {
                     // Afficher un message de victoire et réinitialiser le jeu
                     this.showVictoryMessage();
                     this.resetGame();
+                    this.invisiblePlatform(1,20);
+                    this.gameRunning = false;
                     this.stopMiniGame();
+                    this.playFireworksAnimation(this.scene, this.player.position);
                 }
             }
     
@@ -122,6 +113,35 @@ export class JumpGame {
         this.gameRunning = true;
     }
 
+
+    playFireworksAnimation(scene: Scene, position: Vector3) {
+        // Créer un système de particules pour le feu d'artifice
+        const fireworks = new ParticleSystem("fireworks", 2000, scene);
+        fireworks.particleTexture = new Texture("textures/flare.png", scene);
+        fireworks.emitter = position;
+        fireworks.minEmitBox = new Vector3(-0.5, 0, -0.5);
+        fireworks.maxEmitBox = new Vector3(0.5, 0, 0.5);
+        fireworks.color1 = new Color4(1, 1, 0, 1);
+        fireworks.color2 = new Color4(1, 0, 0, 1);
+        fireworks.colorDead = new Color4(0, 0, 0, 0);
+        fireworks.minSize = 0.1;
+        fireworks.maxSize = 0.5;
+        fireworks.minLifeTime = 0.5;
+        fireworks.maxLifeTime = 1;
+        fireworks.emitRate = 1000;
+        fireworks.blendMode = ParticleSystem.BLENDMODE_ONEONE;
+        fireworks.gravity = new Vector3(0, -9.81, 0);
+        fireworks.direction1 = new Vector3(-1, 8, 1);
+        fireworks.direction2 = new Vector3(1, 8, -1);
+        fireworks.minAngularSpeed = 0;
+        fireworks.maxAngularSpeed = Math.PI;
+        fireworks.minEmitPower = 1;
+        fireworks.maxEmitPower = 3;
+        fireworks.updateSpeed = 0.005;
+        
+        // Démarrer l'animation
+        fireworks.start();
+    }
 
     showVictoryMessage() {
         // Créer un message de victoire à afficher à l'écran
