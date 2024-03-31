@@ -21,7 +21,7 @@ export class JumpGame {
     private animations: Animation[] = [];
 
 
-    constructor(scene: Scene, player: Mesh, input: PlayerInput,) {
+    constructor(scene: Scene, player: Mesh, input: PlayerInput) {
         this.scene = scene;
         this.player = player;
         this.progress = 0;

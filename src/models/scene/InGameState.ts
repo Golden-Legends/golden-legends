@@ -23,6 +23,7 @@ import ky from "ky";
 import {socket} from "../../utils/socket.ts";
 import {BACK_URL} from "../../utils/constants.ts";
 import { JumpGame } from "./miniGames/JumpGame.ts";
+import { ObjectGame } from "./miniGames/ObjectGame.ts";
 
 
 export class InGameState extends GameState {
@@ -35,6 +36,7 @@ export class InGameState extends GameState {
 	};
 	private _input: PlayerInput;
 	private jumpGame!: JumpGame;
+	private objectGame!: ObjectGame;
 
 	constructor(game, canvas) {
 		super(game, canvas);
@@ -64,6 +66,7 @@ export class InGameState extends GameState {
 			if (!!this._player) {
 				await this._player.activatePlayerCamera();
 				this.jumpGame = new JumpGame(this.scene, this._player.mesh, this._input);
+				this.objectGame = new ObjectGame(this.scene, this._player.mesh, this._input);
 			}
 		});
 
@@ -79,6 +82,10 @@ export class InGameState extends GameState {
 		// lancer le mini jeu
 		if (this.jumpGame){
 			this.jumpGame.init();
+		}
+
+		if (this.objectGame){
+			this.objectGame.init();
 		}
 
 
@@ -168,7 +175,7 @@ export class InGameState extends GameState {
 
 		//Create the player
 		this._player = new Player(this.assets, scene, shadowGenerator, this._input);
-		this._player.mesh.position = new Vector3(-65, 3, -130);
+		this._player.mesh.position = new Vector3(-250, 3, -50);
 	}
 
 	async setEnvironment(): Promise<void> {
