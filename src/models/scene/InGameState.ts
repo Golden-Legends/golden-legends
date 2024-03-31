@@ -47,7 +47,7 @@ export class InGameState extends GameState {
 			},
 		});
 
-		this.loadedGui = await AdvancedDynamicTexture.ParseFromFileAsync("public/gui/gui_gate_runningGame.json", true);
+		this.loadedGui = await AdvancedDynamicTexture.ParseFromFileAsync("/gui/gui_gate_runningGame.json", true);
 		this.background = this.loadedGui.getControlByName("CONTAINER");
 		this.initButtons(this.loadedGui);
 		if (this.background) {
