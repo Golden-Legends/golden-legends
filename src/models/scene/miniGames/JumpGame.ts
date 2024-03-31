@@ -1,4 +1,4 @@
-import { AbstractMesh, ActionManager, Color4, ExecuteCodeAction, Mesh, MeshBuilder, ParticleSystem, Scene, Texture, Vector3 } from "@babylonjs/core";
+import { AbstractMesh, ActionManager, Animation, Color4, ExecuteCodeAction, Mesh, MeshBuilder, ParticleSystem, Scene, Texture, Vector3 } from "@babylonjs/core";
 import { AdvancedDynamicTexture, TextBlock } from "@babylonjs/gui";
 import { PlayerInput } from "../../inputsMangement/PlayerInput";
 
@@ -18,7 +18,7 @@ export class JumpGame {
     private defeatMessage?: TextBlock;
     private victoryMessage?: TextBlock;
     private gameRunning: boolean = false;
-    
+    private animations: Animation[] = [];
 
 
     constructor(scene: Scene, player: Mesh, input: PlayerInput,) {
@@ -41,18 +41,92 @@ export class JumpGame {
 
 
         //apparition des plateformes
+        // this.scene.registerBeforeRender(() => {
+        //     if (this.isPlayerInsideTrigger && this.playerInput.inputMap["Space"]) {
+        //         this.visiblePlatform(1, 20);
+        //         if (!this.gameRunning) {
+        //             //compteur pour arriver au nombre de plateformes
+        //             //si touche l'eau, le jeu se termine et s'il arrive au bon nombre, apparition du message de fin de jeu
+        //             this.miniGame(); // Lancer le mini-jeu uniquement si le jeu n'est pas déjà en cours
+        //         }
+        //     }
+        // });
+
         this.scene.registerBeforeRender(() => {
-            if (this.isPlayerInsideTrigger && this.playerInput.inputMap["Space"]) {
-                this.visiblePlatform(1, 20);
-                if (!this.gameRunning) {
-                    //compteur pour arriver au nombre de plateformes
-                    //si touche l'eau, le jeu se termine et s'il arrive au bon nombre, apparition du message de fin de jeu
-                    this.miniGame(); // Lancer le mini-jeu uniquement si le jeu n'est pas déjà en cours
-                }
+            if (this.isPlayerInsideTrigger && this.playerInput.inputMap["Space"] && !this.gameRunning) {
+                this.miniGame();
             }
         });
     }
 
+
+    private miniGame() {
+        // Initialiser le jeu et démarrer le comptage des plateformes sautées
+        this.resetGame();
+        this.gameRunning = true;
+
+        // Afficher les premières plateformes
+        const startNumber = 1;
+        let endNumber = 2; // Afficher deux plateformes initialement ou moins si elles n'existent pas
+        this.visiblePlatform(startNumber, startNumber);
+        // this.visiblePlatform(endNumber, endNumber);
+
+        // Continuer à afficher les plateformes progressivement
+        this.player.onCollide = (collidedMesh?: AbstractMesh) => {
+            if (collidedMesh && collidedMesh.name.startsWith("platform") && !this.platformsAlreadyJump.includes(collidedMesh.name)) {
+                // Plateforme visible et collision détectée
+                this.platformsAlreadyJump.push(collidedMesh.name);
+                this.platformsJumped++; // Incrémenter le compteur de plateformes sautées
+                console.log("Plateforme sautée: ", this.platformsJumped);
+
+                // Vérifier si toutes les plateformes ont été sautées
+                if (this.platformsJumped === this.TOTAL_PLATFORMS) {
+                    // Afficher un message de victoire et réinitialiser le jeu
+                    this.showVictoryMessage();
+                    this.resetGame();
+                    this.invisiblePlatform(1, 20);
+                    this.gameRunning = false;
+                    this.stopMiniGame();
+                    this.playFireworksAnimation(this.scene, this.player.position);
+                    return;
+                }
+
+                // Afficher la prochaine plateforme après un délai
+                setTimeout(() => {
+                    endNumber = Math.min(this.platformsJumped + 1, this.TOTAL_PLATFORMS); // Afficher une seule plateforme de plus
+                    this.visiblePlatform(endNumber, endNumber);
+                }, 100); // Délai de 1 seconde avant d'afficher la prochaine plateforme
+            }
+
+            if (collidedMesh && collidedMesh.name === "Cube.063") {
+                // Afficher un message de défaite et réinitialiser le jeu
+                this.showDefeatMessage();
+                console.log("endgame");
+                this.resetGame();
+                this.invisiblePlatform(1, 20);
+                this.gameRunning = false;
+                this.stopMiniGame();
+            }
+        };
+    }
+    
+
+    private createAnimation(mesh: AbstractMesh) {
+        const fps = 30;
+        const animaPlatform = new Animation("platformAnimation", "position.y", fps, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
+
+        // const animation = new Animation("platformAnimation", "position.y", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CONSTANT);
+        const animKeys: { frame: number, value: number }[] = [];
+        animKeys.push({ frame: 0, value: mesh.position.y });
+        animKeys.push({ frame: 30, value: mesh.position.y+0.25 }); // Déplacez la plateforme vers le bas à la frame 30
+        animaPlatform.setKeys(animKeys);
+        this.animations.push(animaPlatform);
+
+        // Appliquer l'animation à la plateforme
+        mesh.animations.push(animaPlatform);
+        this.scene.beginAnimation(mesh, 0, 30, false);
+    }
+    
 
     private resetGame() {
         // Réinitialiser les compteurs et les états du jeu
@@ -71,46 +145,7 @@ export class JumpGame {
         }
         // Le jeu n'est plus en cours
         this.gameRunning = false;
-    }
-
-
-    miniGame() {
-        // Réinitialiser les compteurs et les états du jeu si le jeu est relancé
-        this.resetGame();
-        this.gameRunning = true;
-    
-        this.player.onCollide = (collidedMesh?: AbstractMesh) => {
-            if (collidedMesh && collidedMesh.name.startsWith("platform") && !this.platformsAlreadyJump.includes(collidedMesh.name)) {
-                // Plateforme visible et collision détectée
-                this.platformsAlreadyJump.push(collidedMesh.name);
-                this.platformsJumped++; // Incrémenter le compteur de plateformes sautées
-                console.log("Plateforme sautée: ", this.platformsJumped);
-    
-                // Vérifier si toutes les plateformes ont été sautées
-                if (this.platformsJumped === this.TOTAL_PLATFORMS) {
-                    // Afficher un message de victoire et réinitialiser le jeu
-                    this.showVictoryMessage();
-                    this.resetGame();
-                    this.invisiblePlatform(1,20);
-                    this.gameRunning = false;
-                    this.stopMiniGame();
-                    this.playFireworksAnimation(this.scene, this.player.position);
-                }
-            }
-    
-            if (collidedMesh && collidedMesh.name === "Cube.063") {
-                // Afficher un message de défaite et réinitialiser le jeu
-                this.showDefeatMessage();
-                console.log("endgame");
-                this.resetGame();
-                this.invisiblePlatform(1,20);
-                this.gameRunning = false;
-                this.stopMiniGame();
-            }
-        };
-    
-        // Le jeu est en cours
-        this.gameRunning = true;
+        this.invisiblePlatform(1, 20);
     }
 
 
@@ -271,6 +306,8 @@ export class JumpGame {
             let mesh = this.scene.getMeshByName("platform" + i);
             if (mesh) {
                 mesh.isVisible = true;
+                mesh.position.y -= 0.25;
+                this.createAnimation(mesh);
             }
         }
     }
