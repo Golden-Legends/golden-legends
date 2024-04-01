@@ -29,8 +29,14 @@ export class ObjectGame {
   
     public init(){
         //création d'une box près de chaque objet olympique
-        this.initCube(-256, 2.5, -56.5, 0, "Haie");
+        this.initCube(-256, 2.5, -56.5, 0, "Haie olympique");
         this.initCube(-259, 3, 43, 1, "Gant de boxe");
+        this.initCube(-261, 2.5, -135, 2, "Raquette de tennis");
+        this.initCube(-201, 2.5, -96, 3, "Ballon de basket");
+        this.initCube(-96, 2.5, -168.5, 4, "Skateboard");
+        this.initCube(-35.5, 2.5, -18, 5, "Arc olympique");
+        this.initCube(-46.5, 2.5, 58, 6, "Chaussures de course");
+        this.initCube(-163, 2.5, 4.5, 7, "Vélo olympique");
        
         this.totalObjects = this.cube.length;
 
@@ -77,13 +83,13 @@ export class ObjectGame {
         if (this.objectsCollectedSet.size === this.totalObjects) {
             // Si tous les objets ont été collectés, affichez un message de victoire
             this.guiTextureButton.dispose();
-            this.displayMessageSuccess("Tous les objets ont été ramassés !");
-            console.log("Tous les objets ont été ramassés !");
+            this.displayMessageSuccess("Tous les objets olympiques ont été ramassés !");
+            // console.log("Tous les objets olympiques ont été ramassés !");
         } else {
             // Sinon, affichez un message indiquant que l'objet a été récupéré avec succès
             this.guiTextureButton.dispose();
-            this.displayMessageSuccess("Objet récupéré avec succès !");
-            console.log("Objet récupéré avec succès !");
+            this.displayMessageSuccess(this.name[objectIndex] + " récupéré avec succès !");
+            // console.log(this.name[objectIndex] + " récupéré avec succès !");
         }
     }
 
@@ -168,7 +174,7 @@ export class ObjectGame {
     }
 
     initCube(x: number, y: number, z: number, pos: number, name: string): void {
-        this.cube[pos] = MeshBuilder.CreateBox("cube", { size: 2 }, this.scene);
+        this.cube[pos] = MeshBuilder.CreateBox("cube", { size: 1 }, this.scene);
         this.cube[pos].position = new Vector3(
             x, y, z
         ); // Changez la position du cube selon vos besoins
