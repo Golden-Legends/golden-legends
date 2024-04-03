@@ -139,6 +139,8 @@ export class Pnj {
                     fileName = "pnjMan.glb";
                     break;
                 case 3:
+                    fileName = "pnjWoman.glb";
+                    break;
                 case 4:
                     fileName = "pnjWoman.glb";
                     break;
@@ -153,9 +155,6 @@ export class Pnj {
             await this._loadCharacterAssets(this._scene, position, fileName, "pnj" + i, rotation);
         }
        
-       
-        //animation des pnj "sans discussions" avec un certain "chemin" à suivre
-        //certains assis, d'autres debout, d'autres marchant,...
 
         // this.createAnimation(this.assets.mesh);
         // for (let i = 0; i < 10; i++) {
@@ -164,10 +163,6 @@ export class Pnj {
 
 	}
 
-
-    // public loadPnj(position: Vector3, path: string){
-    //     console.log("load pnj");
-    // }
 
     public async moveCharacter() {
         const characterMesh = this._scene.getMeshByName("pnj1") as Mesh; // Supposons que le personnage principal est nommé "outer"
