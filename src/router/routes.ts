@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import LandingPage from "../pages/LandingPage.vue";
 import BabylonPage from "../pages/BabylonPage.vue";
 import LoginPage from "../pages/LoginPage.vue";
+import SandboxPage from "../pages/SandboxPage.vue";
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: LoginPage,
+  },
+  {
+    path: "/sandbox",
+    name: "Sandbox",
+    component: SandboxPage,
   },
   {
     path: "/:catchAll(.*)",
