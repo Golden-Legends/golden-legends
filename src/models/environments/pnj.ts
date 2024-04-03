@@ -1,6 +1,5 @@
 import {
-    AbstractMesh,
-	Animation,
+    Animation,
 	AnimationGroup,
 	Matrix,
 	Mesh,
@@ -8,30 +7,111 @@ import {
 	Quaternion,
 	Scene, SceneLoader, Vector3,
 } from "@babylonjs/core";
-import { Character } from "../intefaces/Character";
 import { Scaling } from "../../utils/Scaling";
 
 export class Pnj {
 	private _scene: Scene;
     public assets;
-    private pnj: Character = {
-		fileName: "pnjStrong.glb",
-		scalingVector3: new Scaling(2)
-	};
-    private animations: Animation[] = [];
+    // private animations: Animation[] = [];
     private pnjPositions: Vector3[] = [
         new Vector3(-163, 2.75, -10),
-        new Vector3(-259, 2.75, 62),
-        new Vector3(-262, 2.75, 58),
-        new Vector3(-256, 2.75, 58),
+        //1er groupe
+        new Vector3(-259, 2.75, 60),
+        new Vector3(-261, 2.75, 58),
+        new Vector3(-257, 2.75, 58),
+        //2eme groupe
+        new Vector3(-180, 2.75, -10),
+        new Vector3(-182, 2.75, -12),
+        new Vector3(-178, 2.75, -12),
+        //3eme groupe
+        new Vector3(-195, 2.75, -30),
+        new Vector3(-197, 2.75, -32),
+        new Vector3(-193, 2.75, -32),
+        new Vector3(-195, 2.75, -34),
+        //4eme groupe
+        new Vector3(-245, 2.75, -45),
+        new Vector3(-245, 2.75, -48),
+        //5eme groupe
+        new Vector3(-258, 2.75, -162),
+        new Vector3(-260, 2.75, -164),
+        new Vector3(-256, 2.75, -164),
+        //6eme groupe
+        new Vector3(-180, 2.75, -135),
+        new Vector3(-182, 2.75, -137),
+        new Vector3(-178, 2.75, -137),
+        new Vector3(-180, 2.75, -139),
+        //7eme groupe
+        new Vector3(-96, 2.75, -172),
+        new Vector3(-89, 2.75, -172),
+        new Vector3(-89, 2.75, -166),
+        //8eme groupe
+        new Vector3(-60, 2.75, -115),
+        new Vector3(-62, 2.75, -117),
+        new Vector3(-58, 2.75, -117),
+        //9eme groupe
+        new Vector3(-60, 2.75, -30),
+        new Vector3(-62, 2.75, -32),
+        new Vector3(-58, 2.75, -32),   
+        //10eme groupe
+        new Vector3(-34, 2.75, -10),
+        new Vector3(-43.5, 2.75, 18),
+        new Vector3(-52, 2.75, 58),
+        //11eme groupe
+        new Vector3(-150, 2.75, 28),
+        new Vector3(-152, 2.75, 30),
+        new Vector3(-148, 2.75, 30),
+        new Vector3(-150, 2.75, 32),
         // Ajoutez d'autres positions pour les autres PNJ ici
     ];
 
-    private pnjRotation: Vector3[] = [   // en degrés
+    private pnjRotation: Vector3[] = [
         new Vector3(0, 0, 0),
+        //1er groupe
         new Vector3(0, 0, 0),
         new Vector3(0, -90, 0),
-        new Vector3(0, 90, 0)
+        new Vector3(0, 90, 0),
+        //2eme groupe
+        new Vector3(0, 0, 0),
+        new Vector3(0, -90, 0),
+        new Vector3(0, 90, 0),
+        //3eme groupe
+        new Vector3(0, 0, 0),
+        new Vector3(0, 80, 0),
+        new Vector3(0, -80, 0),
+        new Vector3(0, 160, 0),
+        //4eme groupe
+        new Vector3(0, 0, 0),
+        new Vector3(0, 160, 0),
+        //5eme groupe
+        new Vector3(0, 0, 0),
+        new Vector3(0, -90, 0),
+        new Vector3(0, 90, 0),
+        //6eme groupe
+        new Vector3(0, 0, 0),
+        new Vector3(0, 80, 0),
+        new Vector3(0, -80, 0),
+        new Vector3(0, 160, 0),
+        //7eme groupe
+        new Vector3(0, 160, 0),
+        new Vector3(0, 160, 0),
+        new Vector3(0, 0, 0),
+        //8eme groupe
+        new Vector3(0, 0, 0),
+        new Vector3(0, -90, 0),
+        new Vector3(0, 90, 0),
+        //9eme groupe
+        new Vector3(0, 0, 0),
+        new Vector3(0, -90, 0),
+        new Vector3(0, 90, 0),
+        //10eme groupe
+        new Vector3(0, -80, 0),
+        new Vector3(0, -80, 0),
+        new Vector3(0, 0, 0),
+        //11eme groupe
+        new Vector3(0, 160, 0),
+        new Vector3(0, 80, 0),
+        new Vector3(0, -80, 0),
+        new Vector3(0, 0, 0),
         // Ajoutez d'autres rotations pour les autres PNJ ici
     ];
 
@@ -56,6 +136,8 @@ export class Pnj {
                     fileName = "pnjStrong.glb";
                     break;
                 case 2:
+                    fileName = "pnjMan.glb";
+                    break;
                 case 3:
                 case 4:
                     fileName = "pnjWoman.glb";
