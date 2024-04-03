@@ -12,6 +12,7 @@ import { SkyMaterial } from "@babylonjs/materials";
 import { gateInformation } from "../intefaces/EnvironmentsInterfaces";
 import { Player } from "../controller/Player";
 import { InGameState } from "../scene/InGameState";
+import { Pnj } from "./pnj";
 
 export class Environment {
 	private _scene: Scene;
@@ -19,6 +20,7 @@ export class Environment {
 	private messageDisplayed: boolean = false;
 	public currentGate: Mesh | null = null;
 	private inGameState: InGameState;
+	public pnj!: Pnj;
 
 	private gateInformations: gateInformation[] = [
 		{
@@ -53,6 +55,8 @@ export class Environment {
 		this.disableCar(1,63);
 		this.invisibleBoxCar(1,37);
 		this.loadSky();
+		this.pnj = new Pnj(this._scene);
+		this.pnj.init();
 	}
 
 	//Load all necessary meshes for the environment
