@@ -142,10 +142,10 @@ export class Pnj {
                     fileName = "pnjWoman.glb";
                     break;
                 case 4:
-                    fileName = "pnjWoman.glb";
+                    fileName = "pnjKid.glb";
                     break;
                 case 5:
-                    fileName = "pnjStrong.glb";
+                    fileName = "pnjGirl.glb";
                     break;
                 default:
                     console.log("Invalid random number.");

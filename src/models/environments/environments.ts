@@ -14,6 +14,7 @@ import { Player } from "../controller/Player";
 import { InGameState } from "../scene/InGameState";
 import { Pnj } from "./pnj";
 import { PnjTalk } from "./pnjTalk";
+import { PnjMobile } from "./pnjMobile";
 
 export class Environment {
 	private _scene: Scene;
@@ -23,6 +24,7 @@ export class Environment {
 	private inGameState: InGameState;
 	public pnj!: Pnj;
 	public pnjTalk!: PnjTalk;
+	public pnjMobile!: PnjMobile;
 
 	private gateInformations: gateInformation[] = [
 		{
@@ -61,6 +63,8 @@ export class Environment {
 		this.pnj.init();
 		this.pnjTalk = new PnjTalk(this._scene, this.player?.mesh as Mesh);
 		this.pnjTalk.init();
+		this.pnjMobile = new PnjMobile(this._scene);
+		this.pnjMobile.init();
 	}
 
 	//Load all necessary meshes for the environment

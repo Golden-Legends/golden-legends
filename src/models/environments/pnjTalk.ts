@@ -1,12 +1,9 @@
 import {
 	ActionManager,
-    Animation,
-	AnimationGroup,
 	ExecuteCodeAction,
 	Matrix,
 	Mesh,
 	MeshBuilder,
-	Quaternion,
 	Scene, SceneLoader, Vector3,
 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
@@ -42,9 +39,7 @@ export class PnjTalk {
         new Vector3(0, 80, 0),
     ];
 	private cube: Mesh[] = [];
-	private name: string[] = [];
 	private guiTextureButton!: AdvancedDynamicTexture;
-	private isPlayerInsideTrigger: boolean = false;
 	private player: Mesh;
 
 
@@ -168,7 +163,6 @@ export class PnjTalk {
                     () => {
                         // Affichez le message lorsque le joueur entre dans la zone de la boîte
                         this.guiTextureButton.addControl(messageBlock);
-                        this.isPlayerInsideTrigger = true;
                     }
                 )
             );
@@ -181,7 +175,6 @@ export class PnjTalk {
                     },
                     () => {
                         this.guiTextureButton.removeControl(messageBlock);
-                        this.isPlayerInsideTrigger = false;
                     }
                 )
             );
