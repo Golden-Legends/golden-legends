@@ -1,37 +1,22 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-
-const timer = ref(0);
-
-const timerToSMS = (time: number): string => {
-  const seconds = Math.floor(time / 100);
-  const milliseconds = time % 100;
-  return `${seconds}.${milliseconds < 10 ? "0" : ""}${milliseconds}`;
-};
-
-const startTimer = () => {
-  setInterval(() => {
-    if (timer.value < 1000) {
-      timer.value += 1;
-    } else {
-      clearTimeout(this);
-    }
-  }, 10);
-};
-
-onMounted(() => {
-  startTimer();
+const props = defineProps({
+  name: String,
+  text: String,
 });
 </script>
 
 <template>
   <div
-    class="flex justify-between border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white w-64 items-center p-2 px-4 rounded-lg"
+    class="border-4 border-black bg-gradient-to-b bg-neutral-800 bg-opacity-80 text-white w-[600px] h-fit px-4 pb-3 rounded-lg mt-2"
   >
-    <img src="@/assets/timer_logo.svg" alt="timer logo" class="mr-16" />
-    <div class="font-bold text-2xl">
-      {{ timerToSMS(timer) }}
+    <div class="relative">
+      <span
+        class="text-2xl absolute font-bold -top-5 left-0 bg-neutral-900 px-6 py-1 rounded-2xl"
+        >{{ props.name }}</span
+      >
     </div>
+    <br />
+    <span class="font-bold text-xl">{{ props.text }}</span>
   </div>
 </template>
 

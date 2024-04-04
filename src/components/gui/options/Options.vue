@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ClassicButton from "@/components/landing/ClassicButton.vue";
+import HomeButton from "@/components/gui/options/HomeButton.vue";
 </script>
 
 <template>
@@ -12,7 +12,11 @@ import ClassicButton from "@/components/landing/ClassicButton.vue";
       <button
         class="flex items-center justify-center h-full w-full p-2 transition-all hover:bg-red-800"
       >
-        <img class="w-full h-full" src="@/assets/close.svg" alt="close" />
+        <img
+          class="w-full h-full"
+          src="../../../assets/close.svg"
+          alt="close"
+        />
       </button>
     </div>
 
@@ -25,7 +29,7 @@ import ClassicButton from "@/components/landing/ClassicButton.vue";
     </div>
 
     <div class="flex flex-col gap-4 my-4">
-      <ClassicButton text="Menu Principal" />
+      <HomeButton />
     </div>
   </div>
 </template>
