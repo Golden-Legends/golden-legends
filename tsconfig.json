@@ -7,7 +7,11 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "allowJs": true,
-
+    "paths": {
+      "@/*": [
+        "./src/*" // set path `@/*` as alias of `src/*`
+      ]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
