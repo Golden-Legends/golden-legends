@@ -1,8 +1,9 @@
-import { ActionManager, ExecuteCodeAction, FreeCamera, HemisphericLight, Vector3 } from "@babylonjs/core";
+import { ActionManager, ExecuteCodeAction, FreeCamera, HemisphericLight, Mesh, Vector3 } from "@babylonjs/core";
 import { GameState } from "../../GameState";import { runningGameEnv } from "../../environments/runningGameEnv";
 import { PlayerInputRunningGame } from "../../inputsMangement/PlayerInputRunningGame";
 import { Game } from "../../Game";
 import { PlayerRunningGame } from "../../controller/PlayerRunningGame";
+import { Bot } from "../../controller/Bot";
 
 
 export class RunningGameState extends GameState {
@@ -12,6 +13,8 @@ export class RunningGameState extends GameState {
     private raceStartTime: number = 0;
 
     private player !: PlayerRunningGame;
+
+    private botArray : Bot[] = [];
 
     constructor(game: Game, canvas: HTMLCanvasElement) {
         super(game, canvas);
@@ -66,6 +69,14 @@ export class RunningGameState extends GameState {
                 );
             }
             
+            const startMesh2 = this.scene.getMeshByName("Cylindre.001");
+            const endMesh2 = this.scene.getMeshByName("Cylindre.003");
+            if (startMesh2 && endMesh2) {
+                console.log("création du bot")
+                const bot = new Bot("bot1", startMesh2.getAbsolutePosition(), endMesh2 as Mesh, this.scene, "./models/characters/character-skater-boy.glb");
+                await bot.init();
+                this.botArray.push(bot);
+            }
             
             this.raceStartTime = performance.now();
         } catch (error) {
@@ -85,7 +96,12 @@ export class RunningGameState extends GameState {
             if (!this.endGame) {
                 this.player.movePlayer();
                 this.player.processInput();
-            }            
+            }
+            this.botArray.forEach(bot => {
+                bot.play();
+            }
+            );
+
         } catch (error) 
         {
             throw new Error("error : Running game class update." + error);
