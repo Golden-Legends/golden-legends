@@ -31,32 +31,93 @@
     "level" : { 
         "easy" : {
             "maxSpeed" : 0.35,
-            "botSpeed" : [ 
-                ["bot1", 0.35],
-                ["bot2", 0.33],
-                ["bot3", 0.30],
-                ["bot4", 0.25],
-                ["bot5", 0.20]
+            "botInfo" : [ 
+                {
+                    "name": "bot1",
+                    "speed": 0.35,
+                    "pathFile": "./models/characters/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot2",
+                    "speed": 0.33,
+                    "pathFile": "./models/characters/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot3",
+                    "speed": 0.30,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot4",
+                    "speed": 0.25,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot5",
+                    "speed": 0.20,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                }
             ]
         },
         "intermediate" : {
             "maxSpeed" : 0.40,
-            "botSpeed" : [ 
-                ["bot1", 0.35],
-                ["bot2", 0.33],
-                ["bot3", 0.40],
-                ["bot4", 0.38],
-                ["bot5", 0.30]
+            "botInfo" : [ 
+                {
+                    "name": "bot1",
+                    "speed": 0.40,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot2",
+                    "speed": 0.38,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot3",
+                    "speed": 0.35,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot4",
+                    "speed": 0.33,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot5",
+                    "speed": 0.30,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                }
+
             ]
         },
         "hard" : {
             "maxSpeed" : 0.45,
-            "botSpeed" : [ 
-                ["bot1", 0.45],
-                ["bot2", 0.43],
-                ["bot3", 0.40],
-                ["bot4", 0.38],
-                ["bot5", 0.38]
+            "botInfo" : [ 
+                {
+                    "name": "bot1",
+                    "speed": 0.45,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot2",
+                    "speed": 0.43,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot3",
+                    "speed": 0.40,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot4",
+                    "speed": 0.38,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                },
+                {
+                    "name": "bot5",
+                    "speed": 0.35,
+                    "pathFile": "./models/characters/character/character-skater-boy.glb"
+                }
             ]
         }
     }

@@ -11,9 +11,15 @@ interface line {
     end : string;
 }
 
+interface botInfo {
+    name : string;
+    speed : number;
+    pathFile : string;
+}
+
 interface level {
     maxSpeed : number;
-    botSpeed : (string | number)[][];
+    botInfo : botInfo[];
 }
 
 interface IRunningGameState {
