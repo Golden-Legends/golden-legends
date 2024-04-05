@@ -1,0 +1,62 @@
+{
+    "placement" : {
+        "line1" : { 
+            "start" : "Cylindre",
+            "end" : "Cylindre.002"
+        },
+        "line2" : { 
+            "start" : "Cylindre.001",
+            "end" : "Cylindre.003"
+        },
+        "line3" : { 
+            "start" : "Cylindre.004",
+            "end" : "Cylindre.008"
+        },
+        "line4" : { 
+            "start" : "Cylindre.005",
+            "end" : "Cylindre.009"
+        },
+        "line5" : { 
+            "start" : "Cylindre.006",
+            "end" : "Cylindre.010"
+        },
+        "line6" : { 
+            "start" : "Cylindre.007",
+            "end" : "Cylindre.011"
+        }
+
+    },
+    "level" : { 
+        "easy" : {
+            "maxSpeed" : 0.35,
+            "botSpeed" : [ 
+                ["bot1", 0.35],
+                ["bot2", 0.33],
+                ["bot3", 0.30],
+                ["bot4", 0.25],
+                ["bot5", 0.20]
+            ]
+        },
+        "intermediate" : {
+            "maxSpeed" : 0.40,
+            "botSpeed" : [ 
+                ["bot1", 0.35],
+                ["bot2", 0.33],
+                ["bot3", 0.40],
+                ["bot4", 0.38],
+                ["bot5", 0.30]
+            ]
+        },
+        "hard" : {
+            "maxSpeed" : 0.45,
+            "botSpeed" : [ 
+                ["bot1", 0.45],
+                ["bot2", 0.43],
+                ["bot3", 0.40],
+                ["bot4", 0.38],
+                ["bot5", 0.38]
+            ]
+        }
+    }
+    
+}
