@@ -4,7 +4,26 @@ import { PlayerInputRunningGame } from "../../inputsMangement/PlayerInputRunning
 import { Game } from "../../Game";
 import { PlayerRunningGame } from "../../controller/PlayerRunningGame";
 import { Bot } from "../../controller/Bot";
+import RunningGameSettings from "../../../../public/models/runningGame.json";
 
+interface line {
+    start : string;
+    end : string;
+}
+
+interface level {
+    maxSpeed : number;
+    botSpeed : (string | number)[][];
+}
+
+interface IRunningGameState {
+    placement : line[],
+    level : {
+        easy : level;
+        intermediate : level;
+        hard : level;
+    }
+}
 
 export class RunningGameState extends GameState {
     private _input : PlayerInputRunningGame;
@@ -16,9 +35,14 @@ export class RunningGameState extends GameState {
 
     private botArray : Bot[] = [];
 
+    private settings : IRunningGameState;
+    private startPlacement : Mesh[] = [];
+    private endPlacement : Mesh[] = [];
+
     constructor(game: Game, canvas: HTMLCanvasElement) {
         super(game, canvas);
         this._input = new PlayerInputRunningGame(this.scene);
+        this.settings = RunningGameSettings;
     }
 
     async enter(): Promise<void>{
@@ -34,10 +58,9 @@ export class RunningGameState extends GameState {
             await this.setEnvironment();
 
             // test classe player
-            const disque = this.scene.getMeshByName("Cylindre");
-            this.player = new PlayerRunningGame(disque?.getAbsolutePosition().x || 0, 
-                                                disque?.getAbsolutePosition().y || 0, 
-                                                disque?.getAbsolutePosition().z || 0, 
+            this.player = new PlayerRunningGame(this.startPlacement[0].getAbsolutePosition().x || 0, 
+                                                this.startPlacement[0].getAbsolutePosition().y || 0, 
+                                                this.startPlacement[0].getAbsolutePosition().z || 0, 
                                                 this.scene, 
                                                 "./models/characters/character-skater-boy.glb", 
                                                 this._input, true);
@@ -49,7 +72,8 @@ export class RunningGameState extends GameState {
             this.game.engine.hideLoadingUI();
 
             // collision
-            const endMesh = this.scene.getMeshByName("Cylindre.002");
+            // TODO : déplacer cette logique dans la classe PlayerRunningGame
+            const endMesh = this.endPlacement[0];
             if (endMesh) { 
                 endMesh.actionManager = new ActionManager(this.scene);
                 endMesh.actionManager.registerAction(
@@ -69,14 +93,7 @@ export class RunningGameState extends GameState {
                 );
             }
             
-            const startMesh2 = this.scene.getMeshByName("Cylindre.001");
-            const endMesh2 = this.scene.getMeshByName("Cylindre.003");
-            if (startMesh2 && endMesh2) {
-                console.log("création du bot")
-                const bot = new Bot("bot1", startMesh2.getAbsolutePosition(), endMesh2 as Mesh, this.scene, "./models/characters/character-skater-boy.glb");
-                await bot.init();
-                this.botArray.push(bot);
-            }
+            // lister tous les disque
             
             this.raceStartTime = performance.now();
         } catch (error) {
@@ -98,7 +115,7 @@ export class RunningGameState extends GameState {
                 this.player.processInput();
             }
             this.botArray.forEach(bot => {
-                bot.play();
+                // bot.play();
             }
             );
 
@@ -108,13 +125,46 @@ export class RunningGameState extends GameState {
         }
     }
 
+    private async initSoloWithBot(difficulty : string) {
+        const startMesh2 = this.scene.getMeshByName("Cylindre.001");
+            const endMesh2 = this.scene.getMeshByName("Cylindre.003");
+            if (startMesh2 && endMesh2) {
+                console.log("création du bot")
+                const bot = new Bot("bot1", startMesh2.getAbsolutePosition(), 
+                        endMesh2 as Mesh, this.scene, 
+                        "./models/characters/character-skater-boy.glb", 0.5);
+                await bot.init();
+                this.botArray.push(bot);
+            }
+    }
+
+    private async initMultiplayer() {
+    }
+
     async setEnvironment(): Promise<void> {
         try {
             const maps = new runningGameEnv(this.scene);
             await maps.load();
+            this.setLinePlacement();
         } catch (error) {
             throw new Error("Method not implemented.");
         }
+    }
+
+    private setLinePlacement () {
+        const startTab : Mesh[] = [];
+        const endTab : Mesh[] = [];
+        const placement = this.settings.placement;
+        placement.forEach((line) => {
+            const startMesh = this.scene.getMeshByName(line.start) as Mesh;
+            const endMesh = this.scene.getMeshByName(line.end) as Mesh;
+            if (startMesh && endMesh) {
+                startTab.push(startMesh);
+                endTab.push(endMesh);
+            }
+        });
+        this.startPlacement = startTab;
+        this.endPlacement = endTab;
     }
 
     private createLight() {

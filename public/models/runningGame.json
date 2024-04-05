@@ -1,31 +1,33 @@
 {
-    "placement" : {
-        "line1" : { 
+    "placement" : 
+    [ 
+
+        {  
             "start" : "Cylindre",
-            "end" : "Cylindre.002"
+            "end" : "Cylindre.002"   
         },
-        "line2" : { 
+        {
             "start" : "Cylindre.001",
             "end" : "Cylindre.003"
         },
-        "line3" : { 
+        {
             "start" : "Cylindre.004",
             "end" : "Cylindre.008"
         },
-        "line4" : { 
+        {
             "start" : "Cylindre.005",
             "end" : "Cylindre.009"
         },
-        "line5" : { 
+        {   
             "start" : "Cylindre.006",
             "end" : "Cylindre.010"
         },
-        "line6" : { 
+        {
             "start" : "Cylindre.007",
             "end" : "Cylindre.011"
         }
-
-    },
+        
+    ],
     "level" : { 
         "easy" : {
             "maxSpeed" : 0.35,
