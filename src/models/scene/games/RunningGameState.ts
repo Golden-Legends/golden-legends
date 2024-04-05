@@ -62,24 +62,22 @@ export class RunningGameState extends GameState {
 
             // Inspector.Show(this.scene, {});
             await this.setEnvironment();
-
+            this.createLight();
+            this.setLinePlacement();
+            
             // test classe player
-            this.player = new PlayerRunningGame(this.startPlacement[0].getAbsolutePosition().x || 0, 
-                                                this.startPlacement[0].getAbsolutePosition().y || 0, 
-                                                this.startPlacement[0].getAbsolutePosition().z || 0, 
+            const indexForPlayerPlacement = 3;
+            this.player = new PlayerRunningGame(this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().x || 0, 
+                                                this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().y || 0, 
+                                                this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().z || 0, 
                                                 this.scene, 
                                                 "./models/characters/character-skater-boy.glb", 
                                                 this._input, true);
             await this.player.init();
 
-            this.createLight();
-            this.runUpdateAndRender();
-
-            this.game.engine.hideLoadingUI();
-
             // collision
             // TODO : déplacer cette logique dans la classe PlayerRunningGame
-            const endMesh = this.endPlacement[0];
+            const endMesh = this.endPlacement[3];
             if (endMesh) { 
                 endMesh.actionManager = new ActionManager(this.scene);
                 endMesh.actionManager.registerAction(
@@ -99,8 +97,15 @@ export class RunningGameState extends GameState {
                 );
             }
             
-            // lister tous les disque
-            
+            // permet d'enlever la position du joueur de la liste des positions facilitera la suite
+            this.startPlacement.splice(indexForPlayerPlacement, 1);
+            this.endPlacement.splice(indexForPlayerPlacement, 1);
+
+            // on init le jeu
+            this.initSoloWithBot("easy");
+
+            this.runUpdateAndRender();
+            this.game.engine.hideLoadingUI();            
             this.raceStartTime = performance.now();
         } catch (error) {
             throw new Error("erreur.");
@@ -121,7 +126,7 @@ export class RunningGameState extends GameState {
                 this.player.processInput();
             }
             this.botArray.forEach(bot => {
-                // bot.play();
+                bot.play();
             }
             );
 
@@ -132,16 +137,21 @@ export class RunningGameState extends GameState {
     }
 
     private async initSoloWithBot(difficulty : string) {
-        const startMesh2 = this.scene.getMeshByName("Cylindre.001");
-            const endMesh2 = this.scene.getMeshByName("Cylindre.003");
-            if (startMesh2 && endMesh2) {
-                console.log("création du bot")
-                const bot = new Bot("bot1", startMesh2.getAbsolutePosition(), 
-                        endMesh2 as Mesh, this.scene, 
-                        "./models/characters/character-skater-boy.glb", 0.5);
-                await bot.init();
-                this.botArray.push(bot);
-            }
+        const infoBot = this.settings.level[difficulty].botInfo;
+        if (difficulty === "easy") {
+            for (let i = 0; i < 5; i++) {
+                const startMesh = this.startPlacement[i];
+                const endMesh = this.endPlacement[i];
+                if (startMesh && endMesh) {
+                    const bot = new Bot("bot" + i, startMesh.getAbsolutePosition(), 
+                            endMesh as Mesh, this.scene,
+                            infoBot[i].pathFile, infoBot[i].speed);
+                    await bot.init();
+                    this.botArray.push(bot);
+                }
+                            
+            } 
+        }
     }
 
     private async initMultiplayer() {
@@ -151,7 +161,6 @@ export class RunningGameState extends GameState {
         try {
             const maps = new runningGameEnv(this.scene);
             await maps.load();
-            this.setLinePlacement();
         } catch (error) {
             throw new Error("Method not implemented.");
         }
@@ -164,6 +173,8 @@ export class RunningGameState extends GameState {
         placement.forEach((line) => {
             const startMesh = this.scene.getMeshByName(line.start) as Mesh;
             const endMesh = this.scene.getMeshByName(line.end) as Mesh;
+            startMesh.isVisible = false;
+            endMesh.isVisible = false;
             if (startMesh && endMesh) {
                 startTab.push(startMesh);
                 endTab.push(endMesh);
