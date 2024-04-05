@@ -34,6 +34,7 @@ export class Bot {
 
     // run
     private readonly MIN_RUN_SPEED = 0.25;
+    private MAX_SPEED = 0;
     private baseSpeed: number = 0; // Vitesse de déplacement initiale
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
 
@@ -42,7 +43,7 @@ export class Bot {
     private isEndGame: boolean = false;
     private raceEndTime: number = 0;
 
-    constructor(name: string, startPos: Vector3, endMesh : Mesh, scene : Scene, assetPath : string) {
+    constructor(name: string, startPos: Vector3, endMesh : Mesh, scene : Scene, assetPath : string, maxSpeed : number) {
         this.name = name;
         this.scene = scene;
         this.assetPath = assetPath;
@@ -65,7 +66,7 @@ export class Bot {
                 }
             )
         );
-        
+        this.MAX_SPEED = maxSpeed;
     }
 
     public async init () {
@@ -122,7 +123,6 @@ export class Bot {
 
     public play() {
         if (!this.isEndGame) {
-            console.log("play")
             this.randomBaseSpeed();
             this.movePlayer();
             this.animationBot();
@@ -130,19 +130,17 @@ export class Bot {
     }
 
     private randomBaseSpeed(): void {
-        // Génère une vitesse aléatoire qui fera varier la variable acceleration entre -0.2 et 0.4
-        const temp = Math.random() * 0.1;
+        // Génère une vitesse aléatoire pour l'accélération
+        const temp = Math.random() * 0.025;
         this.baseSpeed += temp;
 
         // tu dois déplacer le bot avec une vitesse qui va varier mais il peut acélérer comme ralentir il ne peux pas dépasser une certaine vitesse s'il la dépasse on peut le ralentir
         // donne moi le code
-        if (this.baseSpeed > 0.4) {
+        if (this.baseSpeed > this.MAX_SPEED) {
             this.baseSpeed = 0.1;
         } else if (this.baseSpeed < 0) {
             this.baseSpeed = 0;
         }
-
-        console.log(this.baseSpeed);
     }
 
     private movePlayer(): void {

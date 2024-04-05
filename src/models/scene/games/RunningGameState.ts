@@ -101,6 +101,9 @@ export class RunningGameState extends GameState {
             this.startPlacement.splice(indexForPlayerPlacement, 1);
             this.endPlacement.splice(indexForPlayerPlacement, 1);
 
+            // mettre de l'aléatoire dans les positions des bots
+            {this.startPlacement, this.endPlacement} this.shuffleArray(this.startPlacement, this.endPlacement);
+
             // on init le jeu
             this.initSoloWithBot("easy");
 
@@ -138,20 +141,17 @@ export class RunningGameState extends GameState {
 
     private async initSoloWithBot(difficulty : string) {
         const infoBot = this.settings.level[difficulty].botInfo;
-        if (difficulty === "easy") {
-            for (let i = 0; i < 5; i++) {
-                const startMesh = this.startPlacement[i];
-                const endMesh = this.endPlacement[i];
-                if (startMesh && endMesh) {
-                    const bot = new Bot("bot" + i, startMesh.getAbsolutePosition(), 
-                            endMesh as Mesh, this.scene,
-                            infoBot[i].pathFile, infoBot[i].speed);
-                    await bot.init();
-                    this.botArray.push(bot);
-                }
-                            
-            } 
-        }
+        for (let i = 0; i < 5; i++) {
+            const startMesh = this.startPlacement[i];
+            const endMesh = this.endPlacement[i];
+            if (startMesh && endMesh) {
+                const bot = new Bot("bot" + i, startMesh.getAbsolutePosition(), 
+                        endMesh as Mesh, this.scene,
+                        infoBot[i].pathFile, infoBot[i].speed);
+                await bot.init();
+                this.botArray.push(bot);
+            }              
+        }        
     }
 
     private async initMultiplayer() {
@@ -187,5 +187,15 @@ export class RunningGameState extends GameState {
     private createLight() {
         const light = new HemisphericLight("light", new Vector3(0, 2, 0), this.scene);
         light.intensity = 0.7;
+    }
+
+
+    private shuffleArray(array1 : any[], array2 : any[]) {
+        for (let i = array1.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1)); // Génère un indice aléatoire entre 0 et i inclus
+            [array1[i], array1[j]] = [array1[j], array1[i]]; // Échange les éléments à l'indice i et j
+            [array2[i], array2[j]] = [array2[j], array2[i]]; // Échange les éléments à l'indice i et j
+        }
+        return {array1, array2};
     }
 }
