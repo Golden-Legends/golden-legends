@@ -22,19 +22,15 @@ const medalColor = (position: string): string => {
 <template>
   <div
     v-if="props.position"
-    class="w-32 h-32 rounded-full border-black border-[16px]"
+    class="w-32 h-32 rounded-full border-neutral-800 border-[16px]"
     :class="medalColor(props.position)"
   >
     <div class="text-[104pt] text-white font-bold h-fit">
-      <span class="relative text-stroke -top-20 left-1">
+      <span class="relative text-stroke-6 -top-20 left-1">
         {{ props.position }}
       </span>
     </div>
   </div>
 </template>
 
-<style scoped>
-.text-stroke {
-  -webkit-text-stroke: 6px black;
-}
-</style>
+<style scoped></style>
