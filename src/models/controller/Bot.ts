@@ -101,6 +101,10 @@ export class Bot {
         return this.raceEndTime;
     }
 
+    public getName() : string { 
+        return this.name;
+    }
+
     private setAnimation () : {run: AnimationGroup, walk: AnimationGroup, crouch: AnimationGroup, idle: AnimationGroup} { 
         const sprint = this.animationsGroup.find(ag => ag.name.includes("sprint"));
         const walk = this.animationsGroup.find(ag => ag.name.includes("walk"));
