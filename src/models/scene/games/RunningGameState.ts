@@ -32,6 +32,7 @@ interface IRunningGameState {
 }
 
 export class RunningGameState extends GameState {
+    private readonly limitTime = 15;
     private _input : PlayerInputRunningGame;
     public _camera !: FreeCamera;
     private endGame : boolean = false;
@@ -66,36 +67,14 @@ export class RunningGameState extends GameState {
             this.setLinePlacement();
             
             // test classe player
-            const indexForPlayerPlacement = 3;
+            const indexForPlayerPlacement = 2;
             this.player = new PlayerRunningGame(this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().x || 0, 
                                                 this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().y || 0, 
                                                 this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().z || 0, 
                                                 this.scene, 
-                                                "./models/characters/character-skater-boy.glb", 
+                                                "./models/characters/character-skater-boy.glb", this.endPlacement[indexForPlayerPlacement],
                                                 this._input, true);
             await this.player.init();
-
-            // collision
-            // TODO : déplacer cette logique dans la classe PlayerRunningGame
-            const endMesh = this.endPlacement[3];
-            if (endMesh) { 
-                endMesh.actionManager = new ActionManager(this.scene);
-                endMesh.actionManager.registerAction(
-                    new ExecuteCodeAction(
-                        {
-                            trigger: ActionManager.OnIntersectionEnterTrigger,
-                            parameter: this.player.transform
-                        },
-                        () => {
-                            this.endGame = true;
-                            this.player.stopAnimations();
-                            const raceEndTime = performance.now();
-                            const raceDurationInSeconds = (raceEndTime - this.raceStartTime) / 1000; // Convert milliseconds to seconds
-                            console.log("Durée de la course :", raceDurationInSeconds, "secondes");
-                        }
-                    )
-                );
-            }
             
             // permet d'enlever la position du joueur de la liste des positions facilitera la suite
             this.startPlacement.splice(indexForPlayerPlacement, 1);
@@ -122,16 +101,30 @@ export class RunningGameState extends GameState {
     update(): void {
         try 
         {  
-            this.player._updateGroundDetection();
-            this.player.animationPlayer();
-            if (!this.endGame) {
-                this.player.movePlayer();
-                this.player.processInput();
+            if (this.endGame) return;
+
+            const currentTime = performance.now();
+            const elapsedTime = (currentTime - this.raceStartTime) / 1000;
+            // affiche le temps dans la console
+            if (elapsedTime > this.limitTime) {
+                this.endGame = true;
+                console.log("Game over: Time limit reached.");
+                return;
             }
+
+            if (this.player.getIsEndGame() && this.botArray.every(bot => bot.getIsEndGame())) {
+                this.endGame = true;
+                console.log("Game over: All players have reached the end.");
+                console.log("Player time: " + (this.player.getEndTime() - this.raceStartTime) / 1000);
+                this.botArray.forEach(bot => console.log(bot.getName() + " time: " + (bot.getEndTime() - this.raceStartTime) / 1000));
+                return;
+            }
+
+            this.player._updateGroundDetection();
+            this.player.play();
             this.botArray.forEach(bot => {
                 bot.play();
-            }
-            );
+            });
 
         } catch (error) 
         {
