@@ -57,6 +57,7 @@ export class JumpGame {
                 this.miniGame();
             }
         });
+        // this.playFireworksAnimation(this.scene, this.player.position);
     }
 
 
@@ -145,7 +146,7 @@ export class JumpGame {
         }
         // Le jeu n'est plus en cours
         this.gameRunning = false;
-        this.invisiblePlatform(1, 20);
+        this.invisiblePlatform(1, 20); 
     }
 
 
@@ -159,19 +160,19 @@ export class JumpGame {
         fireworks.color1 = new Color4(1, 1, 0, 1);
         fireworks.color2 = new Color4(1, 0, 0, 1);
         fireworks.colorDead = new Color4(0, 0, 0, 0);
-        fireworks.minSize = 0.1;
-        fireworks.maxSize = 0.5;
+        fireworks.minSize = 0.05;
+        fireworks.maxSize = 0.2;
         fireworks.minLifeTime = 0.5;
         fireworks.maxLifeTime = 1;
-        fireworks.emitRate = 1000;
+        fireworks.emitRate = 500;
         fireworks.blendMode = ParticleSystem.BLENDMODE_ONEONE;
-        fireworks.gravity = new Vector3(0, -9.81, 0);
-        fireworks.direction1 = new Vector3(-1, 8, 1);
-        fireworks.direction2 = new Vector3(1, 8, -1);
+        fireworks.gravity = new Vector3(0, -1, 0);
+        fireworks.direction1 = new Vector3(-1, 1, -1);
+        fireworks.direction2 = new Vector3(1, 1, 1);
         fireworks.minAngularSpeed = 0;
         fireworks.maxAngularSpeed = Math.PI;
-        fireworks.minEmitPower = 1;
-        fireworks.maxEmitPower = 3;
+        fireworks.minEmitPower = 0.5;
+        fireworks.maxEmitPower = 2;
         fireworks.updateSpeed = 0.005;
         
         // Démarrer l'animation

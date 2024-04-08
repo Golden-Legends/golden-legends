@@ -1,4 +1,4 @@
-import { AbstractMesh, ActionManager, Color3, ExecuteCodeAction, Material, Mesh, MeshBuilder, Scene, Space, StandardMaterial, Vector3 } from "@babylonjs/core";
+import { ActionManager, Color4, ExecuteCodeAction, Mesh, MeshBuilder, ParticleSystem, Scene, Texture, Vector3 } from "@babylonjs/core";
 import { PlayerInput } from "../../inputsMangement/PlayerInput";
 import { AdvancedDynamicTexture, TextBlock } from "@babylonjs/gui";
 
@@ -17,6 +17,7 @@ export class ObjectGame {
     private objectToPickUp: Mesh | undefined;
     private isPlayerInsideTrigger: boolean = false;
     private objectsCollectedSet: Set<number> = new Set<number>();
+    private particleSystems: ParticleSystem[] = [];
 
 
     constructor(scene: Scene, player: Mesh, input: PlayerInput) {
@@ -52,8 +53,38 @@ export class ObjectGame {
                 this.objectPickedUp = true
             }
         });
-
         
+        this.createParticleSystems();
+    }
+
+    private createParticleSystems() {
+        for (let i = 0; i < this.cube.length; i++) {
+            const particleSystem = new ParticleSystem("particles", 2000, this.scene);
+            particleSystem.particleTexture = new Texture("textures/flare.png", this.scene);
+            particleSystem.emitter = this.cube[i];
+            particleSystem.minEmitBox = new Vector3(-0.25, 0.25, -0.25); // Starting all from
+            particleSystem.maxEmitBox = new Vector3(0.25, 0.25, 0.25); // To...
+            particleSystem.color1 = new Color4(1, 0, 0, 1);
+            particleSystem.color2 = new Color4(1, 0.5, 0, 1);
+            particleSystem.colorDead = new Color4(0, 0, 0, 0.1);
+            particleSystem.minSize = 0.05;
+            particleSystem.maxSize = 0.2;
+            particleSystem.minLifeTime = 0.3;
+            particleSystem.maxLifeTime = 1.5;
+            particleSystem.emitRate = 150;
+            particleSystem.blendMode = ParticleSystem.BLENDMODE_ONEONE;
+            particleSystem.gravity = new Vector3(0, -1, 0);
+            particleSystem.direction1 = new Vector3(-1, 1, -1);
+            particleSystem.direction2 = new Vector3(1, 1, 1);
+            particleSystem.minAngularSpeed = 0;
+            particleSystem.maxAngularSpeed = Math.PI;
+            particleSystem.minEmitPower = 0.5;
+            particleSystem.maxEmitPower = 1;
+            particleSystem.updateSpeed = 0.005;
+            particleSystem.start();
+
+            this.particleSystems.push(particleSystem);
+        }
     }
 
 

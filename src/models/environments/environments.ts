@@ -66,7 +66,7 @@ export class Environment {
 		this.pnjTalk.init();
 		this.pnjMobile = new PnjMobile(this._scene);
 		this.pnjMobile.init();
-		const soundManager = new SoundManager(this._scene, this.player?.mesh as Mesh);
+		new SoundManager(this._scene);
 	}
 
 	//Load all necessary meshes for the environment
