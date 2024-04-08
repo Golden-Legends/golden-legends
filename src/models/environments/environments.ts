@@ -15,6 +15,7 @@ import { InGameState } from "../scene/InGameState";
 import { Pnj } from "./pnj";
 import { PnjTalk } from "./pnjTalk";
 import { PnjMobile } from "./pnjMobile";
+import { SoundManager } from "./sound";
 
 export class Environment {
 	private _scene: Scene;
@@ -65,6 +66,7 @@ export class Environment {
 		this.pnjTalk.init();
 		this.pnjMobile = new PnjMobile(this._scene);
 		this.pnjMobile.init();
+		const soundManager = new SoundManager(this._scene, this.player?.mesh as Mesh);
 	}
 
 	//Load all necessary meshes for the environment
