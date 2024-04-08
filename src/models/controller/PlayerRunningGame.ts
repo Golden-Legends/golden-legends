@@ -87,7 +87,7 @@ export class PlayerRunningGame {
                     this.isEndGame = true;
                     this.stopAnimations();
                     this.raceEndTime = performance.now();
-                    console.log(`Joueur fin : `, this.raceEndTime);
+                    // console.log(`Joueur fin : `, this.raceEndTime);
                 }
             )
         );

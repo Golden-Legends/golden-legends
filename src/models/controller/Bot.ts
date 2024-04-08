@@ -62,7 +62,7 @@ export class Bot {
                     this.isEndGame = true;
                     this.stopAnimations();
                     this.raceEndTime = performance.now();
-                    console.log(`Nom : ${this.name}`);
+                    // console.log(`Nom : ${this.name}`);
                 }
             )
         );
