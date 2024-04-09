@@ -197,40 +197,24 @@ export class JumpGame {
 
   showVictoryMessage() {
     // Créer un message de victoire à afficher à l'écran
-    const victoryMessage = new TextBlock();
-    victoryMessage.text = "Gagné !";
-    victoryMessage.fontSize = 36;
-    victoryMessage.color = "#00FF00";
-    victoryMessage.fontFamily = "Arial";
-    victoryMessage.textHorizontalAlignment = TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
-    victoryMessage.textVerticalAlignment = TextBlock.VERTICAL_ALIGNMENT_CENTER;
-
-    // Ajouter le message à l'écran
-    this.guiTextureButton.addControl(victoryMessage);
-
-    // Supprimer le message après 5 secondes
+    document.getElementById("victory-jump-dialog")!.style.display = "block";
+    document.getElementById("victory-jump-dialog")!.style.position = "absolute";
+    document.getElementById("victory-jump-dialog")!.style.bottom = "8";
+    document.getElementById("victory-jump-dialog")!.style.left = "8";
     setTimeout(() => {
-      this.guiTextureButton.removeControl(victoryMessage);
-    }, 5000);
+        document.getElementById("victory-jump-dialog")!.style.display = "none";
+    }, 3000);
   }
 
   showDefeatMessage() {
     // Créer un message de défaite à afficher à l'écran
-    const defeatMessage = new TextBlock();
-    defeatMessage.text = "Perdu !";
-    defeatMessage.fontSize = 36;
-    defeatMessage.color = "#FF0000";
-    defeatMessage.fontFamily = "Arial";
-    defeatMessage.textHorizontalAlignment =
-      TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
-    defeatMessage.textVerticalAlignment = TextBlock.VERTICAL_ALIGNMENT_CENTER;
-
-    // Ajouter le message à l'écran
-    this.guiTextureButton.addControl(defeatMessage);
-
+    document.getElementById("lose-jump-dialog")!.style.display = "block";
+    document.getElementById("lose-jump-dialog")!.style.position = "absolute";
+    document.getElementById("lose-jump-dialog")!.style.bottom = "8";
+    document.getElementById("lose-jump-dialog")!.style.left = "8";
     setTimeout(() => {
-      this.guiTextureButton.removeControl(defeatMessage);
-    }, 5000);
+        document.getElementById("lose-jump-dialog")!.style.display = "none";
+    }, 3000);
   }
 
   stopMiniGame() {

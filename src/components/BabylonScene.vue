@@ -73,15 +73,27 @@
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Dialog
-    name="Sucess"
+    name="Game"
     :text="objetRecupText"
     id="recup-object-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Dialog
-    name="Sucess"
+    name="Game"
     :text="allObjetRecupText"
     id="recup-allObject-dialog"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Dialog
+    name="Game"
+    :text="victoryJumpText"
+    id="victory-jump-dialog"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Dialog
+    name="Game"
+    :text="loseJumpText"
+    id="lose-jump-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <MainOptions />
@@ -110,6 +122,9 @@ const objetChaussureText = "Récupére les Chaussures de course en appuyant sur 
 const objetVeloText = "Récupére le Vélo olympique en appuyant sur Espace";
 const objetRecupText = "Objet récupéré avec succès !";
 const allObjetRecupText = "Tous les objets olympiques ont été ramassés !";
+//jump message
+const victoryJumpText = "Vous avez réussi à dompter les plateformes mouvantes. Voici une trainée en récompense !";
+const loseJumpText = "Pas pour cette fois... Retente ta chance !";
 onMounted(() => {
   if (bjsCanvas.value) {
     new App(bjsCanvas.value);
