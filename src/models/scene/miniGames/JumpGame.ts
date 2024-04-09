@@ -202,8 +202,7 @@ export class JumpGame {
     victoryMessage.fontSize = 36;
     victoryMessage.color = "#00FF00";
     victoryMessage.fontFamily = "Arial";
-    victoryMessage.textHorizontalAlignment =
-      TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
+    victoryMessage.textHorizontalAlignment = TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
     victoryMessage.textVerticalAlignment = TextBlock.VERTICAL_ALIGNMENT_CENTER;
 
     // Ajouter le message à l'écran

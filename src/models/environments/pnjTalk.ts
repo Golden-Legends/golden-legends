@@ -9,7 +9,6 @@ import {
   Vector3,
 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
-import { AdvancedDynamicTexture, TextBlock } from "@babylonjs/gui";
 
 export class PnjTalk {
   private _scene: Scene;
@@ -41,7 +40,6 @@ export class PnjTalk {
     new Vector3(0, 80, 0),
   ];
   private cube: Mesh[] = [];
-  private guiTextureButton!: AdvancedDynamicTexture;
   private player: Mesh;
 
   constructor(scene: Scene, player: Mesh) {
@@ -142,7 +140,7 @@ export class PnjTalk {
   }
 
   initCube(position: Vector3, pos: number): void {
-    this.cube[pos] = MeshBuilder.CreateBox("cube", { size: 1.5 }, this._scene);
+    this.cube[pos] = MeshBuilder.CreateBox("cube" + pos, { size: 1.5 }, this._scene);
     this.cube[pos].position = position; // Changez la position du cube selon vos besoins
     // this.cube.position._y += 2;
     this.cube[pos].visibility = 0; // Rendre le cube invisible
@@ -150,7 +148,6 @@ export class PnjTalk {
   }
 
   private registerPickUpActions(): void {
-    this.guiTextureButton = AdvancedDynamicTexture.CreateFullscreenUI("UI");
     // Pour chaque boîte, enregistrez une action pour détecter l'entrée du joueur dans la zone
     for (let i = 0; i < this.cube.length; i++) {
       const box = this.cube[i];
@@ -164,12 +161,30 @@ export class PnjTalk {
             parameter: this.player,
           },
           () => {
-            document.getElementById("jump-game-dialog")!.style.display =
-              "block";
-            document.getElementById("jump-game-dialog")!.style.position =
-              "absolute";
-            document.getElementById("jump-game-dialog")!.style.bottom = "8";
-            document.getElementById("jump-game-dialog")!.style.left = "8";
+            if(box.name === "cube" + 0 || box.name === "cube" + 1){
+              document.getElementById("tp-game-dialog")!.style.display = "block";
+              document.getElementById("tp-game-dialog")!.style.position = "absolute";
+              document.getElementById("tp-game-dialog")!.style.bottom = "8";
+              document.getElementById("tp-game-dialog")!.style.left = "8";
+            }
+            else if(box.name === "cube" + 2){
+              document.getElementById("jump-game-dialog")!.style.display = "block";
+              document.getElementById("jump-game-dialog")!.style.position = "absolute";
+              document.getElementById("jump-game-dialog")!.style.bottom = "8";
+              document.getElementById("jump-game-dialog")!.style.left = "8";
+            }
+            else if(box.name === "cube" + 3){
+              document.getElementById("foot-game-dialog")!.style.display = "block";
+              document.getElementById("foot-game-dialog")!.style.position = "absolute";
+              document.getElementById("foot-game-dialog")!.style.bottom = "8";
+              document.getElementById("foot-game-dialog")!.style.left = "8";
+            }
+            else if(box.name === "cube" + 4){
+              document.getElementById("object-game-dialog")!.style.display = "block";
+              document.getElementById("object-game-dialog")!.style.position = "absolute";
+              document.getElementById("object-game-dialog")!.style.bottom = "8";
+              document.getElementById("object-game-dialog")!.style.left = "8";
+            }
           },
         ),
       );
@@ -181,7 +196,18 @@ export class PnjTalk {
             parameter: this.player,
           },
           () => {
-            document.getElementById("jump-game-dialog")!.style.display = "none";
+            if(box.name === "cube" + 0 || box.name === "cube" + 1){
+              document.getElementById("tp-game-dialog")!.style.display = "none";
+            }
+            else if(box.name === "cube" + 2){
+              document.getElementById("jump-game-dialog")!.style.display = "none";
+            }
+            else if(box.name === "cube" + 3){
+              document.getElementById("foot-game-dialog")!.style.display = "none";
+            }
+            else if(box.name === "cube" + 4){
+              document.getElementById("object-game-dialog")!.style.display = "none";
+            }
           },
         ),
       );
