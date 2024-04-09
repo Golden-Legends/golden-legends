@@ -1,6 +1,5 @@
 import { ActionManager, Color4, ExecuteCodeAction, Mesh, MeshBuilder, ParticleSystem, Scene, Texture, Vector3 } from "@babylonjs/core";
 import { PlayerInput } from "../../inputsMangement/PlayerInput";
-import { AdvancedDynamicTexture, TextBlock } from "@babylonjs/gui";
 
 
 export class ObjectGame {
@@ -10,10 +9,7 @@ export class ObjectGame {
     private playerInput: PlayerInput;
     private cube: Mesh[] = [];
     private name: string[] = [];
-    private guiTextureButton!: AdvancedDynamicTexture;
-    private objectsCollected: number = 0;
     private totalObjects: number = 0;
-    private objectPickedUp: boolean = false;
     private objectToPickUp: Mesh | undefined;
     private isPlayerInsideTrigger: boolean = false;
     private objectsCollectedSet: Set<number> = new Set<number>();
@@ -50,7 +46,6 @@ export class ObjectGame {
         this.scene.registerBeforeRender(() => {
             if (this.isPlayerInsideTrigger && this.playerInput.inputMap["Space"]) {
                 this.collectObject();
-                this.objectPickedUp = true
             }
         });
         
@@ -108,37 +103,43 @@ export class ObjectGame {
         // Masquez l'objet
         this.objectToPickUp.dispose();
 
-        this.objectPickedUp = false;
+        document.getElementById("haie-object-dialog")!.style.display = "none";
+        document.getElementById("gant-object-dialog")!.style.display = "none";
+        document.getElementById("raquette-object-dialog")!.style.display = "none";
+        document.getElementById("ballon-object-dialog")!.style.display = "none";
+        document.getElementById("skate-object-dialog")!.style.display = "none";
+        document.getElementById("arc-object-dialog")!.style.display = "none";
+        document.getElementById("chaussure-object-dialog")!.style.display = "none";
+        document.getElementById("velo-object-dialog")!.style.display = "none";
 
         // Affichez le message de collecte
         if (this.objectsCollectedSet.size === this.totalObjects) {
             // Si tous les objets ont été collectés, affichez un message de victoire
-            this.guiTextureButton.dispose();
-            this.displayMessageSuccess("Tous les objets olympiques ont été ramassés !");
-            // console.log("Tous les objets olympiques ont été ramassés !");
+            document.getElementById("recup-allObject-dialog")!.style.display = "block";
+            document.getElementById("recup-allObject-dialog")!.style.position = "absolute";
+            document.getElementById("recup-allObject-dialog")!.style.bottom = "8";
+            document.getElementById("recup-allObject-dialog")!.style.left = "8";
+            setTimeout(() => {
+                document.getElementById("recup-allObject-dialog")!.style.display = "none";
+            }, 3000);
         } else {
             // Sinon, affichez un message indiquant que l'objet a été récupéré avec succès
-            this.guiTextureButton.dispose();
-            this.displayMessageSuccess(this.name[objectIndex] + " récupéré avec succès !");
-            // console.log(this.name[objectIndex] + " récupéré avec succès !");
+            document.getElementById("recup-object-dialog")!.style.display = "block";
+            document.getElementById("recup-object-dialog")!.style.position = "absolute";
+            document.getElementById("recup-object-dialog")!.style.bottom = "8";
+            document.getElementById("recup-object-dialog")!.style.left = "8";
+            setTimeout(() => {
+                document.getElementById("recup-object-dialog")!.style.display = "none";
+            }, 3000);
         }
     }
 
 
 
     private registerPickUpActions(): void {
-        this.guiTextureButton = AdvancedDynamicTexture.CreateFullscreenUI("UI");
         // Pour chaque boîte, enregistrez une action pour détecter l'entrée du joueur dans la zone
         for (let i = 0; i < this.cube.length; i++) {
             const box = this.cube[i];
-            const message = "Récupérer l'objet " + this.name[i] + " avec P";
-            
-            const messageBlock = new TextBlock();
-            messageBlock.text = message;
-            messageBlock.color = "white";
-            messageBlock.fontSize = 24;
-            messageBlock.textHorizontalAlignment = TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
-            messageBlock.textVerticalAlignment = TextBlock.VERTICAL_ALIGNMENT_CENTER;
 
             // Ajoutez une action pour détecter l'entrée du joueur dans la zone de la boîte
             box.actionManager = new ActionManager(this.scene);
@@ -150,7 +151,58 @@ export class ObjectGame {
                     },
                     () => {
                         // Affichez le message lorsque le joueur entre dans la zone de la boîte
-                        this.guiTextureButton.addControl(messageBlock);
+                        switch (i) {
+                            case 0:
+                                document.getElementById("haie-object-dialog")!.style.display = "block";
+                                document.getElementById("haie-object-dialog")!.style.position = "absolute";
+                                document.getElementById("haie-object-dialog")!.style.bottom = "8";
+                                document.getElementById("haie-object-dialog")!.style.left = "8";
+                                break;
+                            case 1:
+                                document.getElementById("gant-object-dialog")!.style.display = "block";
+                                document.getElementById("gant-object-dialog")!.style.position = "absolute";
+                                document.getElementById("gant-object-dialog")!.style.bottom = "8";
+                                document.getElementById("gant-object-dialog")!.style.left = "8";
+                                break;
+                            case 2:
+                                document.getElementById("raquette-object-dialog")!.style.display = "block";
+                                document.getElementById("raquette-object-dialog")!.style.position = "absolute";
+                                document.getElementById("raquette-object-dialog")!.style.bottom = "8";
+                                document.getElementById("raquette-object-dialog")!.style.left = "8";
+                                break;
+                            case 3:
+                                document.getElementById("ballon-object-dialog")!.style.display = "block";
+                                document.getElementById("ballon-object-dialog")!.style.position = "absolute";
+                                document.getElementById("ballon-object-dialog")!.style.bottom = "8";
+                                document.getElementById("ballon-object-dialog")!.style.left = "8";
+                                break;
+                            case 4:
+                                document.getElementById("skate-object-dialog")!.style.display = "block";
+                                document.getElementById("skate-object-dialog")!.style.position = "absolute";
+                                document.getElementById("skate-object-dialog")!.style.bottom = "8";
+                                document.getElementById("skate-object-dialog")!.style.left = "8";
+                                break;
+                            case 5:
+                                document.getElementById("arc-object-dialog")!.style.display = "block";
+                                document.getElementById("arc-object-dialog")!.style.position = "absolute";
+                                document.getElementById("arc-object-dialog")!.style.bottom = "8";
+                                document.getElementById("arc-object-dialog")!.style.left = "8";
+                                break;
+                            case 6:
+                                document.getElementById("chaussure-object-dialog")!.style.display = "block";
+                                document.getElementById("chaussure-object-dialog")!.style.position = "absolute";
+                                document.getElementById("chaussure-object-dialog")!.style.bottom = "8";
+                                document.getElementById("chaussure-object-dialog")!.style.left = "8";
+                                break;
+                            case 7:
+                                document.getElementById("velo-object-dialog")!.style.display = "block";
+                                document.getElementById("velo-object-dialog")!.style.position = "absolute";
+                                document.getElementById("velo-object-dialog")!.style.bottom = "8";
+                                document.getElementById("velo-object-dialog")!.style.left = "8";
+                                break;
+                            default:
+                                break;
+                        }
                         this.objectToPickUp = box;
                         this.isPlayerInsideTrigger = true;
                         if(this.playerInput.inputMap["Space"]){
@@ -167,41 +219,40 @@ export class ObjectGame {
                         parameter: this.player,
                     },
                     () => {
-                        this.guiTextureButton.removeControl(messageBlock);
+                        switch (i) {
+                            case 0:
+                                document.getElementById("haie-object-dialog")!.style.display = "none";
+                                break;
+                            case 1:
+                                document.getElementById("gant-object-dialog")!.style.display = "none";
+                                break;
+                            case 2:
+                                document.getElementById("raquette-object-dialog")!.style.display = "none";
+                                break;
+                            case 3:
+                                document.getElementById("ballon-object-dialog")!.style.display = "none";
+                                break;
+                            case 4:
+                                document.getElementById("skate-object-dialog")!.style.display = "none";
+                                break;
+                            case 5:
+                                document.getElementById("arc-object-dialog")!.style.display = "none";
+                                break;
+                            case 6:
+                                document.getElementById("chaussure-object-dialog")!.style.display = "none";
+                                break;
+                            case 7:
+                                document.getElementById("velo-object-dialog")!.style.display = "none";
+                                break;
+                            default:
+                                break;
+                        }
                         this.isPlayerInsideTrigger = false;
                     }
                 )
             );
 
         }
-    }
-
-    // private displayMessage(message: string): void {
-    //     // Créez un message à afficher à l'écran
-    //     this.guiTextureButton = AdvancedDynamicTexture.CreateFullscreenUI("UI");
-    //     const messageBlock = new TextBlock();
-    //     messageBlock.text = message;
-    //     messageBlock.color = "white";
-    //     messageBlock.fontSize = 24;
-    //     messageBlock.textHorizontalAlignment = TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
-    //     messageBlock.textVerticalAlignment = TextBlock.VERTICAL_ALIGNMENT_CENTER;
-    //     this.guiTextureButton.addControl(messageBlock);
-    // }
-
-    private displayMessageSuccess(message: string): void {
-        // Créez un message à afficher à l'écran
-        this.guiTextureButton = AdvancedDynamicTexture.CreateFullscreenUI("UI");
-        const messageBlock = new TextBlock();
-        messageBlock.text = message;
-        messageBlock.color = "white";
-        messageBlock.fontSize = 24;
-        messageBlock.textHorizontalAlignment = TextBlock.HORIZONTAL_ALIGNMENT_CENTER;
-        messageBlock.textVerticalAlignment = TextBlock.VERTICAL_ALIGNMENT_CENTER;
-        this.guiTextureButton.addControl(messageBlock);
-
-        setTimeout(() => {
-            this.guiTextureButton.removeControl(messageBlock);
-        }, 3000);
     }
 
     initCube(x: number, y: number, z: number, pos: number, name: string): void {
