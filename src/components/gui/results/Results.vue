@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import HomeButton from "@/components/gui/options/HomeButton.vue";
-import ResultsContent from "@/components/gui/results/ResultsContent.vue";
-import ClassicButton from "@/components/landing/ClassicButton.vue";
 import ContinueButton from "@/components/gui/results/ContinueButton.vue";
 
 const props = defineProps({
