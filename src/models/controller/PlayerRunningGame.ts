@@ -1,4 +1,4 @@
-import { AnimationGroup, Camera, Color3, FreeCamera, Mesh, MeshBuilder, Ray, RayHelper, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
+import { ActionManager, AnimationGroup, Camera, Color3, ExecuteCodeAction, FreeCamera, Mesh, MeshBuilder, Ray, RayHelper, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
 import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGame";
 
@@ -57,7 +57,11 @@ export class PlayerRunningGame {
 
 	private _deltaTime: number = 0;
 
-    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, input : PlayerInputRunningGame, activeCamera: boolean) {
+    private endGameMesh: Mesh;
+    private isEndGame: boolean = false;
+    private raceEndTime: number = 0;
+
+    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputRunningGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
         this._z = z;
@@ -71,6 +75,22 @@ export class PlayerRunningGame {
         if (activeCamera) {
             this._camera = this.createCameraPlayer(this.transform);
         }
+        this.endGameMesh = endMesh;
+        this.endGameMesh.actionManager = new ActionManager(this.scene);
+        this.endGameMesh.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnIntersectionEnterTrigger,
+                    parameter: this.transform
+                },
+                () => {
+                    this.isEndGame = true;
+                    this.stopAnimations();
+                    this.raceEndTime = performance.now();
+                    // console.log(`Joueur fin : `, this.raceEndTime);
+                }
+            )
+        );
     }
 
     public async init () {
@@ -97,6 +117,22 @@ export class PlayerRunningGame {
         this._isCrouching = true;        
     }
 
+    public play () {
+        if (!this.isEndGame) {
+            this.processInput();
+            this.movePlayer();
+            this.animationPlayer();
+        }
+    }
+
+    public getIsEndGame() : boolean {
+        return this.isEndGame;
+    }
+
+    public getEndTime() : number {
+        return this.raceEndTime;
+    }
+    
     private setAnimation () : {run: AnimationGroup, walk: AnimationGroup, crouch: AnimationGroup, idle: AnimationGroup} { 
         const sprint = this.animationsGroup.find(ag => ag.name.includes("sprint"));
         const walk = this.animationsGroup.find(ag => ag.name.includes("walk"));
