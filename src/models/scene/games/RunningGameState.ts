@@ -53,7 +53,10 @@ export class RunningGameState extends GameState {
 
     private countdownInProgress: boolean = false;
 
-    constructor(game: Game, canvas: HTMLCanvasElement) {
+    private isMultiplayer: boolean = false;
+    private difficulty: "easy" | "intermediate" | "hard";
+
+    constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputRunningGame(this.scene);
         this.settings = RunningGameSettings;
@@ -65,6 +68,9 @@ export class RunningGameState extends GameState {
         this.buttonReady.color = "white";
         this.buttonReady.background = "green";
         this.advancedTexture.addControl(this.buttonReady); 
+
+        this.difficulty = difficulty ? difficulty : "easy";
+        this.isMultiplayer = multi ? multi : false;
     }
 
     async enter(): Promise<void>{
@@ -96,14 +102,9 @@ export class RunningGameState extends GameState {
             {this.startPlacement, this.endPlacement} this.shuffleArray(this.startPlacement, this.endPlacement);
 
             // on init le jeu
-            this.initSoloWithBot("easy");
-
-            this.buttonReady.onPointerUpObservable.add(() => {
-                console.log("clicked!");
-                // Vous pouvez appeler la méthode startCountdown ici
-                this.startCountdown(["À vos marques", "Prêt", "Partez !"]);
-                this.buttonReady.isVisible = false; // Masquer le bouton après avoir cliqué
-            });
+            if (!this.isMultiplayer) {
+                this.runSoloGame();
+            }           
 
             this.game.engine.hideLoadingUI(); 
             this.runUpdateAndRender();            
@@ -112,6 +113,29 @@ export class RunningGameState extends GameState {
         }
     }
 
+    /**
+     * 
+     * @description Permet de lancer le jeu en solo
+     * @description Allows you to start the game solo
+     */
+    private runSoloGame() {
+        this.initSoloWithBot(this.difficulty);
+        
+        this.buttonReady.onPointerUpObservable.add(() => {
+            console.log("clicked!");
+            // Vous pouvez appeler la méthode startCountdown ici
+            this.startCountdown(["À vos marques", "Prêt", "Partez !"]);
+            this.buttonReady.isVisible = false; // Masquer le bouton après avoir cliqué
+        });
+    }
+
+    /**
+     * 
+     * @param countdownElements 
+     * @returns 
+     * @description Permet de démarrer le compte à rebours
+     * @description Allows you to start the countdown
+     */
     private startCountdown(countdownElements: string[]) {
         if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
         let countdownIndex = 0;
@@ -134,6 +158,12 @@ export class RunningGameState extends GameState {
         console.log("exit running game");
     }
     
+    /**
+     * 
+     * @returns 
+     * @description Permet de mettre à jour le jeu
+     * @description Allows you to update the game
+     */
     update(): void {
         try 
         {  
@@ -169,6 +199,12 @@ export class RunningGameState extends GameState {
         }
     }
 
+    /**
+     * 
+     * @param difficulty 
+     * @description Permet d'initialiser le jeu en solo avec des bots en mettant une difficulter
+     * @description Allows you to initialize the game solo with bots by putting a difficulty
+     */
     private async initSoloWithBot(difficulty : string) {
         const infoBot = this.settings.level[difficulty].botInfo;
         for (let i = 0; i < 5; i++) {
@@ -196,6 +232,10 @@ export class RunningGameState extends GameState {
         }
     }
 
+    /**
+     * @description Permet de récupérer les positions de départ et d'arrivée des joueurs
+     * @description Allows you to get the start and end positions of the players
+     */
     private setLinePlacement () {
         const startTab : Mesh[] = [];
         const endTab : Mesh[] = [];
@@ -219,6 +259,16 @@ export class RunningGameState extends GameState {
         light.intensity = 0.7;
     }
 
+    /**
+     * 
+     * @param array1 
+     * @param array2 
+     * @returns 
+     * @description Mélange deux tableaux en même temps me permet 
+     * de garder la correspondance entre les positions de début et de fin de course
+     * @description Shuffle two arrays at the same time allows me to keep the correspondence 
+     * between the start and end positions
+     */
     private shuffleArray(array1 : any[], array2 : any[]) {
         for (let i = array1.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1)); // Génère un indice aléatoire entre 0 et i inclus
