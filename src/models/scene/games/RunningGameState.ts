@@ -5,6 +5,8 @@ import { Game } from "../../Game";
 import { PlayerRunningGame } from "../../controller/PlayerRunningGame";
 import { Bot } from "../../controller/Bot";
 import RunningGameSettings from "../../../../public/models/runningGame.json";
+import { AdvancedDynamicTexture, Button } from "@babylonjs/gui";
+import { Inspector } from '@babylonjs/inspector';
 
 interface line {
     start : string;
@@ -46,17 +48,27 @@ export class RunningGameState extends GameState {
     private startPlacement : Mesh[] = [];
     private endPlacement : Mesh[] = [];
 
+    private buttonReady : Button;
+    private advancedTexture : AdvancedDynamicTexture;
+
+    private countdownInProgress: boolean = false;
+
     constructor(game: Game, canvas: HTMLCanvasElement) {
         super(game, canvas);
         this._input = new PlayerInputRunningGame(this.scene);
         this.settings = RunningGameSettings;
+
+        this.advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        this.buttonReady = Button.CreateSimpleButton("btn", "Prêt");
+        this.buttonReady.width = 0.2;
+        this.buttonReady.height = "40px";
+        this.buttonReady.color = "white";
+        this.buttonReady.background = "green";
+        this.advancedTexture.addControl(this.buttonReady); 
     }
 
     async enter(): Promise<void>{
         try {            
-
-            this.handlePointerLockChange();
-
             //load the gui iin the mainmenu and not here only for prod 
             await this.game.loadingScreen.loadGui();
             this.game.engine.displayLoadingUI();
@@ -86,12 +98,36 @@ export class RunningGameState extends GameState {
             // on init le jeu
             this.initSoloWithBot("easy");
 
-            this.runUpdateAndRender();
-            this.game.engine.hideLoadingUI();            
-            this.raceStartTime = performance.now();
+            this.buttonReady.onPointerUpObservable.add(() => {
+                console.log("clicked!");
+                // Vous pouvez appeler la méthode startCountdown ici
+                this.startCountdown(["À vos marques", "Prêt", "Partez !"]);
+                this.buttonReady.isVisible = false; // Masquer le bouton après avoir cliqué
+            });
+
+            this.game.engine.hideLoadingUI(); 
+            this.runUpdateAndRender();            
         } catch (error) {
             throw new Error("erreur.");
         }
+    }
+
+    private startCountdown(countdownElements: string[]) {
+        if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
+        let countdownIndex = 0;
+    
+        const countdownInterval = setInterval(() => {
+            const countdownElement = countdownElements[countdownIndex];
+            console.log(countdownElement); // Affiche l'élément du compte à rebours dans la console
+            countdownIndex++;
+    
+            if (countdownIndex >= countdownElements.length) {
+                clearInterval(countdownInterval);
+                // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
+                this.countdownInProgress = true;
+                this.raceStartTime = performance.now();
+            }
+        }, 1000);
     }
 
     exit(): void {
@@ -101,7 +137,9 @@ export class RunningGameState extends GameState {
     update(): void {
         try 
         {  
-            if (this.endGame) return;
+            this.player._updateGroundDetection();
+
+            if (this.endGame || !this.countdownInProgress) return;
 
             const currentTime = performance.now();
             const elapsedTime = (currentTime - this.raceStartTime) / 1000;
@@ -120,7 +158,6 @@ export class RunningGameState extends GameState {
                 return;
             }
 
-            this.player._updateGroundDetection();
             this.player.play();
             this.botArray.forEach(bot => {
                 bot.play();
@@ -181,7 +218,6 @@ export class RunningGameState extends GameState {
         const light = new HemisphericLight("light", new Vector3(0, 2, 0), this.scene);
         light.intensity = 0.7;
     }
-
 
     private shuffleArray(array1 : any[], array2 : any[]) {
         for (let i = array1.length - 1; i > 0; i--) {
