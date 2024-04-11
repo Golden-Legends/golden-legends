@@ -33,7 +33,7 @@ export class Bot {
     private _isIdle : boolean = false;
 
     // run
-    private readonly MIN_RUN_SPEED = 0.25;
+    private readonly MIN_RUN_SPEED = 0.15;
     private MAX_SPEED = 0;
     private baseSpeed: number = 0; // Vitesse de déplacement initiale
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
@@ -42,6 +42,8 @@ export class Bot {
     private endGame: Mesh;
     private isEndGame: boolean = false;
     private raceEndTime: number = 0;
+
+    private deltaTime: number = 0;
 
     constructor(name: string, startPos: Vector3, endMesh : Mesh, scene : Scene, assetPath : string, maxSpeed : number) {
         this.name = name;
@@ -126,6 +128,7 @@ export class Bot {
     }
 
     public play() {
+        this.deltaTime = this.scene.getEngine().getDeltaTime() / 10;
         if (!this.isEndGame) {
             this.randomBaseSpeed();
             this.movePlayer();
@@ -135,7 +138,7 @@ export class Bot {
 
     private randomBaseSpeed(): void {
         // Génère une vitesse aléatoire pour l'accélération
-        const temp = Math.random() * 0.025;
+        const temp = (Math.random() * 50) * this.deltaTime;
         this.baseSpeed += temp;
 
         // tu dois déplacer le bot avec une vitesse qui va varier mais il peut acélérer comme ralentir il ne peux pas dépasser une certaine vitesse s'il la dépasse on peut le ralentir
@@ -149,7 +152,8 @@ export class Bot {
 
     private movePlayer(): void {
         // Applique le mouvement en fonction de la direction et de la vitesse
-        this.transform.position.z += this.direction * this.baseSpeed;
+        const distance = this.baseSpeed * this.deltaTime;
+        this.transform.position.z += this.direction * distance;
     }
 
     private animationBot(): void {

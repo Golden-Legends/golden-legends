@@ -39,15 +39,15 @@ export class PlayerRunningGame {
     private _isIdle : boolean = false;
 
     // run
-    private readonly MIN_RUN_SPEED = 0.23;
+    private readonly MIN_RUN_SPEED = 0.10;
     private baseSpeed: number = 0; // Vitesse de déplacement initiale
-    private acceleration: number = 0.10; // Ajustez selon vos besoins
+    private acceleration: number = 0.05; // Ajustez selon vos besoins
     private minDelayBetweenSwitches: number = 800; // Délai minimal entre chaque alternance en millisecondes
     private lastSwitchTime: number = 0;
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
     private leftPressed: boolean = false;
     private rightPressed: boolean = false;
-    private deceleration: number = 0.02; // Décélération lorsqu'aucune touche n'est enfoncée
+    private deceleration: number = 0.01; // Décélération lorsqu'aucune touche n'est enfoncée
 
     // input
     // mettrre input manager et retravailler input manager pour qu'il soit plus générique et permettent la création de déplacement de bot
@@ -118,6 +118,7 @@ export class PlayerRunningGame {
     }
 
     public play () {
+        this._deltaTime = this.scene.getEngine().getDeltaTime() / 10;
         if (!this.isEndGame) {
             this.processInput();
             this.movePlayer();
@@ -214,7 +215,7 @@ export class PlayerRunningGame {
 	}
 
     public _updateGroundDetection(): void {
-        this._deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
+        this._deltaTime = this.scene.getEngine().getDeltaTime() / 10;
     
         // Stocker le résultat de la première invocation de _isGrounded()
         const isGrounded = this._isGrounded();
@@ -228,9 +229,10 @@ export class PlayerRunningGame {
 
     public movePlayer(): void {
         // Applique le mouvement en fonction de la direction et de la vitesse
-        this.transform.position.z += this.direction * this.baseSpeed;
+        const direction = this.baseSpeed * this._deltaTime; 
+        this.transform.position.z += this.direction * direction;
         if (this._camera) {
-            this._camera.position.z += this.direction * this.baseSpeed;
+            this._camera.position.z += this.direction * direction;
         }
     }
 
