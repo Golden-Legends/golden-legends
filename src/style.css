@@ -41,3 +41,11 @@ body {
 .text-stroke-6 {
   -webkit-text-stroke: 6px black;
 }
+
+.text-stroke-blue-6 {
+  -webkit-text-stroke: 6px #212175;
+}
+
+.text-stroke-green-6 {
+  -webkit-text-stroke: 6px #1B5E20;
+}
