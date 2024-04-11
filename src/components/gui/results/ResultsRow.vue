@@ -5,8 +5,6 @@ import { Result } from "@/components/gui/results/ResultsContent.vue";
 const props = defineProps({
   result: Object as PropType<Result>,
 });
-
-console.log(props.result);
 </script>
 
 <template>

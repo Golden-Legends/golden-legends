@@ -10,6 +10,14 @@ import Results from "@/components/gui/results/Results.vue";
 import ResultsContent, {
   Result,
 } from "@/components/gui/results/ResultsContent.vue";
+import CommandContainer from "@/components/gui/commands/CommandContainer.vue";
+import ReadySteadyGo from "@/components/gui/running/ReadySteadyGo.vue";
+import KeyPressInteraction from "@/components/gui/KeyPressInteraction.vue";
+import Finish from "@/components/gui/running/Finish.vue";
+import FoundObjectsContainer, {
+  TBF_OBJECT,
+} from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
+import { ref } from "vue";
 
 const longDialogText =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -22,12 +30,55 @@ const results: Result[] = [
   { place: 5, name: "John", result: "10.30" },
   { place: 6, name: "Doe", result: "10.35" },
 ];
+
+const objects = [
+  {
+    name: "Ballon de basket",
+    path: "ball",
+    found: false,
+  },
+  {
+    name: "Vélo",
+    path: "bike",
+    found: true,
+  },
+  {
+    name: "Arc",
+    path: "bow",
+    found: true,
+  },
+  {
+    name: "Gants de boxe",
+    path: "gloves",
+    found: true,
+  },
+  {
+    name: "Haies",
+    path: "hurdles",
+    found: false,
+  },
+  {
+    name: "Raquette de tennis",
+    path: "racket",
+    found: true,
+  },
+  {
+    name: "Chaussures",
+    path: "shoes",
+    found: false,
+  },
+  {
+    name: "Skateboard",
+    path: "skate",
+    found: false,
+  },
+] as TBF_OBJECT[];
 </script>
 
 <template>
   <div class="overflow-auto flex flex-col gap-6 m-4">
     <h1 class="text-3xl font-bold">Sandbox Page</h1>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 mb-4">
       <SandboxContainer name="Classic Button">
         <ClassicButton text="Text here" />
       </SandboxContainer>
@@ -75,6 +126,28 @@ const results: Result[] = [
         <Results title="100m">
           <ResultsContent :results="results" />
         </Results>
+      </SandboxContainer>
+      <SandboxContainer name="Commands">
+        <CommandContainer class="mb-4" name="COURIR" :keys="['s', 'd']" />
+        <CommandContainer
+          class="mb-4"
+          name="NAGER"
+          :keys="['espace', 'd']"
+          width="240"
+        />
+        <CommandContainer class="mb-4" name="ACTION" :keys="['espace']" />
+      </SandboxContainer>
+      <SandboxContainer name="Départ">
+        <ReadySteadyGo class="mt-4" />
+      </SandboxContainer>
+      <SandboxContainer name="Terminée">
+        <Finish class="mt-4" />
+      </SandboxContainer>
+      <SandboxContainer name="Keypress interactions">
+        <KeyPressInteraction class="mt-12" :keys="['s', 'd']" />
+      </SandboxContainer>
+      <SandboxContainer name="Keypress interactions">
+        <FoundObjectsContainer :objects="objects" />
       </SandboxContainer>
     </div>
   </div>
