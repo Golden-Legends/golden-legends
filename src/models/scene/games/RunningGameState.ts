@@ -4,7 +4,7 @@ import { PlayerInputRunningGame } from "../../inputsMangement/PlayerInputRunning
 import { Game } from "../../Game";
 import { PlayerRunningGame } from "../../controller/PlayerRunningGame";
 import { Bot } from "../../controller/Bot";
-import RunningGameSettings from "../../../../public/models/runningGame.json";
+import RunningGameSettings from "../../../assets/runningGame.json";
 import { AdvancedDynamicTexture, Button } from "@babylonjs/gui";
 import { Inspector } from '@babylonjs/inspector';
 
