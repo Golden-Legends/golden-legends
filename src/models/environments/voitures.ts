@@ -38,7 +38,25 @@ export class Voitures {
         this._spawnIntervalId2 = setInterval(() => {
             const position2 = new Vector3(-110.75, 3.1, -180);
             const rotation = new Vector3(0, Math.PI, 0); // Rotation par défaut
-            const path = "voitures.glb";
+            const randomNumber = Math.floor(Math.random() * 4) + 1;
+            let path ="";
+            switch (randomNumber) {
+                case 1:
+                    path = "voitures.glb";
+                    break;
+                case 2:
+                    path = "voitures2.glb";
+                    break;
+                case 3:
+                    path = "voitures3.glb";
+                    break;
+                case 4:
+                    path = "voitures4.glb";
+                    break;
+                default:
+                    console.log("Nombre aléatoire hors de la plage spécifiée");
+                    break;
+            }
             this.spawnCar2(position2, rotation, path);
         }, 10000); // Appel toutes les 10 secondes pour le deuxième spawner
     }
@@ -70,11 +88,35 @@ export class Voitures {
         }
     }
 
+    private _stopSpawning2() {
+        if (this._spawnIntervalId2 !== undefined) {
+            clearInterval(this._spawnIntervalId2);
+        }
+    }
+
     private _startSpawning() {
         this._spawnIntervalId = setInterval(() => {
             const position = new Vector3(-115, 3.1, 62);
             const rotation = new Vector3(0, 0, 0); // Rotation par défaut
-            const path = "voitures.glb";
+            const randomNumber = Math.floor(Math.random() * 4) + 1;
+            let path ="";
+            switch (randomNumber) {
+                case 1:
+                    path = "voitures.glb";
+                    break;
+                case 2:
+                    path = "voitures2.glb";
+                    break;
+                case 3:
+                    path = "voitures3.glb";
+                    break;
+                case 4:
+                    path = "voitures4.glb";
+                    break;
+                default:
+                    console.log("Nombre aléatoire hors de la plage spécifiée");
+                    break;
+            }
             this.spawnCar(position, rotation, path);
         }, 10000); // Appel toutes les 3 secondes
     }
