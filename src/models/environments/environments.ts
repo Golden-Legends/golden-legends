@@ -16,6 +16,7 @@ import { Pnj } from "./pnj";
 import { PnjTalk } from "./pnjTalk";
 import { PnjMobile } from "./pnjMobile";
 import { SoundManager } from "./sound";
+import { Voitures } from "./voitures";
 
 export class Environment {
 	private _scene: Scene;
@@ -26,6 +27,7 @@ export class Environment {
 	public pnj!: Pnj;
 	public pnjTalk!: PnjTalk;
 	public pnjMobile!: PnjMobile;
+	public voitures!: Voitures;
 
 	private gateInformations: gateInformation[] = [
 		{
@@ -58,7 +60,7 @@ export class Environment {
 		this.disableBuild(1,173);
 		this.invisibleBox(1,170);
 		this.disableCar(1,63);
-		this.invisibleBoxCar(1,37);
+		this.invisibleBoxCar(1,20);
 		this.loadSky();
 		this.pnj = new Pnj(this._scene);
 		this.pnj.init();
@@ -67,6 +69,8 @@ export class Environment {
 		this.pnjMobile = new PnjMobile(this._scene);
 		this.pnjMobile.init();
 		new SoundManager(this._scene);
+		this.voitures = new Voitures(this._scene);
+		this.voitures.init();		
 	}
 
 	//Load all necessary meshes for the environment
@@ -216,16 +220,7 @@ export class Environment {
 
 	public disableCar(startNumber: number, endNumber: number) {
 		for (let i = startNumber; i <= endNumber; i++) {
-			if(i in [1, 7, 13, 21]){
-				for(let j = 0; j <= 5; j++){
-					let mesh = this._scene.getMeshByName("car" + i + "_primitive" + j);
-					if(mesh){
-						mesh.checkCollisions = false;
-						mesh.isPickable = false;
-					}	
-				}
-			}
-			else if(i in [3, 4, 8, 9, 12, 15, 17, 18, 20, 24, 27]){
+			if(i in [9, 18, 27]){
 				for(let j = 0; j <= 7; j++){
 					let mesh = this._scene.getMeshByName("car" + i + "_primitive" + j);
 					if(mesh){
@@ -234,7 +229,7 @@ export class Environment {
 					}	
 				}
 			}
-			else if(i in [2, 5, 6, 10, 11, 14, 16, 19, 22, 23, 25, 26, 28, 29]){
+			else if(i in [5, 6, 10, 11, 25, 26, 28, 29]){
 				for(let j = 0; j <= 8; j++){
 					let mesh = this._scene.getMeshByName("car" + i + "_primitive" + j);
 					if(mesh){
