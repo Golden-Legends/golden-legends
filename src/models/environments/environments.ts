@@ -16,6 +16,7 @@ import { Pnj } from "./pnj";
 import { PnjTalk } from "./pnjTalk";
 import { PnjMobile } from "./pnjMobile";
 import { SoundManager } from "./sound";
+import { Voitures } from "./voitures";
 
 export class Environment {
 	private _scene: Scene;
@@ -26,6 +27,7 @@ export class Environment {
 	public pnj!: Pnj;
 	public pnjTalk!: PnjTalk;
 	public pnjMobile!: PnjMobile;
+	public voitures!: Voitures;
 
 	private gateInformations: gateInformation[] = [
 		{
@@ -60,13 +62,15 @@ export class Environment {
 		this.disableCar(1,63);
 		this.invisibleBoxCar(1,37);
 		this.loadSky();
-		this.pnj = new Pnj(this._scene);
-		this.pnj.init();
-		this.pnjTalk = new PnjTalk(this._scene, this.player?.mesh as Mesh);
-		this.pnjTalk.init();
-		this.pnjMobile = new PnjMobile(this._scene);
-		this.pnjMobile.init();
+		// this.pnj = new Pnj(this._scene);
+		// this.pnj.init();
+		// this.pnjTalk = new PnjTalk(this._scene, this.player?.mesh as Mesh);
+		// this.pnjTalk.init();
+		// this.pnjMobile = new PnjMobile(this._scene);
+		// this.pnjMobile.init();
 		new SoundManager(this._scene);
+		this.voitures = new Voitures(this._scene);
+		this.voitures.init();		
 	}
 
 	//Load all necessary meshes for the environment
