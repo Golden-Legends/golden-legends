@@ -97,6 +97,18 @@
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <MainOptions />
+  <ClassicButton
+    text="Passer"
+    name="runningGame-skip-button"
+    id="runningGame-skip-button"
+    class="hidden absolute bottom-12 right-12" 
+  />
+  <ClassicButton
+    text="Prêt"
+    name="runningGame-ready-button"
+    id="runningGame-ready-button"
+    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden" 
+  />
 </template>
 
 <script setup lang="ts">
@@ -104,6 +116,7 @@ import { ref, onMounted } from "vue";
 import MainOptions from "./MainOptions.vue";
 import App from "../../src/models/App.ts";
 import Dialog from "@/components/gui/Dialog.vue";
+import ClassicButton from "@/components/landing/ClassicButton.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs

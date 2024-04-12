@@ -5,7 +5,6 @@ import { Game } from "../../Game";
 import { PlayerRunningGame } from "../../controller/PlayerRunningGame";
 import { Bot } from "../../controller/Bot";
 import RunningGameSettings from "../../../assets/runningGame.json";
-import { AdvancedDynamicTexture, Button } from "@babylonjs/gui";
 import { Inspector } from '@babylonjs/inspector';
 
 interface line {
@@ -48,9 +47,6 @@ export class RunningGameState extends GameState {
     private startPlacement : Mesh[] = [];
     private endPlacement : Mesh[] = [];
 
-    private buttonReady : Button;
-    private advancedTexture : AdvancedDynamicTexture;
-
     private countdownInProgress: boolean = false;
 
     private isMultiplayer: boolean = false;
@@ -60,15 +56,6 @@ export class RunningGameState extends GameState {
         super(game, canvas);
         this._input = new PlayerInputRunningGame(this.scene);
         this.settings = RunningGameSettings;
-
-        this.advancedTexture = AdvancedDynamicTexture.CreateFullscreenUI("UI");
-        this.buttonReady = Button.CreateSimpleButton("btn", "Prêt");
-        this.buttonReady.width = 0.2;
-        this.buttonReady.height = "40px";
-        this.buttonReady.color = "white";
-        this.buttonReady.background = "green";
-        this.buttonReady.isEnabled = false;
-
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
     }
@@ -111,29 +98,20 @@ export class RunningGameState extends GameState {
 
             this._camera = new FreeCamera("camera100m", new Vector3(-12, 10, 20), this.scene);
             this._camera.setTarget(startMesh.position);  
-            
-            // Créez un bouton et ajoutez-le à l'interface utilisateur
-            const skipButton = Button.CreateSimpleButton("skipButton", "Skip Animation");
-            skipButton.width = "150px";
-            skipButton.height = "40px";
-            skipButton.color = "white";
-            skipButton.cornerRadius = 20;
-            skipButton.background = "green";
-            skipButton.onPointerUpObservable.add(() => {
+                        
+            document.getElementById("runningGame-skip-button")!.style.display = "block";
+            document.getElementById("runningGame-skip-button")!.addEventListener("click", () => {
                 console.log("skip")
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
-                skipButton.isVisible = false;
+                document.getElementById("runningGame-skip-button")!.style.display = "none";
             });
-            this.advancedTexture.addControl(skipButton);
 
             this.CreateCameraMouv().then(() => {
-                this.advancedTexture.addControl(this.buttonReady);
-                this.buttonReady.isEnabled = true;
-                this.buttonReady.onPointerUpObservable.add(() => {
-                    // Vous pouvez appeler la méthode startCountdown ici
+                document.getElementById("runningGame-ready-button")!.style.display = "block";
+                document.getElementById("runningGame-ready-button")!.addEventListener("click", () => {
                     this.startCountdown(["À vos marques", "Prêt", "Partez !"]);
-                    this.buttonReady.isVisible = false; // Masquer le bouton après avoir cliqué
+                    document.getElementById("runningGame-ready-button")!.style.display = "none";
                 });
             });
 
@@ -241,9 +219,6 @@ export class RunningGameState extends GameState {
                 this.botArray.push(bot);
             }              
         }        
-    }
-
-    private async initMultiplayer() {
     }
 
     async setEnvironment(): Promise<void> {
