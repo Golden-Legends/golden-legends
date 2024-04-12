@@ -112,6 +112,7 @@ export class RunningGameState extends GameState {
                 document.getElementById("runningGame-ready-button")!.addEventListener("click", () => {
                     this.startCountdown(["À vos marques", "Prêt", "Partez !"]);
                     document.getElementById("runningGame-ready-button")!.style.display = "none";
+                    this.game.canvas.focus();
                 });
             });
 
