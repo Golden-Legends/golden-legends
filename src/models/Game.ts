@@ -8,11 +8,13 @@ export class Game {
   public engine: Engine;
   private currentState: GameState | null = null;
   public loadingScreen: CustomLoadingScreen;
+  public canvas: HTMLCanvasElement;
 
   constructor(canvas: HTMLCanvasElement) {
     this.engine = new Engine(canvas, true);
     this.loadingScreen = new CustomLoadingScreen("Loading...");
     this.setLoadingScreen(this.loadingScreen);
+    this.canvas = canvas;
     this.changeState(new InGameState(this, canvas));
   }
 
