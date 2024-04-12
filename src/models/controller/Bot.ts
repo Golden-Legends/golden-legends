@@ -69,6 +69,7 @@ export class Bot {
             )
         );
         this.MAX_SPEED = maxSpeed;
+        console.log(`Max speed : ${this.MAX_SPEED}`)
     }
 
     public async init () {
@@ -138,13 +139,13 @@ export class Bot {
 
     private randomBaseSpeed(): void {
         // Génère une vitesse aléatoire pour l'accélération
-        const temp = (Math.random() * 50) * this.deltaTime;
+        const temp = (Math.random() * 0.05) * this.deltaTime;
         this.baseSpeed += temp;
 
         // tu dois déplacer le bot avec une vitesse qui va varier mais il peut acélérer comme ralentir il ne peux pas dépasser une certaine vitesse s'il la dépasse on peut le ralentir
         // donne moi le code
         if (this.baseSpeed > this.MAX_SPEED) {
-            this.baseSpeed = 0.1;
+            this.baseSpeed = this.MAX_SPEED;
         } else if (this.baseSpeed < 0) {
             this.baseSpeed = 0;
         }
