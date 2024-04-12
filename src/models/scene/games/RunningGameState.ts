@@ -1,4 +1,4 @@
-import {FreeCamera, HemisphericLight, Mesh, Vector3 } from "@babylonjs/core";
+import {Animation, FreeCamera, HemisphericLight, Mesh, Vector3 } from "@babylonjs/core";
 import { GameState } from "../../GameState";import { runningGameEnv } from "../../environments/runningGameEnv";
 import { PlayerInputRunningGame } from "../../inputsMangement/PlayerInputRunningGame";
 import { Game } from "../../Game";
@@ -67,7 +67,7 @@ export class RunningGameState extends GameState {
         this.buttonReady.height = "40px";
         this.buttonReady.color = "white";
         this.buttonReady.background = "green";
-        this.advancedTexture.addControl(this.buttonReady); 
+        this.buttonReady.isEnabled = false;
 
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
@@ -86,12 +86,13 @@ export class RunningGameState extends GameState {
             
             // test classe player
             const indexForPlayerPlacement = 2;
+            const startMesh = this.startPlacement[indexForPlayerPlacement];
             this.player = new PlayerRunningGame(this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().x || 0, 
                                                 this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().y || 0, 
                                                 this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().z || 0, 
                                                 this.scene, 
                                                 "./models/characters/character-skater-boy.glb", this.endPlacement[indexForPlayerPlacement],
-                                                this._input, true);
+                                                this._input, false);
             await this.player.init();
             
             // permet d'enlever la position du joueur de la liste des positions facilitera la suite
@@ -105,9 +106,37 @@ export class RunningGameState extends GameState {
             if (!this.isMultiplayer) {
                 this.runSoloGame();
             }           
-
             this.game.engine.hideLoadingUI(); 
-            this.runUpdateAndRender();            
+            this.runUpdateAndRender();        
+
+            this._camera = new FreeCamera("camera100m", new Vector3(-12, 10, 20), this.scene);
+            this._camera.setTarget(startMesh.position);  
+            
+            // Créez un bouton et ajoutez-le à l'interface utilisateur
+            const skipButton = Button.CreateSimpleButton("skipButton", "Skip Animation");
+            skipButton.width = "150px";
+            skipButton.height = "40px";
+            skipButton.color = "white";
+            skipButton.cornerRadius = 20;
+            skipButton.background = "green";
+            skipButton.onPointerUpObservable.add(() => {
+                console.log("skip")
+                this.scene.stopAnimation(this._camera);
+                this.AfterCamAnim();
+                skipButton.isVisible = false;
+            });
+            this.advancedTexture.addControl(skipButton);
+
+            this.CreateCameraMouv().then(() => {
+                this.advancedTexture.addControl(this.buttonReady);
+                this.buttonReady.isEnabled = true;
+                this.buttonReady.onPointerUpObservable.add(() => {
+                    // Vous pouvez appeler la méthode startCountdown ici
+                    this.startCountdown(["À vos marques", "Prêt", "Partez !"]);
+                    this.buttonReady.isVisible = false; // Masquer le bouton après avoir cliqué
+                });
+            });
+
         } catch (error) {
             throw new Error("erreur.");
         }
@@ -121,12 +150,6 @@ export class RunningGameState extends GameState {
     private runSoloGame() {
         this.initSoloWithBot(this.difficulty);
         
-        this.buttonReady.onPointerUpObservable.add(() => {
-            console.log("clicked!");
-            // Vous pouvez appeler la méthode startCountdown ici
-            this.startCountdown(["À vos marques", "Prêt", "Partez !"]);
-            this.buttonReady.isVisible = false; // Masquer le bouton après avoir cliqué
-        });
     }
 
     /**
@@ -276,5 +299,34 @@ export class RunningGameState extends GameState {
             [array2[i], array2[j]] = [array2[j], array2[i]]; // Échange les éléments à l'indice i et j
         }
         return {array1, array2};
+    }
+
+    // CAMERA EARLY 
+    async CreateCameraMouv(): Promise<void> {
+        const fps = 60;
+        const camAnim = new Animation("camAnim", 
+                                    "position", 
+                                    fps, 
+                                    Animation.ANIMATIONTYPE_VECTOR3, 
+                                    Animation.ANIMATIONLOOPMODE_CONSTANT,
+                                    true);
+
+        const camKeys: { frame: number, value: Vector3 }[] = [];
+        camKeys.push({frame: 0, value: new Vector3(-2, 10, 20)});
+        camKeys.push({frame: 3, value: new Vector3(-15, 2, -30)});
+        camKeys.push({frame: 8 * fps, value: new Vector3(0.5, 2, -25)});
+        camKeys.push({frame: 10 * fps, value: new Vector3(0.5, 2, -25)});
+        camKeys.push({frame: 14 * fps, value: new Vector3(-6, 6, -10)});
+
+        camAnim.setKeys(camKeys);
+        this._camera.animations.push(camAnim);
+
+        await this.scene.beginAnimation(this._camera, 0, 14 * fps).waitAsync();
+    }
+
+    AfterCamAnim(): void {
+        this._camera.dispose();
+        this._camera = this.player.createCameraPlayer(this.player.transform);
+        this.player.setCamera(this._camera);
     }
 }

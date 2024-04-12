@@ -267,9 +267,13 @@ export class PlayerRunningGame {
         }
     }
 
-    private createCameraPlayer(mesh : Mesh) : FreeCamera { 
+    public createCameraPlayer(mesh : Mesh) : FreeCamera { 
         const camera = new FreeCamera("camera1", new Vector3(22.72, 22.07, -31.21), this.scene);
-        camera.setTarget(new Vector3(mesh.position.x, mesh.position.y, mesh.position.z + 6));
+        camera.setTarget(new Vector3(mesh.position.x, mesh.position.y, mesh.position.z));
         return camera;
+    }
+
+    public setCamera (camera : Camera) {
+        this._camera = camera;
     }
 }
