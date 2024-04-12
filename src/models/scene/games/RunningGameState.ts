@@ -34,7 +34,7 @@ interface IRunningGameState {
 }
 
 export class RunningGameState extends GameState {
-    private readonly limitTime = 15;
+    private readonly limitTime = 25;
     private _input : PlayerInputRunningGame;
     public _camera !: FreeCamera;
     private endGame : boolean = false;
