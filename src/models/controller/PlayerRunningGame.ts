@@ -41,13 +41,13 @@ export class PlayerRunningGame {
     // run
     private readonly MIN_RUN_SPEED = 0.10;
     private baseSpeed: number = 0; // Vitesse de déplacement initiale
-    private acceleration: number = 0.05; // Ajustez selon vos besoins
+    private acceleration: number = 0.02; // Ajustez selon vos besoins
     private minDelayBetweenSwitches: number = 800; // Délai minimal entre chaque alternance en millisecondes
     private lastSwitchTime: number = 0;
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
     private leftPressed: boolean = false;
     private rightPressed: boolean = false;
-    private deceleration: number = 0.01; // Décélération lorsqu'aucune touche n'est enfoncée
+    private deceleration: number = 0.00250; // Décélération lorsqu'aucune touche n'est enfoncée
 
     // input
     // mettrre input manager et retravailler input manager pour qu'il soit plus générique et permettent la création de déplacement de bot
