@@ -64,12 +64,10 @@ export class Bot {
                     this.isEndGame = true;
                     this.stopAnimations();
                     this.raceEndTime = performance.now();
-                    // console.log(`Nom : ${this.name}`);
                 }
             )
         );
         this.MAX_SPEED = maxSpeed;
-        console.log(`Max speed : ${this.MAX_SPEED}`)
     }
 
     public async init () {
