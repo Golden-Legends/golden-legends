@@ -24,7 +24,7 @@ export class PnjTalk {
     //4eme groupe
     new Vector3(-61, 2.75, -63),
     //5eme groupe
-    new Vector3(-187, 2.75, -3),
+    new Vector3(-188.5, 2.75, -15.5),
   ];
 
   private pnjRotation: Vector3[] = [
