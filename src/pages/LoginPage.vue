@@ -14,14 +14,14 @@ const username = ref("");
 const login = async () => {
   try {
     await UserService.login(username.value, password.value);
-    await router.push({ name: "Game" });
+    await router.push({ name: "Character" });
   } catch (error) {}
 };
 
 const register = async () => {
   try {
     await UserService.register(username.value, email.value, password.value);
-    await router.push({ name: "Game" });
+    await router.push({ name: "Character" });
   } catch (error) {}
 };
 </script>
