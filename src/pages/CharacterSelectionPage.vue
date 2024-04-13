@@ -6,22 +6,42 @@ import { ref } from "vue";
 import { CHARACTERS } from "@/utils/constants.ts";
 import PlayButton from "@/components/characters/PlayButton.vue";
 
-const pathCharacter = ref("1");
+const pathCharacter = ref(null as string | null);
 
 const getNameFromPath = (path: string) => {
   const character = CHARACTERS.find((character) => character.path === path);
   return character?.name;
 };
+
+const getDescriptionFromPath = (path: string) => {
+  const character = CHARACTERS.find((character) => character.path === path);
+  return character?.description;
+};
+
+const getUsernameFromLocalStorage = () => {
+  return localStorage.getItem("username");
+};
 </script>
 
 <template>
   <div class="h-screen w-screen bg-white flex">
-    <div class="w-1/2 bg-primary h-full p-14 flex flex-col gap-16">
-      <ClassicButton text="Retour" @click="router.push({ name: 'Landing' })" />
-      <span class="text-4xl font-bold"> Choisissez votre personnage</span>
-      <CharactersContainer @select-character="pathCharacter = $event" />
+    <div class="w-1/2 bg-primary h-full p-14 flex flex-col gap-12">
+      <div class="flex flex-col gap-16">
+        <ClassicButton
+          text="Retour"
+          @click="router.push({ name: 'Landing' })"
+        />
+        <span class="flex text-4xl font-bold">
+          {{ getUsernameFromLocalStorage() }}, choisi ton personnage !
+        </span>
+      </div>
+      <CharactersContainer
+        class="w-full"
+        @select-character="pathCharacter = $event"
+      />
 
       <PlayButton
+        :disabled="!pathCharacter"
         @click="
           router.push({ name: 'Game', params: { character: pathCharacter } })
         "
@@ -29,9 +49,14 @@ const getNameFromPath = (path: string) => {
     </div>
 
     <div class="w-1/2 h-full p-14 flex flex-col">
-      <span class="text-8xl font-bold uppercase text-blue-darker">{{
-        getNameFromPath(pathCharacter)
-      }}</span>
+      <span
+        class="text-8xl font-black uppercase text-blue-darker"
+        v-if="pathCharacter"
+        >{{ getNameFromPath(pathCharacter) }}</span
+      >
+      <span class="text-xl font-bold text-black" v-if="pathCharacter"
+        >{{ getDescriptionFromPath(pathCharacter) }}
+      </span>
       <div class="flex items-center gap-4">
         <video autoplay :src="`/src/assets/characters/${pathCharacter}.mp4`" />
       </div>

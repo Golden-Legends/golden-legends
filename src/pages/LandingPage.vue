@@ -4,6 +4,10 @@ import ClassicButton from "@/components/landing/ClassicButton.vue";
 import ClassicInput from "@/components/landing/ClassicInput.vue";
 
 import { Howl } from "howler";
+import PlayButton from "@/components/characters/PlayButton.vue";
+import { ref } from "vue";
+import { UserService } from "@/services/user-service.ts";
+import { toast } from "vue-sonner";
 
 const musiqueAccueil = new Howl({
   src: ["./sounds/musiqueAccueilShort.m4a"],
@@ -12,10 +16,18 @@ const musiqueAccueil = new Howl({
   volume: 0.1, // Volume par défaut
 });
 
-const stopMusicAndRedirect = () => {
-  musiqueAccueil.stop(); // Arrêter la musique
-  router.push({ name: "Character" });
+const stopMusicAndRedirect = async () => {
+  try {
+    await UserService.isUsernameValid(username.value);
+    musiqueAccueil.stop();
+    localStorage.setItem("username", username.value);
+    await router.push({ name: "Character" });
+  } catch (error) {
+    toast.error("Ce nom d'utilisateur est déjà pris.");
+  }
 };
+
+const username = ref("");
 
 const router = useRouter();
 </script>
@@ -31,8 +43,14 @@ const router = useRouter();
             @click="router.push({ name: 'Login' })"
           />
           <span class="text-2xl font-bold">OU</span>
-          <ClassicInput placeholder="Ex : XxGamerdu12xX" />
-          <ClassicButton text="JOUER" @click="stopMusicAndRedirect" />
+          <ClassicInput
+            placeholder="Ex : XxGamerdu12xX"
+            @update-username="username = $event"
+          />
+          <PlayButton
+            :disabled="username.length <= 0"
+            @click="stopMusicAndRedirect"
+          />
         </div>
       </div>
     </div>
