@@ -1,12 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps<{
+  disabled: boolean;
+}>();
+</script>
 
 <template>
   <button
-    class="group py-2 px-6 border-2 border-blue-darker bg-blue-lighter rounded-lg text-2xl font-bold w-64 specific-shadow hover:bg-blue-darker hover:border-blue-lighter transition-all duration-300"
+    :disabled="props.disabled"
+    class="group py-2 px-6 border-2 w-full border-blue-darker bg-blue-darker rounded-lg text-2xl text-white font-bold specific-shadow uppercase hover:bg-end-blue-gradient disabled:opacity-30 transition-all duration-300"
   >
-    <span class="group-hover:text-white transition-all duration-300"
-      >Jouer</span
-    >
+    <span>Jouer</span>
   </button>
 </template>
 
