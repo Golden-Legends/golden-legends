@@ -7,25 +7,21 @@ import {
     Vector3,
   } from "@babylonjs/core";
   
-  export class StationScore {
+  export class TpGame {
     private _scene: Scene;
     public assets;
     // private animations: Animation[] = [];
     private pnjPositions: Vector3[] = [
-      //1er groupe
-      new Vector3(-189, 2.75, -6),
-      //2eme groupe
-      new Vector3(-259.91, 2.75, -135.21),
-      // //3eme groupe
-      new Vector3(-178.4, 2.75, -77.9),
-      //4eme groupe
-      new Vector3(-181.2, 2.75, -124.9),
-      //5eme groupe
-      new Vector3(-59, 2.75, -72),
-        //6eme groupe
-      new Vector3(-132.4, 2.75, 32),
-        //7eme groupe
-      new Vector3(-144.6, 2.75, 32),
+      //haut gauche
+      new Vector3(-184.8, 5.6, -114.9),
+      new Vector3(-190.7, 5.6, -109.3),
+      new Vector3(-192.85, 5.6, -101.3),
+      new Vector3(-191.9, 5.6, -94.43),
+      //bas droite
+      new Vector3(-173.4, 5.6, -87.58),
+      new Vector3(-167.8, 5.6, -93.3),
+      new Vector3(-165.2, 5.6, -101.36),
+      new Vector3(-166.3, 5.6, -109.2),
     ];
   
     private cube: Mesh[] = [];
@@ -42,7 +38,6 @@ import {
   
         this.initCube(position, i);
       }
-      //faire bouger le "i"
       this.registerPickUpActions();
     }
   
@@ -69,10 +64,10 @@ import {
               parameter: this.player,
             },
             () => {
-                document.getElementById("scoreboard-station-dialog")!.style.display = "block";
-                document.getElementById("scoreboard-station-dialog")!.style.position = "absolute";
-                document.getElementById("scoreboard-station-dialog")!.style.bottom = "8";
-                document.getElementById("scoreboard-station-dialog")!.style.left = "8";
+                document.getElementById("tpGame-dialog")!.style.display = "block";
+                document.getElementById("tpGame-dialog")!.style.position = "absolute";
+                document.getElementById("tpGame-dialog")!.style.bottom = "8";
+                document.getElementById("tpGame-dialog")!.style.left = "8";
             },
           ),
         );
@@ -84,7 +79,7 @@ import {
               parameter: this.player,
             },
             () => {
-                document.getElementById("scoreboard-station-dialog")!.style.display = "none";
+                document.getElementById("tpGame-dialog")!.style.display = "none";
             },
           ),
         );
