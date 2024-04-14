@@ -26,4 +26,19 @@ export const CHARACTERS = [
     path: "5",
     description: "The best of the worst",
   },
+  {
+    name: "Chaimae",
+    path: "6",
+    description: "The best of the worst",
+  },
+  {
+    name: "Adam",
+    path: "7",
+    description: "The best of the worst",
+  },
+  {
+    name: "Truc",
+    path: "8",
+    description: "The best of the worst",
+  },
 ];
