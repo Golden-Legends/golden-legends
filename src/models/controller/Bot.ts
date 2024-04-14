@@ -50,7 +50,7 @@ export class Bot {
         this.scene = scene;
         this.assetPath = assetPath;
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
-        this.transform.position = new Vector3(startPos.x, startPos.y * (PLAYER_HEIGHT / 2), startPos.z);
+        this.transform.position = new Vector3(startPos.x, startPos.y * (PLAYER_HEIGHT / 2) + 0.2, startPos.z);
         this.transform.isVisible = false; // mettre à faux par la suites
         this.endGame = endMesh;
         this.endGame.actionManager = new ActionManager(this.scene);
