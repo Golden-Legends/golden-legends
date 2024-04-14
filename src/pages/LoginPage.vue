@@ -3,33 +3,68 @@ import { ref } from "vue";
 import ConnexionButton from "@/components/connexion/ConnexionButton.vue";
 import { UserService } from "@/services/user-service.ts";
 import { useRouter } from "vue-router";
+import { toast } from "vue-sonner";
 
 const router = useRouter();
 const toggle = ref("login");
 
-const email = ref("");
 const password = ref("");
+const password_confirm = ref("");
 const username = ref("");
+
+const checkPassword = () => {
+  return password.value === password_confirm.value;
+};
 
 const login = async () => {
   try {
     await UserService.login(username.value, password.value);
-    await router.push({ name: "Game" });
-  } catch (error) {}
+    localStorage.setItem("username", username.value);
+    await router.push({ name: "Character" });
+  } catch (error) {
+    toast.error("Impossible de se connecter. Veuillez réessayer.");
+  }
 };
 
 const register = async () => {
   try {
-    await UserService.register(username.value, email.value, password.value);
-    await router.push({ name: "Game" });
-  } catch (error) {}
+    // Basic validation
+    if (!username.value || !password.value) {
+      throw new Error("Veuillez remplir tous les champs.");
+    }
+
+    // More specific validation
+    if (!checkPassword()) {
+      throw new Error("Les mots de passe ne correspondent pas.");
+    }
+
+    // Register user
+    await UserService.register(username.value, password.value);
+    localStorage.setItem("username", username.value);
+
+    await router.push({ name: "Character" });
+  } catch (error: any) {
+    if (error.response && error.response.status === 409) {
+      toast.error(
+        "Ce nom d'utilisateur est déjà pris. Veuillez en choisir un autre.",
+      );
+    } else if (error.response && error.response.status === 400) {
+      toast.error(
+        "Le format du nom d'utilisateur ou du mot de passe est incorrect.",
+      );
+    } else {
+      toast.error(
+        "Une erreur s'est produite lors de l'inscription. Veuillez réessayer.",
+      );
+    }
+  }
 };
 </script>
 
 <template>
-  <div class="w-screen h-screen flex flex-col items-center mt-20">
+  <div class="flex flex-col items-center">
     <div
-      class="flex items-center gap-1 border bg-white h-fit w-fit p-2 rounded-lg"
+      class="flex items-center gap-1 border bg-white h-fit w-fit p-2 rounded-lg mt-20"
     >
       <button
         class="p-3 rounded transition-all duration-300"
@@ -92,22 +127,23 @@ const register = async () => {
       </div>
 
       <div class="flex flex-col">
-        <label class="text-lg font-bold text-blue-darker">Email</label>
-        <input
-          type="email"
-          class="py-2 px-4 border-2 border-blue-darker bg-blue-lighter rounded-lg font-bold w-72"
-          placeholder="lebgdu12@gmail.com"
-          v-model="email"
-        />
-      </div>
-
-      <div class="flex flex-col">
         <label class="text-lg font-bold text-blue-darker">Mot de passe</label>
         <input
           type="password"
           class="py-2 px-4 border-2 border-blue-darker bg-blue-lighter rounded-lg font-bold w-72"
           placeholder="lebgdu12"
           v-model="password"
+        />
+      </div>
+      <div class="flex flex-col">
+        <label class="text-lg font-bold text-blue-darker"
+          >Confirmer le mot de passe</label
+        >
+        <input
+          type="password"
+          class="py-2 px-4 border-2 border-blue-darker bg-blue-lighter rounded-lg font-bold w-72"
+          placeholder="lebgdu12"
+          v-model="password_confirm"
           @keyup.enter="register"
         />
       </div>

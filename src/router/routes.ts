@@ -3,12 +3,18 @@ import LandingPage from "../pages/LandingPage.vue";
 import BabylonPage from "../pages/BabylonPage.vue";
 import LoginPage from "../pages/LoginPage.vue";
 import SandboxPage from "../pages/SandboxPage.vue";
+import CharacterSelectionPage from "@/pages/CharacterSelectionPage.vue";
 
 const routes = [
   {
     path: "/",
     name: "Landing",
     component: LandingPage,
+  },
+  {
+    path: "/character",
+    name: "Character",
+    component: CharacterSelectionPage,
   },
   {
     path: "/game",

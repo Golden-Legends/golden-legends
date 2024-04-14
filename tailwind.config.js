@@ -12,6 +12,7 @@ export default {
         "end-red-gradient": "#6b0e1b",
         "begin-light-blue-gradient": "#90D9FF",
         "end-light-blue-gradient": "#0093E1",
+        primary: "#FFF7EB",
       },
     },
   },
