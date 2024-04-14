@@ -17,6 +17,7 @@ import { PnjTalk } from "./pnjTalk";
 import { PnjMobile } from "./pnjMobile";
 import { SoundManager } from "./sound";
 import { Voitures } from "./voitures";
+import { StationScore } from "./stationScore";
 
 export class Environment {
 	private _scene: Scene;
@@ -28,6 +29,7 @@ export class Environment {
 	public pnjTalk!: PnjTalk;
 	public pnjMobile!: PnjMobile;
 	public voitures!: Voitures;
+	public stationScore!: StationScore;
 
 	private gateInformations: gateInformation[] = [
 		{
@@ -70,7 +72,9 @@ export class Environment {
 		this.pnjMobile.init();
 		new SoundManager(this._scene);
 		this.voitures = new Voitures(this._scene);
-		this.voitures.init();		
+		this.voitures.init();
+		this.stationScore = new StationScore(this._scene, this.player?.mesh as Mesh);
+		this.stationScore.init();		
 	}
 
 	//Load all necessary meshes for the environment

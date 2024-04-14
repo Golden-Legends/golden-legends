@@ -96,6 +96,12 @@
     id="lose-jump-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+  <Dialog
+    name="Scoreboard"
+    :text="stationScoreboard"
+    id="scoreboard-station-dialog"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
   <MainOptions />
   <ClassicButton
     text="Passer"
@@ -138,6 +144,8 @@ const allObjetRecupText = "Tous les objets olympiques ont été ramassés !";
 //jump message
 const victoryJumpText = "Vous avez réussi à dompter les plateformes mouvantes. Voici une trainée en récompense !";
 const loseJumpText = "Pas pour cette fois... Retente ta chance !";
+//scoreboard station
+const stationScoreboard = "GUI Scoreboard TODO...";
 onMounted(() => {
   if (bjsCanvas.value) {
     new App(bjsCanvas.value);
