@@ -18,6 +18,7 @@ import FoundObjectsContainer, {
   TBF_OBJECT,
 } from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 import { ref } from "vue";
+import SoundButton from "@/components/SoundButton.vue";
 
 const longDialogText =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
@@ -148,6 +149,9 @@ const objects = [
       </SandboxContainer>
       <SandboxContainer name="Keypress interactions">
         <FoundObjectsContainer :objects="objects" />
+      </SandboxContainer>
+      <SandboxContainer name="Sound">
+        <SoundButton />
       </SandboxContainer>
     </div>
   </div>
