@@ -67,14 +67,14 @@ const register = async () => {
       class="flex items-center gap-1 border bg-white h-fit w-fit p-2 rounded-lg mt-20"
     >
       <button
-        class="p-3 rounded transition-all duration-300"
+        class="p-3 rounded transition-all duration-300 font-bold"
         :class="toggle === 'login' ? 'bg-blue-lighter/50' : ''"
         @click="toggle = 'login'"
       >
         Connexion
       </button>
       <button
-        class="p-3 rounded transition-all duration-300"
+        class="p-3 rounded transition-all duration-300 font-bold"
         :class="toggle === 'signup' ? 'bg-blue-lighter/50' : ''"
         @click="toggle = 'signup'"
       >
