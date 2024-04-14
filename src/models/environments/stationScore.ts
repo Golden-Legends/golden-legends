@@ -44,7 +44,6 @@ import {
       }
       //faire bouger le "i"
       this.registerPickUpActions();
-      
     }
   
   

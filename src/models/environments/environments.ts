@@ -18,6 +18,7 @@ import { PnjMobile } from "./pnjMobile";
 import { SoundManager } from "./sound";
 import { Voitures } from "./voitures";
 import { StationScore } from "./stationScore";
+import { TpGame } from "./tp";
 
 export class Environment {
 	private _scene: Scene;
@@ -30,6 +31,7 @@ export class Environment {
 	public pnjMobile!: PnjMobile;
 	public voitures!: Voitures;
 	public stationScore!: StationScore;
+	public tpGame!: TpGame;
 
 	private gateInformations: gateInformation[] = [
 		{
@@ -60,9 +62,9 @@ export class Environment {
 		// this.createSkybox(this._scene);
 
 		this.disableBuild(1,173);
-		this.invisibleBox(1,170);
+		this.invisibleBox(1,169);
 		this.disableCar(1,63);
-		this.invisibleBoxCar(1,20);
+		this.invisibleBoxCar(1,21);
 		this.loadSky();
 		this.pnj = new Pnj(this._scene);
 		this.pnj.init();
@@ -75,6 +77,8 @@ export class Environment {
 		this.voitures.init();
 		this.stationScore = new StationScore(this._scene, this.player?.mesh as Mesh);
 		this.stationScore.init();		
+		this.tpGame = new TpGame(this._scene, this.player?.mesh as Mesh);
+		this.tpGame.init();
 	}
 
 	//Load all necessary meshes for the environment

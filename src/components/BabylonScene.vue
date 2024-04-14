@@ -103,6 +103,12 @@
     id="scoreboard-station-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+  <Dialog
+    name="Game"
+    :text="tpGame"
+    id="tpGame-dialog"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
   <MainOptions />
   <ClassicButton
     text="Passer"
@@ -155,6 +161,8 @@ const victoryJumpText =
 const loseJumpText = "Pas pour cette fois... Retente ta chance !";
 //scoreboard station
 const stationScoreboard = "GUI Scoreboard TODO...";
+//TP game
+const tpGame = "GUI TP GAME TODO...";
 onMounted(() => {
   if (bjsCanvas.value) {
     new App(bjsCanvas.value);
