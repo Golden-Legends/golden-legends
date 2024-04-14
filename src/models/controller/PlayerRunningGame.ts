@@ -70,7 +70,7 @@ export class PlayerRunningGame {
         this._input = input ;
         this._camera
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
-        this.transform.position = new Vector3(this._x, this._y * 3, this._z);
+        this.transform.position = new Vector3(this._x, this._y + 0.9, this._z);
         this.transform.isVisible = false; // mettre à faux par la suites
         if (activeCamera) {
             this._camera = this.createCameraPlayer(this.transform);
