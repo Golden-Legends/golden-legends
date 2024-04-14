@@ -60,9 +60,9 @@ export class Environment {
 		// this.createSkybox(this._scene);
 
 		this.disableBuild(1,173);
-		this.invisibleBox(1,170);
+		this.invisibleBox(1,169);
 		this.disableCar(1,63);
-		this.invisibleBoxCar(1,20);
+		this.invisibleBoxCar(1,21);
 		this.loadSky();
 		this.pnj = new Pnj(this._scene);
 		this.pnj.init();
