@@ -97,7 +97,7 @@ export class RunningGameState extends GameState {
             this.runUpdateAndRender();        
 
             this._camera = new FreeCamera("camera100m", new Vector3(-12, 10, 20), this.scene);
-            this._camera.setTarget(startMesh.position);  
+            this._camera.setTarget(startMesh.getAbsolutePosition());  
                         
             document.getElementById("runningGame-skip-button")!.style.display = "block";
             document.getElementById("runningGame-skip-button")!.addEventListener("click", () => {
