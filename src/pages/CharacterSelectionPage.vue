@@ -25,14 +25,16 @@ const getUsernameFromLocalStorage = () => {
 
 <template>
   <div class="h-screen w-screen bg-white flex">
-    <div class="w-1/2 bg-primary h-full p-14 flex flex-col gap-12">
+    <div
+      class="w-3/5 h-screen bg-primary p-14 flex flex-col gap-12 overflow-auto"
+    >
       <div class="flex flex-col gap-16">
         <ClassicButton
           text="Retour"
           @click="router.push({ name: 'Landing' })"
         />
         <span class="flex text-4xl font-bold">
-          {{ getUsernameFromLocalStorage() }}, choisi ton personnage !
+          {{ getUsernameFromLocalStorage() }}, choisis ton personnage !
         </span>
       </div>
       <CharactersContainer
@@ -48,7 +50,7 @@ const getUsernameFromLocalStorage = () => {
       />
     </div>
 
-    <div class="w-1/2 h-full p-14 flex flex-col">
+    <div class="w-2/5 h-screen p-14 flex flex-col">
       <span
         class="text-8xl font-black uppercase text-blue-darker"
         v-if="pathCharacter"

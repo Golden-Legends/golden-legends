@@ -16,13 +16,16 @@ const musiqueAccueil = new Howl({
   volume: 0.1, // Volume par défaut
 });
 
+const error = ref(false);
+
 const stopMusicAndRedirect = async () => {
   try {
     await UserService.isUsernameValid(username.value);
     musiqueAccueil.stop();
     localStorage.setItem("username", username.value);
     await router.push({ name: "Character" });
-  } catch (error) {
+  } catch (e) {
+    error.value = true;
     toast.error("Ce nom d'utilisateur est déjà pris.");
   }
 };
@@ -44,6 +47,7 @@ const router = useRouter();
           />
           <span class="text-2xl font-bold">OU</span>
           <ClassicInput
+            :class="{ 'border-red-500 border-2': error }"
             placeholder="Ex : XxGamerdu12xX"
             @update-username="username = $event"
           />

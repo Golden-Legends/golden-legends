@@ -4,7 +4,7 @@ import { CHARACTERS } from "@/utils/constants.ts";
 </script>
 
 <template>
-  <div class="flex gap-12 flex-wrap">
+  <div class="flex gap-10 flex-wrap">
     <Character
       v-for="character in CHARACTERS"
       :key="character.path"
