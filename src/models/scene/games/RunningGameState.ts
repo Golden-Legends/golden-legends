@@ -108,7 +108,6 @@ export class RunningGameState extends GameState {
                         
             document.getElementById("runningGame-skip-button")!.style.display = "block";
             document.getElementById("runningGame-skip-button")!.addEventListener("click", () => {
-                console.log("skip")
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
