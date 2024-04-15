@@ -110,7 +110,7 @@
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <MainOptions />
-  <!-- RUNNING GAME -->
+  <!-- RUNNINGGAME -->
   <ClassicButton
     text="Passer"
     name="runningGame-skip-button"
@@ -128,6 +128,12 @@
     id="runningGame-timer"
     class="hidden absolute bottom-12 right-12" 
   />
+  <Results title="100m"
+    name="runningGame-results"
+    id="runningGame-results"
+    class="left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2" >
+      <ResultsContent />  
+  </Results>
 </template>
 
 <script setup lang="ts">
@@ -138,7 +144,8 @@ import Dialog from "@/components/gui/Dialog.vue";
 import ClassicButton from "@/components/landing/ClassicButton.vue";
 import SoundButton from "@/components/SoundButton.vue";
 import Timer from "@/components/gui/Timer.vue";
-
+import ResultsContent from "@/components/gui/results/ResultsContent.vue";
+import Results from "@/components/gui/results/Results.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
