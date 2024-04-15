@@ -126,13 +126,15 @@
   <Timer
     name="runningGame-timer"
     id="runningGame-timer"
-    class="hidden absolute bottom-12 right-12" 
+    class="hidden absolute bottom-12 right-12"
   />
-  <Results title="100m"
+  <Results
+    title="100m"
     name="runningGame-results"
     id="runningGame-results"
-    class="left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2" >
-      <ResultsContent />  
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+    <ResultsContent />
   </Results>
 </template>
 
