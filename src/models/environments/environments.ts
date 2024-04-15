@@ -7,8 +7,10 @@ import {
 	ActionManager,
 	Mesh,
 	AssetsManager,
+	Color3,
+	Texture,
 } from "@babylonjs/core";
-import { SkyMaterial } from "@babylonjs/materials";
+import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
 import { gateInformation } from "../intefaces/EnvironmentsInterfaces";
 import { Player } from "../controller/Player";
 import { InGameState } from "../scene/InGameState";
@@ -32,10 +34,12 @@ export class Environment {
 	public voitures!: Voitures;
 	public stationScore!: StationScore;
 	public tpGame!: TpGame;
+	public waterMaterial!: WaterMaterial;
+	private skyBox!: Mesh;
 
 	private gateInformations: gateInformation[] = [
 		{
-			position: new Vector3(0, 0, 20),
+			position: new Vector3(-175, 2.75, -5),
 			rotation: 0,
 			name: "runningGate",
 
@@ -62,7 +66,7 @@ export class Environment {
 		// this.createSkybox(this._scene);
 
 		this.disableBuild(1,173);
-		this.invisibleBox(1,169);
+		this.invisibleBox(1,172);
 		this.disableCar(1,63);
 		this.invisibleBoxCar(1,21);
 		this.loadSky();
@@ -79,6 +83,8 @@ export class Environment {
 		this.stationScore.init();		
 		this.tpGame = new TpGame(this._scene, this.player?.mesh as Mesh);
 		this.tpGame.init();
+		this.createSkybox(this._scene);
+		this.createWater();
 	}
 
 	//Load all necessary meshes for the environment
@@ -272,6 +278,36 @@ export class Environment {
 				mesh.isVisible = false;
 			}
 		}
+	}
+
+	public createWater() {
+		const waterMesh = this._scene.getMeshByName("Cube.063");
+		if (waterMesh) {
+			waterMesh.scaling = new Vector3(2000,1,2000);
+			waterMesh.position = new Vector3(0, -2, 0);	
+			this.waterMaterial = new WaterMaterial("water_material", this._scene);
+			this.waterMaterial.bumpTexture = new Texture(
+				"./assets/water/water_bump.jpg",
+				this._scene,
+			);
+			this.waterMaterial.windForce = 3;
+			this.waterMaterial.waveHeight = 0.8;
+			this.waterMaterial.alpha = 0.9;
+			this.waterMaterial.waterColor = new Color3(0.1, 0.1, 0.6);
+			this.waterMaterial.colorBlendFactor = 0.5;
+			this.waterMaterial.addToRenderList(this.skyBox);
+			waterMesh.material = this.waterMaterial;
+		}
+	}
+
+	public createSkybox(scene: Scene): void {
+		const skyMaterial = new SkyMaterial("skyMaterial", scene);
+		skyMaterial.backFaceCulling = false;
+		skyMaterial.turbidity = 10;
+		skyMaterial.luminance = 1;
+		skyMaterial.inclination = 0;
+		this.skyBox = MeshBuilder.CreateBox("skyBox", { size: 2500.0 }, scene);
+		this.skyBox.material = skyMaterial;
 	}
 
 }

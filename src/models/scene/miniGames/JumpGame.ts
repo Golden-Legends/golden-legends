@@ -83,6 +83,7 @@ export class JumpGame {
 
     // Continuer à afficher les plateformes progressivement
     this.player.onCollide = (collidedMesh?: AbstractMesh) => {
+      // console.log("collidedMesh", collidedMesh);
       if (
         collidedMesh &&
         collidedMesh.name.startsWith("platform") &&
@@ -112,7 +113,7 @@ export class JumpGame {
         }, 100); // Délai de 1 seconde avant d'afficher la prochaine plateforme
       }
 
-      if (collidedMesh && collidedMesh.name === "Cube.063") {
+      if (collidedMesh && collidedMesh.name === "fondBassin") {
         // Afficher un message de défaite et réinitialiser le jeu
         this.showDefeatMessage();
         console.log("endgame");
