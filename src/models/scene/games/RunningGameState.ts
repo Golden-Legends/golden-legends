@@ -108,17 +108,24 @@ export class RunningGameState extends GameState {
             });
 
             this.CreateCameraMouv().then(() => {
-                document.getElementById("runningGame-ready-button")!.style.display = "block";
+                document.getElementById("runningGame-ready-button")!.style.display = "";
+                this.initGui();
+
                 document.getElementById("runningGame-ready-button")!.addEventListener("click", () => {
                     this.startCountdown(["À vos marques", "Prêt", "Partez !"]);
                     document.getElementById("runningGame-ready-button")!.style.display = "none";
                     this.game.canvas.focus();
+
                 });
             });
 
         } catch (error) {
             throw new Error("erreur.");
         }
+    }
+
+    initGui() {
+        document.getElementById("runningGame-timer")!.style.display = "block";
     }
 
     /**
@@ -298,6 +305,7 @@ export class RunningGameState extends GameState {
         this._camera.animations.push(camAnim);
 
         await this.scene.beginAnimation(this._camera, 0, 14 * fps).waitAsync();
+        document.getElementById("runningGame-skip-button")!.style.display = "none";
     }
 
     AfterCamAnim(): void {
