@@ -7,6 +7,7 @@ import { Bot } from "../../controller/Bot";
 import RunningGameSettings from "../../../assets/runningGame.json";
 import { Inspector } from '@babylonjs/inspector';
 import { store } from "@/components/gui/store.ts";
+import { Result } from "@/components/gui/results/ResultsContent.vue";
 
 interface line {
     start : string;
@@ -41,6 +42,7 @@ export class RunningGameState extends GameState {
     private raceStartTime: number = 0;
 
     private player !: PlayerRunningGame;
+    private playerName : string = "PlayerPseudo";
 
     private botArray : Bot[] = [];
 
@@ -53,6 +55,9 @@ export class RunningGameState extends GameState {
     private isMultiplayer: boolean = false;
     private difficulty: "easy" | "intermediate" | "hard";
     private timer: number = 0;
+
+    private results : Result[] = [];
+    private scoreboardIsShow : boolean = false;
 
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -93,7 +98,7 @@ export class RunningGameState extends GameState {
 
             // on init le jeu
             if (!this.isMultiplayer) {
-                this.runSoloGame();
+                await this.runSoloGame();
             }           
             this.game.engine.hideLoadingUI(); 
             this.runUpdateAndRender();        
@@ -136,9 +141,9 @@ export class RunningGameState extends GameState {
      * @description Permet de lancer le jeu en solo
      * @description Allows you to start the game solo
      */
-    private runSoloGame() {
-        this.initSoloWithBot(this.difficulty);
-        
+    private async runSoloGame() {
+        await this.initSoloWithBot(this.difficulty);
+        this.buildScoreBoard();
     }
 
     /**
@@ -169,7 +174,42 @@ export class RunningGameState extends GameState {
     exit(): void {
         console.log("exit running game");
     }
+
+    buildScoreBoard() : void {
+        this.results.push({place: -1, name: this.playerName, result: "waiting..."});
+        this.botArray.forEach((bot, index) => {
+            this.results.push({place: -(index + 2), name: bot.getName(), result: "waiting..."});
+        });
+        store.commit('setResults', this.results);
+    }
+
+    showScoreBoard(): void {
+        document.getElementById("runningGame-results")!.style.display = "block";
+        this.scoreboardIsShow = true;
+    }   
     
+    timerToSMS (time: number) : string {
+        const seconds = Math.floor(time / 1000);
+        const milliseconds = time % 100;
+        return `${seconds}.${milliseconds < 10 ? "0" : ""}${milliseconds}`;
+    };
+
+    createFinaleScoreBoard() {
+        const resultsTemp : Result[] = []
+        resultsTemp.push({place: 0, name: this.playerName, result: this.timerToSMS(Math.round(this.player.getEndTime() - this.raceStartTime))});
+        resultsTemp.push(...this.botArray.map((bot, index) => {
+            return {place: index + 1, name: bot.getName(), result: this.timerToSMS(Math.round(bot.getEndTime() - this.raceStartTime))};
+        }
+        ));
+        this.results = resultsTemp.sort((a, b) => {
+            return parseFloat(a.result) - parseFloat(b.result);
+        });
+        this.results.forEach((result, index) => {
+            result.place = index + 1;
+        });
+        store.commit('setResults', this.results);
+    }
+
     /**
      * 
      * @returns 
@@ -179,35 +219,39 @@ export class RunningGameState extends GameState {
     update(): void {
         try 
         {  
-            this.player._updateGroundDetection();
-
-            if (this.endGame || !this.countdownInProgress) return;
+            // regarde si la course dure plus de 25 secondes
             const currentTime = performance.now();
             const elapsedTime = (currentTime - this.raceStartTime) / 1000;
             // affiche le temps dans la console
             if (elapsedTime > this.limitTime) {
                 this.endGame = true;
                 console.log("Game over: Time limit reached.");
+                if (!this.scoreboardIsShow) { 
+                    this.showScoreBoard();
+                }
                 return;
             }
 
             if (this.player.getIsEndGame() && this.botArray.every(bot => bot.getIsEndGame())) {
                 this.endGame = true;
-                console.log("Game over: All players have reached the end.");
-                console.log("Player time: " + (this.player.getEndTime() - this.raceStartTime) / 1000);
-                this.botArray.forEach(bot => console.log(bot.getName() + " time: " + (bot.getEndTime() - this.raceStartTime) / 1000));
+            }
+            
+            this.player._updateGroundDetection();
+            
+            if (this.endGame && !this.scoreboardIsShow) {
+                this.createFinaleScoreBoard();
+                this.showScoreBoard();
                 return;
             }
+
+            if (!this.countdownInProgress) return;
 
             this.player.play();
             this.botArray.forEach(bot => {
                 bot.play();
             });
 
-            if (!this.player.getIsEndGame() ) {
-                this.timer = Math.round((performance.now() - this.raceStartTime));
-            }
-            
+            this.timer = Math.round((this.player.getCurrentTime() - this.raceStartTime));
             store.commit('setTimer', this.timer);
 
         } catch (error) 

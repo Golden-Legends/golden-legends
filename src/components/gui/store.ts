@@ -29,8 +29,8 @@ export const store = createStore({
     setTimer (state, value) {
       state.timer = value
     },
-    setResult (state, value) {
-      state.result = value
+    setResults (state, value) {
+      state.results = value
     }
   }
 })
