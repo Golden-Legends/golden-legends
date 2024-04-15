@@ -206,15 +206,6 @@ export class Environment {
 					}	
 				}
 			}
-			else if(i == 45){
-				for(let j = 0; j <= 5; j++){
-					let mesh = this._scene.getMeshByName("build" + i + "_primitive" + j);
-					if(mesh){
-						mesh.checkCollisions = false;
-						mesh.isPickable = false;
-					}	
-				}
-			}
 			else{
 				let mesh = this._scene.getMeshByName("build" + i);
 				if(mesh){
