@@ -61,6 +61,8 @@ export class PlayerRunningGame {
     private isEndGame: boolean = false;
     private raceEndTime: number = 0;
 
+    private currentTime : number = 0;
+
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputRunningGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
@@ -133,6 +135,10 @@ export class PlayerRunningGame {
     public getEndTime() : number {
         return this.raceEndTime;
     }
+
+    public getCurrentTime() : number {
+        return this.currentTime;
+    }
     
     private setAnimation () : {run: AnimationGroup, walk: AnimationGroup, crouch: AnimationGroup, idle: AnimationGroup} { 
         const sprint = this.animationsGroup.find(ag => ag.name.includes("sprint"));
@@ -156,6 +162,7 @@ export class PlayerRunningGame {
 
     public processInput(): void {
         const currentTime = performance.now();
+        this.currentTime = currentTime;
     
         // Check if the minimum delay between each alternation is respected
         if (currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {

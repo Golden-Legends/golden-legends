@@ -123,7 +123,7 @@
     id="runningGame-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
   />
-  <Timer 
+  <Timer
     name="runningGame-timer"
     id="runningGame-timer"
     class="hidden absolute bottom-12 right-12" 
@@ -138,6 +138,7 @@ import Dialog from "@/components/gui/Dialog.vue";
 import ClassicButton from "@/components/landing/ClassicButton.vue";
 import SoundButton from "@/components/SoundButton.vue";
 import Timer from "@/components/gui/Timer.vue";
+
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs

@@ -6,6 +6,7 @@ import { PlayerRunningGame } from "../../controller/PlayerRunningGame";
 import { Bot } from "../../controller/Bot";
 import RunningGameSettings from "../../../assets/runningGame.json";
 import { Inspector } from '@babylonjs/inspector';
+import { store } from "@/components/gui/store.ts";
 
 interface line {
     start : string;
@@ -51,6 +52,7 @@ export class RunningGameState extends GameState {
 
     private isMultiplayer: boolean = false;
     private difficulty: "easy" | "intermediate" | "hard";
+    private timer: number = 0;
 
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -180,7 +182,6 @@ export class RunningGameState extends GameState {
             this.player._updateGroundDetection();
 
             if (this.endGame || !this.countdownInProgress) return;
-
             const currentTime = performance.now();
             const elapsedTime = (currentTime - this.raceStartTime) / 1000;
             // affiche le temps dans la console
@@ -202,6 +203,12 @@ export class RunningGameState extends GameState {
             this.botArray.forEach(bot => {
                 bot.play();
             });
+
+            if (!this.player.getIsEndGame() ) {
+                this.timer = Math.round((performance.now() - this.raceStartTime));
+            }
+            
+            store.commit('setTimer', this.timer);
 
         } catch (error) 
         {
