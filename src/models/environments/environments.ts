@@ -85,6 +85,7 @@ export class Environment {
 		this.tpGame.init();
 		this.createSkybox(this._scene);
 		this.createWater();
+		this.moveLogo();
 	}
 
 	//Load all necessary meshes for the environment
@@ -284,14 +285,14 @@ export class Environment {
 		const waterMesh = this._scene.getMeshByName("Cube.063");
 		if (waterMesh) {
 			waterMesh.scaling = new Vector3(2000,1,2000);
-			waterMesh.position = new Vector3(0, -2, 0);	
+			waterMesh.position = new Vector3(0, 0, 0);	
 			this.waterMaterial = new WaterMaterial("water_material", this._scene);
 			this.waterMaterial.bumpTexture = new Texture(
 				"./assets/water/water_bump.jpg",
 				this._scene,
 			);
-			this.waterMaterial.windForce = 3;
-			this.waterMaterial.waveHeight = 0.8;
+			// this.waterMaterial.windForce = 3;
+			// this.waterMaterial.waveHeight = 0.8;
 			this.waterMaterial.alpha = 0.9;
 			this.waterMaterial.waterColor = new Color3(0.1, 0.1, 0.6);
 			this.waterMaterial.colorBlendFactor = 0.5;
@@ -308,6 +309,18 @@ export class Environment {
 		skyMaterial.inclination = 0;
 		this.skyBox = MeshBuilder.CreateBox("skyBox", { size: 2500.0 }, scene);
 		this.skyBox.material = skyMaterial;
+	}
+
+	public moveLogo() {
+		const animation = this._scene.getAnimationGroupByName("CubeAction.005");
+		const animation2 = this._scene.getAnimationGroupByName("CubeAction.004");
+		if (animation) {
+			// Lancer l'animation
+			animation.start(true); // Le paramètre true indique de rejouer l'animation même si elle est déjà en cours
+		} 
+		if(animation2){
+			animation2.start(true);
+		}
 	}
 
 }
