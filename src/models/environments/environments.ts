@@ -284,7 +284,7 @@ export class Environment {
 	public createWater() {
 		const waterMesh = this._scene.getMeshByName("Cube.063");
 		if (waterMesh) {
-			waterMesh.scaling = new Vector3(2000,1,2000);
+			waterMesh.scaling = new Vector3(750,1,750);
 			waterMesh.position = new Vector3(0, 0, 0);	
 			this.waterMaterial = new WaterMaterial("water_material", this._scene);
 			this.waterMaterial.bumpTexture = new Texture(
@@ -307,7 +307,7 @@ export class Environment {
 		skyMaterial.turbidity = 10;
 		skyMaterial.luminance = 1;
 		skyMaterial.inclination = 0;
-		this.skyBox = MeshBuilder.CreateBox("skyBox", { size: 2500.0 }, scene);
+		this.skyBox = MeshBuilder.CreateBox("skyBox", { size: 1000.0 }, scene);
 		this.skyBox.material = skyMaterial;
 	}
 
