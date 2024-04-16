@@ -321,6 +321,12 @@ export class Environment {
 		if(animation2){
 			animation2.start(true);
 		}
+		for(let i = 1; i <= 7; i++){
+			const animation3 = this._scene.getAnimationGroupByName("station" + i);
+			if(animation3){
+				animation3.start(true);
+			}
+		}
 	}
 
 }
