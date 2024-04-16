@@ -50,7 +50,7 @@ const getUsernameFromLocalStorage = () => {
       />
     </div>
 
-    <div class="w-2/5 h-screen p-14 flex flex-col">
+    <div class="w-2/5 h-screen p-14 flex flex-col bg-[#fdfdfd]">
       <span
         class="text-8xl font-black uppercase text-blue-darker"
         v-if="pathCharacter"

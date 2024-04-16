@@ -37,8 +37,8 @@ export const CHARACTERS = [
     description: "The best of the worst",
   },
   {
-    name: "Truc",
+    name: "Michel",
     path: "8",
-    description: "The best of the worst",
+    description: "The GOAT",
   },
 ];
