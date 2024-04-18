@@ -473,7 +473,7 @@ export class Player extends TransformNode {
 			this._camRoot.rotation.y += deltaX;
 	
 			// Ajustez la rotation de la caméra autour de l'axe X pour la rotation verticale
-			let newRotationX = this._yTilt.rotation.x - deltaY;
+			let newRotationX = this._yTilt.rotation.x + deltaY;
 			// Ajoutez des limites pour éviter une rotation complète vers le haut ou vers le bas
 			if (newRotationX > this.CAMERA_MIN_ANGLE && newRotationX < this.CAMERA_MAX_ANGLE) {
 				// console.log(newRotationX);
