@@ -92,8 +92,10 @@ export class Player extends TransformNode {
 	private _grounded: boolean;
 	private _jumpCount: number = 1;
 
-	private readonly CAMERA_MIN_ANGLE = -Math.PI / 14; // Limite de rotation vers le haut
-	private readonly CAMERA_MAX_ANGLE = Math.PI / 8; // Limite de rotation vers le bas
+	private readonly CAMERA_MIN_ANGLE = Math.PI / 12; // Limite de rotation vers le haut
+	private readonly CAMERA_MAX_ANGLE = Math.PI / 3; // Limite de rotation vers le bas
+	private isMouseVisible: boolean = true;
+
 
 	constructor(assets, scene: Scene, shadowGenerator: ShadowGenerator, input?) {
 		super("player", scene);
@@ -117,6 +119,7 @@ export class Player extends TransformNode {
 
 		//--COLLISIONS--
 		this.mesh.actionManager = new ActionManager(this.scene);
+		this._handleEscapeKey();
 	}
 
 	public setInput(input: PlayerInput | null) {
@@ -448,7 +451,45 @@ export class Player extends TransformNode {
 			this._updateFromControls();
 			this._updateGroundDetection();
 			this._animatePlayer();
+			this._updateCameraWithMouse();
 		}
+	}
+
+	private _updateCameraWithMouse(): void {
+		const mouseSensitivity = 0.000002; // Ajustez la sensibilité de la souris selon vos besoins
+
+		window.addEventListener('mousedown', () => {
+			// Cachez la souris lorsqu'elle est cliquée
+			this.isMouseVisible = false;
+			document.body.style.cursor = 'none'; // Cachez le curseur de la souris
+		});
+	
+		window.addEventListener('mousemove', (event) => {
+			if(this.isMouseVisible) return;
+			let deltaX = event.movementX * mouseSensitivity;
+			let deltaY = event.movementY * mouseSensitivity;
+	
+			// Ajustez la rotation de la caméra autour de l'axe Y pour la rotation horizontale
+			this._camRoot.rotation.y += deltaX;
+	
+			// Ajustez la rotation de la caméra autour de l'axe X pour la rotation verticale
+			let newRotationX = this._yTilt.rotation.x - deltaY;
+			// Ajoutez des limites pour éviter une rotation complète vers le haut ou vers le bas
+			if (newRotationX > this.CAMERA_MIN_ANGLE && newRotationX < this.CAMERA_MAX_ANGLE) {
+				// console.log(newRotationX);
+				this._yTilt.rotation.x = newRotationX;
+			}
+		});
+	}
+
+	private _handleEscapeKey(): void {
+		window.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') {
+				// Réinitialisez l'état de visibilité de la souris à true lorsque la touche "Échap" est pressée
+				this.isMouseVisible = true;
+				document.body.style.cursor = 'auto'; // Réaffichez le curseur de la souris
+			}
+		});
 	}
 
 	public activatePlayerCamera(): UniversalCamera {
