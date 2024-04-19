@@ -133,10 +133,6 @@ export class RunningGameState extends GameState {
         }
     }
 
-    initGui() {
-        document.getElementById("runningGame-timer")!.style.display = "flex";
-    }
-
     /**
      * 
      * @description Permet de lancer le jeu en solo
@@ -145,6 +141,11 @@ export class RunningGameState extends GameState {
     private async runSoloGame() {
         await this.initSoloWithBot(this.difficulty);
         this.buildScoreBoard();
+    }
+
+    initGui() {
+        document.getElementById("runningGame-timer")!.style.display = "flex";
+        store.commit('setTimer', 0.00);
     }
 
     /**
@@ -177,14 +178,15 @@ export class RunningGameState extends GameState {
     }
 
     buildScoreBoard() : void {
-        this.results.push({place: 1, name: this.playerName, result: "waiting..."});
+        this.results.push({place: 1, name: this.playerName, result: "No score !"});
         this.botArray.forEach((bot, index) => {
-            this.results.push({place: (index + 2), name: bot.getName(), result: "waiting..."});
+            this.results.push({place: (index + 2), name: bot.getName(), result: "No score !"});
         });
         store.commit('setResults', this.results);
     }
 
     showScoreBoard(): void {
+        this.createFinaleScoreBoard();
         document.getElementById("runningGame-results")!.style.display = "block";
         this.scoreboardIsShow = true;
     }   
@@ -196,18 +198,25 @@ export class RunningGameState extends GameState {
     };
 
     createFinaleScoreBoard() {
-        const resultsTemp : Result[] = []
-        resultsTemp.push({place: 0, name: this.playerName, result: this.timerToSMS(Math.round(this.player.getEndTime() - this.raceStartTime))});
-        resultsTemp.push(...this.botArray.map((bot, index) => {
-            return {place: index + 1, name: bot.getName(), result: this.timerToSMS(Math.round(bot.getEndTime() - this.raceStartTime))};
-        }
-        ));
-        this.results = resultsTemp.sort((a, b) => {
-            return parseFloat(a.result) - parseFloat(b.result);
+        const resultsTemp: Result[] = [];
+    
+        // Résultat du joueur
+        const playerResult = this.player.getEndTime() ? this.timerToSMS(Math.round(this.player.getEndTime() - this.raceStartTime)) : "no score";
+        resultsTemp.push({ place: 0, name: this.playerName, result: playerResult });
+    
+        // Résultats des bots
+        this.botArray.forEach((bot, index) => {
+            const botResult = bot.getEndTime() ? this.timerToSMS(Math.round(bot.getEndTime() - this.raceStartTime)) : "no score";
+            resultsTemp.push({ place: index + 1, name: bot.getName(), result: botResult });
         });
+    
+        // Tri des résultats
+        this.results = resultsTemp.sort((a, b) => parseFloat(a.result) - parseFloat(b.result));
         this.results.forEach((result, index) => {
             result.place = index + 1;
         });
+    
+        // Enregistrement des résultats dans le store
         store.commit('setResults', this.results);
     }
 
@@ -227,7 +236,6 @@ export class RunningGameState extends GameState {
             this.player._updateGroundDetection();
             
             if (this.endGame && !this.scoreboardIsShow) {
-                this.createFinaleScoreBoard();
                 this.showScoreBoard();
                 return;
             }
