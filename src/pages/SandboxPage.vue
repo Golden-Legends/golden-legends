@@ -11,13 +11,12 @@ import ResultsContent, {
   Result,
 } from "@/components/gui/results/ResultsContent.vue";
 import CommandContainer from "@/components/gui/commands/CommandContainer.vue";
-import ReadySteadyGo from "@/components/gui/running/ReadySteadyGo.vue";
+import RDSText from "@/components/gui/running/RDSText.vue";
 import KeyPressInteraction from "@/components/gui/KeyPressInteraction.vue";
 import Finish from "@/components/gui/running/Finish.vue";
 import FoundObjectsContainer, {
   TBF_OBJECT,
 } from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
-import { ref } from "vue";
 import SoundButton from "@/components/SoundButton.vue";
 
 const longDialogText =
@@ -139,7 +138,9 @@ const objects = [
         <CommandContainer class="mb-4" name="ACTION" :keys="['espace']" />
       </SandboxContainer>
       <SandboxContainer name="Départ">
-        <ReadySteadyGo class="mt-4" />
+        <RDSText text="À vos marques" />
+        <RDSText text="Prêt ?" />
+        <RDSText text="Partez" />
       </SandboxContainer>
       <SandboxContainer name="Terminée">
         <Finish class="mt-4" />
