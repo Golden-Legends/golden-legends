@@ -116,10 +116,11 @@ export class RunningGameState extends GameState {
 
             this.CreateCameraMouv().then(() => {
                 document.getElementById("runningGame-ready-button")!.style.display = "block";
+
                 this.initGui();
 
                 document.getElementById("runningGame-ready-button")!.addEventListener("click", () => {
-                    this.startCountdown(["À vos marques", "Prêt", "Partez !"]);
+                    this.startCountdown(["runningGame-text-1", "runningGame-text-2", "runningGame-text-3"]);
                     this.AfterCamAnim();
                     document.getElementById("runningGame-ready-button")!.style.display = "none";
                     this.game.canvas.focus();
@@ -145,6 +146,8 @@ export class RunningGameState extends GameState {
 
     initGui() {
         document.getElementById("runningGame-timer")!.style.display = "flex";
+        document.getElementById("runningGame-keyPressed")!.style.display = "block";
+
         store.commit('setTimer', 0.00);
     }
 
@@ -158,14 +161,20 @@ export class RunningGameState extends GameState {
     private startCountdown(countdownElements: string[]) {
         if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
         let countdownIndex = 0;
+        let previousElement = "";
     
         const countdownInterval = setInterval(() => {
             const countdownElement = countdownElements[countdownIndex];
+            if (previousElement !== "") document.getElementById(previousElement)!.style.display = "none";
+            document.getElementById(countdownElement)!.style.display = "block";
+            previousElement = countdownElement;
             console.log(countdownElement); // Affiche l'élément du compte à rebours dans la console
             countdownIndex++;
     
             if (countdownIndex >= countdownElements.length) {
                 clearInterval(countdownInterval);
+                document.getElementById(previousElement)!.style.display = "none";
+
                 // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
                 this.countdownInProgress = true;
                 this.raceStartTime = performance.now();
@@ -186,9 +195,16 @@ export class RunningGameState extends GameState {
     }
 
     showScoreBoard(): void {
-        this.createFinaleScoreBoard();
-        document.getElementById("runningGame-results")!.style.display = "block";
-        this.scoreboardIsShow = true;
+        document.getElementById("runningGame-text-finish")!.style.display = "block";
+        // attendre 2 secondes avant d'afficher le tableau des scores
+        setTimeout(() => {
+            this.createFinaleScoreBoard();
+            document.getElementById("runningGame-text-finish")!.style.display = "none";
+            document.getElementById("runningGame-results")!.style.display = "block";
+            this.scoreboardIsShow = true;
+        }, 2000);
+
+        
     }   
     
     timerToSMS (time: number) : string {

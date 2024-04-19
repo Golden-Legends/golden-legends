@@ -136,6 +136,26 @@
   >
     <ResultsContent />
   </Results>
+  <KeyPressInteraction :keys="['s', 'd']" 
+    name="runningGame-keyPressed"
+    id="runningGame-keyPressed"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+  <RDSText text="À vos marques" 
+    name="runningGame-text-1"
+    id="runningGame-text-1"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
+  <RDSText text="Prêt ?" 
+    name="runningGame-text-2"
+    id="runningGame-text-2"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
+  <RDSText text="Partez" 
+    name="runningGame-text-3"
+    id="runningGame-text-3"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
+  <Finish
+    name="runningGame-text-finish"
+    id="runningGame-text-finish"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
 </template>
 
 <script setup lang="ts">
@@ -148,6 +168,9 @@ import SoundButton from "@/components/SoundButton.vue";
 import Timer from "@/components/gui/Timer.vue";
 import ResultsContent from "@/components/gui/results/ResultsContent.vue";
 import Results from "@/components/gui/results/Results.vue";
+import KeyPressInteraction from "@/components/gui/KeyPressInteraction.vue";
+import RDSText from "@/components/gui/running/RDSText.vue";
+import Finish from "@/components/gui/running/Finish.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
