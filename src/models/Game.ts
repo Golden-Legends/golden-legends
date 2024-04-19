@@ -3,6 +3,7 @@ import { GameState } from "./GameState";
 import "@babylonjs/loaders/glTF";
 import { CustomLoadingScreen } from "./loadingScreen/customLoadingScreen";
 import {InGameState} from "./scene/InGameState.ts";
+import { RunningGameState } from "./scene/games/RunningGameState.ts";
 
 export class Game {
   public engine: Engine;
@@ -15,7 +16,9 @@ export class Game {
     this.loadingScreen = new CustomLoadingScreen("Loading...");
     this.setLoadingScreen(this.loadingScreen);
     this.canvas = canvas;
-    this.changeState(new InGameState(this, canvas));
+    // this.changeState(new InGameState(this, canvas));
+    this.changeState(new RunningGameState(this, canvas));
+
   }
 
   public setLoadingScreen (customLoadingScreen : ILoadingScreen) {

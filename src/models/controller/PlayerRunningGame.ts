@@ -88,8 +88,7 @@ export class PlayerRunningGame {
                 () => {
                     this.isEndGame = true;
                     this.stopAnimations();
-                    this.raceEndTime = performance.now();
-                    this.currentTime = this.raceEndTime;
+                    this.raceEndTime = this.currentTime;
                     // console.log(`Joueur fin : `, this.raceEndTime);
                 }
             )
@@ -120,8 +119,9 @@ export class PlayerRunningGame {
         this._isCrouching = true;        
     }
 
-    public play () {
-        this._deltaTime = this.scene.getEngine().getDeltaTime() / 10;
+    public play (delta : number, currentTime : number) {
+        this._deltaTime = delta / 10;
+        this.currentTime = currentTime;
         if (!this.isEndGame) {
             this.processInput();
             this.movePlayer();
@@ -135,10 +135,6 @@ export class PlayerRunningGame {
 
     public getEndTime() : number {
         return this.raceEndTime;
-    }
-
-    public getCurrentTime() : number {
-        return this.currentTime;
     }
     
     private setAnimation () : {run: AnimationGroup, walk: AnimationGroup, crouch: AnimationGroup, idle: AnimationGroup} { 
@@ -162,11 +158,9 @@ export class PlayerRunningGame {
     }
 
     public processInput(): void {
-        const currentTime = performance.now();
-        this.currentTime = currentTime;
     
         // Check if the minimum delay between each alternation is respected
-        if (currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {
+        if (this.currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {
             return;
         }
     
@@ -179,7 +173,7 @@ export class PlayerRunningGame {
                 this.baseSpeed += this.acceleration;
                 this.leftPressed = this._input.left;
                 this.rightPressed = this._input.right;
-                this.lastSwitchTime = currentTime; // Update the time of the last alternation
+                this.lastSwitchTime = this.currentTime; // Update the time of the last alternation
             }
         }
         // If neither key is pressed or both keys are pressed

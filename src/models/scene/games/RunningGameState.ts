@@ -58,6 +58,7 @@ export class RunningGameState extends GameState {
 
     private results : Result[] = [];
     private scoreboardIsShow : boolean = false;
+    private currentTime : number;
 
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -65,6 +66,7 @@ export class RunningGameState extends GameState {
         this.settings = RunningGameSettings;
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
+        this.currentTime = 0;
     }
 
     async enter(): Promise<void>{
@@ -175,9 +177,9 @@ export class RunningGameState extends GameState {
     }
 
     buildScoreBoard() : void {
-        this.results.push({place: -1, name: this.playerName, result: "waiting..."});
+        this.results.push({place: 1, name: this.playerName, result: "waiting..."});
         this.botArray.forEach((bot, index) => {
-            this.results.push({place: -(index + 2), name: bot.getName(), result: "waiting..."});
+            this.results.push({place: (index + 2), name: bot.getName(), result: "waiting..."});
         });
         store.commit('setResults', this.results);
     }
@@ -218,19 +220,6 @@ export class RunningGameState extends GameState {
     update(): void {
         try 
         {  
-            // regarde si la course dure plus de 25 secondes
-            const currentTime = performance.now();
-            const elapsedTime = (currentTime - this.raceStartTime) / 1000;
-            // affiche le temps dans la console
-            if (elapsedTime > this.limitTime) {
-                this.endGame = true;
-                console.log("Game over: Time limit reached.");
-                if (!this.scoreboardIsShow) { 
-                    this.showScoreBoard();
-                }
-                return;
-            }
-
             if (this.player.getIsEndGame() && this.botArray.every(bot => bot.getIsEndGame())) {
                 this.endGame = true;
             }
@@ -243,19 +232,39 @@ export class RunningGameState extends GameState {
                 return;
             }
 
+            if (this.endGame) return;
             if (!this.countdownInProgress) return;
-
-            this.player.play();
+            this.currentTime = performance.now();
+            const deltaTime = this.scene.getEngine().getDeltaTime();
+            this.checkGameIsOutOfTime();
+            this.player.play(deltaTime, this.currentTime);
             this.botArray.forEach(bot => {
-                bot.play();
+                bot.play(deltaTime, this.currentTime);
             });
 
-            this.timer = Math.round((this.player.getCurrentTime() - this.raceStartTime));
-            store.commit('setTimer', this.timer);
+            if (!this.player.getIsEndGame()) {
+                this.timer = Math.round((this.currentTime - this.raceStartTime));
+                store.commit('setTimer', this.timer);
+            }
+
 
         } catch (error) 
         {
             throw new Error("error : Running game class update." + error);
+        }
+    }
+
+    checkGameIsOutOfTime() {
+        // regarde si la course dure plus de 25 secondes
+        const elapsedTime = (this.currentTime - this.raceStartTime) / 1000;
+        // affiche le temps dans la console
+        if (elapsedTime > this.limitTime) {
+            this.endGame = true;
+            console.log("Game over: Time limit reached.");
+            if (!this.scoreboardIsShow) { 
+                this.showScoreBoard();
+            }
+            return;
         }
     }
 
