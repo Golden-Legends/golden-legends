@@ -39,9 +39,51 @@ export class Environment {
 
 	private gateInformations: gateInformation[] = [
 		{
-			position: new Vector3(-175, 2.75, -5),
+			position: new Vector3(-184.8, 5.6, -114.9),
 			rotation: 0,
 			name: "runningGate",
+
+		},
+		{
+			position: new Vector3(-190.7, 5.6, -109.3),
+			rotation: 0,
+			name: "natationGate",
+
+		},
+		{
+			position: new Vector3(-192.85, 5.6, -101.3),
+			rotation: 0,
+			name: "tirArcGate",
+
+		},
+		{
+			position: new Vector3(-191.9, 5.6, -94.43),
+			rotation: 0,
+			name: "tennisGate",
+
+		},
+		{
+			position: new Vector3(-173.4, 5.6, -87.58),
+			rotation: 0,
+			name: "plongeonGate",
+
+		},
+		{
+			position: new Vector3(-167.8, 5.6, -93.3),
+			rotation: 0,
+			name: "runninghaieGate",
+
+		},
+		{
+			position: new Vector3(-165.2, 5.6, -101.36),
+			rotation: 0,
+			name: "boxeGate",
+
+		},
+		{
+			position: new Vector3(-166.3, 5.6, -109.2),
+			rotation: 0,
+			name: "tothink",
 
 		}
 	];
@@ -133,10 +175,11 @@ export class Environment {
 		// retrieves gateInformations.length once
 		for (let i = 0, n = this.gateInformations.length ;i < n; i++) {
 			const gateInformation = this.gateInformations[i];
-			const gate = MeshBuilder.CreateBox(gateInformation.name, { height: 10, width: 4, depth: 1 }, scene);
+			const gate = MeshBuilder.CreateBox(gateInformation.name, { size: 1 }, scene);
 			gate.position = gateInformation.position;
 			gate.rotation.y = gateInformation.rotation;
 			gate.checkCollisions = true;
+			gate.isVisible = false;
 
 			const logPickUpMessage = () => {
 				if (guiFromInGameState && !this.messageDisplayed) {
