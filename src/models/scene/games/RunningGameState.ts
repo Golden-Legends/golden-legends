@@ -105,7 +105,8 @@ export class RunningGameState extends GameState {
             this.game.engine.hideLoadingUI(); 
             this.runUpdateAndRender();        
 
-            this._camera = new FreeCamera("camera100m", new Vector3(-12, 10, 20), this.scene);
+            this._camera = new FreeCamera("camera100m", new Vector3(-2, 10, 20), this.scene);
+            this._camera.rotation = new Vector3(0, Math.PI, 0);
             this._camera.setTarget(startMesh.getAbsolutePosition());  
                         
             document.getElementById("runningGame-skip-button")!.style.display = "block";
@@ -378,23 +379,49 @@ export class RunningGameState extends GameState {
                                     Animation.ANIMATIONLOOPMODE_CONSTANT,
                                     true);
 
+        const rotationAnim = new Animation("rotationAnim", 
+                                    "rotation", 
+                                    fps, 
+                                    Animation.ANIMATIONTYPE_VECTOR3, 
+                                    Animation.ANIMATIONLOOPMODE_CONSTANT,
+                                    true);
+
         const camKeys: { frame: number, value: Vector3 }[] = [];
+        const rotationKeys: { frame: number, value: Vector3 }[] = [];
+
         camKeys.push({frame: 0, value: new Vector3(-2, 10, 20)});
-        camKeys.push({frame: 3, value: new Vector3(-15, 2, -30)});
-        camKeys.push({frame: 8 * fps, value: new Vector3(0.5, 2, -25)});
-        camKeys.push({frame: 10 * fps, value: new Vector3(0.5, 2, -25)});
-        camKeys.push({frame: 14 * fps, value: new Vector3(-6, 6, -10)});
+        camKeys.push({frame: 6 * fps, value: new Vector3(-15, 2, -30)});
+        camKeys.push({frame: 11 * fps, value: new Vector3(0.5, 2, -30)});
+        camKeys.push({frame: 12 * fps, value: new Vector3(0.5, 2, -30)});
+        camKeys.push({frame: 16 * fps, value: new Vector3(-6, 6, -10)});
+        camKeys.push({frame: 17 * fps, value: new Vector3(-6, 6, -10)});
+        camKeys.push({frame: 21 * fps, value: new Vector3(22.72, 22.07, -31.21)});
+
+        rotationKeys.push({frame: 0, value: new Vector3(0, -Math.PI, 0)});
+        rotationKeys.push({frame: 6 * fps, value: new Vector3(0, Math.PI, 0)});
+        rotationKeys.push({frame: 11 * fps, value: new Vector3(0, Math.PI, 0)});
+        rotationKeys.push({frame: 12 * fps, value: new Vector3(0, Math.PI, 0)});
+        rotationKeys.push({frame: 16 * fps, value: new Vector3(0, Math.PI, 0)});
+        rotationKeys.push({frame: 17 * fps, value: new Vector3(0, Math.PI, 0)});
+        rotationKeys.push({frame: 21 * fps, value: new Vector3(
+            0.5737997121226636, -1.7815811050152932+2*Math.PI, 0)});
 
         camAnim.setKeys(camKeys);
-        this._camera.animations.push(camAnim);
+        rotationAnim.setKeys(rotationKeys);
 
-        await this.scene.beginAnimation(this._camera, 0, 14 * fps).waitAsync();
+        this._camera.animations.push(camAnim);
+        this._camera.animations.push(rotationAnim);
+
+        await this.scene.beginAnimation(this._camera, 0, 21 * fps).waitAsync();
         document.getElementById("runningGame-skip-button")!.style.display = "none";
+        // this.AfterCamAnim();
     }
 
     AfterCamAnim(): void {
         this._camera.dispose();
         this._camera = this.player.createCameraPlayer(this.player.transform);
         this.player.setCamera(this._camera);
+        // console.log(this._camera.rotation);
+        // console.log(this._camera.position);
     }
 }
