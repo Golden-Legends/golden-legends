@@ -13,9 +13,7 @@ const isPressed = ref(false);
 // When Key is pressed, bg should be darker
 const keyPressed = (event: KeyboardEvent) => {
     const key = event.key.toLowerCase();
-    if (props.eventKey && key === props.eventKey) {
-        console.log('Key pressed');
-        
+    if (props.eventKey && key === props.eventKey) {        
         isPressed.value = true;
     }
 };
