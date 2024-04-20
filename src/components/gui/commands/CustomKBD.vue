@@ -6,10 +6,20 @@ const props = defineProps({
 
 <template>
   <kbd
-    class="border-2 border-black bg-gray-400 text-white text-2xl font-black p-1 px-2 rounded-lg h-12 w-fit min-w-[3rem] flex items-center justify-center font-sans"
+    class="border-4 border-black bg-neutral-700 rounded-lg h-12 w-fit min-w-[3rem]"
   >
-    <span class="font-black text-2xl uppercase">{{ props.keybind }}</span>
+  <div class="border-4 border-color w-full h-full rounded p-1 px-2 flex items-center justify-center">
+    <span class="font-black font-sans text-2xl uppercase text-white">{{ props.keybind }}</span>
+
+  </div>
   </kbd>
 </template>
 
-<style scoped></style>
+<style scoped>
+.border-color {
+  border-bottom-color: rgb(40, 39, 41);
+  border-left-color: rgb(40, 39, 41);
+  border-top-color: rgb(97, 96, 99);
+  border-right-color: rgb(97, 96, 99);
+}
+</style>

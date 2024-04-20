@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue";
+import CustomKBD from "./commands/CustomKBD.vue";
 
 const props = defineProps({
   keys: {
@@ -60,16 +61,10 @@ onUnmounted(() => {
     >
       Parfait
     </div>
-    <div
-      class="uppercase text-xl font-black w-16 h-16 rounded-lg inline-flex items-center justify-center border-4 border-neutral-400"
-      :class="{
-        'bg-neutral-900 text-white opacity-100': pressedKeys.includes(key),
-        'bg-neutral-200 text-black opacity-30': !pressedKeys.includes(key),
-      }"
-      v-for="key in props.keys"
-      :key="key"
-    >
-      {{ key }}
-    </div>
+    <CustomKBD :class="{
+        'opacity-100': pressedKeys.includes(key),
+        'opacity-30': !pressedKeys.includes(key),
+      }" v-for="key in props.keys" :key="key" :keybind="key" />
+  
   </div>
 </template>
