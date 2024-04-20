@@ -6,6 +6,8 @@ import { PlayerRunningGame } from "../../controller/PlayerRunningGame";
 import { Bot } from "../../controller/Bot";
 import RunningGameSettings from "../../../assets/runningGame.json";
 import { Inspector } from '@babylonjs/inspector';
+import { store } from "@/components/gui/store.ts";
+import { Result } from "@/components/gui/results/ResultsContent.vue";
 
 interface line {
     start : string;
@@ -40,6 +42,7 @@ export class RunningGameState extends GameState {
     private raceStartTime: number = 0;
 
     private player !: PlayerRunningGame;
+    private playerName : string = "PlayerPseudo";
 
     private botArray : Bot[] = [];
 
@@ -51,6 +54,11 @@ export class RunningGameState extends GameState {
 
     private isMultiplayer: boolean = false;
     private difficulty: "easy" | "intermediate" | "hard";
+    private timer: number = 0;
+
+    private results : Result[] = [];
+    private scoreboardIsShow : boolean = false;
+    private currentTime : number;
 
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -58,6 +66,7 @@ export class RunningGameState extends GameState {
         this.settings = RunningGameSettings;
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
+        this.currentTime = 0;
     }
 
     async enter(): Promise<void>{
@@ -91,28 +100,32 @@ export class RunningGameState extends GameState {
 
             // on init le jeu
             if (!this.isMultiplayer) {
-                this.runSoloGame();
+                await this.runSoloGame();
             }           
             this.game.engine.hideLoadingUI(); 
             this.runUpdateAndRender();        
 
             this._camera = new FreeCamera("camera100m", new Vector3(-12, 10, 20), this.scene);
-            this._camera.setTarget(startMesh.position);  
+            this._camera.setTarget(startMesh.getAbsolutePosition());  
                         
             document.getElementById("runningGame-skip-button")!.style.display = "block";
             document.getElementById("runningGame-skip-button")!.addEventListener("click", () => {
-                console.log("skip")
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
-                document.getElementById("runningGame-skip-button")!.style.display = "none";
             });
 
             this.CreateCameraMouv().then(() => {
                 document.getElementById("runningGame-ready-button")!.style.display = "block";
+
+                this.initGui();
+
                 document.getElementById("runningGame-ready-button")!.addEventListener("click", () => {
-                    this.startCountdown(["À vos marques", "Prêt", "Partez !"]);
+                    this.startCountdown(["runningGame-text-1", "runningGame-text-2", "runningGame-text-3"]);
+                    this.AfterCamAnim();
                     document.getElementById("runningGame-ready-button")!.style.display = "none";
                     this.game.canvas.focus();
+                    document.getElementById("runningGame-skip-button")!.style.display = "none";
+
                 });
             });
 
@@ -126,9 +139,16 @@ export class RunningGameState extends GameState {
      * @description Permet de lancer le jeu en solo
      * @description Allows you to start the game solo
      */
-    private runSoloGame() {
-        this.initSoloWithBot(this.difficulty);
-        
+    private async runSoloGame() {
+        await this.initSoloWithBot(this.difficulty);
+        this.buildScoreBoard();
+    }
+
+    initGui() {
+        document.getElementById("runningGame-timer")!.style.display = "flex";
+        document.getElementById("runningGame-keyPressed")!.style.display = "block";
+
+        store.commit('setTimer', 0.00);
     }
 
     /**
@@ -141,14 +161,20 @@ export class RunningGameState extends GameState {
     private startCountdown(countdownElements: string[]) {
         if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
         let countdownIndex = 0;
+        let previousElement = "";
     
         const countdownInterval = setInterval(() => {
             const countdownElement = countdownElements[countdownIndex];
+            if (previousElement !== "") document.getElementById(previousElement)!.style.display = "none";
+            document.getElementById(countdownElement)!.style.display = "block";
+            previousElement = countdownElement;
             console.log(countdownElement); // Affiche l'élément du compte à rebours dans la console
             countdownIndex++;
     
             if (countdownIndex >= countdownElements.length) {
                 clearInterval(countdownInterval);
+                document.getElementById(previousElement)!.style.display = "none";
+
                 // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
                 this.countdownInProgress = true;
                 this.raceStartTime = performance.now();
@@ -159,7 +185,57 @@ export class RunningGameState extends GameState {
     exit(): void {
         console.log("exit running game");
     }
+
+    buildScoreBoard() : void {
+        this.results.push({place: 1, name: this.playerName, result: "No score !"});
+        this.botArray.forEach((bot, index) => {
+            this.results.push({place: (index + 2), name: bot.getName(), result: "No score !"});
+        });
+        store.commit('setResults', this.results);
+    }
+
+    showScoreBoard(): void {
+        document.getElementById("runningGame-text-finish")!.style.display = "block";
+        // attendre 2 secondes avant d'afficher le tableau des scores
+        setTimeout(() => {
+            this.createFinaleScoreBoard();
+            document.getElementById("runningGame-text-finish")!.style.display = "none";
+            document.getElementById("runningGame-results")!.style.display = "block";
+            this.scoreboardIsShow = true;
+        }, 2000);
+
+        
+    }   
     
+    timerToSMS (time: number) : string {
+        const seconds = Math.floor(time / 1000);
+        const milliseconds = time % 100;
+        return `${seconds}.${milliseconds < 10 ? "0" : ""}${milliseconds}`;
+    };
+
+    createFinaleScoreBoard() {
+        const resultsTemp: Result[] = [];
+    
+        // Résultat du joueur
+        const playerResult = this.player.getEndTime() ? this.timerToSMS(Math.round(this.player.getEndTime() - this.raceStartTime)) : "no score";
+        resultsTemp.push({ place: 0, name: this.playerName, result: playerResult });
+    
+        // Résultats des bots
+        this.botArray.forEach((bot, index) => {
+            const botResult = bot.getEndTime() ? this.timerToSMS(Math.round(bot.getEndTime() - this.raceStartTime)) : "no score";
+            resultsTemp.push({ place: index + 1, name: bot.getName(), result: botResult });
+        });
+    
+        // Tri des résultats
+        this.results = resultsTemp.sort((a, b) => parseFloat(a.result) - parseFloat(b.result));
+        this.results.forEach((result, index) => {
+            result.place = index + 1;
+        });
+    
+        // Enregistrement des résultats dans le store
+        store.commit('setResults', this.results);
+    }
+
     /**
      * 
      * @returns 
@@ -169,35 +245,50 @@ export class RunningGameState extends GameState {
     update(): void {
         try 
         {  
-            this.player._updateGroundDetection();
-
-            if (this.endGame || !this.countdownInProgress) return;
-
-            const currentTime = performance.now();
-            const elapsedTime = (currentTime - this.raceStartTime) / 1000;
-            // affiche le temps dans la console
-            if (elapsedTime > this.limitTime) {
-                this.endGame = true;
-                console.log("Game over: Time limit reached.");
-                return;
-            }
-
             if (this.player.getIsEndGame() && this.botArray.every(bot => bot.getIsEndGame())) {
                 this.endGame = true;
-                console.log("Game over: All players have reached the end.");
-                console.log("Player time: " + (this.player.getEndTime() - this.raceStartTime) / 1000);
-                this.botArray.forEach(bot => console.log(bot.getName() + " time: " + (bot.getEndTime() - this.raceStartTime) / 1000));
+            }
+            
+            this.player._updateGroundDetection();
+            
+            if (this.endGame && !this.scoreboardIsShow) {
+                this.showScoreBoard();
                 return;
             }
 
-            this.player.play();
+            if (this.endGame) return;
+            if (!this.countdownInProgress) return;
+            this.currentTime = performance.now();
+            const deltaTime = this.scene.getEngine().getDeltaTime();
+            this.checkGameIsOutOfTime();
+            this.player.play(deltaTime, this.currentTime);
             this.botArray.forEach(bot => {
-                bot.play();
+                bot.play(deltaTime, this.currentTime);
             });
+
+            if (!this.player.getIsEndGame()) {
+                this.timer = Math.round((this.currentTime - this.raceStartTime));
+                store.commit('setTimer', this.timer);
+            }
+
 
         } catch (error) 
         {
             throw new Error("error : Running game class update." + error);
+        }
+    }
+
+    checkGameIsOutOfTime() {
+        // regarde si la course dure plus de 25 secondes
+        const elapsedTime = (this.currentTime - this.raceStartTime) / 1000;
+        // affiche le temps dans la console
+        if (elapsedTime > this.limitTime) {
+            this.endGame = true;
+            console.log("Game over: Time limit reached.");
+            if (!this.scoreboardIsShow) { 
+                this.showScoreBoard();
+            }
+            return;
         }
     }
 
@@ -298,6 +389,7 @@ export class RunningGameState extends GameState {
         this._camera.animations.push(camAnim);
 
         await this.scene.beginAnimation(this._camera, 0, 14 * fps).waitAsync();
+        document.getElementById("runningGame-skip-button")!.style.display = "none";
     }
 
     AfterCamAnim(): void {

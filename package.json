@@ -21,7 +21,8 @@
     "socket.io-client": "^4.7.4",
     "vue": "^3.3.8",
     "vue-router": "^4.3.0",
-    "vue-sonner": "^1.1.2"
+    "vue-sonner": "^1.1.2",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@babylonjs/inspector": "^6.41.0",

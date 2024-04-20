@@ -44,13 +44,14 @@ export class Bot {
     private raceEndTime: number = 0;
 
     private deltaTime: number = 0;
+    private currentTime : number;
 
     constructor(name: string, startPos: Vector3, endMesh : Mesh, scene : Scene, assetPath : string, maxSpeed : number) {
         this.name = name;
         this.scene = scene;
         this.assetPath = assetPath;
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
-        this.transform.position = new Vector3(startPos.x, startPos.y * (PLAYER_HEIGHT / 2), startPos.z);
+        this.transform.position = new Vector3(startPos.x, startPos.y * (PLAYER_HEIGHT / 2) + 0.2, startPos.z);
         this.transform.isVisible = false; // mettre à faux par la suites
         this.endGame = endMesh;
         this.endGame.actionManager = new ActionManager(this.scene);
@@ -63,10 +64,11 @@ export class Bot {
                 () => {
                     this.isEndGame = true;
                     this.stopAnimations();
-                    this.raceEndTime = performance.now();
+                    this.raceEndTime = this.currentTime;
                 }
             )
         );
+        this.currentTime = 0;
         this.MAX_SPEED = maxSpeed;
     }
 
@@ -126,8 +128,9 @@ export class Bot {
         }
     }
 
-    public play() {
-        this.deltaTime = this.scene.getEngine().getDeltaTime() / 10;
+    public play(deltaTime: number, currentTime: number) {
+        this.deltaTime = deltaTime / 10;
+        this.currentTime = currentTime;
         if (!this.isEndGame) {
             this.randomBaseSpeed();
             this.movePlayer();

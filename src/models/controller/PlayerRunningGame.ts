@@ -61,6 +61,8 @@ export class PlayerRunningGame {
     private isEndGame: boolean = false;
     private raceEndTime: number = 0;
 
+    private currentTime : number = 0;
+
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputRunningGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
@@ -70,7 +72,7 @@ export class PlayerRunningGame {
         this._input = input ;
         this._camera
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
-        this.transform.position = new Vector3(this._x, this._y * 3, this._z);
+        this.transform.position = new Vector3(this._x, this._y + 0.9, this._z);
         this.transform.isVisible = false; // mettre à faux par la suites
         if (activeCamera) {
             this._camera = this.createCameraPlayer(this.transform);
@@ -86,7 +88,7 @@ export class PlayerRunningGame {
                 () => {
                     this.isEndGame = true;
                     this.stopAnimations();
-                    this.raceEndTime = performance.now();
+                    this.raceEndTime = this.currentTime;
                     // console.log(`Joueur fin : `, this.raceEndTime);
                 }
             )
@@ -117,8 +119,9 @@ export class PlayerRunningGame {
         this._isCrouching = true;        
     }
 
-    public play () {
-        this._deltaTime = this.scene.getEngine().getDeltaTime() / 10;
+    public play (delta : number, currentTime : number) {
+        this._deltaTime = delta / 10;
+        this.currentTime = currentTime;
         if (!this.isEndGame) {
             this.processInput();
             this.movePlayer();
@@ -155,10 +158,9 @@ export class PlayerRunningGame {
     }
 
     public processInput(): void {
-        const currentTime = performance.now();
     
         // Check if the minimum delay between each alternation is respected
-        if (currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {
+        if (this.currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {
             return;
         }
     
@@ -171,7 +173,7 @@ export class PlayerRunningGame {
                 this.baseSpeed += this.acceleration;
                 this.leftPressed = this._input.left;
                 this.rightPressed = this._input.right;
-                this.lastSwitchTime = currentTime; // Update the time of the last alternation
+                this.lastSwitchTime = this.currentTime; // Update the time of the last alternation
             }
         }
         // If neither key is pressed or both keys are pressed

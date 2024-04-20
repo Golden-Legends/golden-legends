@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType } from "vue";
+import { store } from "@/components/gui/store.ts";
 import ResultsRow from "@/components/gui/results/ResultsRow.vue";
 
 export interface Result {
@@ -7,15 +7,13 @@ export interface Result {
   name: string;
   result: string;
 }
-const props = defineProps({
-  results: Array as PropType<Result[]>,
-});
+
 </script>
 
 <template>
-  <div v-if="props.results" class="flex flex-col gap-4">
+  <div v-if="store.state.results" class="flex flex-col gap-4">
     <ResultsRow
-      v-for="result in props.results"
+      v-for="result in store.state.results"
       :key="result.place"
       :result="result"
     />
