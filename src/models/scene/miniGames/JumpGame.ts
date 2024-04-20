@@ -30,6 +30,9 @@ export class JumpGame {
   private gameRunning: boolean = false;
   private animations: Animation[] = [];
 
+  private countdownInProgress: boolean = false;
+  private raceStartTime: number = 0;
+
   constructor(scene: Scene, player: Mesh, input: PlayerInput) {
     this.scene = scene;
     this.player = player;
@@ -70,8 +73,25 @@ export class JumpGame {
     // this.playFireworksAnimation(this.scene, this.player.position);
   }
 
+  private startCountdown() {
+    //if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
+
+    // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
+    this.countdownInProgress = true;
+    this.raceStartTime = performance.now();
+  }
+
+  private endCountdown() {
+    if (!this.countdownInProgress) return; // Évite de terminer le compte à rebours si ce n'est pas déjà en cours
+
+    const currentTime = performance.now();
+    const elapsedTime = (currentTime - this.raceStartTime) / 1000;
+    console.log("Temps écoulé: ", elapsedTime);
+  }
+
   private miniGame() {
     // Initialiser le jeu et démarrer le comptage des plateformes sautées
+    this.startCountdown()
     this.resetGame();
     this.gameRunning = true;
 
@@ -103,6 +123,7 @@ export class JumpGame {
           this.gameRunning = false;
           this.stopMiniGame();
           this.playFireworksAnimation(this.scene, this.player.position);
+          this.endCountdown();
           return;
         }
 
@@ -121,6 +142,7 @@ export class JumpGame {
         this.invisiblePlatform(1, 20);
         this.gameRunning = false;
         this.stopMiniGame();
+        this.endCountdown();
       }
     };
   }
