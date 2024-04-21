@@ -128,6 +128,7 @@ export class Environment {
 		this.createSkybox(this._scene);
 		this.createWater();
 		this.moveLogo();
+		this.interactObjectFound();
 	}
 
 	//Load all necessary meshes for the environment
@@ -370,6 +371,17 @@ export class Environment {
 				animation3.start(true);
 			}
 		}
+	}
+
+	public interactObjectFound() {
+		document.addEventListener("keydown", function(event) {
+			if (event.key === 'n' && document.getElementById("objectsFound")!.style.display == "block"){
+				document.getElementById("objectsFound")!.style.display = "none";
+			}
+			else if (event.key === 'n'){
+				document.getElementById("objectsFound")!.style.display = "block";
+			}
+		});
 	}
 
 }

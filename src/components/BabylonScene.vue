@@ -13,6 +13,13 @@
     name="Options"
     eventKey="escape"
   />
+  <FoundObjectsContainer
+    title="objectsFound"
+    name="objectsFound"
+    :objects="objects"
+    id="objectsFound"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
   <Dialog
     name="Gladiator"
     :text="jumpGameText"
@@ -202,6 +209,9 @@ import RDSText from "@/components/gui/running/RDSText.vue";
 import Finish from "@/components/gui/running/Finish.vue";
 import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
+import FoundObjectsContainer, {
+  TBF_OBJECT,
+} from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
@@ -234,6 +244,50 @@ const loseJumpText = "Pas pour cette fois... Retente ta chance !";
 const stationScoreboard = "GUI Scoreboard TODO...";
 //TP game
 const tpGame = "GUI TP GAME TODO...";
+
+let objects = [
+  {
+    name: "Ballon de basket",
+    path: "ball",
+    found: false,
+  },
+  {
+    name: "Vélo",
+    path: "bike",
+    found: false,
+  },
+  {
+    name: "Arc",
+    path: "bow",
+    found: false,
+  },
+  {
+    name: "Gants de boxe",
+    path: "gloves",
+    found: false,
+  },
+  {
+    name: "Haies",
+    path: "hurdles",
+    found: false,
+  },
+  {
+    name: "Raquette de tennis",
+    path: "racket",
+    found: false,
+  },
+  {
+    name: "Chaussures",
+    path: "shoes",
+    found: false,
+  },
+  {
+    name: "Skateboard",
+    path: "skate",
+    found: false,
+  },
+] as TBF_OBJECT[];
+
 onMounted(() => {
   if (bjsCanvas.value) {
     new App(bjsCanvas.value);

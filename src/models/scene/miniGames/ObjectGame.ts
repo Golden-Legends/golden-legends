@@ -1,5 +1,6 @@
 import { ActionManager, Color4, ExecuteCodeAction, Mesh, MeshBuilder, ParticleSystem, Scene, Texture, Vector3 } from "@babylonjs/core";
 import { PlayerInput } from "../../inputsMangement/PlayerInput";
+import  objects  from "@/components/BabylonScene.vue";
 
 
 export class ObjectGame {
@@ -131,6 +132,7 @@ export class ObjectGame {
             setTimeout(() => {
                 document.getElementById("recup-object-dialog")!.style.display = "none";
             }, 3000);
+            console.log(objects);
         }
     }
 

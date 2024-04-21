@@ -43,17 +43,17 @@ const objects = [
   {
     name: "Vélo",
     path: "bike",
-    found: true,
+    found: false,
   },
   {
     name: "Arc",
     path: "bow",
-    found: true,
+    found: false,
   },
   {
     name: "Gants de boxe",
     path: "gloves",
-    found: true,
+    found: false,
   },
   {
     name: "Haies",
@@ -63,7 +63,7 @@ const objects = [
   {
     name: "Raquette de tennis",
     path: "racket",
-    found: true,
+    found: false,
   },
   {
     name: "Chaussures",
