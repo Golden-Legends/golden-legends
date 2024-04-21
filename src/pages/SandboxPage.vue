@@ -161,7 +161,7 @@ setInterval(() => {
         <Finish class="mt-4" />
       </SandboxContainer>
       <SandboxContainer name="Keypress interactions">
-        <KeyPressInteraction class="mt-12" :keys="['s', 'd']" />
+        <KeyPressInteraction :keys="['s', 'd']" />
       </SandboxContainer>
       <SandboxContainer name="Keypress interactions">
         <FoundObjectsContainer :objects="objects" />
