@@ -126,7 +126,7 @@ export class RunningGameState extends GameState {
                     document.getElementById("runningGame-ready-button")!.style.display = "none";
                     this.game.canvas.focus();
                     document.getElementById("runningGame-skip-button")!.style.display = "none";
-
+                    
                 });
             });
 
@@ -174,8 +174,12 @@ export class RunningGameState extends GameState {
     
             if (countdownIndex >= countdownElements.length) {
                 clearInterval(countdownInterval);
-                document.getElementById(previousElement)!.style.display = "none";
-
+    
+                // Cache le dernier élément après une seconde
+                setTimeout(() => {
+                    document.getElementById(previousElement)!.style.display = "none";
+                }, 1000);
+    
                 // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
                 this.countdownInProgress = true;
                 this.raceStartTime = performance.now();
