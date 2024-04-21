@@ -147,7 +147,7 @@ export class RunningGameState extends GameState {
 
     initGui() {
         document.getElementById("runningGame-timer")!.style.display = "flex";
-        document.getElementById("runningGame-keyPressed")!.style.display = "block";
+        document.getElementById("runningGame-keyPressed")!.classList.remove("hidden");
 
         store.commit('setTimer', 0.00);
     }

@@ -1,6 +1,18 @@
 <template>
   <canvas ref="bjsCanvas" />
   <SoundButton id="sound-button" class="absolute bottom-6 left-8 z-10" />
+  <KeybindHint
+    class="absolute top-4 left-4"
+    keybind="M"
+    name="Carte"
+    eventKey="m"
+  />
+  <KeybindHint
+    class="absolute top-20 left-4"
+    keybind="Esc"
+    name="Options"
+    eventKey="escape"
+  />
   <Dialog
     name="Gladiator"
     :text="jumpGameText"
@@ -136,26 +148,43 @@
   >
     <ResultsContent />
   </Results>
-  <KeyPressInteraction :keys="['s', 'd']" 
+  <SpeedBar
+    :min="0"
+    :max="100"
+    :speed="50"
+    name="runningGame-speed-bar"
+    id="runningGame-speed-bar"
+    class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <KeyPressInteraction
+    :keys="['s', 'd']"
     name="runningGame-keyPressed"
     id="runningGame-keyPressed"
-    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-  <RDSText text="À vos marques" 
+    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <RDSText
+    text="À vos marques"
     name="runningGame-text-1"
     id="runningGame-text-1"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
-  <RDSText text="Prêt ?" 
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Prêt ?"
     name="runningGame-text-2"
     id="runningGame-text-2"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
-  <RDSText text="Partez" 
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Partez"
     name="runningGame-text-3"
     id="runningGame-text-3"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
   <Finish
     name="runningGame-text-finish"
     id="runningGame-text-finish"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"/>
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
 </template>
 
 <script setup lang="ts">
@@ -171,6 +200,8 @@ import Results from "@/components/gui/results/Results.vue";
 import KeyPressInteraction from "@/components/gui/KeyPressInteraction.vue";
 import RDSText from "@/components/gui/running/RDSText.vue";
 import Finish from "@/components/gui/running/Finish.vue";
+import SpeedBar from "./gui/running/SpeedBar.vue";
+import KeybindHint from "./gui/KeybindHint.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs

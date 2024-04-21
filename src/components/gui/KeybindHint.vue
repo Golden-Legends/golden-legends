@@ -39,8 +39,8 @@ onUnmounted(() => {
 });
 </script>
 <template>
-    <div class="flex gap-2 items-center">
+    <div class="flex gap-2 items-center ">
         <CustomKBD :keybind="keybind" :class="{ 'opacity-100': isPressed, 'opacity-75': !isPressed }" />
-        <span class="text-2xl">{{ name }}</span>
+        <span class="text-2xl font-bold">{{ name }}</span>
     </div>
 </template>

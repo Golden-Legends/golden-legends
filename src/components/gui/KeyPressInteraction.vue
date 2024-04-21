@@ -49,22 +49,9 @@ onUnmounted(() => {
 
 <template>
   <div class="relative flex gap-4">
-    <div
-      class="hidden absolute text-3xl font-bold uppercase text-red-800 -top-12 left-1/2 -translate-x-1/2"
-      id="bad-keypress"
-    >
-      Dommage
-    </div>
-    <div
-      class="hidden absolute text-3xl font-bold uppercase text-green-800 -top-12 left-1/2 -translate-x-1/2"
-      id="good-keypress"
-    >
-      Parfait
-    </div>
     <CustomKBD :class="{
         'opacity-100': pressedKeys.includes(key),
         'opacity-30': !pressedKeys.includes(key),
-      }" v-for="key in props.keys" :key="key" :keybind="key" />
-  
+      }" v-for="key in props.keys" :keybind="key" />
   </div>
 </template>
