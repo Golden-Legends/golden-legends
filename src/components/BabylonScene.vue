@@ -215,24 +215,24 @@ import { storeObjects } from "./gui/storeObjects";
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
 const jumpGameText =
-  "Arriveras tu à la fin du parcours sans toucher l'eau ? Appuie sur Espace pour commencer le jeu !";
+  "Arriveras tu à la fin du parcours sans toucher l'eau ? Appuie sur R pour commencer le jeu !";
 const objectGameText =
   "Des objets en référence aux JO sont cachés dans cette ville, sauras tu les retrouver ?!";
 const tpGameText =
   "Approche toi des portails pour te téléporter dans différents stades olympiques pour défier tes amis !";
 const footGameText =
-  "Arriveras tu à marquer le plus de but ? Appuie sur Espace pour commencer le jeu !";
+  "Arriveras tu à marquer le plus de but ? Appuie sur R pour commencer le jeu !";
 //Objects message
-const objetHaieText = "Récupére la Haie olympique en appuyant sur Espace";
-const objetgGantText = "Récupére le Gant de boxe en appuyant sur Espace";
+const objetHaieText = "Récupére la Haie olympique en appuyant sur R";
+const objetgGantText = "Récupére le Gant de boxe en appuyant sur R";
 const objetRaquetteText =
-  "Récupére la Raquette de tennis en appuyant sur Espace";
-const objetBallonText = "Récupére le Ballon de basket en appuyant sur Espace";
-const objetSkateText = "Récupére le Skateboard en appuyant sur Espace";
-const objetArcText = "Récupére l'Arc olympique en appuyant sur Espace";
+  "Récupére la Raquette de tennis en appuyant sur R";
+const objetBallonText = "Récupére le Ballon de basket en appuyant sur R";
+const objetSkateText = "Récupére le Skateboard en appuyant sur R";
+const objetArcText = "Récupére l'Arc olympique en appuyant sur R";
 const objetChaussureText =
-  "Récupére les Chaussures de course en appuyant sur Espace";
-const objetVeloText = "Récupére le Vélo olympique en appuyant sur Espace";
+  "Récupére les Chaussures de course en appuyant sur R";
+const objetVeloText = "Récupére le Vélo olympique en appuyant sur R";
 const objetRecupText = "Objet récupéré avec succès !";
 const allObjetRecupText = "Tous les objets olympiques ont été ramassés !";
 //jump message

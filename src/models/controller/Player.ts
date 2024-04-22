@@ -30,7 +30,7 @@ const KEY_ARROW_LEFT = "ArrowLeft";
 const KEY_ARROW_RIGHT = "ArrowRight";
 const KEY_ARROW_UP = "ArrowUp";
 const KEY_ARROW_DOWN = "ArrowDown";
-const KEY_DASH = "KeyP";
+const KEY_DASH = "KeyQ";
 const KEY_JUMP = "Space";
 
 export class Player extends TransformNode {

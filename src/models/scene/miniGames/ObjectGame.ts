@@ -2,7 +2,6 @@ import { ActionManager, Color4, ExecuteCodeAction, Mesh, MeshBuilder, ParticleSy
 import { PlayerInput } from "../../inputsMangement/PlayerInput";
 import { storeObjects } from "@/components/gui/storeObjects";
 import { TBF_OBJECT } from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
-import { store } from "@/components/gui/store";
 
 
 export class ObjectGame {
@@ -50,7 +49,7 @@ export class ObjectGame {
         //intéragir avec G pour ramasser l'objet olympique 
         this.miniGame();
         this.scene.registerBeforeRender(() => {
-            if (this.isPlayerInsideTrigger && this.playerInput.inputMap["Space"]) {
+            if (this.isPlayerInsideTrigger && this.playerInput.inputMap["KeyR"]) {
                 this.collectObject();
             }
         });
@@ -216,7 +215,7 @@ export class ObjectGame {
                         }
                         this.objectToPickUp = box;
                         this.isPlayerInsideTrigger = true;
-                        if(this.playerInput.inputMap["Space"]){
+                        if(this.playerInput.inputMap["KeyR"]){
                             this.collectObject();
                         }
                     }
