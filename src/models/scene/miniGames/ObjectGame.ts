@@ -1,6 +1,8 @@
 import { ActionManager, Color4, ExecuteCodeAction, Mesh, MeshBuilder, ParticleSystem, Scene, Texture, Vector3 } from "@babylonjs/core";
 import { PlayerInput } from "../../inputsMangement/PlayerInput";
-import { objects }  from "@/components/BabylonScene.vue";
+import { storeObjects } from "@/components/gui/storeObjects";
+import { TBF_OBJECT } from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
+import { store } from "@/components/gui/store";
 
 
 export class ObjectGame {
@@ -15,6 +17,7 @@ export class ObjectGame {
     private isPlayerInsideTrigger: boolean = false;
     private objectsCollectedSet: Set<number> = new Set<number>();
     private particleSystems: ParticleSystem[] = [];
+    private objects : TBF_OBJECT[] = [];
 
 
     constructor(scene: Scene, player: Mesh, input: PlayerInput) {
@@ -22,6 +25,8 @@ export class ObjectGame {
         this.scene = scene;
         this.player = player;
         this.playerInput = input;
+        this.objects = storeObjects.state.objects;
+        console.log(this.objects);
     }
 
   
@@ -136,7 +141,7 @@ export class ObjectGame {
             setTimeout(() => {
                 document.getElementById("recup-object-dialog")!.style.display = "none";
             }, 3000);
-            console.log(objects);
+            // console.log(objects);
         }
     }
 
@@ -285,7 +290,7 @@ export class ObjectGame {
 
     public modifierValeurFound(nomObjet: string) {
         // Recherche de l'objet dans la variable objects
-        const objetTrouve = objects.find(objet => objet.name === nomObjet);
+        const objetTrouve = this.objects.find(objet => objet.name === nomObjet);
       
         // Si l'objet est trouvé, met à jour la valeur de la propriété found
         if (objetTrouve) {
@@ -293,5 +298,7 @@ export class ObjectGame {
         } else {
           console.error(`L'objet ${nomObjet} n'a pas été trouvé.`);
         }
+        storeObjects.commit("setObjects", this.objects);
+        console.log(storeObjects.state.objects);
     }
 }

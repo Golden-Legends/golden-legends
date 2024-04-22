@@ -15,6 +15,9 @@ export class SoundManager {
     document.getElementById("sound-button")?.addEventListener("click", () => {
       if (this.etatMusic) {
         this.soundPause();
+        // var sounds = this._scene.mainSoundTrack;
+				// //changer le volume des sons
+				// sounds.setVolume(0);
       } else {
         this.soundPlay();
       }
