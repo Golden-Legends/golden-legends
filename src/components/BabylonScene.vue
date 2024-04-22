@@ -245,7 +245,7 @@ const stationScoreboard = "GUI Scoreboard TODO...";
 //TP game
 const tpGame = "GUI TP GAME TODO...";
 
-let objects = [
+export let objects = [
   {
     name: "Ballon de basket",
     path: "ball",
