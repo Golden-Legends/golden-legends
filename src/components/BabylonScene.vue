@@ -162,7 +162,7 @@
     id="runningGame-results"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <ResultsContent />
+  <ResultsContent />
   </Results>
   <SpeedBar
     :min="0"

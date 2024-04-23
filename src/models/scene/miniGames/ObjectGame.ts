@@ -24,8 +24,12 @@ export class ObjectGame {
         this.scene = scene;
         this.player = player;
         this.playerInput = input;
-        this.objects = storeObjects.state.objects;
-        console.log(this.objects);
+        //récupérer les valeus de la variable objects du local storage
+        this.objects = JSON.parse(localStorage.getItem('objects')!);
+        if (this.objects === null) {
+            this.objects = storeObjects.state.objects;
+        }
+        storeObjects.commit("setObjects", this.objects);
     }
 
   
@@ -278,10 +282,10 @@ export class ObjectGame {
 
     public interactObjectFound() {
 		document.addEventListener("keydown", function(event) {
-			if (event.key === 'n' && document.getElementById("objectsFound")!.style.display == "block"){
+			if (event.key === 'n' && document.getElementById("objectsFound")!.style.display == "block" && document.getElementById("objects-keybind")!.style.display != "none"){
 				document.getElementById("objectsFound")!.style.display = "none";
 			}
-			else if (event.key === 'n'){
+			else if (event.key === 'n' && document.getElementById("objects-keybind")!.style.display != "none"){
 				document.getElementById("objectsFound")!.style.display = "block";
 			}
 		});
@@ -297,7 +301,9 @@ export class ObjectGame {
         } else {
           console.error(`L'objet ${nomObjet} n'a pas été trouvé.`);
         }
-        storeObjects.commit("setObjects", this.objects);
-        console.log(storeObjects.state.objects);
+        //mettre à jour la valeur de la propriété objects dans le local storage
+        localStorage.setItem('objects', JSON.stringify(this.objects));
+        // console.log(JSON.parse(localStorage.getItem('objects')!)); // Pour vérification
+        storeObjects.commit("setObjects", JSON.parse(localStorage.getItem('objects')!));
     }
 }
