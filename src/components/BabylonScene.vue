@@ -3,15 +3,31 @@
   <SoundButton id="sound-button" class="absolute bottom-6 left-8 z-10" />
   <KeybindHint
     class="absolute top-4 left-4"
-    keybind="M"
-    name="Carte"
-    eventKey="m"
+    keybind="O"
+    name="Options"
+    eventKey="o"
+    id="options-keybind"
   />
   <KeybindHint
     class="absolute top-20 left-4"
-    keybind="Esc"
-    name="Options"
-    eventKey="escape"
+    keybind="N"
+    name="Objets à trouver"
+    eventKey="n"
+    id="objects-keybind"
+  />
+  <KeybindHint
+    class="absolute top-36 left-4"
+    keybind="M"
+    name="Carte"
+    eventKey="m"
+    id="map-keybind"
+  />
+  <FoundObjectsContainer
+    title="objectsFound"
+    name="objectsFound"
+    :objects="storeObjects.state.objects"
+    id="objectsFound"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Dialog
     name="Gladiator"
@@ -146,7 +162,7 @@
     id="runningGame-results"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <ResultsContent />
+  <ResultsContent />
   </Results>
   <SpeedBar
     :min="0"
@@ -202,28 +218,30 @@ import RDSText from "@/components/gui/running/RDSText.vue";
 import Finish from "@/components/gui/running/Finish.vue";
 import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
+import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
+import { storeObjects } from "./gui/storeObjects";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
 const jumpGameText =
-  "Arriveras tu à la fin du parcours sans toucher l'eau ? Appuie sur Espace pour commencer le jeu !";
+  "Arriveras tu à la fin du parcours sans toucher l'eau ? Appuie sur R pour commencer le jeu !";
 const objectGameText =
   "Des objets en référence aux JO sont cachés dans cette ville, sauras tu les retrouver ?!";
 const tpGameText =
   "Approche toi des portails pour te téléporter dans différents stades olympiques pour défier tes amis !";
 const footGameText =
-  "Arriveras tu à marquer le plus de but ? Appuie sur Espace pour commencer le jeu !";
+  "Arriveras tu à marquer le plus de but ? Appuie sur R pour commencer le jeu !";
 //Objects message
-const objetHaieText = "Récupére la Haie olympique en appuyant sur Espace";
-const objetgGantText = "Récupére le Gant de boxe en appuyant sur Espace";
+const objetHaieText = "Récupére la Haie olympique en appuyant sur R";
+const objetgGantText = "Récupére le Gant de boxe en appuyant sur R";
 const objetRaquetteText =
-  "Récupére la Raquette de tennis en appuyant sur Espace";
-const objetBallonText = "Récupére le Ballon de basket en appuyant sur Espace";
-const objetSkateText = "Récupére le Skateboard en appuyant sur Espace";
-const objetArcText = "Récupére l'Arc olympique en appuyant sur Espace";
+  "Récupére la Raquette de tennis en appuyant sur R";
+const objetBallonText = "Récupére le Ballon de basket en appuyant sur R";
+const objetSkateText = "Récupére le Skateboard en appuyant sur R";
+const objetArcText = "Récupére l'Arc olympique en appuyant sur R";
 const objetChaussureText =
-  "Récupére les Chaussures de course en appuyant sur Espace";
-const objetVeloText = "Récupére le Vélo olympique en appuyant sur Espace";
+  "Récupére les Chaussures de course en appuyant sur R";
+const objetVeloText = "Récupére le Vélo olympique en appuyant sur R";
 const objetRecupText = "Objet récupéré avec succès !";
 const allObjetRecupText = "Tous les objets olympiques ont été ramassés !";
 //jump message
@@ -234,6 +252,8 @@ const loseJumpText = "Pas pour cette fois... Retente ta chance !";
 const stationScoreboard = "GUI Scoreboard TODO...";
 //TP game
 const tpGame = "GUI TP GAME TODO...";
+
+
 onMounted(() => {
   if (bjsCanvas.value) {
     new App(bjsCanvas.value);

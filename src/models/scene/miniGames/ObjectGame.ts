@@ -1,5 +1,7 @@
 import { ActionManager, Color4, ExecuteCodeAction, Mesh, MeshBuilder, ParticleSystem, Scene, Texture, Vector3 } from "@babylonjs/core";
 import { PlayerInput } from "../../inputsMangement/PlayerInput";
+import { storeObjects } from "@/components/gui/storeObjects";
+import { TBF_OBJECT } from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 
 
 export class ObjectGame {
@@ -14,6 +16,7 @@ export class ObjectGame {
     private isPlayerInsideTrigger: boolean = false;
     private objectsCollectedSet: Set<number> = new Set<number>();
     private particleSystems: ParticleSystem[] = [];
+    private objects : TBF_OBJECT[] = [];
 
 
     constructor(scene: Scene, player: Mesh, input: PlayerInput) {
@@ -21,19 +24,25 @@ export class ObjectGame {
         this.scene = scene;
         this.player = player;
         this.playerInput = input;
+        //récupérer les valeus de la variable objects du local storage
+        this.objects = JSON.parse(localStorage.getItem('objects')!);
+        if (this.objects === null) {
+            this.objects = storeObjects.state.objects;
+        }
+        storeObjects.commit("setObjects", this.objects);
     }
 
   
     public init(){
         //création d'une box près de chaque objet olympique
-        this.initCube(-256, 2.5, -56.5, 0, "Haie olympique");
-        this.initCube(-259, 3, 43, 1, "Gant de boxe");
+        this.initCube(-256, 2.5, -56.5, 0, "Haies");
+        this.initCube(-259, 3, 43, 1, "Gants de boxe");
         this.initCube(-261, 2.5, -135, 2, "Raquette de tennis");
         this.initCube(-201, 2.5, -96, 3, "Ballon de basket");
         this.initCube(-96, 2.5, -168.5, 4, "Skateboard");
-        this.initCube(-35.5, 2.5, -18, 5, "Arc olympique");
-        this.initCube(-46.5, 2.5, 58, 6, "Chaussures de course");
-        this.initCube(-163, 2.5, 4.5, 7, "Vélo olympique");
+        this.initCube(-35.5, 2.5, -18, 5, "Arc");
+        this.initCube(-46.5, 2.5, 58, 6, "Chaussures");
+        this.initCube(-163, 2.5, 4.5, 7, "Vélo");
        
         this.totalObjects = this.cube.length;
 
@@ -44,12 +53,13 @@ export class ObjectGame {
         //intéragir avec G pour ramasser l'objet olympique 
         this.miniGame();
         this.scene.registerBeforeRender(() => {
-            if (this.isPlayerInsideTrigger && this.playerInput.inputMap["Space"]) {
+            if (this.isPlayerInsideTrigger && this.playerInput.inputMap["KeyR"]) {
                 this.collectObject();
             }
         });
         
         this.createParticleSystems();
+        this.interactObjectFound();
     }
 
     private createParticleSystems() {
@@ -103,6 +113,9 @@ export class ObjectGame {
         // Masquez l'objet
         this.objectToPickUp.dispose();
 
+        //modifie la valeur de la propriété found de l'objet
+        this.modifierValeurFound(this.name[objectIndex]);
+
         document.getElementById("haie-object-dialog")!.style.display = "none";
         document.getElementById("gant-object-dialog")!.style.display = "none";
         document.getElementById("raquette-object-dialog")!.style.display = "none";
@@ -131,6 +144,7 @@ export class ObjectGame {
             setTimeout(() => {
                 document.getElementById("recup-object-dialog")!.style.display = "none";
             }, 3000);
+            // console.log(objects);
         }
     }
 
@@ -205,7 +219,7 @@ export class ObjectGame {
                         }
                         this.objectToPickUp = box;
                         this.isPlayerInsideTrigger = true;
-                        if(this.playerInput.inputMap["Space"]){
+                        if(this.playerInput.inputMap["KeyR"]){
                             this.collectObject();
                         }
                     }
@@ -264,5 +278,32 @@ export class ObjectGame {
         this.cube[pos].visibility = 0; // Rendre le cube invisible
         this.cube[pos].checkCollisions = false; // Empêcher les collisions avec le cube
         this.name[pos] = name;
+    }
+
+    public interactObjectFound() {
+		document.addEventListener("keydown", function(event) {
+			if (event.key === 'n' && document.getElementById("objectsFound")!.style.display == "block" && document.getElementById("objects-keybind")!.style.display != "none"){
+				document.getElementById("objectsFound")!.style.display = "none";
+			}
+			else if (event.key === 'n' && document.getElementById("objects-keybind")!.style.display != "none"){
+				document.getElementById("objectsFound")!.style.display = "block";
+			}
+		});
+	}
+
+    public modifierValeurFound(nomObjet: string) {
+        // Recherche de l'objet dans la variable objects
+        const objetTrouve = this.objects.find(objet => objet.name === nomObjet);
+      
+        // Si l'objet est trouvé, met à jour la valeur de la propriété found
+        if (objetTrouve) {
+          objetTrouve.found = true;
+        } else {
+          console.error(`L'objet ${nomObjet} n'a pas été trouvé.`);
+        }
+        //mettre à jour la valeur de la propriété objects dans le local storage
+        localStorage.setItem('objects', JSON.stringify(this.objects));
+        // console.log(JSON.parse(localStorage.getItem('objects')!)); // Pour vérification
+        storeObjects.commit("setObjects", JSON.parse(localStorage.getItem('objects')!));
     }
 }

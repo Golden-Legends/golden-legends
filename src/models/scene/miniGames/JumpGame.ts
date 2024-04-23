@@ -64,7 +64,7 @@ export class JumpGame {
     this.scene.registerBeforeRender(() => {
       if (
         this.isPlayerInsideTrigger &&
-        this.playerInput.inputMap["Space"] &&
+        this.playerInput.inputMap["KeyR"] &&
         !this.gameRunning
       ) {
         this.miniGame();

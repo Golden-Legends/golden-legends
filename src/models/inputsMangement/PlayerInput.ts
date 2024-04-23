@@ -11,14 +11,16 @@ export class PlayerInput extends InputManager {
     public verticalAxis: number = 0;
     public jumpKeyDown: boolean = false;
     public dashing: boolean = false;
+    public collecting: boolean = false;
 
     readonly keys = {
         KEY_UP: "KeyW",
         KEY_DOWN: "KeyS",
         KEY_LEFT: "KeyA",
         KEY_RIGHT: "KeyD",
-		KEY_DASH : "KeyP",
+		KEY_DASH : "KeyQ",
 		KEY_JUMP : "Space",
+        KEY_COLLECT: "KeyR",
     };
 
 	constructor(scene: Scene) {
@@ -30,6 +32,7 @@ export class PlayerInput extends InputManager {
         this.updateMovementInput();
         this.updateJumpInput();
         this.updateDashInput();
+        this.updateCollectInput();
     };
 
     private updateMovementInput(): void {
@@ -73,6 +76,14 @@ export class PlayerInput extends InputManager {
             this.dashing = true;
         } else {
             this.dashing = false;
+        }
+    }
+
+    private updateCollectInput(): void {
+        if (this.inputMap[this.keys.KEY_COLLECT]) {
+            this.collecting = true;
+        } else {
+            this.collecting = false;
         }
     }
 }

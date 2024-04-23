@@ -191,6 +191,9 @@ export class InGameState extends GameState {
 
   public goToRunningGame() {
     this.game.changeState(new RunningGameState(this.game, this.canvas));
+    // document.getElementById("options-keybind")!.style.display = "none";
+    document.getElementById("objects-keybind")!.style.display = "none";
+    document.getElementById("map-keybind")!.style.display = "none";
   }
 
   private initButtons(gui: AdvancedDynamicTexture) {
