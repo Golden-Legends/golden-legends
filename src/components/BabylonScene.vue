@@ -3,15 +3,24 @@
   <SoundButton id="sound-button" class="absolute bottom-6 left-8 z-10" />
   <KeybindHint
     class="absolute top-4 left-4"
-    keybind="M"
-    name="Carte"
-    eventKey="m"
+    keybind="O"
+    name="Options"
+    eventKey="o"
+    id="options-keybind"
   />
   <KeybindHint
     class="absolute top-20 left-4"
-    keybind="Esc"
-    name="Options"
-    eventKey="escape"
+    keybind="N"
+    name="Objets à trouver"
+    eventKey="n"
+    id="objects-keybind"
+  />
+  <KeybindHint
+    class="absolute top-36 left-4"
+    keybind="M"
+    name="Carte"
+    eventKey="m"
+    id="map-keybind"
   />
   <FoundObjectsContainer
     title="objectsFound"
