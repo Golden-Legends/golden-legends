@@ -64,10 +64,7 @@ import {
               parameter: this.player,
             },
             () => {
-                document.getElementById("tpGame-dialog")!.style.display = "block";
-                document.getElementById("tpGame-dialog")!.style.position = "absolute";
-                document.getElementById("tpGame-dialog")!.style.bottom = "8";
-                document.getElementById("tpGame-dialog")!.style.left = "8";
+                document.getElementById("tpGame-dialog")!.classList.remove("hidden");
             },
           ),
         );
@@ -79,7 +76,7 @@ import {
               parameter: this.player,
             },
             () => {
-                document.getElementById("tpGame-dialog")!.style.display = "none";
+                document.getElementById("tpGame-dialog")!.classList.add("hidden");
             },
           ),
         );

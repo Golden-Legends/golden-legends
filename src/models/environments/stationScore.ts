@@ -69,10 +69,7 @@ import {
               parameter: this.player,
             },
             () => {
-                document.getElementById("scoreboard-station-dialog")!.style.display = "block";
-                document.getElementById("scoreboard-station-dialog")!.style.position = "absolute";
-                document.getElementById("scoreboard-station-dialog")!.style.bottom = "8";
-                document.getElementById("scoreboard-station-dialog")!.style.left = "8";
+                document.getElementById("scoreboard-station-dialog")!.classList.remove("hidden");
             },
           ),
         );
@@ -84,7 +81,7 @@ import {
               parameter: this.player,
             },
             () => {
-                document.getElementById("scoreboard-station-dialog")!.style.display = "none";
+                document.getElementById("scoreboard-station-dialog")!.classList.add("hidden");
             },
           ),
         );

@@ -133,13 +133,13 @@ export class ObjectGame {
         // Affichez le message de collecte
         if (this.objectsCollectedSet.size === this.totalObjects) {
             // Si tous les objets ont été collectés, affichez un message de victoire
-            document.getElementById("recup-allObject-dialog")!.classList.remove("hidden")
+            document.getElementById("recup-allObject-dialog")!.classList.remove("hidden");
             setTimeout(() => {
                 document.getElementById("recup-allObject-dialog")!.classList.add("hidden");
             }, 3000);
         } else {
             // Sinon, affichez un message indiquant que l'objet a été récupéré avec succès
-            document.getElementById("recup-object-dialog")!.classList.remove("hidden")
+            document.getElementById("recup-object-dialog")!.classList.remove("hidden");
             setTimeout(() => {
                 document.getElementById("recup-object-dialog")!.classList.add("hidden");
             }, 3000);
