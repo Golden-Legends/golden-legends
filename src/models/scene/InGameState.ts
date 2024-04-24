@@ -1,7 +1,6 @@
 import {
   Animation,
   Color3,
-  EasingFunction,
   FollowCamera,
   HemisphericLight,
   Matrix,
@@ -9,7 +8,6 @@ import {
   MeshBuilder,
   Nullable,
   PointLight,
-  QuadraticEase,
   Scene,
   SceneLoader,
   ShadowGenerator,
@@ -24,7 +22,7 @@ import { Scaling } from "../../utils/Scaling.ts";
 import { RunningGameState } from "./games/RunningGameState.ts";
 import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
 import ky from "ky";
-import { socket } from "../../utils/socket.ts";
+// import { socket } from "../../utils/socket.ts";
 import { BACK_URL } from "../../utils/constants.ts";
 import { JumpGame } from "./miniGames/JumpGame.ts";
 import { ObjectGame } from "./miniGames/ObjectGame.ts";
@@ -85,7 +83,8 @@ export class InGameState extends GameState {
       }
     });
 
-    await this.animStartGame();
+    //TO ACTIVATE WHEN THE LOADING SCREEN IS DONE
+    // await this.animStartGame();
     // set environments
     await this.setEnvironment();
 
@@ -117,7 +116,7 @@ export class InGameState extends GameState {
     // camera.rotation = new Vector3(Math.PI/6, 0, 0);
 
     //camera 2
-    const camera = new FollowCamera("carteCamera", new Vector3(-145, 4, -54.1), this.scene);
+    const camera = new FollowCamera("carteCamera", new Vector3(-142, 4, -54.1), this.scene);
     camera.rotation = new Vector3(Math.PI/2, 0, 0);
 
     //camera.lockedTarget = this.player.mesh;
@@ -149,7 +148,7 @@ export class InGameState extends GameState {
     // Durée de l'animation (en frames) // Nouvelle position de la caméra
 
     //anim num 2
-    camKeys.push({frame: 0, value: new Vector3(-145, 4, -54.1)});
+    camKeys.push({frame: 0, value: new Vector3(-142, 4, -54.1)});
     camKeys.push({frame: 4 * this.fps, value: new Vector3(39.6, 80, -54.1)});
     camKeys.push({frame: 9 * this.fps, value: new Vector3(39.6, 80, -54.1)});
     camKeys.push({frame: 11 * this.fps, value: new Vector3(-170, 8, -10)});
