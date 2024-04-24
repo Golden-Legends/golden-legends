@@ -109,23 +109,23 @@ export class RunningGameState extends GameState {
             this._camera.rotation = new Vector3(0, Math.PI, 0);
             this._camera.setTarget(startMesh.getAbsolutePosition());  
                         
-            document.getElementById("runningGame-skip-button")!.style.display = "block";
+            document.getElementById("runningGame-skip-button")!.classList.remove("hidden");
             document.getElementById("runningGame-skip-button")!.addEventListener("click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
 
             this.CreateCameraMouv().then(() => {
-                document.getElementById("runningGame-ready-button")!.style.display = "block";
+                document.getElementById("runningGame-ready-button")!.classList.remove("hidden");
 
                 this.initGui();
 
                 document.getElementById("runningGame-ready-button")!.addEventListener("click", () => {
                     this.startCountdown(["runningGame-text-1", "runningGame-text-2", "runningGame-text-3"]);
                     this.AfterCamAnim();
-                    document.getElementById("runningGame-ready-button")!.style.display = "none";
+                    document.getElementById("runningGame-ready-button")!.classList.add("hidden");
                     this.game.canvas.focus();
-                    document.getElementById("runningGame-skip-button")!.style.display = "none";
+                    document.getElementById("runningGame-skip-button")!.classList.add("hidden");
                     
                 });
             });
@@ -146,7 +146,7 @@ export class RunningGameState extends GameState {
     }
 
     initGui() {
-        document.getElementById("runningGame-timer")!.style.display = "flex";
+        document.getElementById("runningGame-timer")!.classList.remove("hidden");
         document.getElementById("runningGame-keyPressed")!.classList.remove("hidden");
 
         store.commit('setTimer', 0.00);
@@ -166,8 +166,8 @@ export class RunningGameState extends GameState {
     
         const countdownInterval = setInterval(() => {
             const countdownElement = countdownElements[countdownIndex];
-            if (previousElement !== "") document.getElementById(previousElement)!.style.display = "none";
-            document.getElementById(countdownElement)!.style.display = "block";
+            if (previousElement !== "") document.getElementById(previousElement)!.classList.add("hidden");
+            document.getElementById(countdownElement)!.classList.remove("hidden");
             previousElement = countdownElement;
             console.log(countdownElement); // Affiche l'élément du compte à rebours dans la console
             countdownIndex++;
@@ -177,7 +177,7 @@ export class RunningGameState extends GameState {
     
                 // Cache le dernier élément après une seconde
                 setTimeout(() => {
-                    document.getElementById(previousElement)!.style.display = "none";
+                    document.getElementById(previousElement)!.classList.add("hidden");
                 }, 1000);
     
                 // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
@@ -200,12 +200,12 @@ export class RunningGameState extends GameState {
     }
 
     showScoreBoard(): void {
-        document.getElementById("runningGame-text-finish")!.style.display = "block";
+        document.getElementById("runningGame-text-finish")!.classList.remove("hidden");
         // attendre 2 secondes avant d'afficher le tableau des scores
         setTimeout(() => {
             this.createFinaleScoreBoard();
-            document.getElementById("runningGame-text-finish")!.style.display = "none";
-            document.getElementById("runningGame-results")!.style.display = "block";
+            document.getElementById("runningGame-text-finish")!.classList.add("hidden");
+            document.getElementById("runningGame-results")!.classList.remove("hidden");
             this.scoreboardIsShow = true;
         }, 2000);
 

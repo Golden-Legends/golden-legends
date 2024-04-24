@@ -47,7 +47,7 @@ export class ObjectGame {
         this.totalObjects = this.cube.length;
 
         //apparition d'un message quand je suis à côté de la box
-        this.registerPickUpActions();
+        this.registerPickUpActions(this.objects);
 
 
         //intéragir avec G pour ramasser l'objet olympique 
@@ -58,37 +58,42 @@ export class ObjectGame {
             }
         });
         
-        this.createParticleSystems();
+        this.createParticleSystems(this.objects);
         this.interactObjectFound();
     }
 
-    private createParticleSystems() {
+    private createParticleSystems(objets: TBF_OBJECT[]) {
         for (let i = 0; i < this.cube.length; i++) {
-            const particleSystem = new ParticleSystem("particles", 2000, this.scene);
-            particleSystem.particleTexture = new Texture("textures/flare.png", this.scene);
-            particleSystem.emitter = this.cube[i];
-            particleSystem.minEmitBox = new Vector3(-0.25, 0.25, -0.25); // Starting all from
-            particleSystem.maxEmitBox = new Vector3(0.25, 0.25, 0.25); // To...
-            particleSystem.color1 = new Color4(1, 0, 0, 1);
-            particleSystem.color2 = new Color4(1, 0.5, 0, 1);
-            particleSystem.colorDead = new Color4(0, 0, 0, 0.1);
-            particleSystem.minSize = 0.05;
-            particleSystem.maxSize = 0.2;
-            particleSystem.minLifeTime = 0.3;
-            particleSystem.maxLifeTime = 1.5;
-            particleSystem.emitRate = 150;
-            particleSystem.blendMode = ParticleSystem.BLENDMODE_ONEONE;
-            particleSystem.gravity = new Vector3(0, -1, 0);
-            particleSystem.direction1 = new Vector3(-1, 1, -1);
-            particleSystem.direction2 = new Vector3(1, 1, 1);
-            particleSystem.minAngularSpeed = 0;
-            particleSystem.maxAngularSpeed = Math.PI;
-            particleSystem.minEmitPower = 0.5;
-            particleSystem.maxEmitPower = 1;
-            particleSystem.updateSpeed = 0.005;
-            particleSystem.start();
+            if(objets.find(objet => objet.name === this.name[i])?.found === true){
+                continue;
+            }
+            else{
+                const particleSystem = new ParticleSystem("particles", 2000, this.scene);
+                particleSystem.particleTexture = new Texture("textures/flare.png", this.scene);
+                particleSystem.emitter = this.cube[i];
+                particleSystem.minEmitBox = new Vector3(-0.25, 0.25, -0.25); // Starting all from
+                particleSystem.maxEmitBox = new Vector3(0.25, 0.25, 0.25); // To...
+                particleSystem.color1 = new Color4(1, 0, 0, 1);
+                particleSystem.color2 = new Color4(1, 0.5, 0, 1);
+                particleSystem.colorDead = new Color4(0, 0, 0, 0.1);
+                particleSystem.minSize = 0.05;
+                particleSystem.maxSize = 0.2;
+                particleSystem.minLifeTime = 0.3;
+                particleSystem.maxLifeTime = 1.5;
+                particleSystem.emitRate = 150;
+                particleSystem.blendMode = ParticleSystem.BLENDMODE_ONEONE;
+                particleSystem.gravity = new Vector3(0, -1, 0);
+                particleSystem.direction1 = new Vector3(-1, 1, -1);
+                particleSystem.direction2 = new Vector3(1, 1, 1);
+                particleSystem.minAngularSpeed = 0;
+                particleSystem.maxAngularSpeed = Math.PI;
+                particleSystem.minEmitPower = 0.5;
+                particleSystem.maxEmitPower = 1;
+                particleSystem.updateSpeed = 0.005;
+                particleSystem.start();
 
-            this.particleSystems.push(particleSystem);
+                this.particleSystems.push(particleSystem);
+            }
         }
     }
 
@@ -116,33 +121,27 @@ export class ObjectGame {
         //modifie la valeur de la propriété found de l'objet
         this.modifierValeurFound(this.name[objectIndex]);
 
-        document.getElementById("haie-object-dialog")!.style.display = "none";
-        document.getElementById("gant-object-dialog")!.style.display = "none";
-        document.getElementById("raquette-object-dialog")!.style.display = "none";
-        document.getElementById("ballon-object-dialog")!.style.display = "none";
-        document.getElementById("skate-object-dialog")!.style.display = "none";
-        document.getElementById("arc-object-dialog")!.style.display = "none";
-        document.getElementById("chaussure-object-dialog")!.style.display = "none";
-        document.getElementById("velo-object-dialog")!.style.display = "none";
+        document.getElementById("haie-object-dialog")!.classList.add("hidden");
+        document.getElementById("gant-object-dialog")!.classList.add("hidden");
+        document.getElementById("raquette-object-dialog")!.classList.add("hidden");
+        document.getElementById("ballon-object-dialog")!.classList.add("hidden");
+        document.getElementById("skate-object-dialog")!.classList.add("hidden");
+        document.getElementById("arc-object-dialog")!.classList.add("hidden");
+        document.getElementById("chaussure-object-dialog")!.classList.add("hidden");
+        document.getElementById("velo-object-dialog")!.classList.add("hidden");
 
         // Affichez le message de collecte
         if (this.objectsCollectedSet.size === this.totalObjects) {
             // Si tous les objets ont été collectés, affichez un message de victoire
-            document.getElementById("recup-allObject-dialog")!.style.display = "block";
-            document.getElementById("recup-allObject-dialog")!.style.position = "absolute";
-            document.getElementById("recup-allObject-dialog")!.style.bottom = "8";
-            document.getElementById("recup-allObject-dialog")!.style.left = "8";
+            document.getElementById("recup-allObject-dialog")!.classList.remove("hidden");
             setTimeout(() => {
-                document.getElementById("recup-allObject-dialog")!.style.display = "none";
+                document.getElementById("recup-allObject-dialog")!.classList.add("hidden");
             }, 3000);
         } else {
             // Sinon, affichez un message indiquant que l'objet a été récupéré avec succès
-            document.getElementById("recup-object-dialog")!.style.display = "block";
-            document.getElementById("recup-object-dialog")!.style.position = "absolute";
-            document.getElementById("recup-object-dialog")!.style.bottom = "8";
-            document.getElementById("recup-object-dialog")!.style.left = "8";
+            document.getElementById("recup-object-dialog")!.classList.remove("hidden");
             setTimeout(() => {
-                document.getElementById("recup-object-dialog")!.style.display = "none";
+                document.getElementById("recup-object-dialog")!.classList.add("hidden");
             }, 3000);
             // console.log(objects);
         }
@@ -150,122 +149,102 @@ export class ObjectGame {
 
 
 
-    private registerPickUpActions(): void {
+    private registerPickUpActions(objets: TBF_OBJECT[]): void {
         // Pour chaque boîte, enregistrez une action pour détecter l'entrée du joueur dans la zone
         for (let i = 0; i < this.cube.length; i++) {
-            const box = this.cube[i];
+            if(objets.find(objet => objet.name === this.name[i])?.found === true){
+                continue;
+            }
+            else{
+                const box = this.cube[i];
 
-            // Ajoutez une action pour détecter l'entrée du joueur dans la zone de la boîte
-            box.actionManager = new ActionManager(this.scene);
-            box.actionManager.registerAction(
-                new ExecuteCodeAction(
-                    {
-                        trigger: ActionManager.OnIntersectionEnterTrigger, // Déclenché lorsque le joueur entre dans la zone
-                        parameter: this.player,
-                    },
-                    () => {
-                        // Affichez le message lorsque le joueur entre dans la zone de la boîte
-                        switch (i) {
-                            case 0:
-                                document.getElementById("haie-object-dialog")!.style.display = "block";
-                                document.getElementById("haie-object-dialog")!.style.position = "absolute";
-                                document.getElementById("haie-object-dialog")!.style.bottom = "8";
-                                document.getElementById("haie-object-dialog")!.style.left = "8";
-                                break;
-                            case 1:
-                                document.getElementById("gant-object-dialog")!.style.display = "block";
-                                document.getElementById("gant-object-dialog")!.style.position = "absolute";
-                                document.getElementById("gant-object-dialog")!.style.bottom = "8";
-                                document.getElementById("gant-object-dialog")!.style.left = "8";
-                                break;
-                            case 2:
-                                document.getElementById("raquette-object-dialog")!.style.display = "block";
-                                document.getElementById("raquette-object-dialog")!.style.position = "absolute";
-                                document.getElementById("raquette-object-dialog")!.style.bottom = "8";
-                                document.getElementById("raquette-object-dialog")!.style.left = "8";
-                                break;
-                            case 3:
-                                document.getElementById("ballon-object-dialog")!.style.display = "block";
-                                document.getElementById("ballon-object-dialog")!.style.position = "absolute";
-                                document.getElementById("ballon-object-dialog")!.style.bottom = "8";
-                                document.getElementById("ballon-object-dialog")!.style.left = "8";
-                                break;
-                            case 4:
-                                document.getElementById("skate-object-dialog")!.style.display = "block";
-                                document.getElementById("skate-object-dialog")!.style.position = "absolute";
-                                document.getElementById("skate-object-dialog")!.style.bottom = "8";
-                                document.getElementById("skate-object-dialog")!.style.left = "8";
-                                break;
-                            case 5:
-                                document.getElementById("arc-object-dialog")!.style.display = "block";
-                                document.getElementById("arc-object-dialog")!.style.position = "absolute";
-                                document.getElementById("arc-object-dialog")!.style.bottom = "8";
-                                document.getElementById("arc-object-dialog")!.style.left = "8";
-                                break;
-                            case 6:
-                                document.getElementById("chaussure-object-dialog")!.style.display = "block";
-                                document.getElementById("chaussure-object-dialog")!.style.position = "absolute";
-                                document.getElementById("chaussure-object-dialog")!.style.bottom = "8";
-                                document.getElementById("chaussure-object-dialog")!.style.left = "8";
-                                break;
-                            case 7:
-                                document.getElementById("velo-object-dialog")!.style.display = "block";
-                                document.getElementById("velo-object-dialog")!.style.position = "absolute";
-                                document.getElementById("velo-object-dialog")!.style.bottom = "8";
-                                document.getElementById("velo-object-dialog")!.style.left = "8";
-                                break;
-                            default:
-                                break;
+                // Ajoutez une action pour détecter l'entrée du joueur dans la zone de la boîte
+                box.actionManager = new ActionManager(this.scene);
+                box.actionManager.registerAction(
+                    new ExecuteCodeAction(
+                        {
+                            trigger: ActionManager.OnIntersectionEnterTrigger, // Déclenché lorsque le joueur entre dans la zone
+                            parameter: this.player,
+                        },
+                        () => {
+                            // Affichez le message lorsque le joueur entre dans la zone de la boîte
+                            switch (i) {
+                                case 0:
+                                    document.getElementById("haie-object-dialog")!.classList.remove("hidden");
+                                    break;
+                                case 1:
+                                    document.getElementById("gant-object-dialog")!.classList.remove("hidden");
+                                    break;
+                                case 2:
+                                    document.getElementById("raquette-object-dialog")!.classList.remove("hidden");
+                                    break;
+                                case 3:
+                                    document.getElementById("ballon-object-dialog")!.classList.remove("hidden");
+                                    break;
+                                case 4:
+                                    document.getElementById("skate-object-dialog")!.classList.remove("hidden");
+                                    break;
+                                case 5:
+                                    document.getElementById("arc-object-dialog")!.classList.remove("hidden");
+                                    break;
+                                case 6:
+                                    document.getElementById("chaussure-object-dialog")!.classList.remove("hidden");
+                                    break;
+                                case 7:
+                                    document.getElementById("velo-object-dialog")!.classList.remove("hidden");
+                                    break;
+                                default:
+                                    break;
+                            }
+                            this.objectToPickUp = box;
+                            this.isPlayerInsideTrigger = true;
+                            if(this.playerInput.inputMap["KeyR"]){
+                                this.collectObject();
+                            }
                         }
-                        this.objectToPickUp = box;
-                        this.isPlayerInsideTrigger = true;
-                        if(this.playerInput.inputMap["KeyR"]){
-                            this.collectObject();
-                        }
-                    }
-                )
-            );
+                    )
+                );
 
-            box.actionManager.registerAction(
-                new ExecuteCodeAction(
-                    {
-                        trigger: ActionManager.OnIntersectionExitTrigger, // Déclenché lorsque le joueur entre dans la zone
-                        parameter: this.player,
-                    },
-                    () => {
-                        switch (i) {
-                            case 0:
-                                document.getElementById("haie-object-dialog")!.style.display = "none";
-                                break;
-                            case 1:
-                                document.getElementById("gant-object-dialog")!.style.display = "none";
-                                break;
-                            case 2:
-                                document.getElementById("raquette-object-dialog")!.style.display = "none";
-                                break;
-                            case 3:
-                                document.getElementById("ballon-object-dialog")!.style.display = "none";
-                                break;
-                            case 4:
-                                document.getElementById("skate-object-dialog")!.style.display = "none";
-                                break;
-                            case 5:
-                                document.getElementById("arc-object-dialog")!.style.display = "none";
-                                break;
-                            case 6:
-                                document.getElementById("chaussure-object-dialog")!.style.display = "none";
-                                break;
-                            case 7:
-                                document.getElementById("velo-object-dialog")!.style.display = "none";
-                                break;
-                            default:
-                                break;
+                box.actionManager.registerAction(
+                    new ExecuteCodeAction(
+                        {
+                            trigger: ActionManager.OnIntersectionExitTrigger, // Déclenché lorsque le joueur entre dans la zone
+                            parameter: this.player,
+                        },
+                        () => {
+                            switch (i) {
+                                case 0:
+                                    document.getElementById("haie-object-dialog")!.classList.add("hidden");
+                                    break;
+                                case 1:
+                                    document.getElementById("gant-object-dialog")!.classList.add("hidden");
+                                    break;
+                                case 2:
+                                    document.getElementById("raquette-object-dialog")!.classList.add("hidden");
+                                    break;
+                                case 3:
+                                    document.getElementById("ballon-object-dialog")!.classList.add("hidden");
+                                    break;
+                                case 4:
+                                    document.getElementById("skate-object-dialog")!.classList.add("hidden");
+                                    break;
+                                case 5:
+                                    document.getElementById("arc-object-dialog")!.classList.add("hidden");
+                                    break;
+                                case 6:
+                                    document.getElementById("chaussure-object-dialog")!.classList.add("hidden");
+                                    break;
+                                case 7:
+                                    document.getElementById("velo-object-dialog")!.classList.add("hidden");
+                                    break;
+                                default:
+                                    break;
+                            }
+                            this.isPlayerInsideTrigger = false;
                         }
-                        this.isPlayerInsideTrigger = false;
-                    }
-                )
-            );
-
+                    )
+                );
+            }
         }
     }
 
@@ -282,11 +261,13 @@ export class ObjectGame {
 
     public interactObjectFound() {
 		document.addEventListener("keydown", function(event) {
-			if (event.key === 'n' && document.getElementById("objectsFound")!.style.display == "block" && document.getElementById("objects-keybind")!.style.display != "none"){
-				document.getElementById("objectsFound")!.style.display = "none";
+			if (event.key === 'n' && !document.getElementById("objectsFound")!.classList.contains("hidden")
+                                    && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
+                document.getElementById("objectsFound")!.classList.add("hidden");
 			}
-			else if (event.key === 'n' && document.getElementById("objects-keybind")!.style.display != "none"){
-				document.getElementById("objectsFound")!.style.display = "block";
+			else if (event.key === 'n' && document.getElementById("objectsFound")!.classList.contains("hidden")
+                                        && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
+                document.getElementById("objectsFound")!.classList.remove("hidden");
 			}
 		});
 	}

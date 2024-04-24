@@ -162,28 +162,16 @@ export class PnjTalk {
           },
           () => {
             if(box.name === "cube" + 0 || box.name === "cube" + 1){
-              document.getElementById("tp-game-dialog")!.style.display = "block";
-              document.getElementById("tp-game-dialog")!.style.position = "absolute";
-              document.getElementById("tp-game-dialog")!.style.bottom = "8";
-              document.getElementById("tp-game-dialog")!.style.left = "8";
+              document.getElementById("tp-game-dialog")!.classList.remove("hidden");
             }
             else if(box.name === "cube" + 2){
-              document.getElementById("jump-game-dialog")!.style.display = "block";
-              document.getElementById("jump-game-dialog")!.style.position = "absolute";
-              document.getElementById("jump-game-dialog")!.style.bottom = "8";
-              document.getElementById("jump-game-dialog")!.style.left = "8";
+              document.getElementById("jump-game-dialog")!.classList.remove("hidden");
             }
             else if(box.name === "cube" + 3){
-              document.getElementById("foot-game-dialog")!.style.display = "block";
-              document.getElementById("foot-game-dialog")!.style.position = "absolute";
-              document.getElementById("foot-game-dialog")!.style.bottom = "8";
-              document.getElementById("foot-game-dialog")!.style.left = "8";
+              document.getElementById("foot-game-dialog")!.classList.remove("hidden");
             }
             else if(box.name === "cube" + 4){
-              document.getElementById("object-game-dialog")!.style.display = "block";
-              document.getElementById("object-game-dialog")!.style.position = "absolute";
-              document.getElementById("object-game-dialog")!.style.bottom = "8";
-              document.getElementById("object-game-dialog")!.style.left = "8";
+              document.getElementById("object-game-dialog")!.classList.remove("hidden");
             }
           },
         ),
@@ -197,16 +185,16 @@ export class PnjTalk {
           },
           () => {
             if(box.name === "cube" + 0 || box.name === "cube" + 1){
-              document.getElementById("tp-game-dialog")!.style.display = "none";
+              document.getElementById("tp-game-dialog")!.classList.add("hidden");
             }
             else if(box.name === "cube" + 2){
-              document.getElementById("jump-game-dialog")!.style.display = "none";
+              document.getElementById("jump-game-dialog")!.classList.add("hidden");
             }
             else if(box.name === "cube" + 3){
-              document.getElementById("foot-game-dialog")!.style.display = "none";
+              document.getElementById("foot-game-dialog")!.classList.add("hidden");
             }
             else if(box.name === "cube" + 4){
-              document.getElementById("object-game-dialog")!.style.display = "none";
+              document.getElementById("object-game-dialog")!.classList.add("hidden");
             }
           },
         ),

@@ -220,23 +220,17 @@ export class JumpGame {
 
   showVictoryMessage() {
     // Créer un message de victoire à afficher à l'écran
-    document.getElementById("victory-jump-dialog")!.style.display = "block";
-    document.getElementById("victory-jump-dialog")!.style.position = "absolute";
-    document.getElementById("victory-jump-dialog")!.style.bottom = "8";
-    document.getElementById("victory-jump-dialog")!.style.left = "8";
+    document.getElementById("victory-jump-dialog")!.classList.remove("hidden");
     setTimeout(() => {
-        document.getElementById("victory-jump-dialog")!.style.display = "none";
+        document.getElementById("victory-jump-dialog")!.classList.add("hidden");
     }, 3000);
   }
 
   showDefeatMessage() {
     // Créer un message de défaite à afficher à l'écran
-    document.getElementById("lose-jump-dialog")!.style.display = "block";
-    document.getElementById("lose-jump-dialog")!.style.position = "absolute";
-    document.getElementById("lose-jump-dialog")!.style.bottom = "8";
-    document.getElementById("lose-jump-dialog")!.style.left = "8";
+    document.getElementById("lose-jump-dialog")!.classList.remove("hidden");
     setTimeout(() => {
-        document.getElementById("lose-jump-dialog")!.style.display = "none";
+        document.getElementById("lose-jump-dialog")!.classList.add("hidden");
     }, 3000);
   }
 
