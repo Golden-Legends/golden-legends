@@ -29,6 +29,13 @@
     id="objectsFound"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+  <!-- log test carte a supprimer-->
+  <Dialog
+    name="Carte"
+    text="carte log"
+    id="carte-dialog"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
   <Dialog
     name="Gladiator"
     :text="jumpGameText"
