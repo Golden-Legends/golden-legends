@@ -1,5 +1,7 @@
 import {
+  Animation,
   Color3,
+  FollowCamera,
   HemisphericLight,
   Matrix,
   Mesh,
@@ -20,7 +22,7 @@ import { Scaling } from "../../utils/Scaling.ts";
 import { RunningGameState } from "./games/RunningGameState.ts";
 import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
 import ky from "ky";
-import { socket } from "../../utils/socket.ts";
+// import { socket } from "../../utils/socket.ts";
 import { BACK_URL } from "../../utils/constants.ts";
 import { JumpGame } from "./miniGames/JumpGame.ts";
 import { ObjectGame } from "./miniGames/ObjectGame.ts";
@@ -36,6 +38,7 @@ export class InGameState extends GameState {
   private _input: PlayerInput;
   private jumpGame!: JumpGame;
   private objectGame!: ObjectGame;
+  private fps: number = 30;
 
   constructor(game, canvas) {
     super(game, canvas);
@@ -80,6 +83,8 @@ export class InGameState extends GameState {
       }
     });
 
+    //TO ACTIVATE WHEN THE LOADING SCREEN IS DONE
+    // await this.animStartGame();
     // set environments
     await this.setEnvironment();
 
@@ -101,6 +106,99 @@ export class InGameState extends GameState {
     /*		socket.on("joinMainLobby", (playerName: string) => {
 			console.log("NEW PLAYER JOINED THE GAME: ", playerName);
 		});*/
+  }
+
+
+  public animStartGame() {
+    console.log("animStartGame");
+    //camera 1
+    // const camera = new FollowCamera("carteCamera", new Vector3(-145, 80, -260), this.scene);
+    // camera.rotation = new Vector3(Math.PI/6, 0, 0);
+
+    //camera 2
+    const camera = new FollowCamera("carteCamera", new Vector3(-142, 4, -54.1), this.scene);
+    camera.rotation = new Vector3(Math.PI/2, 0, 0);
+
+    //camera.lockedTarget = this.player.mesh;
+    //camera.radius = 10;
+    //camera.heightOffset = 20;
+    //camera.rotationOffset = 180;
+
+    const animation = new Animation(
+        "cameraAnimation",
+        "position",
+        30,
+        Animation.ANIMATIONTYPE_VECTOR3,
+        Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+
+    // Définir les frames clés de l'animation
+    const camKeys: { frame: number, value: Vector3 }[] = [];
+    //anim num 1
+    // camKeys.push({frame: 0, value: new Vector3(-145, 80, -260)}); // Position actuelle de la caméra 
+    // camKeys.push({frame: 2 * this.fps, value: new Vector3(-1.1, 80, -201.9)});
+    // camKeys.push({frame: 4 * this.fps, value: new Vector3(39.6, 80, -54.1)});
+    // camKeys.push({frame: 6 * this.fps, value: new Vector3(-1.1, 80, 94.53)});
+    // camKeys.push({frame: 8 * this.fps, value: new Vector3(-145, 80, 140)});
+    // camKeys.push({frame: 10 * this.fps, value: new Vector3(-289.5, 80, 94.53)});
+    // camKeys.push({frame: 12 * this.fps, value: new Vector3(-350, 80, -54.1)});
+    // camKeys.push({frame: 14 * this.fps, value: new Vector3(-289.5, 80, -201.46)});
+    // camKeys.push({frame: 16 * this.fps, value: new Vector3(-145, 80, -260)});
+    // camKeys.push({frame: 18 * this.fps, value: new Vector3(-170, 8, -10)});
+    // Durée de l'animation (en frames) // Nouvelle position de la caméra
+
+    //anim num 2
+    camKeys.push({frame: 0, value: new Vector3(-142, 4, -54.1)});
+    camKeys.push({frame: 4 * this.fps, value: new Vector3(39.6, 80, -54.1)});
+    camKeys.push({frame: 9 * this.fps, value: new Vector3(39.6, 80, -54.1)});
+    camKeys.push({frame: 11 * this.fps, value: new Vector3(-170, 8, -10)});
+
+    
+    // Ajouter les keys à l'animation
+    animation.setKeys(camKeys);
+    
+    // Ajouter l'animation à la caméra
+    camera.animations.push(animation);
+
+    const rotationAnimation = new Animation(
+        "cameraRotationAnimation",
+        "rotation",
+        30,
+        Animation.ANIMATIONTYPE_VECTOR3,
+        Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+
+    // Définir les frames clés de l'animation de rotation
+    const rotationKeys: { frame: number, value: Vector3 }[] = [];
+    // anim num 1
+    // rotationKeys.push({frame: 0, value: new Vector3(Math.PI/6, 0, 0)});// Rotation actuelle de la caméra
+    // rotationKeys.push({frame: 2 * this.fps, value: new Vector3(Math.PI/6, -Math.PI/4, 0)});
+    // rotationKeys.push({frame: 4 * this.fps, value: new Vector3(Math.PI/6, -Math.PI/2, 0)});// Durée de l'animation (en frames)// Rotation vers le bas de 20 degrés
+    // rotationKeys.push({frame: 6 * this.fps, value: new Vector3(Math.PI/6, -3*Math.PI/4, 0)});
+    // rotationKeys.push({frame: 8 * this.fps, value: new Vector3(Math.PI/6, -Math.PI, 0)});
+    // rotationKeys.push({frame: 10 * this.fps, value: new Vector3(Math.PI/6, -5*Math.PI/4, 0)});
+    // rotationKeys.push({frame: 12 * this.fps, value: new Vector3(Math.PI/6, -3*Math.PI/2, 0)});
+    // rotationKeys.push({frame: 14 * this.fps, value: new Vector3(Math.PI/6, -7*Math.PI/4, 0)});
+    // rotationKeys.push({frame: 16 * this.fps, value: new Vector3(Math.PI/6, -2*Math.PI, 0)});
+    // rotationKeys.push({frame: 18 * this.fps, value: new Vector3(Math.PI/6, -2*Math.PI, 0)});
+
+    // anim num 2
+    rotationKeys.push({frame: 0, value: new Vector3(Math.PI/2, 0, 0)});
+    rotationKeys.push({frame: 4 * this.fps, value: new Vector3(Math.PI/6, -2*Math.PI/3, 0)});
+    rotationKeys.push({frame: 9 * this.fps, value: new Vector3(Math.PI/6, -Math.PI/3, 0)});
+    rotationKeys.push({frame: 11 * this.fps, value: new Vector3(Math.PI/6, -Math.PI, 0)});
+
+    rotationAnimation.setKeys(rotationKeys);
+    camera.animations.push(rotationAnimation);
+
+    // Lancer l'animation
+    this.scene.beginAnimation(camera, 0, 11 * this.fps, false);
+
+    setTimeout(() => {
+      this.scene._activeCamera = this._player!.activatePlayerCamera();
+    }, 11*this.fps*40);
+
+    this.scene.activeCamera = camera;
   }
 
   exit() {

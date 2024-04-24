@@ -157,7 +157,7 @@ export class Environment {
 		var gltfLoader = loader.addMeshTask("gltf task", "", "", "./models/maps/skyV2.glb");
 		gltfLoader.onSuccess = function (task) {
 			task.loadedMeshes.forEach(function(mesh) {
-				mesh.position = new Vector3(-200, 10, -60);
+				mesh.position = new Vector3(-145, 0, -54.1);
 				mesh.scaling = new Vector3(0.6, 0.6, 0.6);
 			});
 		};
@@ -332,7 +332,7 @@ export class Environment {
 		const waterMesh = this._scene.getMeshByName("Cube.063");
 		if (waterMesh) {
 			waterMesh.scaling = new Vector3(750,1,750);
-			waterMesh.position = new Vector3(0, 0, 0);	
+			waterMesh.position = new Vector3(-145, 0, -54.1);	
 			this.waterMaterial = new WaterMaterial("water_material", this._scene);
 			this.waterMaterial.bumpTexture = new Texture(
 				"./assets/water/water_bump.jpg",
