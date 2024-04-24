@@ -2,7 +2,6 @@ import {
     Animation,
     EasingFunction,
     FollowCamera,
-    Mesh,
     QuadraticEase,
     Scene,
     Vector3,
