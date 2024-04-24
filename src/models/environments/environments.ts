@@ -21,6 +21,7 @@ import { SoundManager } from "./sound";
 import { Voitures } from "./voitures";
 import { StationScore } from "./stationScore";
 import { TpGame } from "./tp";
+import { Carte } from "./carte";
 
 export class Environment {
 	private _scene: Scene;
@@ -34,6 +35,7 @@ export class Environment {
 	public voitures!: Voitures;
 	public stationScore!: StationScore;
 	public tpGame!: TpGame;
+	public carte!: Carte;
 	public waterMaterial!: WaterMaterial;
 	private skyBox!: Mesh;
 
@@ -128,6 +130,8 @@ export class Environment {
 		this.createSkybox(this._scene);
 		this.createWater();
 		this.moveLogo();
+		this.carte = new Carte(this._scene, this.player!);
+		this.carte.init();
 	}
 
 	//Load all necessary meshes for the environment
