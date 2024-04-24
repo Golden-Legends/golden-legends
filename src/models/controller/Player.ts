@@ -42,7 +42,7 @@ export class Player extends TransformNode {
 	public mesh: Mesh; //outer collisionbox of player
 
 	//Camera
-	private _camRoot: TransformNode;
+	public _camRoot: TransformNode;
 	private _yTilt: TransformNode;
 
 	//const values
