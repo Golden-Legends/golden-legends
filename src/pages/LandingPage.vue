@@ -3,25 +3,28 @@ import { useRouter } from "vue-router";
 import ClassicButton from "@/components/landing/ClassicButton.vue";
 import ClassicInput from "@/components/landing/ClassicInput.vue";
 
-import { Howl } from "howler";
+import { Music } from "@/utils/Music.ts";
 import PlayButton from "@/components/characters/PlayButton.vue";
 import { ref } from "vue";
 import { UserService } from "@/services/user-service.ts";
 import { toast } from "vue-sonner";
 
-const musiqueAccueil = new Howl({
-  src: ["./sounds/musiqueAccueilShort.m4a"],
-  autoplay: true,
-  loop: true,
-  volume: 0.1, // Volume par défaut
-});
+// const musiqueAccueil = new Howl({
+//   src: ["./sounds/musiqueAccueilShort.m4a"],
+//   autoplay: true,
+//   loop: true,
+//   volume: 0.1, // Volume par défaut
+// });
+
+const music = Music.getInstance("./sounds/musiqueAccueilShort.m4a", 0.1);
+
 
 const error = ref(false);
 
 const stopMusicAndRedirect = async () => {
   try {
     await UserService.isUsernameValid(username.value);
-    musiqueAccueil.stop();
+    // musiqueAccueil.stop();
     localStorage.setItem("username", username.value);
     await router.push({ name: "Character" });
   } catch (e) {
