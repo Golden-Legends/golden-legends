@@ -8,6 +8,7 @@ import RunningGameSettings from "../../../assets/runningGame.json";
 import { Inspector } from '@babylonjs/inspector';
 import { store } from "@/components/gui/store.ts";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
+import { InGameState } from "../InGameState";
 
 interface line {
     start : string;
@@ -126,7 +127,7 @@ export class RunningGameState extends GameState {
                     document.getElementById("runningGame-skip-button")!.classList.add("hidden");
                     
                 });
-            });
+            });            
 
         } catch (error) {
             throw new Error("erreur.");
@@ -223,8 +224,17 @@ export class RunningGameState extends GameState {
             this.createFinaleScoreBoard();
             document.getElementById("runningGame-text-finish")!.classList.add("hidden");
             document.getElementById("runningGame-results")!.classList.remove("hidden");
+            let continueButton = document.querySelector('#runningGame-results #continue-button');
+            if (continueButton) {
+                continueButton.addEventListener('click', () => {
+                    this.exit();
+                    this.game.changeState(new InGameState(this.game, this.game.canvas));
+                });
+            }
             this.scoreboardIsShow = true;
         }, 2000);   
+
+
         
     }   
     

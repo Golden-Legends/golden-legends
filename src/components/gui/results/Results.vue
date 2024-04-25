@@ -21,7 +21,7 @@ const props = defineProps({
     </div>
 
     <div class="flex flex-col items-center gap-4 my-4">
-      <ContinueButton />
+      <ContinueButton id="continue-button" />
     </div>
   </div>
 </template>
