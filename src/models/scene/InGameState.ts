@@ -247,7 +247,6 @@ export class InGameState extends GameState {
         body.scaling = new Scaling(0.1);
         body.showBoundingBox = true;
         // enlever l'animation à l'indice 0 de animationsGroups
-        console.log(result.animationGroups);
         result.animationGroups[0].stop();
         const idle = result.animationGroups.find((ag) => ag.name === "Anim|idle");
         idle?.start();
