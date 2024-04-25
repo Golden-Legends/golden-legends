@@ -233,7 +233,7 @@ export class PlayerRunningGame {
     public movePlayer(): void {
         // Applique le mouvement en fonction de la direction et de la vitesse
         const direction = this.baseSpeed * this._deltaTime; 
-        store.commit('setProgressBar', this.baseSpeed * 10);  
+        store.commit('setSpeedBar', this.baseSpeed * 10);  
         this.transform.position.z += this.direction * direction;
         if (this._camera) {
             this._camera.position.z += this.direction * direction;

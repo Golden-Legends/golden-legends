@@ -155,7 +155,7 @@ export class RunningGameState extends GameState {
         document.getElementById("runningGame-text-speedbar")!.classList.remove("hidden");
 
         store.commit('setTimer', 0.00);
-        store.commit('setProgressBar', 0);  
+        store.commit('setSpeedBar', 0);  
     }
 
     /**
@@ -202,7 +202,7 @@ export class RunningGameState extends GameState {
         document.getElementById("runningGame-text-finish")!.classList.add("hidden");
 
         store.commit('setTimer', 0.00);
-        store.commit('setProgressBar', 0);
+        store.commit('setSpeedBar', 0);
         this.buildScoreBoard();
 
         this.clearScene();
@@ -224,8 +224,7 @@ export class RunningGameState extends GameState {
             document.getElementById("runningGame-text-finish")!.classList.add("hidden");
             document.getElementById("runningGame-results")!.classList.remove("hidden");
             this.scoreboardIsShow = true;
-        }, 2000);
-
+        }, 2000);   
         
     }   
     
