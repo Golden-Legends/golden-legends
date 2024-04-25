@@ -17,7 +17,6 @@ import { GameState } from "../GameState";
 import { PlayerInput } from "../inputsMangement/PlayerInput";
 import { Player } from "../controller/Player";
 import { Environment } from "../environments/environments";
-import { Character } from "../intefaces/Character";
 import { Scaling } from "../../utils/Scaling.ts";
 import { RunningGameState } from "./games/RunningGameState.ts";
 import { AdvancedDynamicTexture, Control } from "@babylonjs/gui";
@@ -31,10 +30,6 @@ export class InGameState extends GameState {
   public assets;
   private loadedGui: AdvancedDynamicTexture | undefined;
   private background: Nullable<Control> = null;
-  private character: Character = {
-    fileName: "amy.glb",
-    scalingVector3: new Scaling(0.01),
-  };
   private _input: PlayerInput;
   private jumpGame!: JumpGame;
   private objectGame!: ObjectGame;
@@ -212,7 +207,7 @@ export class InGameState extends GameState {
   update() {}
 
   private async _loadCharacterAssets(scene: Scene) {
-    async function loadCharacter(characterFileAndScaling: Character) {
+    async function loadCharacter() {
       //collision mesh
       const outer = MeshBuilder.CreateBox(
         "outer",
@@ -228,12 +223,17 @@ export class InGameState extends GameState {
       //for collisions
       outer.ellipsoid = new Vector3(1, 1.5, 1);
       outer.ellipsoidOffset = new Vector3(0, 1.5, 0);
+      
+      let urlPath = localStorage.getItem("pathCharacter");
+      if (!urlPath) {
+        urlPath = "perso.glb"
+      }
 
       //--IMPORTING MESH--
       return SceneLoader.ImportMeshAsync(
         null,
         "./models/characters/",
-        characterFileAndScaling.fileName,
+        urlPath,
         scene,
       ).then((result) => {
         const root = result.meshes[0];
@@ -244,11 +244,12 @@ export class InGameState extends GameState {
         body.getChildMeshes().forEach((m) => {
           m.isPickable = false;
         });
-        body.scaling = characterFileAndScaling.scalingVector3;
+        body.scaling = new Scaling(0.1);
         body.showBoundingBox = true;
         // enlever l'animation à l'indice 0 de animationsGroups
+        console.log(result.animationGroups);
         result.animationGroups[0].stop();
-        const idle = result.animationGroups.find((ag) => ag.name === "idle");
+        const idle = result.animationGroups.find((ag) => ag.name === "Anim|idle");
         idle?.start();
         //return the mesh and animations
         return {
@@ -258,7 +259,7 @@ export class InGameState extends GameState {
       });
     }
 
-    return loadCharacter(this.character).then((assets) => {
+    return loadCharacter().then((assets) => {
       this.assets = assets;
     });
   }

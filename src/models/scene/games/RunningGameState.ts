@@ -233,8 +233,6 @@ export class RunningGameState extends GameState {
             }
             this.scoreboardIsShow = true;
         }, 2000);   
-
-
         
     }   
     

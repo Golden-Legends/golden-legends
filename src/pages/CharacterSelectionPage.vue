@@ -3,23 +3,33 @@ import ClassicButton from "@/components/landing/ClassicButton.vue";
 import router from "@/router/routes.ts";
 import CharactersContainer from "@/components/characters/CharactersContainer.vue";
 import { ref } from "vue";
-import { CHARACTERS } from "@/utils/constants.ts";
 import PlayButton from "@/components/characters/PlayButton.vue";
 
-const pathCharacter = ref(null as string | null);
+interface Character {
+  name: string;
+  path: string;
+  pathGlb: string;
+  description: string;
+}
 
-const getNameFromPath = (path: string) => {
-  const character = CHARACTERS.find((character) => character.path === path);
-  return character?.name;
+const defaultCharacter = {
+  name: "default",
+  path: "1",
+  pathGlb: "perso.glb",
+  description: "default character",
 };
 
-const getDescriptionFromPath = (path: string) => {
-  const character = CHARACTERS.find((character) => character.path === path);
-  return character?.description;
-};
+const character = ref(null as Character | null);
 
 const getUsernameFromLocalStorage = () => {
   return localStorage.getItem("username");
+};
+
+const setPathCharacterLocalStorage = (path: Character | null) => {
+  if (!path) {
+    path = defaultCharacter;
+  }
+  localStorage.setItem("pathCharacter", path.pathGlb);
 };
 </script>
 
@@ -39,13 +49,14 @@ const getUsernameFromLocalStorage = () => {
       </div>
       <CharactersContainer
         class="w-full"
-        @select-character="pathCharacter = $event"
+        @select-character="character = $event"
       />
 
       <PlayButton
-        :disabled="!pathCharacter"
+        :disabled="!character"
         @click="
-          router.push({ name: 'Game', params: { character: pathCharacter } })
+          router.push({ name: 'Game', params: { characterPath: character?.path } }); 
+          setPathCharacterLocalStorage(character);
         "
       />
     </div>
@@ -53,14 +64,14 @@ const getUsernameFromLocalStorage = () => {
     <div class="w-2/5 h-screen p-14 flex flex-col bg-[#fdfdfd]">
       <span
         class="text-8xl font-black uppercase text-blue-darker"
-        v-if="pathCharacter"
-        >{{ getNameFromPath(pathCharacter) }}</span
+        v-if="character"
+        >{{ character.path }}</span
       >
-      <span class="text-xl font-bold text-black" v-if="pathCharacter"
-        >{{ getDescriptionFromPath(pathCharacter) }}
+      <span class="text-xl font-bold text-black" v-if="character"
+        >{{ character?.description }}
       </span>
       <div class="flex items-center gap-4">
-        <video autoplay :src="`/src/assets/characters/${pathCharacter}.mp4`" />
+        <video autoplay :src="`/src/assets/characters/${character?.path}.mp4`" />
       </div>
     </div>
   </div>
