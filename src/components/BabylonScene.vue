@@ -1,6 +1,6 @@
 <template>
   <canvas ref="bjsCanvas" />
-  <SoundButton id="sound-button" class="absolute bottom-6 left-8 z-10" />
+  <!-- <SoundButton id="sound-button" class="absolute bottom-6 left-8 z-10" /> -->
   <KeybindHint
     class="absolute top-4 left-4"
     keybind="O"
