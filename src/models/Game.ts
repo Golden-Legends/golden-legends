@@ -16,8 +16,7 @@ export class Game {
     this.loadingScreen = new CustomLoadingScreen("Loading...");
     this.setLoadingScreen(this.loadingScreen);
     this.canvas = canvas;
-    // this.changeState(new InGameState(this, canvas));
-    this.changeState(new RunningGameState(this, canvas));
+    this.changeState(new InGameState(this, canvas));
 
   }
 
