@@ -10,29 +10,29 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { /*onBeforeUnmount, onMounted,*/ ref } from "vue";
 import { Ref } from "vue";
 
 const isMenuVisible: Ref<Boolean> = ref(false);
 
 // Toggle menu on O key (default)
-const toggleMenu = (event = { code: "KeyO" }) => {
-  if (event.code === "KeyO") {
-    isMenuVisible.value = !isMenuVisible.value;
-  }
-};
+// const toggleMenu = (event = { code: "KeyO" }) => {
+//   if (event.code === "KeyO") {
+//     isMenuVisible.value = !isMenuVisible.value;
+//   }
+// };
 
-const onKeydown = (event) => {
-  toggleMenu(event);
-};
+// const onKeydown = (event) => {
+//   toggleMenu(event);
+// };
 
-onMounted(() => {
-  window.addEventListener("keydown", onKeydown);
-});
+// onMounted(() => {
+//   window.addEventListener("keydown", onKeydown);
+// });
 
-onBeforeUnmount(() => {
-  window.removeEventListener("keydown", onKeydown);
-});
+// onBeforeUnmount(() => {
+//   window.removeEventListener("keydown", onKeydown);
+// });
 </script>
 
 <style scoped>

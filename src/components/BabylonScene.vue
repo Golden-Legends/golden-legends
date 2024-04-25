@@ -8,6 +8,24 @@
     eventKey="o"
     id="options-keybind"
   />
+  <Options 
+    title="options"
+    name="options"
+    id="options" 
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div class="flex justify-between">
+        <span class="text-2xl">Son global</span>
+        <input type="range" min="0" max="100" class="accent-black" />
+      </div>
+      <div class="flex justify-between">
+        <span class="text-2xl">Musique</span>
+        <input type="range" min="0" max="100" class="accent-black" />
+      </div>
+      <div class="flex justify-between">
+        <span class="text-2xl">Montrer les noms</span>
+        <input type="checkbox" class="accent-black w-6 h-6" />
+      </div>
+  </Options>
   <KeybindHint
     class="absolute top-20 left-4"
     keybind="N"
@@ -234,6 +252,7 @@ import KeybindHint from "./gui/KeybindHint.vue";
 import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 import { storeObjects } from "./gui/storeObjects";
 import { store } from "@/components/gui/store.ts";
+import Options from "./gui/options/Options.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
