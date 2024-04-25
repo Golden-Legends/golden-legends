@@ -211,7 +211,7 @@
   <SpeedBar 
     name="runningGame-text-speedbar"
     id="runningGame-text-speedbar"
-    class=" absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
     :speed="store.state.progressBar" :min="0" :max="2.7"
   />
 </template>

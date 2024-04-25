@@ -58,7 +58,7 @@ export class RunningGameState extends GameState {
 
     private results : Result[] = [];
     private scoreboardIsShow : boolean = false;
-    private currentTime : number;
+    private currentTime : number = 0;
 
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -66,7 +66,6 @@ export class RunningGameState extends GameState {
         this.settings = RunningGameSettings;
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        this.currentTime = 0;
     }
 
     async enter(): Promise<void>{
@@ -118,11 +117,10 @@ export class RunningGameState extends GameState {
             this.CreateCameraMouv().then(() => {
                 document.getElementById("runningGame-ready-button")!.classList.remove("hidden");
 
-                this.initGui();
-
                 document.getElementById("runningGame-ready-button")!.addEventListener("click", () => {
                     this.startCountdown(["runningGame-text-1", "runningGame-text-2", "runningGame-text-3"]);
-                    this.AfterCamAnim();
+                    this.AfterCamAnim(); 
+                    this.initGui(); 
                     document.getElementById("runningGame-ready-button")!.classList.add("hidden");
                     this.game.canvas.focus();
                     document.getElementById("runningGame-skip-button")!.classList.add("hidden");
@@ -146,10 +144,18 @@ export class RunningGameState extends GameState {
     }
 
     initGui() {
+        this.timer = 0;
+        this.raceStartTime = 0;
+        this.endGame = false;
+        this.scoreboardIsShow = false;
+        this.currentTime = 0;
+
         document.getElementById("runningGame-timer")!.classList.remove("hidden");
         document.getElementById("runningGame-keyPressed")!.classList.remove("hidden");
+        document.getElementById("runningGame-text-speedbar")!.classList.remove("hidden");
 
         store.commit('setTimer', 0.00);
+        store.commit('setProgressBar', 0);  
     }
 
     /**
@@ -188,6 +194,18 @@ export class RunningGameState extends GameState {
 
     exit(): void {
         console.log("exit running game");
+         
+        document.getElementById("runningGame-timer")!.classList.add("hidden");
+        document.getElementById("runningGame-keyPressed")!.classList.add("hidden");
+        document.getElementById("runningGame-text-speedbar")!.classList.add("hidden");
+        document.getElementById("runningGame-results")!.classList.add("hidden");
+        document.getElementById("runningGame-text-finish")!.classList.add("hidden");
+
+        store.commit('setTimer', 0.00);
+        store.commit('setProgressBar', 0);
+        this.buildScoreBoard();
+
+        this.clearScene();
     }
 
     buildScoreBoard() : void {

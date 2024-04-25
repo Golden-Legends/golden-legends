@@ -26,6 +26,11 @@ const speedColor = (speed: number, min: number, max: number): string => {
 
 const calculateProgress = (speed: number): string => {
   const percentage = ((speed - props.min) / (props.max - props.min)) * 100;
+  if (percentage < 0) {
+    return "width: 0%;";
+  } else if (percentage > 100) {
+    return "width: 100%;";
+  }
   return `width: ${percentage}%;`;
 };
 </script>
