@@ -43,6 +43,8 @@ export class InGameState extends GameState {
   constructor(game, canvas) {
     super(game, canvas);
     this._input = new PlayerInput(this.scene);
+    document.getElementById("objects-keybind")!.classList.remove("hidden");
+    document.getElementById("map-keybind")!.classList.remove("hidden");
   }
 
   async enter() {
