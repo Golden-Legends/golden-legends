@@ -161,7 +161,7 @@ export class Player extends TransformNode {
 			// }
 		} else if (this._isFalling) {
 			// rajouter une anim land
-			this._currentAnim = this._land;
+			// this._currentAnim = this._land;
 		}
 
 		//Animations

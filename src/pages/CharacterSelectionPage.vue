@@ -65,7 +65,7 @@ const setPathCharacterLocalStorage = (path: Character | null) => {
       <span
         class="text-8xl font-black uppercase text-blue-darker"
         v-if="character"
-        >{{ character.path }}</span
+        >{{ character.name }}</span
       >
       <span class="text-xl font-bold text-black" v-if="character"
         >{{ character?.description }}

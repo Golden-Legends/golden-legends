@@ -244,7 +244,7 @@ export class InGameState extends GameState {
         body.getChildMeshes().forEach((m) => {
           m.isPickable = false;
         });
-        body.scaling = new Scaling(0.1);
+        body.scaling = new Scaling(0.075);
         body.showBoundingBox = true;
         // enlever l'animation à l'indice 0 de animationsGroups
         result.animationGroups[0].stop();
