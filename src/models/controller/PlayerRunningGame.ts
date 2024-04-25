@@ -1,6 +1,7 @@
 import { ActionManager, AnimationGroup, Camera, Color3, ExecuteCodeAction, FreeCamera, Mesh, MeshBuilder, Ray, RayHelper, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
 import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGame";
+import { store } from "@/components/gui/store.ts";
 
 const PLAYER_HEIGHT = 3;
 const PLAYER_RADIUS = 0.5;
@@ -232,6 +233,7 @@ export class PlayerRunningGame {
     public movePlayer(): void {
         // Applique le mouvement en fonction de la direction et de la vitesse
         const direction = this.baseSpeed * this._deltaTime; 
+        store.commit('setSpeedBar', this.baseSpeed * 10);  
         this.transform.position.z += this.direction * direction;
         if (this._camera) {
             this._camera.position.z += this.direction * direction;

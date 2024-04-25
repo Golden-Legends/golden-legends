@@ -8,6 +8,7 @@ import RunningGameSettings from "../../../assets/runningGame.json";
 import { Inspector } from '@babylonjs/inspector';
 import { store } from "@/components/gui/store.ts";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
+import { InGameState } from "../InGameState";
 
 interface line {
     start : string;
@@ -58,7 +59,7 @@ export class RunningGameState extends GameState {
 
     private results : Result[] = [];
     private scoreboardIsShow : boolean = false;
-    private currentTime : number;
+    private currentTime : number = 0;
 
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -66,7 +67,6 @@ export class RunningGameState extends GameState {
         this.settings = RunningGameSettings;
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        this.currentTime = 0;
     }
 
     async enter(): Promise<void>{
@@ -118,17 +118,16 @@ export class RunningGameState extends GameState {
             this.CreateCameraMouv().then(() => {
                 document.getElementById("runningGame-ready-button")!.classList.remove("hidden");
 
-                this.initGui();
-
                 document.getElementById("runningGame-ready-button")!.addEventListener("click", () => {
                     this.startCountdown(["runningGame-text-1", "runningGame-text-2", "runningGame-text-3"]);
-                    this.AfterCamAnim();
+                    this.AfterCamAnim(); 
+                    this.initGui(); 
                     document.getElementById("runningGame-ready-button")!.classList.add("hidden");
                     this.game.canvas.focus();
                     document.getElementById("runningGame-skip-button")!.classList.add("hidden");
                     
                 });
-            });
+            });            
 
         } catch (error) {
             throw new Error("erreur.");
@@ -146,10 +145,18 @@ export class RunningGameState extends GameState {
     }
 
     initGui() {
+        this.timer = 0;
+        this.raceStartTime = 0;
+        this.endGame = false;
+        this.scoreboardIsShow = false;
+        this.currentTime = 0;
+
         document.getElementById("runningGame-timer")!.classList.remove("hidden");
         document.getElementById("runningGame-keyPressed")!.classList.remove("hidden");
+        document.getElementById("runningGame-text-speedbar")!.classList.remove("hidden");
 
         store.commit('setTimer', 0.00);
+        store.commit('setSpeedBar', 0);  
     }
 
     /**
@@ -169,7 +176,6 @@ export class RunningGameState extends GameState {
             if (previousElement !== "") document.getElementById(previousElement)!.classList.add("hidden");
             document.getElementById(countdownElement)!.classList.remove("hidden");
             previousElement = countdownElement;
-            console.log(countdownElement); // Affiche l'élément du compte à rebours dans la console
             countdownIndex++;
     
             if (countdownIndex >= countdownElements.length) {
@@ -189,6 +195,18 @@ export class RunningGameState extends GameState {
 
     exit(): void {
         console.log("exit running game");
+         
+        document.getElementById("runningGame-timer")!.classList.add("hidden");
+        document.getElementById("runningGame-keyPressed")!.classList.add("hidden");
+        document.getElementById("runningGame-text-speedbar")!.classList.add("hidden");
+        document.getElementById("runningGame-results")!.classList.add("hidden");
+        document.getElementById("runningGame-text-finish")!.classList.add("hidden");
+
+        store.commit('setTimer', 0.00);
+        store.commit('setSpeedBar', 0);
+        this.buildScoreBoard();
+
+        this.clearScene();
     }
 
     buildScoreBoard() : void {
@@ -206,8 +224,16 @@ export class RunningGameState extends GameState {
             this.createFinaleScoreBoard();
             document.getElementById("runningGame-text-finish")!.classList.add("hidden");
             document.getElementById("runningGame-results")!.classList.remove("hidden");
+            let continueButton = document.querySelector('#runningGame-results #continue-button');
+            if (continueButton) {
+                continueButton.addEventListener('click', () => {
+                    this.exit();
+                    this.game.changeState(new InGameState(this.game, this.game.canvas));
+                });
+            }
             this.scoreboardIsShow = true;
-        }, 2000);
+        }, 2000);   
+
 
         
     }   

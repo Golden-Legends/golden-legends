@@ -22,7 +22,8 @@ export const store = createStore({
   state () {
     return {
       timer: 0,
-      results: results
+      results: results,
+      setSpeedBar : 0
     }
   },
   mutations: {
@@ -31,6 +32,9 @@ export const store = createStore({
     },
     setResults (state, value) {
       state.results = value
+    },
+    setSpeedBar (state, value) {
+      state.setSpeedBar = value
     }
   }
 })
