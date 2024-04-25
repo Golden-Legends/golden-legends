@@ -169,7 +169,6 @@ export class RunningGameState extends GameState {
             if (previousElement !== "") document.getElementById(previousElement)!.classList.add("hidden");
             document.getElementById(countdownElement)!.classList.remove("hidden");
             previousElement = countdownElement;
-            console.log(countdownElement); // Affiche l'élément du compte à rebours dans la console
             countdownIndex++;
     
             if (countdownIndex >= countdownElements.length) {

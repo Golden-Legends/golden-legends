@@ -208,6 +208,12 @@
     id="runningGame-text-finish"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+  <SpeedBar 
+    name="runningGame-text-speedbar"
+    id="runningGame-text-speedbar"
+    class=" absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
+    :speed="store.state.progressBar" :min="0" :max="2.7"
+  />
 </template>
 
 <script setup lang="ts">
@@ -227,6 +233,7 @@ import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
 import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 import { storeObjects } from "./gui/storeObjects";
+import { store } from "@/components/gui/store.ts";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
