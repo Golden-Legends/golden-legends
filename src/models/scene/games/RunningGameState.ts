@@ -83,11 +83,12 @@ export class RunningGameState extends GameState {
             // test classe player
             const indexForPlayerPlacement = 2;
             const startMesh = this.startPlacement[indexForPlayerPlacement];
+            const getFileName = localStorage.getItem("pathCharacter");
             this.player = new PlayerRunningGame(this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().x || 0, 
                                                 this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().y || 0, 
                                                 this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().z || 0, 
                                                 this.scene, 
-                                                "./models/characters/character-skater-boy.glb", this.endPlacement[indexForPlayerPlacement],
+                                                `./models/characters/${getFileName}`, this.endPlacement[indexForPlayerPlacement],
                                                 this._input, false);
             await this.player.init();
             
@@ -233,8 +234,6 @@ export class RunningGameState extends GameState {
             }
             this.scoreboardIsShow = true;
         }, 2000);   
-
-
         
     }   
     

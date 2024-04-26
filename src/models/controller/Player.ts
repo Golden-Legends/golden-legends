@@ -106,11 +106,11 @@ export class Player extends TransformNode {
 		this.mesh.parent = this;
 		this.mesh.rotationQuaternion = Quaternion.Identity();
 
-		this._idle = assets.animationGroups.find(ag => ag.name === "idle");
-		this._jump = assets.animationGroups.find(ag => ag.name === "jump");
-		this._run = assets.animationGroups.find(ag => ag.name === "running");
-		this._land = assets.animationGroups.find(ag => ag.name === "falling");
-		this._dance = assets.animationGroups.find(ag => ag.name === "dance");
+		this._idle = assets.animationGroups.find(ag => ag.name === "Anim|idle");
+		this._jump = assets.animationGroups.find(ag => ag.name === "Anim|jump");
+		this._run = assets.animationGroups.find(ag => ag.name === "Anim|walk");
+		this._land = assets.animationGroups.find(ag => ag.name === "Anim|fall");
+		this._dance = assets.animationGroups.find(ag => ag.name === "Anim|dance");
 
 		this._setUpAnimations();
 		shadowGenerator.addShadowCaster(assets.mesh); //the player mesh will cast shadows
@@ -159,7 +159,7 @@ export class Player extends TransformNode {
 			// if (this.scene.getSoundByName("walking").isPlaying) {
 			// 	this.onRun.notifyObservers(false);
 			// }
-		} else if (this._isFalling) {
+		} else if (this._isFalling && !this._jumped && !this._dashPressed) {
 			// rajouter une anim land
 			this._currentAnim = this._land;
 		}

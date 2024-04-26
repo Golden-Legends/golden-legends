@@ -9,7 +9,7 @@ import { CHARACTERS } from "@/utils/constants.ts";
       v-for="character in CHARACTERS"
       :key="character.path"
       :character="character"
-      @select-character="$emit('select-character', character.path)"
+      @select-character="$emit('select-character', character)"
     />
   </div>
 </template>
