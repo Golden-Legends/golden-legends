@@ -4,19 +4,19 @@ export const CHARACTERS = [
   {
     name: "Seb",
     path: "1",
-    pathGlb : "perso.glb",
+    pathGlb : "perso1.glb",
     description: "The best",
   },
   {
     name: "Théo",
     path: "2",
-    pathGlb : "perso3Good.glb",
+    pathGlb : "perso3.glb",
     description: "The worst",
   },
   {
     name: "Nico",
     path: "3",
-    pathGlb : "perso4Good.glb",
+    pathGlb : "perso4.glb",
     description: "The middle",
   },
   {

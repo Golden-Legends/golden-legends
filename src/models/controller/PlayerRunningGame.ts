@@ -5,7 +5,7 @@ import { store } from "@/components/gui/store.ts";
 
 const PLAYER_HEIGHT = 3;
 const PLAYER_RADIUS = 0.5;
-const PLAYER_SCALING = 3;
+const PLAYER_SCALING = 0.12 ;
 
 export class PlayerRunningGame {
 
@@ -139,10 +139,10 @@ export class PlayerRunningGame {
     }
     
     private setAnimation () : {run: AnimationGroup, walk: AnimationGroup, crouch: AnimationGroup, idle: AnimationGroup} { 
-        const sprint = this.animationsGroup.find(ag => ag.name.includes("sprint"));
-        const walk = this.animationsGroup.find(ag => ag.name.includes("walk"));
-        const crouch = this.animationsGroup.find(ag => ag.name.includes("crouch"));
-        const idle = this.animationsGroup.find(ag => ag.name.includes("idle"));
+        const sprint = this.animationsGroup.find(ag => ag.name === "Anim|running");
+        const walk = this.animationsGroup.find(ag => ag.name === "Anim|walk");
+        const crouch = this.animationsGroup.find(ag => ag.name === "Anim|crouch");
+        const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
         return {run: sprint!, walk: walk!, crouch: crouch!, idle: idle!};
     }
 
