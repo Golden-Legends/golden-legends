@@ -20,6 +20,7 @@ import FoundObjectsContainer, {
 import SoundButton from "@/components/SoundButton.vue";
 import KeybindHint from "@/components/gui/KeybindHint.vue";
 import SpeedBar from "@/components/gui/running/SpeedBar.vue";
+import GameGate from "@/components/gui/tp/GameGate.vue";
 
 import {ref} from "vue";
 const longDialogText =
@@ -175,6 +176,9 @@ setInterval(() => {
       </SandboxContainer>
       <SandboxContainer name="Speed bar">
         <SpeedBar :speed="speed" :min="0" :max="20" />
+      </SandboxContainer>
+      <SandboxContainer name="Game gate">
+        <GameGate title="100m"/>
       </SandboxContainer>
     </div>
   </div>
