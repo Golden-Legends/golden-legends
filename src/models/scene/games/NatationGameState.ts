@@ -60,6 +60,10 @@ export class NatationGameState extends GameState {
             //load the gui iin the mainmenu and not here only for prod 
             await this.game.loadingScreen.loadGui();
             this.game.engine.displayLoadingUI();
+        
+            document.getElementById("options-keybind")!.classList.add("hidden");
+            document.getElementById("objects-keybind")!.classList.add("hidden");
+            document.getElementById("map-keybind")!.classList.add("hidden");
 
             // Inspector.Show(this.scene, {});
             await this.setEnvironment();
@@ -67,23 +71,7 @@ export class NatationGameState extends GameState {
             this.setLinePlacement();
 
             // Init player 
-            const indexForPlayerPlacement = 2;
-            const startMesh = this.startPlacement[indexForPlayerPlacement];
-            const getFileName = localStorage.getItem("pathCharacter");
-            this.player = new PlayerNatationGame(startMesh.getAbsolutePosition().x || 0, 
-                                                startMesh.getAbsolutePosition().y || 0, 
-                                                startMesh.getAbsolutePosition().z || 0, 
-                                                this.scene, 
-                                                `./models/characters/${getFileName}`, this.firstEndPlacement[indexForPlayerPlacement],
-                                                this._input, false);
-            await this.player.init();
-            
-            // permet d'enlever la position du joueur de la liste des positions facilitera la suite
-            this.startPlacement.splice(indexForPlayerPlacement, 1);
-            this.firstEndPlacement.splice(indexForPlayerPlacement, 1);
-
-            // mettre de l'aléatoire dans les positions des bots
-            {this.startPlacement, this.firstEndPlacement, this.secondEndPlacement} this.shuffleArray(this.startPlacement, this.firstEndPlacement, this.secondEndPlacement);
+            await this.initPlayer();
 
             this.game.engine.hideLoadingUI(); 
 
@@ -91,6 +79,13 @@ export class NatationGameState extends GameState {
             this._camera.setTarget(new Vector3(3.95 , 2.81, 6.08));
             // this._camera.rotation = new Vector3(27.41, 250.01, 0.0);
             this._camera.attachControl(this.canvas, true); 
+
+            // créer un timer qui dure 4 seconde pouis lance un console.log 
+            setTimeout(() => {
+                console.log("GO");
+                this.player.playSequentialAnimation();
+            }, 2000);
+
                         
             this.runRenderLoop();          
 
@@ -149,5 +144,25 @@ export class NatationGameState extends GameState {
         }
         return {array1, array2};
     }
+    private async initPlayer () {
+        const indexForPlayerPlacement = 2;
+        const startMesh = this.startPlacement[indexForPlayerPlacement];
+        const getFileName = localStorage.getItem("pathCharacter");
+        this.player = new PlayerNatationGame(startMesh.getAbsolutePosition().x || 0, 
+                                            startMesh.getAbsolutePosition().y || 0, 
+                                            startMesh.getAbsolutePosition().z || 0, 
+                                            this.scene, 
+                                            `./models/characters/${getFileName}`, this.firstEndPlacement[indexForPlayerPlacement],
+                                            this.secondEndPlacement[indexForPlayerPlacement],
+                                            this._input, false);
+        await this.player.init();
+        
+        // permet d'enlever la position du joueur de la liste des positions facilitera la suite
+        this.startPlacement.splice(indexForPlayerPlacement, 1);
+        this.firstEndPlacement.splice(indexForPlayerPlacement, 1);
 
+        // mettre de l'aléatoire dans les positions des bots
+        {this.startPlacement, this.firstEndPlacement, this.secondEndPlacement} this.shuffleArray(this.startPlacement, this.firstEndPlacement, this.secondEndPlacement);
+
+    }
 }

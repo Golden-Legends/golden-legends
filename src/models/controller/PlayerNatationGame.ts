@@ -3,8 +3,8 @@ import { Scaling } from "../../utils/Scaling";
 import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGame";
 import { store } from "@/components/gui/store.ts";
 
-const PLAYER_HEIGHT = 3;
-const PLAYER_RADIUS = 0.5;
+const PLAYER_HEIGHT = 0.5;
+const PLAYER_RADIUS = 0.1;
 const PLAYER_SCALING = 0.032 ;
 
 export class PlayerNatationGame {
@@ -33,6 +33,8 @@ export class PlayerNatationGame {
     private walkAnim : AnimationGroup = new AnimationGroup("walk");
     private crouchAnim : AnimationGroup = new AnimationGroup("crouch");
     private idleAnim : AnimationGroup = new AnimationGroup("idle");
+    private plongeonAnim : AnimationGroup = new AnimationGroup("Anim|plongeon");
+    private swimAnim : AnimationGroup = new AnimationGroup("Anim|swim");
 
     private _isWalking: boolean = false;
     private _isRunning: boolean = false;
@@ -59,12 +61,13 @@ export class PlayerNatationGame {
 	private _deltaTime: number = 0;
 
     private endGameMesh: Mesh;
+    private secondEndGameMesh: Mesh;
     private isEndGame: boolean = false;
     private raceEndTime: number = 0;
 
     private currentTime : number = 0;
 
-    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputRunningGame, activeCamera: boolean) {
+    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, secondEndMesh : Mesh, input : PlayerInputRunningGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
         this._z = z;
@@ -73,8 +76,8 @@ export class PlayerNatationGame {
         this._input = input ;
         this._camera
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
-        this.transform.position = new Vector3(this._x, this._y + 0.9, this._z);
-        this.transform.isVisible = false; // mettre à faux par la suites
+        this.transform.position = new Vector3(this._x, this._y, this._z);
+        this.transform.isVisible = true; // mettre à faux par la suites
         if (activeCamera) {
             this._camera = this.createCameraPlayer(this.transform);
         }
@@ -94,13 +97,14 @@ export class PlayerNatationGame {
                 }
             )
         );
+        this.secondEndGameMesh = secondEndMesh;
     }
 
     public async init () {
         const result = await SceneLoader.ImportMeshAsync("", "", this.assetPath, this.scene);
         this.gameObject = result.meshes[0] as Mesh;
         this.gameObject.scaling = new Scaling(PLAYER_SCALING);
-        this.gameObject.position = new Vector3(0, (-PLAYER_HEIGHT / 2) + 0.5, 0);
+        this.gameObject.position = new Vector3(0, 0, 0);
         this.gameObject.rotate(Vector3.UpReadOnly, Math.PI);
         this.gameObject.bakeCurrentTransformIntoVertices();
         this.gameObject.parent = this.transform;
@@ -111,11 +115,13 @@ export class PlayerNatationGame {
         this.animationsGroup = result.animationGroups;
         this.animationsGroup[0].stop();
         // set animation
-        const {run, walk, crouch, idle} = this.setAnimation();
+        const {run, walk, crouch, idle, plongeon, swim} = this.setAnimation();
         this.runAnim = run;
         this.walkAnim = walk;
         this.crouchAnim = crouch;
         this.idleAnim = idle;
+        this.plongeonAnim = plongeon;
+        this.swimAnim = swim;
         this.crouchAnim.start();
         this._isCrouching = true;        
     }
@@ -138,12 +144,42 @@ export class PlayerNatationGame {
         return this.raceEndTime;
     }
     
-    private setAnimation () : {run: AnimationGroup, walk: AnimationGroup, crouch: AnimationGroup, idle: AnimationGroup} { 
+    private setAnimation () : {run: AnimationGroup, walk: AnimationGroup, crouch: AnimationGroup, idle: AnimationGroup, plongeon: AnimationGroup, swim: AnimationGroup} { 
         const sprint = this.animationsGroup.find(ag => ag.name === "Anim|running");
         const walk = this.animationsGroup.find(ag => ag.name === "Anim|walk");
         const crouch = this.animationsGroup.find(ag => ag.name === "Anim|crouch");
         const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
-        return {run: sprint!, walk: walk!, crouch: crouch!, idle: idle!};
+        const plongeon = this.animationsGroup.find(ag => ag.name === "Anim|plongeon");
+        const swim = this.animationsGroup.find(ag => ag.name === "Anim|swim");
+        return {run: sprint!, walk: walk!, crouch: crouch!, idle: idle!, plongeon: plongeon!, swim: swim!};
+    }
+
+    public runPlongeonAnim () {
+        this.plongeonAnim.start(false, 1.0, this.plongeonAnim.from, this.plongeonAnim.to, false);
+        // stop les autres anims
+        this.runAnim.stop();
+        this.walkAnim.stop();
+        this.crouchAnim.stop();
+        this.idleAnim.stop();
+    }
+
+    public runSwimAnim () {
+        this.swimAnim.start(true, 1.0, this.swimAnim.from, this.swimAnim.to, false);
+        // stop les autres anims
+        this.runAnim.stop();
+        this.walkAnim.stop();
+        this.crouchAnim.stop();
+        this.idleAnim.stop();
+    }
+
+    public playSequentialAnimation () {
+        this.plongeonAnim.start(false, 1.0, this.plongeonAnim.from, this.plongeonAnim.to, false);
+        this.plongeonAnim.onAnimationEndObservable.addOnce(() => {
+            // recupérer le début de la course
+            this.runSwimAnim();
+            this.transform.position = this.secondEndGameMesh.getAbsolutePosition();
+            this.transform.position.z += 0.5;
+        });
     }
 
     stopAnimations() {
