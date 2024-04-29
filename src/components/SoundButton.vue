@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const soundON = ref(true);
+const soundON = ref(false);
 
 const changeSound = () => {
   soundON.value = !soundON.value;

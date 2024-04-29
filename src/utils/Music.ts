@@ -26,6 +26,7 @@ export class Music extends Howl {
     super.stop();
   }
 
+
   public modifMusique(path: string, volume: number): void {
     // console.log("modif musique");
     // super.stop();
