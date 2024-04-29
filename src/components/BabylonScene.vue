@@ -187,7 +187,7 @@
     id="runningGame-results"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-  <ResultsContent />
+  <ResultsContent :results="store.state.results" />
   </Results>
   <SpeedBar
     :min="0"
@@ -256,7 +256,7 @@
     id="natationGame-results"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-  <ResultsContent />
+  <ResultsContent :results="storeNatation.state.results" />
   </Results>
   <SpeedBar
     :min="0"
@@ -267,7 +267,7 @@
     class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <KeyPressInteraction
-    :keys="['s', 'd', 'space']"
+    :keys="['s', 'd', ' ']"
     name="natationGame-keyPressed"
     id="natationGame-keyPressed"
     class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2 w-fit"
@@ -321,6 +321,8 @@ import KeybindHint from "./gui/KeybindHint.vue";
 import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 import { storeObjects } from "./gui/storeObjects";
 import { store } from "@/components/gui/store.ts";
+import { storeNatation } from "@/components/gui/storeNatation.ts";
+
 import Options from "./gui/options/Options.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
