@@ -18,7 +18,7 @@ const results: Result[] = [
   ];
   
 // Create a new store instance.
-export const store = createStore({
+export const storeNatation = createStore({
   state () {
     return {
       timer: 0,

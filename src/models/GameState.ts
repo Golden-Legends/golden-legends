@@ -22,7 +22,7 @@ export abstract class GameState {
   }
 
   abstract enter(): Promise<void>;
-  abstract exit(): void;
+  abstract exit(): Promise<void>;
   abstract update(): void;
   abstract setEnvironment() : void;
 

@@ -27,9 +27,11 @@ export class Game {
 
   async changeState(newState: GameState) {
     if (this.currentState) {
-      this.currentState.exit();
+      await this.currentState.exit();
     }
     this.currentState = newState;
-    this.currentState.enter();
+    await this.currentState.enter();
+    document.getElementById("natationGame-results")!.classList.add("hidden");
+
   }
 }
