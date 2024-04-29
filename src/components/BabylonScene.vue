@@ -180,6 +180,7 @@
     name="runningGame-timer"
     id="runningGame-timer"
     class="hidden absolute bottom-12 right-12"
+    :timer="store.state.timer"
   />
   <Results
     title="100m"
@@ -249,6 +250,7 @@
     name="natationGame-timer"
     id="natationGame-timer"
     class="hidden absolute bottom-12 right-12"
+    :timer="storeNatation.state.timer"
   />
   <Results
     title="natation"

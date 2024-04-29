@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { store } from "@/components/gui/store.ts";
 
-const timerToSMS = (time: number): string => {
-  
+const props = defineProps({
+  timer: Number,
+});
+
+const timerToSMS = (time: number | undefined): string => {
+  if (time === undefined) { 
+    return "0.00";
+  }
   const seconds = Math.floor(time / 1000);
   const milliseconds = time % 100;
   return `${seconds}.${milliseconds < 10 ? "0" : ""}${milliseconds}`;
@@ -16,7 +21,7 @@ const timerToSMS = (time: number): string => {
   >
     <img src="@/assets/timer_logo.svg" alt="timer logo" class="mr-16" />
     <div class="font-bold text-2xl">
-      {{ timerToSMS(store.state.timer) }}
+      {{ timerToSMS(props.timer) }}
     </div>
   </div>
 </template>
