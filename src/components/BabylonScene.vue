@@ -232,6 +232,75 @@
     class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
     :speed="store.state.setSpeedBar" :min="0" :max="2.7"
   />
+  <!-- NATATION -->
+  <ClassicButton
+    text="Passer"
+    name="natationGame-skip-button"
+    id="natationGame-skip-button"
+    class="hidden absolute bottom-12 right-12"
+  />
+  <ClassicButton
+    text="Prêt"
+    name="natationGame-ready-button"
+    id="natationGame-ready-button"
+    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
+  />
+  <Timer
+    name="natationGame-timer"
+    id="natationGame-timer"
+    class="hidden absolute bottom-12 right-12"
+  />
+  <Results
+    title="natation"
+    name="natationGame-results"
+    id="natationGame-results"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+  <ResultsContent />
+  </Results>
+  <SpeedBar
+    :min="0"
+    :max="100"
+    :speed="50"
+    name="natationGame-speed-bar"
+    id="natationGame-speed-bar"
+    class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <KeyPressInteraction
+    :keys="['s', 'd', 'space']"
+    name="natationGame-keyPressed"
+    id="natationGame-keyPressed"
+    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <RDSText
+    text="À vos marques"
+    name="natationGame-text-1"
+    id="natationGame-text-1"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Prêt ?"
+    name="natationGame-text-2"
+    id="natationGame-text-2"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Partez"
+    name="natationGame-text-3"
+    id="natationGame-text-3"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Finish
+    name="natationGame-text-finish"
+    id="natationGame-text-finish"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <SpeedBar 
+    name="natationGame-text-speedbar"
+    id="natationGame-text-speedbar"
+    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
+    :speed="store.state.setSpeedBar" :min="0" :max="2.7"
+  />
 </template>
 
 <script setup lang="ts">
