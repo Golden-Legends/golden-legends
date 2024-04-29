@@ -1,9 +1,9 @@
 import { AbstractMesh, ActionManager, AnimationGroup, ExecuteCodeAction, Mesh, MeshBuilder, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
 
-const PLAYER_HEIGHT = 0.5;
-const PLAYER_RADIUS = 0.1;
-const PLAYER_SCALING = 0.75;
+const PLAYER_HEIGHT = 0.3;
+const PLAYER_RADIUS = 0.05;
+const PLAYER_SCALING = 0.40;
 
 export class BotNatation {
 

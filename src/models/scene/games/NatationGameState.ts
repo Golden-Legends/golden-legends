@@ -62,7 +62,7 @@ export class NatationGameState extends GameState {
     private endGame: boolean = false;
 
     private countdownInProgress: boolean = false;
-    private readonly limitTime = 1;
+    private readonly limitTime = 25;
 
     private continueButtonIsPressed: boolean = false;
 
@@ -210,8 +210,8 @@ export class NatationGameState extends GameState {
             const firstEndMesh = this.scene.getMeshByName(line.firstEnd) as Mesh;
             const secondEndMesh = this.scene.getMeshByName(line.secondEnd) as Mesh;
             startMesh.isVisible = false;
-            firstEndMesh.isVisible = false;
-            secondEndMesh.isVisible = false;
+            firstEndMesh.isVisible = true;
+            secondEndMesh.isVisible = true;
             if (startMesh && firstEndMesh) {
                 startTab.push(startMesh);
                 firstEndTab.push(firstEndMesh);

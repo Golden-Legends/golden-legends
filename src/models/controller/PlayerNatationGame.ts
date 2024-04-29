@@ -4,9 +4,9 @@ import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGam
 import { store } from "@/components/gui/store.ts";
 import { PlayerInputNatationGame } from "../inputsMangement/PlayerInputNatationGame";
 
-const PLAYER_HEIGHT = 0.5;
-const PLAYER_RADIUS = 0.1;
-const PLAYER_SCALING = 0.032 ;
+const PLAYER_HEIGHT = 0.3;
+const PLAYER_RADIUS = 0.05;
+const PLAYER_SCALING = 0.018 ;
 
 export class PlayerNatationGame {
 
@@ -39,12 +39,15 @@ export class PlayerNatationGame {
 
     private _isWalking: boolean = false;
     private _isRunning: boolean = false;
+
     private _isCrouching: boolean = false;
     private _isIdle : boolean = false;
+    private _isSwimming : boolean = false;
+
 
     // run
     private readonly MIN_RUN_SPEED = 0.10;
-    private baseSpeed: number = 0.04; // Vitesse de déplacement initiale
+    private baseSpeed: number = 0.03; // Vitesse de déplacement initiale
     private acceleration: number = 0.02; // Ajustez selon vos besoins
     private minDelayBetweenSwitches: number = 800; // Délai minimal entre chaque alternance en millisecondes
     private lastSwitchTime: number = 0;
@@ -67,6 +70,8 @@ export class PlayerNatationGame {
     private raceEndTime: number = 0;
 
     private currentTime : number = 0;
+
+    private isSequentialAnimation : boolean = false;
 
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, secondEndMesh : Mesh, input : PlayerInputNatationGame, activeCamera: boolean) {
         this._x = x;
@@ -131,9 +136,16 @@ export class PlayerNatationGame {
         this._deltaTime = delta / 10;
         this.currentTime = currentTime;
         if (!this.isEndGame) {
-            this.processInput();
-            this.movePlayer();
-            this.animationPlayer();
+            if (!this.isSequentialAnimation) {
+                if (this._input.space) {
+                    this.playSequentialAnimation();
+                }
+                console.log("Sequential Animation");
+            } else { 
+                this.processInput();
+                this.movePlayer();
+                this.animationPlayer();
+            }
         }
     }
 
@@ -158,19 +170,30 @@ export class PlayerNatationGame {
     public runPlongeonAnim () {
         this.plongeonAnim.start(false, 1.0, this.plongeonAnim.from, this.plongeonAnim.to, false);
         // stop les autres anims
-        this.runAnim.stop();
-        this.walkAnim.stop();
         this.crouchAnim.stop();
-        this.idleAnim.stop();
     }
 
     public runSwimAnim () {
         this.swimAnim.start(true, 1.0, this.swimAnim.from, this.swimAnim.to, false);
         // stop les autres anims
-        this.runAnim.stop();
-        this.walkAnim.stop();
+        this.plongeonAnim.stop();
         this.crouchAnim.stop();
         this.idleAnim.stop();
+    }
+
+    public runCrouchAnim () {
+        this.crouchAnim.start(true, 1.0, this.crouchAnim.from, this.crouchAnim.to, false);
+        // stop les autres anims
+        this.runAnim.stop();
+        this.idleAnim.stop();
+        this.swimAnim.stop();
+    }
+
+    public runIdleAnim () {
+        this.idleAnim.start(true, 1.0, this.idleAnim.from, this.idleAnim.to, false);
+        // stop les autres anims
+        this.crouchAnim.stop();
+        this.swimAnim.stop();
     }
 
     public playSequentialAnimation () {
@@ -178,8 +201,11 @@ export class PlayerNatationGame {
         this.plongeonAnim.onAnimationEndObservable.addOnce(() => {
             // recupérer le début de la course
             this.runSwimAnim();
+            this._isSwimming = true;
+            this.isSequentialAnimation = true;
             this.transform.position = this.secondEndGameMesh.getAbsolutePosition();
-            this.transform.position.z += 0.5;
+            this.transform.position.z = 2.78 // régler la position du joueur au départ
+            this.transform.position.y = -0.51 // régler la hauteur du joueur au départ
         });
     }
 
@@ -236,33 +262,22 @@ export class PlayerNatationGame {
     }
 
     public animationPlayer(): void {
-        // Animation Management
-        if ((this._isCrouching || this._isIdle ) && this.baseSpeed > 0 && !this._isWalking && !this._isRunning) {
-            if  (this._isCrouching) {
-                this.crouchAnim.stop();
-                this._isCrouching = false;
+        // ecrit les animations du joueur il a deux animations à faire 
+        // une pour swim et une idle 
+        // par défaut le joueur commence par nager un peu puis ralenti 
+        // si sa vitesse est inféreieur ou égale a zéro et qu'il nage alors il passe en idle
+        if (this._isSwimming) {
+            if (this.baseSpeed <= 0) {
+                this.runIdleAnim();
+                this._isSwimming = false;
+                this._isIdle = true;
             }
-            if (this._isIdle) {
-                this.idleAnim.stop();
+        } else if (this._isIdle) {
+            if (this.baseSpeed > 0) {
+                this.runSwimAnim();
+                this._isSwimming = true;
                 this._isIdle = false;
             }
-            this.walkAnim.start(true, 1.0, this.walkAnim.from, this.walkAnim.to, false);
-            this._isWalking = true;
-        } else if (!this._isCrouching && this._isWalking && this.baseSpeed >= this.MIN_RUN_SPEED && !this._isRunning && !this._isIdle) {
-            this.walkAnim.stop();
-            this._isWalking = false;
-            this.runAnim.start(true, 1.0, this.runAnim.from, this.runAnim.to, false);
-            this._isRunning = true;
-        } else if (!this._isCrouching && this._isRunning && this.baseSpeed < this.MIN_RUN_SPEED && !this._isIdle && !this._isWalking) {
-            this.runAnim.stop();
-            this._isRunning = false;
-            this.walkAnim.start(true, 1.0, this.walkAnim.from, this.walkAnim.to, false);
-            this._isWalking = true;
-        } else if (!this._isCrouching && this._isWalking && this.baseSpeed == 0 && !this._isRunning && !this._isIdle) {
-            this.walkAnim.stop();
-            this._isWalking = false;
-            this.idleAnim.start(true, 1.0, this.idleAnim.from, this.idleAnim.to, false);
-            this._isIdle = true;
         }
     }
 
