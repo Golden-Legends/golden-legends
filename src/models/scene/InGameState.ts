@@ -198,7 +198,7 @@ export class InGameState extends GameState {
     this.scene.activeCamera = camera;
   }
 
-  exit() {
+  async exit() {
     // Nettoyer la scène lors de la sortie de cet état
     this.clearScene();
     this.loadedGui?.dispose();

@@ -2,6 +2,7 @@ import { ActionManager, AnimationGroup, Camera, Color3, ExecuteCodeAction, FreeC
 import { Scaling } from "../../utils/Scaling";
 import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGame";
 import { store } from "@/components/gui/store.ts";
+import { PlayerInputNatationGame } from "../inputsMangement/PlayerInputNatationGame";
 
 const PLAYER_HEIGHT = 0.5;
 const PLAYER_RADIUS = 0.1;
@@ -54,7 +55,7 @@ export class PlayerNatationGame {
 
     // input
     // mettrre input manager et retravailler input manager pour qu'il soit plus générique et permettent la création de déplacement de bot
-    private _input: PlayerInputRunningGame;
+    private _input: PlayerInputNatationGame;
     // camera
     private _camera ?: Camera;
 
@@ -67,7 +68,7 @@ export class PlayerNatationGame {
 
     private currentTime : number = 0;
 
-    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, secondEndMesh : Mesh, input : PlayerInputRunningGame, activeCamera: boolean) {
+    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, secondEndMesh : Mesh, input : PlayerInputNatationGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
         this._z = z;
@@ -223,48 +224,6 @@ export class PlayerNatationGame {
             }
         }
     }
-
-    
-    private _floorRaycast(
-		offsetx: number,
-		offsetz: number,
-		raycastlen: number,
-	): Vector3 {
-		let raycastFloorPos = new Vector3(
-			this.transform.position.x + offsetx,
-			this.transform.position.y + 0.5,
-			this.transform.position.z + offsetz,
-		);
-		let ray = new Ray(raycastFloorPos, Vector3.Up().scale(-1), raycastlen);
-
-		let predicate = function (mesh) {
-			return mesh.isPickable && mesh.isEnabled();
-		};
-		let pick = this.scene.pickWithRay(ray, predicate);
-
-        return pick?.pickedPoint || Vector3.Zero();
-	}
-
-    private _isGrounded(): boolean {
-		if (this._floorRaycast(0, 0, 0.6).equals(Vector3.Zero())) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-    public _updateGroundDetection(): void {
-        this._deltaTime = this.scene.getEngine().getDeltaTime() / 10;
-    
-        // Stocker le résultat de la première invocation de _isGrounded()
-        const isGrounded = this._isGrounded();
-    
-        if (!isGrounded) {
-            this.transform.moveWithCollisions(new Vector3(0, PlayerNatationGame.GRAVITY, 0));
-        }
-    }
-    
-
 
     public movePlayer(): void {
         // Applique le mouvement en fonction de la direction et de la vitesse

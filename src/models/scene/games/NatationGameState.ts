@@ -4,12 +4,12 @@ import { natationGameEnv } from "@/models/environments/natatonGameEnv";
 import { FreeCamera, HemisphericLight, Mesh, Vector3 } from "@babylonjs/core";
 import { Inspector } from "@babylonjs/inspector";
 import NatationGameSettings from "../../../assets/natationGameSettings.json";
-import { PlayerInputRunningGame } from "@/models/inputsMangement/PlayerInputRunningGame";
 import { PlayerNatationGame } from "@/models/controller/PlayerNatationGame";
-import { store } from "@/components/gui/storeNatation";
+import { storeNatation } from "@/components/gui/storeNatation";
 import { InGameState } from "../InGameState";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { BotNatation } from "@/models/controller/BotNatation";
+import { PlayerInputNatationGame } from "@/models/inputsMangement/PlayerInputNatationGame";
 
 
 interface line {
@@ -29,7 +29,7 @@ interface level {
     botInfo : botInfo[];
 }
 
-interface IRunningGameState {
+interface INatationGameState {
     placement : line[],
     level : {
         easy : level;
@@ -43,14 +43,14 @@ export class NatationGameState extends GameState {
     private isMultiplayer: boolean;
     public _camera !: FreeCamera;
 
-    private settings : IRunningGameState;
+    private settings : INatationGameState;
     private startPlacement : Mesh[] = [];
     private firstEndPlacement : Mesh[] = [];
     private secondEndPlacement : Mesh[] = [];  
 
     private player !: PlayerNatationGame;
     private playerName : string;
-    private _input : PlayerInputRunningGame;
+    private _input : PlayerInputNatationGame;
 
     private botArray : BotNatation[] = [];
 
@@ -58,17 +58,23 @@ export class NatationGameState extends GameState {
     private scoreboardIsShow : boolean = false;
     private currentTime : number = 0;
     private raceStartTime: number = 0;
+    private timer: number = 0;
+    private endGame: boolean = false;
 
+    private countdownInProgress: boolean = false;
+    private readonly limitTime = 1;
+
+    private continueButtonIsPressed: boolean = false;
 
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
         this.settings = NatationGameSettings;
-        this._input = new PlayerInputRunningGame(this.scene);
+        this._input = new PlayerInputNatationGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
-
     }
+
     async enter(): Promise<void> {
         try {            
             //load the gui iin the mainmenu and not here only for prod 
@@ -95,9 +101,10 @@ export class NatationGameState extends GameState {
 
             this.game.engine.hideLoadingUI(); 
 
+            this.runUpdateAndRender();   
+            
             this._camera = new FreeCamera("cameraNatation", new Vector3(4.78, 3.27, 6.38), this.scene);
             this._camera.setTarget(this.player.transform.position);
-            // this._camera.rotation = new Vector3(27.41, 250.01, 0.0);
 
             document.getElementById("natationGame-skip-button")!.classList.remove("hidden");
             document.getElementById("natationGame-skip-button")!.addEventListener("click", () => {
@@ -105,17 +112,92 @@ export class NatationGameState extends GameState {
                 this.AfterCamAnim();
             });
 
-            this.runUpdateAndRender();          
+            this.CreateCameraMouv().then(() => {
+                document.getElementById("natationGame-ready-button")!.classList.remove("hidden");
+                document.getElementById("natationGame-skip-button")!.classList.add("hidden");
+
+                document.getElementById("natationGame-ready-button")!.addEventListener("click", () => {
+                    this.startCountdown(["natationGame-text-1", "natationGame-text-2", "natationGame-text-3"]);
+                    this.AfterCamAnim(); 
+                    this.initGui(); 
+                    document.getElementById("natationGame-ready-button")!.classList.add("hidden");
+                    this.game.canvas.focus();
+                });
+            });
 
         } catch (error) {
             throw new Error(`error in enter method : ${error}`);
         }
     }
-    exit(): void {
-        throw new Error("Method not implemented.");
+    async exit(): Promise<void> {
+        try { 
+            console.log("exit running game");
+            this.clearScene();
+         
+            document.getElementById("natationGame-timer")!.classList.add("hidden");
+            document.getElementById("natationGame-keyPressed")!.classList.add("hidden");
+            document.getElementById("natationGame-text-speedbar")!.classList.add("hidden");
+            document.getElementById("natationGame-text-finish")!.classList.add("hidden");
+            document.getElementById("natationGame-results")!.classList.add("hidden");
+
+            storeNatation.commit('setTimer', 0.00);
+            storeNatation.commit('setSpeedBar', 0);
+            storeNatation.commit('setResults', []);
+
+        } catch {
+            throw new Error("Method not implemented.");
+
+        }
     }
+
+    // LOGIQUE DE JEU
     update(): void {
+        try 
+        {  
+            if (this.player.getIsEndGame() && this.botArray.every(bot => bot.getIsEndGame())) {
+                this.endGame = true;
+            }
+            if (this.endGame) { 
+                if (!this.scoreboardIsShow) {
+                    this.showScoreBoard();
+                }
+            } else { 
+                if (this.countdownInProgress) { 
+                    this.currentTime = performance.now();
+                    const deltaTime = this.scene.getEngine().getDeltaTime();
+                    this.checkGameIsOutOfTime();
+                    this.player.play(deltaTime, this.currentTime);
+                    this.botArray.forEach(bot => {
+                        bot.play(deltaTime, this.currentTime);
+                    });
+
+                    if (!this.player.getIsEndGame()) {
+                        this.timer = Math.round((this.currentTime - this.raceStartTime));
+                        storeNatation.commit('setTimer', this.timer);
+                    }
+                }
+            }
+
+        } catch (error) 
+        {
+            throw new Error("error : Running game class update." + error);
+        }
+
         
+    }
+
+    checkGameIsOutOfTime() {
+        // regarde si la course dure plus de 25 secondes
+        const elapsedTime = (this.currentTime - this.raceStartTime) / 1000;
+        // affiche le temps dans la console
+        if (elapsedTime > this.limitTime) {
+            this.endGame = true;
+            console.log("Game over: Time limit reached.");
+            if (!this.scoreboardIsShow) { 
+                this.showScoreBoard();
+            }
+            return;
+        }
     }
 
     private setLinePlacement () {
@@ -214,23 +296,23 @@ export class NatationGameState extends GameState {
         this.botArray.forEach((bot, index) => {
             this.results.push({place: (index + 2), name: bot.getName(), result: "No score !"});
         });
-        store.commit('setResults', this.results);
+        storeNatation.commit('setResults', this.results);
     }
 
     showScoreBoard(): void {
-        document.getElementById("runningGame-text-finish")!.classList.remove("hidden");
+        document.getElementById("natationGame-text-finish")!.classList.remove("hidden");
+        let continueButton = document.querySelector('#natationGame-results #continue-button');
+        if (continueButton) {
+            continueButton.addEventListener('click', () => {
+                if (this.continueButtonIsPressed) return;
+                this.game.changeState(new InGameState(this.game, this.game.canvas));
+            });
+        }
         // attendre 2 secondes avant d'afficher le tableau des scores
         setTimeout(() => {
             this.createFinaleScoreBoard();
-            document.getElementById("runningGame-text-finish")!.classList.add("hidden");
-            document.getElementById("runningGame-results")!.classList.remove("hidden");
-            let continueButton = document.querySelector('#runningGame-results #continue-button');
-            if (continueButton) {
-                continueButton.addEventListener('click', () => {
-                    this.exit();
-                    this.game.changeState(new InGameState(this.game, this.game.canvas));
-                });
-            }
+            document.getElementById("natationGame-text-finish")!.classList.add("hidden");
+            document.getElementById("natationGame-results")!.classList.remove("hidden");
             this.scoreboardIsShow = true;
         }, 2000);   
         
@@ -256,13 +338,59 @@ export class NatationGameState extends GameState {
         });
     
         // Enregistrement des résultats dans le store
-        store.commit('setResults', this.results);
+        storeNatation.commit('setResults', this.results);
     }
 
     AfterCamAnim(): void {
         this._camera.dispose();
         this._camera = this.player.createCameraPlayer(this.player.transform);
         this.player.setCamera(this._camera);
+    }
+
+    async CreateCameraMouv(): Promise<void> {
+        // TODO : nicolas movement camera
+    }
+
+    private startCountdown(countdownElements: string[]) {
+        if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
+        let countdownIndex = 0;
+        let previousElement = "";
+    
+        const countdownInterval = setInterval(() => {
+            const countdownElement = countdownElements[countdownIndex];
+            if (previousElement !== "") document.getElementById(previousElement)!.classList.add("hidden");
+            document.getElementById(countdownElement)!.classList.remove("hidden");
+            previousElement = countdownElement;
+            countdownIndex++;
+    
+            if (countdownIndex >= countdownElements.length) {
+                clearInterval(countdownInterval);
+    
+                // Cache le dernier élément après une seconde
+                setTimeout(() => {
+                    document.getElementById(previousElement)!.classList.add("hidden");
+                }, 1000);
+    
+                // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
+                this.countdownInProgress = true;
+                this.raceStartTime = performance.now();
+            }
+        }, 1000);
+    }
+
+    initGui() {
+        this.timer = 0;
+        this.raceStartTime = 0;
+        this.endGame = false;
+        this.scoreboardIsShow = false;
+        this.currentTime = 0;
+
+        document.getElementById("natationGame-timer")!.classList.remove("hidden");
+        document.getElementById("natationGame-keyPressed")!.classList.remove("hidden");
+        document.getElementById("natationGame-text-speedbar")!.classList.remove("hidden");
+
+        storeNatation.commit('setTimer', 0.00);
+        storeNatation.commit('setSpeedBar', 0);  
     }
 
 }
