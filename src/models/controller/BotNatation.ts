@@ -1,4 +1,4 @@
-import { AbstractMesh, ActionManager, AnimationGroup, ExecuteCodeAction, Mesh, MeshBuilder, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
+import { ActionManager, AnimationGroup, ExecuteCodeAction, Mesh, MeshBuilder, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
 
 const PLAYER_HEIGHT = 0.3;
@@ -22,16 +22,11 @@ export class BotNatation {
     private animationsGroup : AnimationGroup[] = [];
 
     // ANIMATIONS
-    private runAnim: AnimationGroup = new AnimationGroup("run");
-    private walkAnim : AnimationGroup = new AnimationGroup("walk");
     private crouchAnim : AnimationGroup = new AnimationGroup("crouch");
     private idleAnim : AnimationGroup = new AnimationGroup("idle");
     private plongeonAnim : AnimationGroup = new AnimationGroup("Anim|plongeon");
     private swimAnim : AnimationGroup = new AnimationGroup("Anim|swim");
 
-    private _isWalking: boolean = false;
-    private _isRunning: boolean = false;
-    private _isCrouching: boolean = false;
     private _isIdle : boolean = false;
     private _isSwimming : boolean = false;
     private _isSpacedPressedForAnim: boolean = false;
@@ -40,7 +35,6 @@ export class BotNatation {
     private isSequentialAnimation : boolean = false;
 
     // run
-    private readonly MIN_RUN_SPEED = 0.15;
     private MAX_SPEED = 0;
     private baseSpeed: number = 0; // Vitesse de déplacement initiale
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
@@ -85,8 +79,7 @@ export class BotNatation {
         this.animationsGroup[0].stop();
         // set animation
         this.setAnimation();
-        this.crouchAnim.start();
-        this._isCrouching = true;        
+        this.crouchAnim.start();      
     }
 
     public getIsEndGame() : boolean {
@@ -110,8 +103,6 @@ export class BotNatation {
 
     stopAnimations() {
         try {
-            this.walkAnim.stop();
-            this.runAnim.stop();
             this.crouchAnim.stop();
             const winAnim = this.animationsGroup.find(ag => ag.name === "Anim|win"); 
             winAnim?.start(true, 1.0, winAnim.from, winAnim.to, false);
@@ -145,8 +136,9 @@ export class BotNatation {
     }
 
     public playSequentialAnimation () {
-        this.plongeonAnim.start(false, 1.0, this.plongeonAnim.from, this.plongeonAnim.to, false);
-        this.plongeonAnim.onAnimationEndObservable.addOnce(() => {
+        setTimeout(() => {
+            this.plongeonAnim.start(false, 1.0, this.plongeonAnim.from, this.plongeonAnim.to, false);
+            this.plongeonAnim.onAnimationEndObservable.addOnce(() => {
             // recupérer le début de la course
             this.runSwimAnim();
             this._isSwimming = true;
@@ -155,6 +147,8 @@ export class BotNatation {
             this.transform.position.z = 2.78 // régler la position du joueur au départ
             this.transform.position.y = -0.51 // régler la hauteur du joueur au départ
         });
+        }, 500); // TODO : Nicolas, l'endroit ou tu mets le temps d'attente des bots 
+        // au depart
     }
 
     public runSwimAnim () {
