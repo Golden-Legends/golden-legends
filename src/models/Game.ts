@@ -29,6 +29,5 @@ export class Game {
     }
     this.currentState = newState;
     await this.currentState.enter();
-    document.getElementById("natationGame-results")!.classList.add("hidden");
   }
 }
