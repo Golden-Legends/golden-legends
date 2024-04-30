@@ -3,8 +3,6 @@ import { GameState } from "./GameState";
 import "@babylonjs/loaders/glTF";
 import { CustomLoadingScreen } from "./loadingScreen/customLoadingScreen";
 import {InGameState} from "./scene/InGameState.ts";
-import { RunningGameState } from "./scene/games/RunningGameState.ts";
-import { NatationGameState } from "./scene/games/NatationGameState.ts";
 
 export class Game {
   public engine: Engine;
@@ -17,7 +15,7 @@ export class Game {
     this.loadingScreen = new CustomLoadingScreen("Loading...");
     this.setLoadingScreen(this.loadingScreen);
     this.canvas = canvas;
-    this.changeState(new NatationGameState(this, canvas));
+    this.changeState(new InGameState(this, canvas));
 
   }
 
@@ -32,6 +30,5 @@ export class Game {
     this.currentState = newState;
     await this.currentState.enter();
     document.getElementById("natationGame-results")!.classList.add("hidden");
-
   }
 }
