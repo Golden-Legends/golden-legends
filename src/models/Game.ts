@@ -26,9 +26,11 @@ export class Game {
       await this.currentState.exit();
     }
     this.currentState = newState;
-    this.engine.displayLoadingUI();
+    this.engine.loadingScreen.displayLoadingUI();
     await this.currentState.enter();
-    // this.engine.hideLoadingUI();
+    setTimeout(() => {
+      this.engine.hideLoadingUI();
+  }, 2000);
     document.getElementById("natationGame-results")!.classList.add("hidden");
   }
 }

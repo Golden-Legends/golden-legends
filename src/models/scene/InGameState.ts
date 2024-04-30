@@ -64,7 +64,7 @@ export class InGameState extends GameState {
     // création des controlles du joueur
     this._input = new PlayerInput(this.scene);
 
-    this._initPlayer(this.scene).then(async () => {
+    await this._initPlayer(this.scene).then(async () => {
       if (!!this._player) {
         await this._player.activatePlayerCamera();
         this.jumpGame = new JumpGame(
