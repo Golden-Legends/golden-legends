@@ -43,6 +43,8 @@ export class InGameState extends GameState {
   }
 
   async enter() {
+    this.game.engine.displayLoadingUI();
+    this.scene.detachControl();
     // Request to server to tell that the user is in game
     ky.post(`${BACK_URL}/join-main-lobby`, {
       json: {
@@ -104,7 +106,9 @@ export class InGameState extends GameState {
 			console.log("NEW PLAYER JOINED THE GAME: ", playerName);
 		});*/
 
-    console.log("InGameState entered")
+    await this.scene.whenReadyAsync();
+    this.scene.attachControl();
+    this.game.engine.hideLoadingUI();
   }
 
 

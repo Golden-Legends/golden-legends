@@ -81,6 +81,7 @@ export class NatationGameState extends GameState {
         try {            
             //load the gui iin the mainmenu and not here only for prod 
             this.game.engine.displayLoadingUI();
+            this.scene.detachControl();
         
             document.getElementById("options-keybind")!.classList.add("hidden");
             document.getElementById("objects-keybind")!.classList.add("hidden");
@@ -110,6 +111,10 @@ export class NatationGameState extends GameState {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
+
+            await this.scene.whenReadyAsync(); // on attends que la scene soit bien chargé
+            this.scene.attachControl();
+            this.game.engine.hideLoadingUI();
 
             this.CreateCameraMouv().then(() => {
                 document.getElementById("natationGame-ready-button")!.classList.remove("hidden");

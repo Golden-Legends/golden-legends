@@ -73,6 +73,7 @@ export class RunningGameState extends GameState {
         try {            
             //load the gui iin the mainmenu and not here only for prod 
             this.game.engine.displayLoadingUI();
+            this.scene.detachControl();
 
             // Inspector.Show(this.scene, {});
             await this.setEnvironment();
@@ -115,6 +116,10 @@ export class RunningGameState extends GameState {
                 this.AfterCamAnim();
             });
 
+            await this.scene.whenReadyAsync();
+            this.scene.attachControl();
+            this.game.engine.hideLoadingUI();
+            
             this.CreateCameraMouv().then(() => {
                 document.getElementById("runningGame-ready-button")!.classList.remove("hidden");
 
