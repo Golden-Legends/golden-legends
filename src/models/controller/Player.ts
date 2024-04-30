@@ -26,6 +26,10 @@ const KEY_UP = "KeyW";
 const KEY_DOWN = "KeyS";
 const KEY_LEFT = "KeyA";
 const KEY_RIGHT = "KeyD";
+const KEY_ARROW_LEFT = "ArrowLeft";
+const KEY_ARROW_RIGHT = "ArrowRight";
+const KEY_ARROW_UP = "ArrowUp";
+const KEY_ARROW_DOWN = "ArrowDown";
 const KEY_DASH = "KeyQ";
 const KEY_JUMP = "Space";
 
@@ -136,7 +140,11 @@ export class Player extends TransformNode {
 		if (
 			!this._dashPressed &&
 			!this._isFalling &&
-			!this._jumped
+			!this._jumped &&
+			(this._input.inputMap[KEY_UP] ||
+				this._input.inputMap[KEY_DOWN] ||
+				this._input.inputMap[KEY_LEFT] ||
+				this._input.inputMap[KEY_RIGHT])
 		) {
 			this._currentAnim = this._run;
 			this.onRun.notifyObservers(true);
