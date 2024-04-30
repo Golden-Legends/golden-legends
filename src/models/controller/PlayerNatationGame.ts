@@ -39,11 +39,12 @@ export class PlayerNatationGame {
 
     private _isWalking: boolean = false;
     private _isRunning: boolean = false;
-
     private _isCrouching: boolean = false;
     private _isIdle : boolean = false;
     private _isSwimming : boolean = false;
-
+    private _isSpacedPressedForAnim: boolean = false;
+    private _isInReturnMesh : boolean = false;
+    private _isReturnWasActivated : boolean = false;
 
     // run
     private readonly MIN_RUN_SPEED = 0.10;
@@ -64,16 +65,18 @@ export class PlayerNatationGame {
 
 	private _deltaTime: number = 0;
 
-    private endGameMesh: Mesh;
-    private secondEndGameMesh: Mesh;
+    private firstEndMesh: Mesh;
+    private secondfirstEndMesh: Mesh;
+    private returnMesh: Mesh;
     private isEndGame: boolean = false;
     private raceEndTime: number = 0;
 
     private currentTime : number = 0;
 
     private isSequentialAnimation : boolean = false;
+    private isEndFirtMesh : boolean = false;
 
-    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, secondEndMesh : Mesh, input : PlayerInputNatationGame, activeCamera: boolean) {
+    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endFirstMesh : Mesh, secondEndMesh : Mesh, returnMesh : Mesh,  input : PlayerInputNatationGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
         this._z = z;
@@ -87,23 +90,10 @@ export class PlayerNatationGame {
         if (activeCamera) {
             this._camera = this.createCameraPlayer(this.transform);
         }
-        this.endGameMesh = endMesh;
-        this.endGameMesh.actionManager = new ActionManager(this.scene);
-        this.endGameMesh.actionManager.registerAction(
-            new ExecuteCodeAction(
-                {
-                    trigger: ActionManager.OnIntersectionEnterTrigger,
-                    parameter: this.transform
-                },
-                () => {
-                    this.isEndGame = true;
-                    this.stopAnimations();
-                    this.raceEndTime = this.currentTime;
-                    // console.log(`Joueur fin : `, this.raceEndTime);
-                }
-            )
-        );
-        this.secondEndGameMesh = secondEndMesh;
+        this.firstEndMesh = endFirstMesh;
+        this.secondfirstEndMesh = secondEndMesh;
+        this.returnMesh = returnMesh;
+        this.setActionManager();
     }
 
     public async init () {
@@ -137,14 +127,23 @@ export class PlayerNatationGame {
         this.currentTime = currentTime;
         if (!this.isEndGame) {
             if (!this.isSequentialAnimation) {
-                if (this._input.space) {
+                if (this._input.space && !this._isSpacedPressedForAnim) {
+                    this._isSpacedPressedForAnim = true;
                     this.playSequentialAnimation();
                 }
-                console.log("Sequential Animation");
             } else { 
                 this.processInput();
                 this.movePlayer();
                 this.animationPlayer();
+                console.log('boucle', this._isInReturnMesh, this._input.space);
+                if (this._isInReturnMesh) { // si je peux me retourner
+                    if (this._input.space) { // et que j'appuie sur espace
+                        console.log(`je me retourne`);
+                        this._isInReturnMesh = false; // je me retourne
+                        this.transform.rotation.y = Math.PI;
+                        this.direction = -1;
+                    }
+                }
             }
         }
     }
@@ -203,7 +202,7 @@ export class PlayerNatationGame {
             this.runSwimAnim();
             this._isSwimming = true;
             this.isSequentialAnimation = true;
-            this.transform.position = this.secondEndGameMesh.getAbsolutePosition();
+            this.transform.position = this.secondfirstEndMesh.getAbsolutePosition();
             this.transform.position.z = 2.78 // régler la position du joueur au départ
             this.transform.position.y = -0.51 // régler la hauteur du joueur au départ
         });
@@ -289,5 +288,55 @@ export class PlayerNatationGame {
 
     public setCamera (camera : Camera) {
         this._camera = camera;
+    }
+
+    public setActionManager () {
+        this.firstEndMesh.actionManager = new ActionManager(this.scene);
+        this.firstEndMesh.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnIntersectionEnterTrigger,
+                    parameter: this.transform
+                },
+                () => {
+                    this.isEndFirtMesh = true;
+                    this.direction = 0 ; // je ne me déplace plus
+                    this.stopAnimations();
+                    console.log(`fin premiere allee `);
+                }
+            )
+        );
+        
+        this.secondfirstEndMesh.actionManager = new ActionManager(this.scene);
+        this.secondfirstEndMesh.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnIntersectionEnterTrigger,
+                    parameter: this.transform
+                },
+                () => {
+                    this.isEndGame = true;
+                    this.raceEndTime = this.currentTime;
+                    this.stopAnimations();
+                    console.log(`fin deuxieme allee `);
+                }
+            )
+        );
+
+        this.returnMesh.actionManager = new ActionManager(this.scene);
+        this.returnMesh.isVisible = false;
+        this.returnMesh.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnIntersectionEnterTrigger,
+                    parameter: this.transform
+                },
+                () => {
+                    if (!this._isReturnWasActivated) {
+                        this._isInReturnMesh = true;
+                    }
+                }
+            )
+        );
     }
 }

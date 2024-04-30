@@ -1,7 +1,7 @@
 import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
 import { natationGameEnv } from "@/models/environments/natatonGameEnv";
-import { FreeCamera, HemisphericLight, Mesh, Vector3 } from "@babylonjs/core";
+import { FreeCamera, HemisphericLight, Mesh, MeshBuilder, Vector3 } from "@babylonjs/core";
 import { Inspector } from "@babylonjs/inspector";
 import NatationGameSettings from "../../../assets/natationGameSettings.json";
 import { PlayerNatationGame } from "@/models/controller/PlayerNatationGame";
@@ -65,6 +65,7 @@ export class NatationGameState extends GameState {
     private readonly limitTime = 25;
 
     private continueButtonIsPressed: boolean = false;
+    private rectangleReturn : Mesh;
 
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -73,6 +74,7 @@ export class NatationGameState extends GameState {
         this.settings = NatationGameSettings;
         this._input = new PlayerInputNatationGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
+        this.rectangleReturn = MeshBuilder.CreateBox("rectangleReturn");
     }
 
     async enter(): Promise<void> {
@@ -212,6 +214,7 @@ export class NatationGameState extends GameState {
             startMesh.isVisible = false;
             firstEndMesh.isVisible = true;
             secondEndMesh.isVisible = true;
+            
             if (startMesh && firstEndMesh) {
                 startTab.push(startMesh);
                 firstEndTab.push(firstEndMesh);
@@ -221,6 +224,7 @@ export class NatationGameState extends GameState {
         this.startPlacement = startTab;
         this.firstEndPlacement = firstEndTab;
         this.secondEndPlacement = secondEndTab;
+        this.rectangleReturn = this.scene.getMeshByName("returnRectangle") as Mesh;
     }
     
     async setEnvironment(): Promise<void> {
@@ -254,6 +258,7 @@ export class NatationGameState extends GameState {
                                             this.scene, 
                                             `./models/characters/${getFileName}`, this.firstEndPlacement[indexForPlayerPlacement],
                                             this.secondEndPlacement[indexForPlayerPlacement],
+                                            this.rectangleReturn,
                                             this._input, false);
         await this.player.init();
         
