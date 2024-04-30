@@ -7,13 +7,11 @@ import {InGameState} from "./scene/InGameState.ts";
 export class Game {
   public engine: Engine;
   private currentState: GameState | null = null;
-  public loadingScreen: CustomLoadingScreen;
+  // public loadingScreen: CustomLoadingScreen;
   public canvas: HTMLCanvasElement;
 
   constructor(canvas: HTMLCanvasElement) {
     this.engine = new Engine(canvas, true);
-    this.loadingScreen = new CustomLoadingScreen("Loading...");
-    this.setLoadingScreen(this.loadingScreen);
     this.canvas = canvas;
     this.changeState(new InGameState(this, canvas));
 
@@ -28,7 +26,9 @@ export class Game {
       await this.currentState.exit();
     }
     this.currentState = newState;
+    this.engine.displayLoadingUI();
     await this.currentState.enter();
+    // this.engine.hideLoadingUI();
     document.getElementById("natationGame-results")!.classList.add("hidden");
   }
 }

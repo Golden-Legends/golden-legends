@@ -103,6 +103,8 @@ export class InGameState extends GameState {
     /*		socket.on("joinMainLobby", (playerName: string) => {
 			console.log("NEW PLAYER JOINED THE GAME: ", playerName);
 		});*/
+
+    console.log("InGameState entered")
   }
 
 
@@ -280,7 +282,7 @@ export class InGameState extends GameState {
 
     //Create the player
     this._player = new Player(this.assets, scene, shadowGenerator, this._input);
-    this._player.mesh.position = new Vector3(-170, 2.75, -5);
+    this._player.mesh.position = new Vector3(-170, 5, -5);
   }
 
   async setEnvironment(): Promise<void> {

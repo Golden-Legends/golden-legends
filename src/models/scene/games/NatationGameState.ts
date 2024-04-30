@@ -80,7 +80,6 @@ export class NatationGameState extends GameState {
     async enter(): Promise<void> {
         try {            
             //load the gui iin the mainmenu and not here only for prod 
-            await this.game.loadingScreen.loadGui();
             this.game.engine.displayLoadingUI();
         
             document.getElementById("options-keybind")!.classList.add("hidden");
@@ -100,8 +99,6 @@ export class NatationGameState extends GameState {
             if (!this.isMultiplayer) {
                 await this.runSoloGame();
             }           
-
-            this.game.engine.hideLoadingUI(); 
 
             this.runUpdateAndRender();   
             
