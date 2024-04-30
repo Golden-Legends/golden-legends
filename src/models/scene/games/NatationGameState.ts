@@ -240,6 +240,7 @@ export class NatationGameState extends GameState {
         const light = new HemisphericLight("light", new Vector3(0, 2, 0), this.scene);
         light.intensity = 0.7;
     }
+
     private shuffleArray(array1 : any[], array2 : any[], array3 : any[]) {
         for (let i = array1.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1)); // Génère un indice aléatoire entre 0 et i inclus
@@ -249,6 +250,7 @@ export class NatationGameState extends GameState {
         }
         return {array1, array2};
     }
+
     private async initPlayer () {
         const indexForPlayerPlacement = 2;
         const startMesh = this.startPlacement[indexForPlayerPlacement];
@@ -266,7 +268,7 @@ export class NatationGameState extends GameState {
         // permet d'enlever la position du joueur de la liste des positions facilitera la suite
         this.startPlacement.splice(indexForPlayerPlacement, 1);
         this.firstEndPlacement.splice(indexForPlayerPlacement, 1);
-
+        this.secondEndPlacement.splice(indexForPlayerPlacement, 1);
         // mettre de l'aléatoire dans les positions des bots
         {this.startPlacement, this.firstEndPlacement, this.secondEndPlacement} this.shuffleArray(this.startPlacement, this.firstEndPlacement, this.secondEndPlacement);
     }
@@ -286,7 +288,6 @@ export class NatationGameState extends GameState {
             const bot = new BotNatation("bot" + i, startMesh.getAbsolutePosition(), 
                     firstEndMesh,
                     secondEndMesh,
-                    this.rectangleReturn,
                     this.scene,
                     "./models/characters/perso1.glb", infoBot[i].speed);
             await bot.init();

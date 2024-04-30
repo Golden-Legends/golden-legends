@@ -314,7 +314,6 @@ export class PlayerNatationGame {
                     this.isEndGame = true;
                     this.raceEndTime = this.currentTime;
                     this.stopAnimations();
-                    console.log(`fin deuxieme allee `);
                 }
             )
         );

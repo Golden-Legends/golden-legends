@@ -48,14 +48,13 @@ export class BotNatation {
     // fin
     private firstEndMesh: Mesh;
     private secondfirstEndMesh: Mesh;
-    private returnMesh: Mesh;
     private isEndGame: boolean = false;
     private raceEndTime: number = 0;
 
     private deltaTime: number = 0;
     private currentTime : number;
 
-    constructor(name: string, startPos: Vector3, endFirstMesh : Mesh, secondEndMesh : Mesh, returnMesh : Mesh, scene : Scene, assetPath : string, maxSpeed : number) {
+    constructor(name: string, startPos: Vector3, endFirstMesh : Mesh, secondEndMesh : Mesh, scene : Scene, assetPath : string, maxSpeed : number) {
         this.name = name;
         this.scene = scene;
         this.assetPath = assetPath;
@@ -64,7 +63,6 @@ export class BotNatation {
         this.transform.isVisible = false; // mettre à faux par la suites
         this.firstEndMesh = endFirstMesh;
         this.secondfirstEndMesh = secondEndMesh;
-        this.returnMesh = returnMesh;
         this.setActionManager();
         this.currentTime = 0;
         this.MAX_SPEED = maxSpeed;
@@ -86,11 +84,7 @@ export class BotNatation {
         this.animationsGroup = result.animationGroups;
         this.animationsGroup[0].stop();
         // set animation
-        const {run, walk, crouch, idle} = this.setAnimation();
-        this.runAnim = run;
-        this.walkAnim = walk;
-        this.crouchAnim = crouch;
-        this.idleAnim = idle;
+        this.setAnimation();
         this.crouchAnim.start();
         this._isCrouching = true;        
     }
@@ -107,12 +101,11 @@ export class BotNatation {
         return this.name;
     }
 
-    private setAnimation () : {run: AnimationGroup, walk: AnimationGroup, crouch: AnimationGroup, idle: AnimationGroup} { 
-        const sprint = this.animationsGroup.find(ag => ag.name.includes("sprint"));
-        const walk = this.animationsGroup.find(ag => ag.name.includes("walk"));
-        const crouch = this.animationsGroup.find(ag => ag.name.includes("crouch"));
-        const idle = this.animationsGroup.find(ag => ag.name.includes("idle"));
-        return {run: sprint!, walk: walk!, crouch: crouch!, idle: idle!};
+    private setAnimation () { 
+        this.crouchAnim = this.animationsGroup.find(ag => ag.name === "Anim|crouch")!;
+        this.idleAnim = this.animationsGroup.find(ag => ag.name === "Anim|idle")!;
+        this.plongeonAnim = this.animationsGroup.find(ag => ag.name === "Anim|plongeon")!;
+        this.swimAnim = this.animationsGroup.find(ag => ag.name === "Anim|swim")!;
     }
 
     stopAnimations() {
@@ -120,8 +113,8 @@ export class BotNatation {
             this.walkAnim.stop();
             this.runAnim.stop();
             this.crouchAnim.stop();
-            this.idleAnim.start();
-            this._isIdle = true;            
+            const winAnim = this.animationsGroup.find(ag => ag.name === "Anim|win"); 
+            winAnim?.start(true, 1.0, winAnim.from, winAnim.to, false);
         } catch (error) {
             throw new Error("Method not implemented.");
         }
@@ -138,7 +131,6 @@ export class BotNatation {
                 }
             } else { 
                 if (this._isInReturnMesh) { // si je peux me retourner
-                    console.log(`je me retourne`);
                     this._isInReturnMesh = false; // je me retourne
                     this.transform.rotation.y = Math.PI;
                     this.direction = -1;
@@ -173,6 +165,19 @@ export class BotNatation {
         this.idleAnim.stop();
     }
 
+    public runIdleAnim () {
+        this.idleAnim.start(true, 1.0, this.idleAnim.from, this.idleAnim.to, false);
+        // stop les autres anims
+        this.crouchAnim.stop();
+        this.swimAnim.stop();
+    }
+
+    public runPlongeonAnim () {
+        this.plongeonAnim.start(false, 1.0, this.plongeonAnim.from, this.plongeonAnim.to, false);
+        // stop les autres anims
+        this.crouchAnim.stop();
+    }
+
     private randomBaseSpeed(): void {
         // Génère une vitesse aléatoire pour l'accélération
         const temp = (Math.random() * 0.05) * this.deltaTime;
@@ -197,45 +202,52 @@ export class BotNatation {
         // Animation Management
         // lorsque le jouer est en mouvement je met l'animation de marche si jamais il dépasse une certaine vitesse je met l'animation de course
         // tu met des conditions pour savoir s'il posssèdes déjà l 'état pour éviter de relancer les animations
-        if (this.baseSpeed > this.MIN_RUN_SPEED && !this._isRunning) {
-            this.runAnim.start(true);
-            this._isRunning = true;
-            this._isWalking = false;
-            this._isCrouching = false;
-            this._isIdle = false;
-        } else if (this.baseSpeed > 0 && this.baseSpeed <= this.MIN_RUN_SPEED && !this._isWalking) {
-            this.walkAnim.start(true);
-            this._isWalking = true;
-            this._isRunning = false;
-            this._isCrouching = false;
-            this._isIdle = false;
-        } else if (this.baseSpeed === 0 && !this._isIdle) {
-            this.idleAnim.start(true);
-            this._isIdle = true;
-            this._isWalking = false;
-            this._isRunning = false;
-            this._isCrouching = false;
+        if (this._isSwimming) {
+            if (this.baseSpeed <= 0) {
+                this.runIdleAnim();
+                this._isSwimming = false;
+                this._isIdle = true;
+            }
+        } else if (this._isIdle) {
+            if (this.baseSpeed > 0) {
+                this.runSwimAnim();
+                this._isSwimming = true;
+                this._isIdle = false;
+            }
         }
     }
 
     public setActionManager () {
-        this.firstEndMesh.actionManager = new ActionManager(this.scene);
-        this.firstEndMesh.actionManager.registerAction(
+        this.transform.actionManager = new ActionManager(this.scene);
+        this.transform.actionManager.registerAction(
             new ExecuteCodeAction(
                 {
                     trigger: ActionManager.OnIntersectionEnterTrigger,
-                    parameter: this.transform
+                    parameter: this.firstEndMesh
                 },
                 () => {
-                    this.direction = 0 ; // je ne me déplace plus
-                    this.stopAnimations();
+                    this.direction = -1 ; // je ne me déplace plus vers l'avant
                     if (!this._isReturnWasActivated) {
                         this._isInReturnMesh = true;
+                        this._isReturnWasActivated = true;
                     }
-                    console.log(`fin premiere allee `);
                 }
             )
         );
         
+        this.transform.actionManager.registerAction(
+            new ExecuteCodeAction(
+                {
+                    trigger: ActionManager.OnIntersectionEnterTrigger,
+                    parameter: this.secondfirstEndMesh
+                },
+                () => {
+                    this.isEndGame = true;
+                    this.raceEndTime = this.currentTime;
+                    this.stopAnimations();
+                }
+            )
+        );
+
     }
 }
