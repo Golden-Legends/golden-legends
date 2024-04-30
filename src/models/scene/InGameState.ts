@@ -43,6 +43,8 @@ export class InGameState extends GameState {
   }
 
   async enter() {
+    this.game.engine.displayLoadingUI();
+    this.scene.detachControl();
     // Request to server to tell that the user is in game
     ky.post(`${BACK_URL}/join-main-lobby`, {
       json: {
@@ -64,7 +66,7 @@ export class InGameState extends GameState {
     // création des controlles du joueur
     this._input = new PlayerInput(this.scene);
 
-    this._initPlayer(this.scene).then(async () => {
+    await this._initPlayer(this.scene).then(async () => {
       if (!!this._player) {
         await this._player.activatePlayerCamera();
         this.jumpGame = new JumpGame(
@@ -103,6 +105,10 @@ export class InGameState extends GameState {
     /*		socket.on("joinMainLobby", (playerName: string) => {
 			console.log("NEW PLAYER JOINED THE GAME: ", playerName);
 		});*/
+
+    await this.scene.whenReadyAsync();
+    this.scene.attachControl();
+    this.game.engine.hideLoadingUI();
   }
 
 
@@ -280,7 +286,7 @@ export class InGameState extends GameState {
 
     //Create the player
     this._player = new Player(this.assets, scene, shadowGenerator, this._input);
-    this._player.mesh.position = new Vector3(-170, 2.75, -5);
+    this._player.mesh.position = new Vector3(-170, 5, -5);
   }
 
   async setEnvironment(): Promise<void> {

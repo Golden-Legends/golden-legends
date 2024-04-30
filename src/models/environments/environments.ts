@@ -156,16 +156,13 @@ export class Environment {
 		};
 	}
 
-	public loadSky(){
-		var loader = new AssetsManager(this._scene);
-		var gltfLoader = loader.addMeshTask("gltf task", "", "", "./models/maps/skyV2.glb");
-		gltfLoader.onSuccess = function (task) {
-			task.loadedMeshes.forEach(function(mesh) {
-				mesh.position = new Vector3(-145, 0, -54.1);
-				mesh.scaling = new Vector3(0.6, 0.6, 0.6);
-			});
-		};
-		loader.load();
+	
+	public async loadSky() {
+		const result = await SceneLoader.ImportMeshAsync("", "./models/maps/skyV2.glb", "", this._scene);
+		result.meshes.forEach(mesh => {
+			mesh.position = new Vector3(-145, 0, -54.1);
+			mesh.scaling = new Vector3(0.6, 0.6, 0.6);
+		});
 	}
 
 	// public createSkybox(scene: Scene): void {

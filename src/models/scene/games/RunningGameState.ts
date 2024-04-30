@@ -72,8 +72,8 @@ export class RunningGameState extends GameState {
     async enter(): Promise<void>{
         try {            
             //load the gui iin the mainmenu and not here only for prod 
-            await this.game.loadingScreen.loadGui();
             this.game.engine.displayLoadingUI();
+            this.scene.detachControl();
 
             // Inspector.Show(this.scene, {});
             await this.setEnvironment();
@@ -103,7 +103,7 @@ export class RunningGameState extends GameState {
             if (!this.isMultiplayer) {
                 await this.runSoloGame();
             }           
-            this.game.engine.hideLoadingUI(); 
+
             this.runUpdateAndRender();        
 
             this._camera = new FreeCamera("camera100m", new Vector3(-2, 10, 20), this.scene);
@@ -116,6 +116,10 @@ export class RunningGameState extends GameState {
                 this.AfterCamAnim();
             });
 
+            await this.scene.whenReadyAsync();
+            this.scene.attachControl();
+            this.game.engine.hideLoadingUI();
+            
             this.CreateCameraMouv().then(() => {
                 document.getElementById("runningGame-ready-button")!.classList.remove("hidden");
 

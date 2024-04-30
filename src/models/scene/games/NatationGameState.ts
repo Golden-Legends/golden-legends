@@ -80,8 +80,8 @@ export class NatationGameState extends GameState {
     async enter(): Promise<void> {
         try {            
             //load the gui iin the mainmenu and not here only for prod 
-            await this.game.loadingScreen.loadGui();
             this.game.engine.displayLoadingUI();
+            this.scene.detachControl();
         
             document.getElementById("options-keybind")!.classList.add("hidden");
             document.getElementById("objects-keybind")!.classList.add("hidden");
@@ -101,8 +101,6 @@ export class NatationGameState extends GameState {
                 await this.runSoloGame();
             }           
 
-            this.game.engine.hideLoadingUI(); 
-
             this.runUpdateAndRender();   
             
             this._camera = new FreeCamera("cameraNatation", new Vector3(4.78, 3.27, 6.38), this.scene);
@@ -113,6 +111,10 @@ export class NatationGameState extends GameState {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
+
+            await this.scene.whenReadyAsync(); // on attends que la scene soit bien chargé
+            this.scene.attachControl();
+            this.game.engine.hideLoadingUI();
 
             this.CreateCameraMouv().then(() => {
                 document.getElementById("natationGame-ready-button")!.classList.remove("hidden");
