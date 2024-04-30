@@ -153,7 +153,7 @@ export class NatationGameState extends GameState {
     }
 
     // LOGIQUE DE JEU
-    update(): void {
+    update (): void {
         try 
         {  
             if (this.player.getIsEndGame() && this.botArray.every(bot => bot.getIsEndGame())) {
@@ -212,8 +212,8 @@ export class NatationGameState extends GameState {
             const firstEndMesh = this.scene.getMeshByName(line.firstEnd) as Mesh;
             const secondEndMesh = this.scene.getMeshByName(line.secondEnd) as Mesh;
             startMesh.isVisible = false;
-            firstEndMesh.isVisible = true;
-            secondEndMesh.isVisible = true;
+            firstEndMesh.isVisible = false;
+            secondEndMesh.isVisible = false;
             
             if (startMesh && firstEndMesh) {
                 startTab.push(startMesh);
@@ -225,6 +225,7 @@ export class NatationGameState extends GameState {
         this.firstEndPlacement = firstEndTab;
         this.secondEndPlacement = secondEndTab;
         this.rectangleReturn = this.scene.getMeshByName("returnRectangle") as Mesh;
+        this.rectangleReturn.isVisible = false;
     }
     
     async setEnvironment(): Promise<void> {
@@ -279,16 +280,21 @@ export class NatationGameState extends GameState {
         const infoBot = this.settings.level[difficulty].botInfo;
         for (let i = 0; i < 5; i++) {
             const startMesh = this.startPlacement[i];
-            const endMesh = this.firstEndPlacement[i];
-            if (startMesh && endMesh) {
-                const bot = new BotNatation("bot" + i, startMesh.getAbsolutePosition(), 
-                        endMesh as Mesh, this.scene,
-                        infoBot[i].pathFile, infoBot[i].speed);
-                await bot.init();
-                this.botArray.push(bot);
-            }              
+            const firstEndMesh = this.firstEndPlacement[i];
+            const secondEndMesh = this.secondEndPlacement[i];
+            // TODO : nicolas changer le pathfile dans le fichier natationGameSettings.json
+            const bot = new BotNatation("bot" + i, startMesh.getAbsolutePosition(), 
+                    firstEndMesh,
+                    secondEndMesh,
+                    this.rectangleReturn,
+                    this.scene,
+                    "./models/characters/perso1.glb", infoBot[i].speed);
+            await bot.init();
+            this.botArray.push(bot);
         }        
     }
+    
+
 
     timerToSMS (time: number) : string {
         const seconds = Math.floor(time / 1000);

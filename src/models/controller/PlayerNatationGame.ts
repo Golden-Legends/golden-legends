@@ -86,7 +86,7 @@ export class PlayerNatationGame {
         this._camera
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
         this.transform.position = new Vector3(this._x, this._y, this._z);
-        this.transform.isVisible = true; // mettre à faux par la suites
+        this.transform.isVisible = false; // mettre à faux par la suites
         if (activeCamera) {
             this._camera = this.createCameraPlayer(this.transform);
         }
@@ -131,19 +131,17 @@ export class PlayerNatationGame {
                     this._isSpacedPressedForAnim = true;
                     this.playSequentialAnimation();
                 }
-            } else { 
-                this.processInput();
-                this.movePlayer();
-                this.animationPlayer();
-                console.log('boucle', this._isInReturnMesh, this._input.space);
+            } else {
                 if (this._isInReturnMesh) { // si je peux me retourner
                     if (this._input.space) { // et que j'appuie sur espace
-                        console.log(`je me retourne`);
                         this._isInReturnMesh = false; // je me retourne
                         this.transform.rotation.y = Math.PI;
                         this.direction = -1;
                     }
                 }
+                this.processInput();
+                this.movePlayer();
+                this.animationPlayer();
             }
         }
     }
@@ -202,9 +200,9 @@ export class PlayerNatationGame {
             this.runSwimAnim();
             this._isSwimming = true;
             this.isSequentialAnimation = true;
-            this.transform.position = this.secondfirstEndMesh.getAbsolutePosition();
-            this.transform.position.z = 2.78 // régler la position du joueur au départ
-            this.transform.position.y = -0.51 // régler la hauteur du joueur au départ
+            const refPosition = this.secondfirstEndMesh.getAbsolutePosition();
+            // Nicolas , position post plongeon
+            this.transform.position = new Vector3(refPosition.x, -0.51, 2.78);
         });
     }
 
@@ -213,8 +211,8 @@ export class PlayerNatationGame {
             this.walkAnim.stop();
             this.runAnim.stop();
             this.crouchAnim.stop();
-            this.idleAnim.start();
-            this._isIdle = true;            
+            const winAnim = this.animationsGroup.find(ag => ag.name === "Anim|win"); 
+            winAnim?.start(true, 1.0, winAnim.from, winAnim.to, false);
         } catch (error) {
             throw new Error("Method not implemented.");
         }
@@ -300,9 +298,7 @@ export class PlayerNatationGame {
                 },
                 () => {
                     this.isEndFirtMesh = true;
-                    this.direction = 0 ; // je ne me déplace plus
-                    this.stopAnimations();
-                    console.log(`fin premiere allee `);
+                    this.direction = 0 ; // je ne me déplace plus vers l'avant
                 }
             )
         );
@@ -324,7 +320,6 @@ export class PlayerNatationGame {
         );
 
         this.returnMesh.actionManager = new ActionManager(this.scene);
-        this.returnMesh.isVisible = false;
         this.returnMesh.actionManager.registerAction(
             new ExecuteCodeAction(
                 {
@@ -334,6 +329,7 @@ export class PlayerNatationGame {
                 () => {
                     if (!this._isReturnWasActivated) {
                         this._isInReturnMesh = true;
+                        this._isReturnWasActivated = true;
                     }
                 }
             )
