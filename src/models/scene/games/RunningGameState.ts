@@ -194,7 +194,7 @@ export class RunningGameState extends GameState {
         }, 1000);
     }
 
-    exit(): void {
+    async exit(): Promise<void> {
         console.log("exit running game");
          
         document.getElementById("runningGame-timer")!.classList.add("hidden");

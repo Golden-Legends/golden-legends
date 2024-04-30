@@ -180,6 +180,7 @@
     name="runningGame-timer"
     id="runningGame-timer"
     class="hidden absolute bottom-12 right-12"
+    :timer="store.state.timer"
   />
   <Results
     title="100m"
@@ -187,7 +188,7 @@
     id="runningGame-results"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-  <ResultsContent />
+  <ResultsContent :results="store.state.results" />
   </Results>
   <SpeedBar
     :min="0"
@@ -232,6 +233,91 @@
     class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
     :speed="store.state.setSpeedBar" :min="0" :max="2.7"
   />
+  <!-- NATATION -->
+  <ClassicButton
+    text="Passer"
+    name="natationGame-skip-button"
+    id="natationGame-skip-button"
+    class="hidden absolute bottom-12 right-12"
+  />
+  <ClassicButton
+    text="Prêt"
+    name="natationGame-ready-button"
+    id="natationGame-ready-button"
+    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
+  />
+  <Timer
+    name="natationGame-timer"
+    id="natationGame-timer"
+    class="hidden absolute bottom-12 right-12"
+    :timer="storeNatation.state.timer"
+  />
+  <Results
+    title="natation"
+    name="natationGame-results"
+    id="natationGame-results"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+  <ResultsContent :results="storeNatation.state.results" />
+  </Results>
+  <SpeedBar
+    :min="0"
+    :max="100"
+    :speed="50"
+    name="natationGame-speed-bar"
+    id="natationGame-speed-bar"
+    class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <KeyPressInteraction
+    :keys="['s', 'd', ' ']"
+    name="natationGame-keyPressed"
+    id="natationGame-keyPressed"
+    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <RDSText
+    text="À vos marques"
+    name="natationGame-text-1"
+    id="natationGame-text-1"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Prêt ?"
+    name="natationGame-text-2"
+    id="natationGame-text-2"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Partez"
+    name="natationGame-text-3"
+    id="natationGame-text-3"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Finish
+    name="natationGame-text-finish"
+    id="natationGame-text-finish"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <SpeedBar 
+    name="natationGame-text-speedbar"
+    id="natationGame-text-speedbar"
+    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
+    :speed="store.state.setSpeedBar" :min="0" :max="0.3"
+  />
+  <RDSText
+    text="Plongez !"
+    subText="Appuyez sur Espace"
+    name="natationGame-text-plongeon"
+    id="natationGame-text-plongeon"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+/>
+  <RDSText
+    text="Demi-tour !"
+    subText="Appuyez sur Espace"
+    name="natationGame-text-demitour"
+    id="natationGame-text-demitour"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+
 </template>
 
 <script setup lang="ts">
@@ -252,6 +338,8 @@ import KeybindHint from "./gui/KeybindHint.vue";
 import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 import { storeObjects } from "./gui/storeObjects";
 import { store } from "@/components/gui/store.ts";
+import { storeNatation } from "@/components/gui/storeNatation.ts";
+
 import Options from "./gui/options/Options.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
