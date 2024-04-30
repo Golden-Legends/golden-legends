@@ -233,32 +233,6 @@ export class Player extends TransformNode {
 				this._input.verticalAxis,
 			);
 
-			// Rotation de la caméra sur l'axe des Y en utilisant les flèches gauche et droite
-			let cameraRotationSpeed = 0.025; // Ajustez cette valeur pour contrôler la vitesse de rotation
-			if (this._input.inputMap[KEY_ARROW_LEFT]) {
-				this._camRoot.rotation.y -= cameraRotationSpeed;
-			}
-			if (this._input.inputMap[KEY_ARROW_RIGHT]) {
-				this._camRoot.rotation.y += cameraRotationSpeed;
-			}
-
-			// Rotation de la caméra sur l'axe des X en utilisant les flèches haut et bas
-			let cameraRotationSpeedX = 0.02; // Ajustez cette valeur pour contrôler la vitesse de rotation
-			if (this._input.inputMap[KEY_ARROW_DOWN]) {
-				let newRotationX = this._camRoot.rotation.x - cameraRotationSpeedX;
-				// Ajoutez une limite pour éviter une rotation complète vers le haut
-				if (newRotationX > this.CAMERA_MIN_ANGLE) {
-					this._camRoot.rotation.x = newRotationX;
-				}
-			}
-			if (this._input.inputMap[KEY_ARROW_UP]) {
-				let newRotationX = this._camRoot.rotation.x + cameraRotationSpeedX;
-				// Ajoutez une limite pour éviter une rotation complète vers le bas
-				if (newRotationX < this.CAMERA_MAX_ANGLE) {
-					this._camRoot.rotation.x = newRotationX;
-				}
-			}
-
 			if (input.length() == 0) {
 				// If there's no input detected, prevent rotation and keep player in same rotation
 				return;
