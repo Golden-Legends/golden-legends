@@ -381,7 +381,7 @@ export class NatationGameState extends GameState {
                 // Cache le dernier élément après une seconde
                 setTimeout(() => {
                     document.getElementById(previousElement)!.classList.add("hidden");
-                }, 1000);
+                }, 500);
     
                 // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
                 this.countdownInProgress = true;

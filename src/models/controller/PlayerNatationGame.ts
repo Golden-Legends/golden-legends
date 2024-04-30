@@ -122,18 +122,31 @@ export class PlayerNatationGame {
         this._isCrouching = true;        
     }
 
+    private isTextPlongeonShow : boolean = false;
+    private isTextDemitourShow : boolean = false;
+
     public play (delta : number, currentTime : number) {
         this._deltaTime = delta / 10;
         this.currentTime = currentTime;
         if (!this.isEndGame) {
             if (!this.isSequentialAnimation) {
+                if (!this.isTextPlongeonShow) {
+                    this.isTextPlongeonShow = true;
+                    document.getElementById("natationGame-text-plongeon")!.classList.remove("hidden");
+                }
                 if (this._input.space && !this._isSpacedPressedForAnim) {
+                    document.getElementById("natationGame-text-plongeon")!.classList.add("hidden");
                     this._isSpacedPressedForAnim = true;
                     this.playSequentialAnimation();
                 }
             } else {
                 if (this._isInReturnMesh) { // si je peux me retourner
+                    if (!this.isTextDemitourShow) {
+                        this.isTextDemitourShow = true;
+                        document.getElementById("natationGame-text-demitour")!.classList.remove("hidden");
+                    }
                     if (this._input.space) { // et que j'appuie sur espace
+                        document.getElementById("natationGame-text-demitour")!.classList.add("hidden");
                         this._isInReturnMesh = false; // je me retourne
                         this.transform.rotation.y = Math.PI;
                         this.direction = -1;

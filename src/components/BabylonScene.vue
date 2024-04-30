@@ -303,6 +303,21 @@
     class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
     :speed="store.state.setSpeedBar" :min="0" :max="1"
   />
+  <RDSText
+    text="Plongez !"
+    subText="Appuyez sur Espace"
+    name="natationGame-text-plongeon"
+    id="natationGame-text-plongeon"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+/>
+  <RDSText
+    text="Demi-tour !"
+    subText="Appuyez sur Espace"
+    name="natationGame-text-demitour"
+    id="natationGame-text-demitour"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+
 </template>
 
 <script setup lang="ts">
