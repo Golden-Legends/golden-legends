@@ -35,9 +35,10 @@ export class BotNatation {
     private isSequentialAnimation : boolean = false;
 
     // run
-    private MAX_SPEED = 0;
+    private MAX_SPEED = 0; // TODO : Nicolas, la vitesse max du joueur tu peux la régler dans le fichier natationGameSettings.json
     private baseSpeed: number = 0; // Vitesse de déplacement initiale
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
+    private acceleration: number = 0.005; // Accélération
 
     // fin
     private firstEndMesh: Mesh;
@@ -174,7 +175,7 @@ export class BotNatation {
 
     private randomBaseSpeed(): void {
         // Génère une vitesse aléatoire pour l'accélération
-        const temp = (Math.random() * 0.05) * this.deltaTime;
+        const temp = (Math.random() * this.acceleration) * this.deltaTime;
         this.baseSpeed += temp;
 
         // tu dois déplacer le bot avec une vitesse qui va varier mais il peut acélérer comme ralentir il ne peux pas dépasser une certaine vitesse s'il la dépasse on peut le ralentir

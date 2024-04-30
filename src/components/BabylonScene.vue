@@ -301,7 +301,7 @@
     name="natationGame-text-speedbar"
     id="natationGame-text-speedbar"
     class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
-    :speed="store.state.setSpeedBar" :min="0" :max="1"
+    :speed="store.state.setSpeedBar" :min="0" :max="0.3"
   />
   <RDSText
     text="Plongez !"
