@@ -10,6 +10,7 @@ import { InGameState } from "../InGameState";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { BotNatation } from "@/models/controller/BotNatation";
 import { PlayerInputNatationGame } from "@/models/inputsMangement/PlayerInputNatationGame";
+import { SoundManager } from "@/models/environments/sound";
 
 
 interface line {
@@ -67,7 +68,9 @@ export class NatationGameState extends GameState {
     private continueButtonIsPressed: boolean = false;
     private rectangleReturn : Mesh;
 
-    constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
+    public soundManager!: SoundManager;
+
+    constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
@@ -75,6 +78,10 @@ export class NatationGameState extends GameState {
         this._input = new PlayerInputNatationGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
         this.rectangleReturn = MeshBuilder.CreateBox("rectangleReturn");
+
+        this.soundManager = soundManager;
+        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
+		this.soundManager.playTrack('100m');
     }
 
     async enter(): Promise<void> {
@@ -136,6 +143,7 @@ export class NatationGameState extends GameState {
     async exit(): Promise<void> {
         try { 
             console.log("exit running game");
+            this.soundManager.stopTrack('100m');
             this.clearScene();
          
             document.getElementById("natationGame-timer")!.classList.add("hidden");
