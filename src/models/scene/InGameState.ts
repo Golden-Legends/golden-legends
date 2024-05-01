@@ -25,6 +25,7 @@ import ky from "ky";
 import { BACK_URL } from "../../utils/constants.ts";
 import { JumpGame } from "./miniGames/JumpGame.ts";
 import { ObjectGame } from "./miniGames/ObjectGame.ts";
+import { SoundManager } from "../environments/sound.ts";
 
 export class InGameState extends GameState {
   public assets;
@@ -34,6 +35,7 @@ export class InGameState extends GameState {
   private jumpGame!: JumpGame;
   private objectGame!: ObjectGame;
   private fps: number = 30;
+  public soundManager!: SoundManager;
 
   constructor(game, canvas) {
     super(game, canvas);
@@ -292,14 +294,20 @@ export class InGameState extends GameState {
   async setEnvironment(): Promise<void> {
     // ENVIRONMENT
     this._environment = new Environment(this.scene, this._player, this);
+
+    this.soundManager = new SoundManager(this.scene);
+		this.soundManager.addTrack('inGame', './sounds/musiqueJeu.m4a', 0.05);
+		this.soundManager.playTrack('inGame');
+
     await this._environment.load();
   }
 
   public goToRunningGame() {
-    this.game.changeState(new RunningGameState(this.game, this.canvas));
+    this.game.changeState(new RunningGameState(this.soundManager, this.game, this.canvas));
     // document.getElementById("options-keybind")!.style.display = "none";
     document.getElementById("objects-keybind")!.classList.add("hidden");
     document.getElementById("map-keybind")!.classList.add("hidden");
+    this.soundManager.stopTrack('inGame');
   }
 
   private initButtons(gui: AdvancedDynamicTexture) {

@@ -124,9 +124,9 @@ export class Environment {
 		this.pnjMobile = new PnjMobile(this._scene);
 		this.pnjMobile.init();
 
-		const soundManager = new SoundManager(this._scene);
-		soundManager.addTrack('inGame', './sounds/musiqueJeu.m4a', 0.05);
-		soundManager.playTrack('inGame');
+		// const soundManager = new SoundManager(this._scene);
+		// soundManager.addTrack('inGame', './sounds/musiqueJeu.m4a', 0.05);
+		// soundManager.playTrack('inGame');
 
 		this.voitures = new Voitures(this._scene);
 		this.voitures.init();

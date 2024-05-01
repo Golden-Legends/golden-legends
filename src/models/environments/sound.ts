@@ -41,6 +41,7 @@ export class SoundManager {
     if (track) {
       track.play();
     }
+    this.currentMusic = name;
   }
 
   pauseTrack(name: string): void {

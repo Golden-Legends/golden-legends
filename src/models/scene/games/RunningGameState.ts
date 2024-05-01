@@ -9,6 +9,7 @@ import { Inspector } from '@babylonjs/inspector';
 import { store } from "@/components/gui/store.ts";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { InGameState } from "../InGameState";
+import { SoundManager } from "@/models/environments/sound";
 
 interface line {
     start : string;
@@ -61,12 +62,17 @@ export class RunningGameState extends GameState {
     private scoreboardIsShow : boolean = false;
     private currentTime : number = 0;
 
-    constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
+    public soundManager!: SoundManager;
+
+    constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputRunningGame(this.scene);
         this.settings = RunningGameSettings;
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
+        this.soundManager = soundManager;
+        this.soundManager.addTrack('100m', './sounds/musiqueAccueilShort.m4a', 0.2);
+		this.soundManager.playTrack('100m');
     }
 
     async enter(): Promise<void>{
@@ -211,6 +217,7 @@ export class RunningGameState extends GameState {
         store.commit('setSpeedBar', 0);
         this.buildScoreBoard();
 
+        this.soundManager.stopTrack('100m');
         this.clearScene();
     }
 
