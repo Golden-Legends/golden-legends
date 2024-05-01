@@ -71,7 +71,7 @@ export class RunningGameState extends GameState {
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
         this.soundManager = soundManager;
-        this.soundManager.addTrack('100m', './sounds/musiqueAccueilShort.m4a', 0.2);
+        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
 		this.soundManager.playTrack('100m');
     }
 
