@@ -40,6 +40,7 @@ export class Environment {
 	public options!: Options;
 	public waterMaterial!: WaterMaterial;
 	private skyBox!: Mesh;
+	public soundManager!: SoundManager;
 
 	private gateInformations: gateInformation[] = [
 		{
@@ -122,7 +123,11 @@ export class Environment {
 		this.pnjTalk.init();
 		this.pnjMobile = new PnjMobile(this._scene);
 		this.pnjMobile.init();
-		new SoundManager(this._scene);
+
+		// const soundManager = new SoundManager(this._scene);
+		// soundManager.addTrack('inGame', './sounds/musiqueJeu.m4a', 0.05);
+		// soundManager.playTrack('inGame');
+
 		this.voitures = new Voitures(this._scene);
 		this.voitures.init();
 		this.stationScore = new StationScore(this._scene, this.player?.mesh as Mesh);
