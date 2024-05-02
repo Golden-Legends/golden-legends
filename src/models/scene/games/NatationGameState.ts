@@ -1,7 +1,7 @@
 import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
 import { natationGameEnv } from "@/models/environments/natatonGameEnv";
-import { FreeCamera, HemisphericLight, Mesh, MeshBuilder, Vector3 } from "@babylonjs/core";
+import { Animation, Color3, FreeCamera, HemisphericLight, Mesh, MeshBuilder, Texture, Vector3 } from "@babylonjs/core";
 import { Inspector } from "@babylonjs/inspector";
 import NatationGameSettings from "../../../assets/natationGameSettings.json";
 import { PlayerNatationGame } from "@/models/controller/PlayerNatationGame";
@@ -11,6 +11,7 @@ import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { BotNatation } from "@/models/controller/BotNatation";
 import { PlayerInputNatationGame } from "@/models/inputsMangement/PlayerInputNatationGame";
 import { SoundManager } from "@/models/environments/sound";
+import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
 
 
 interface line {
@@ -69,6 +70,8 @@ export class NatationGameState extends GameState {
     private rectangleReturn : Mesh;
 
     public soundManager!: SoundManager;
+    public waterMaterial!: WaterMaterial;
+    private skyBox!: Mesh;
 
     constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -96,6 +99,8 @@ export class NatationGameState extends GameState {
 
             // Inspector.Show(this.scene, {});
             await this.setEnvironment();
+            this.createSkybox();
+		    this.addTextureEau();
             this.createLight();
             this.setLinePlacement();
 
@@ -110,8 +115,13 @@ export class NatationGameState extends GameState {
 
             this.runUpdateAndRender();   
             
-            this._camera = new FreeCamera("cameraNatation", new Vector3(4.78, 3.27, 6.38), this.scene);
+            this._camera = new FreeCamera("cameraNatation", new Vector3(4.78, 2, 20), this.scene);
+            // Vector3(4.78, 3.27, 6.38)
+            
+            // this._camera.rotation = new Vector3(0, -Math.PI, 0);
             this._camera.setTarget(this.player.transform.position);
+            // console.log(this._camera.rotation);
+            // console.log(this._camera.position);
 
             document.getElementById("natationGame-skip-button")!.classList.remove("hidden");
             document.getElementById("natationGame-skip-button")!.addEventListener("click", () => {
@@ -294,12 +304,12 @@ export class NatationGameState extends GameState {
             const startMesh = this.startPlacement[i];
             const firstEndMesh = this.firstEndPlacement[i];
             const secondEndMesh = this.secondEndPlacement[i];
-            // TODO : nicolas changer le pathfile dans le fichier natationGameSettings.json
+            //nicolas changer le pathfile dans le fichier natationGameSettings.json --> DONE
             const bot = new BotNatation("bot" + i, startMesh.getAbsolutePosition(), 
                     firstEndMesh,
                     secondEndMesh,
                     this.scene,
-                    "./models/characters/perso1.glb", infoBot[i].speed);
+                    infoBot[i].pathFile, infoBot[i].speed);
             await bot.init();
             this.botArray.push(bot);
         }        
@@ -370,14 +380,57 @@ export class NatationGameState extends GameState {
     }
 
     async CreateCameraMouv(): Promise<void> {
-        // TODO : nicolas movement camera
+        // nicolas movement camera --> DONE
+        const fps = 60;
+        const camAnim = new Animation("camAnim", 
+                                    "position", 
+                                    fps, 
+                                    Animation.ANIMATIONTYPE_VECTOR3, 
+                                    Animation.ANIMATIONLOOPMODE_CONSTANT,
+                                    true);
+
+        const rotationAnim = new Animation("rotationAnim", 
+                                    "rotation", 
+                                    fps, 
+                                    Animation.ANIMATIONTYPE_VECTOR3, 
+                                    Animation.ANIMATIONLOOPMODE_CONSTANT,
+                                    true);
+
+        const camKeys: { frame: number, value: Vector3 }[] = [];
+        const rotationKeys: { frame: number, value: Vector3 }[] = [];
+
+        camKeys.push({frame: 0, value: new Vector3(0, 2, 20)});
+        camKeys.push({frame: 6 * fps, value: new Vector3(-5, 2, 15)});
+        camKeys.push({frame: 9 * fps, value: new Vector3(-2.75, 0.25, 4.5)});
+        camKeys.push({frame: 9.5 * fps, value: new Vector3(-2.75, 0.25, 4.5)});
+        camKeys.push({frame: 14 * fps, value: new Vector3(0.5, 0.25, 4.5)});
+        camKeys.push({frame: 17 * fps, value: new Vector3(3.5, 2.5, 5)});
+       
+        rotationKeys.push({frame: 0, value: new Vector3(-Math.PI/12, -Math.PI, 0)});
+        rotationKeys.push({frame: 6 * fps, value: new Vector3(Math.PI/12, -7*Math.PI/6, 0)});
+        rotationKeys.push({frame: 9 * fps, value: new Vector3(0, -Math.PI, 0)});
+        rotationKeys.push({frame: 9.5 * fps, value: new Vector3(0, -Math.PI, 0)});
+        rotationKeys.push({frame: 14 * fps, value: new Vector3(0, -Math.PI, 0)});
+        rotationKeys.push({frame: 17 * fps, value: new Vector3(
+            0.4493274861414612, -2.1422732064875865, 0)});
+
+        camAnim.setKeys(camKeys);
+        rotationAnim.setKeys(rotationKeys);
+
+        this._camera.animations.push(camAnim);
+        this._camera.animations.push(rotationAnim);
+
+        await this.scene.beginAnimation(this._camera, 0, 17 * fps).waitAsync();
+        document.getElementById("runningGame-skip-button")!.style.display = "none";
+        // this.AfterCamAnim();
     }
 
     private startCountdown(countdownElements: string[]) {
         if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
         let countdownIndex = 0;
         let previousElement = "";
-    
+        // console.log(this._camera.position, this._camera.rotation);
+
         const countdownInterval = setInterval(() => {
             const countdownElement = countdownElements[countdownIndex];
             if (previousElement !== "") document.getElementById(previousElement)!.classList.add("hidden");
@@ -414,5 +467,35 @@ export class NatationGameState extends GameState {
         storeNatation.commit('setTimer', 0.00);
         storeNatation.commit('setSpeedBar', 0);  
     }
+
+    public addTextureEau(){
+        const waterMesh = this.scene.getMeshByName("eauNatation");
+        if (waterMesh) {
+            waterMesh.scaling = new Vector3(750,1,750);
+            waterMesh.position = new Vector3(-145, -3.05, -54.1);	
+            this.waterMaterial = new WaterMaterial("water_material", this.scene);
+            this.waterMaterial.bumpTexture = new Texture(
+                "./assets/water/water_bump.jpg",
+                this.scene,
+            );
+            // this.waterMaterial.windForce = 3;
+            // this.waterMaterial.waveHeight = 0.8;
+            this.waterMaterial.alpha = 0.9;
+            this.waterMaterial.waterColor = new Color3(0.1, 0.1, 0.6);
+            this.waterMaterial.colorBlendFactor = 0.5;
+            this.waterMaterial.addToRenderList(this.skyBox);
+            waterMesh.material = this.waterMaterial;
+        }
+    }
+
+    public createSkybox(): void {
+		const skyMaterial = new SkyMaterial("skyMaterial", this.scene);
+		skyMaterial.backFaceCulling = false;
+		skyMaterial.turbidity = 10;
+		skyMaterial.luminance = 1;
+		skyMaterial.inclination = 0;
+		this.skyBox = MeshBuilder.CreateBox("skyBox", { size: 1000.0 }, this.scene);
+		this.skyBox.material = skyMaterial;
+	}
 
 }

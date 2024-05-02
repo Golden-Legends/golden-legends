@@ -289,7 +289,7 @@ export class InGameState extends GameState {
 
     //Create the player
     this._player = new Player(this.assets, scene, shadowGenerator, this._input);
-    this._player.mesh.position = new Vector3(-184, 2.75, -78);
+    this._player.mesh.position = new Vector3(-185, 7, -90);
   }
 
   async setEnvironment(): Promise<void> {
