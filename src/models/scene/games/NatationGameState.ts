@@ -2,7 +2,6 @@ import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
 import { natationGameEnv } from "@/models/environments/natatonGameEnv";
 import { Animation, Color3, FreeCamera, HemisphericLight, Mesh, MeshBuilder, Texture, Vector3 } from "@babylonjs/core";
-import { Inspector } from "@babylonjs/inspector";
 import NatationGameSettings from "../../../assets/natationGameSettings.json";
 import { PlayerNatationGame } from "@/models/controller/PlayerNatationGame";
 import { storeNatation } from "@/components/gui/storeNatation";

@@ -6,7 +6,6 @@ import {
 	ExecuteCodeAction,
 	ActionManager,
 	Mesh,
-	AssetsManager,
 	Color3,
 	Texture,
 } from "@babylonjs/core";

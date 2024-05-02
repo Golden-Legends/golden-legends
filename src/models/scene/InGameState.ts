@@ -26,7 +26,6 @@ import { BACK_URL } from "../../utils/constants.ts";
 import { JumpGame } from "./miniGames/JumpGame.ts";
 import { ObjectGame } from "./miniGames/ObjectGame.ts";
 import { SoundManager } from "../environments/sound.ts";
-import { NatationGameState } from "./games/NatationGameState.ts";
 
 export class InGameState extends GameState {
   public assets;

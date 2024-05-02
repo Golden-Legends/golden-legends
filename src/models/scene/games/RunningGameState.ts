@@ -5,7 +5,6 @@ import { Game } from "../../Game";
 import { PlayerRunningGame } from "../../controller/PlayerRunningGame";
 import { Bot } from "../../controller/Bot";
 import RunningGameSettings from "../../../assets/runningGame.json";
-import { Inspector } from '@babylonjs/inspector';
 import { store } from "@/components/gui/store.ts";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { InGameState } from "../InGameState";
