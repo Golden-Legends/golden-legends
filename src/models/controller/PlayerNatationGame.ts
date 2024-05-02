@@ -47,15 +47,15 @@ export class PlayerNatationGame {
     private _isReturnWasActivated : boolean = false;
 
     // run
-    private readonly MIN_RUN_SPEED = 0.10;
+    private readonly MIN_RUN_SPEED = 0.05;
     private baseSpeed: number = 0.004; // Vitesse de déplacement initiale
-    private acceleration: number = 0.0015; // Ajustez selon vos besoins
+    private acceleration: number = 0.00125; // Ajustez selon vos besoins
     private minDelayBetweenSwitches: number = 800; // Délai minimal entre chaque alternance en millisecondes
     private lastSwitchTime: number = 0;
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
     private leftPressed: boolean = false;
     private rightPressed: boolean = false;
-    private deceleration: number = 0.0005; // Décélération lorsqu'aucune touche n'est enfoncée
+    private deceleration: number = 0.00013; // Décélération lorsqu'aucune touche n'est enfoncée
 
     // input
     // mettrre input manager et retravailler input manager pour qu'il soit plus générique et permettent la création de déplacement de bot
@@ -293,8 +293,9 @@ export class PlayerNatationGame {
     }
 
     public createCameraPlayer(mesh : Mesh) : FreeCamera { 
-        const camera = new FreeCamera("camera1", new Vector3(4.78, 3.27, 6.38), this.scene);
+        const camera = new FreeCamera("camera1", new Vector3(3.5, 2.5, 5), this.scene);
         camera.setTarget(new Vector3(mesh.position.x, mesh.position.y, mesh.position.z));
+        console.log(camera.rotation);
         return camera;
     }
 
