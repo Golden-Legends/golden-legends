@@ -3,7 +3,7 @@ import { Scaling } from "../../utils/Scaling";
 
 const PLAYER_HEIGHT = 3;
 const PLAYER_RADIUS = 0.5;
-const PLAYER_SCALING = 3;
+const PLAYER_SCALING = 0.12;
 
 export class Bot {
 
@@ -33,7 +33,7 @@ export class Bot {
     private _isIdle : boolean = false;
 
     // run
-    private readonly MIN_RUN_SPEED = 0.15;
+    private readonly MIN_RUN_SPEED = 0.07; //0.15
     private MAX_SPEED = 0;
     private baseSpeed: number = 0; // Vitesse de déplacement initiale
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
@@ -109,10 +109,10 @@ export class Bot {
     }
 
     private setAnimation () : {run: AnimationGroup, walk: AnimationGroup, crouch: AnimationGroup, idle: AnimationGroup} { 
-        const sprint = this.animationsGroup.find(ag => ag.name.includes("sprint"));
-        const walk = this.animationsGroup.find(ag => ag.name.includes("walk"));
-        const crouch = this.animationsGroup.find(ag => ag.name.includes("crouch"));
-        const idle = this.animationsGroup.find(ag => ag.name.includes("idle"));
+        const sprint = this.animationsGroup.find(ag => ag.name.includes("Anim|running"));
+        const walk = this.animationsGroup.find(ag => ag.name.includes("Anim|walk"));
+        const crouch = this.animationsGroup.find(ag => ag.name.includes("Anim|crouch"));
+        const idle = this.animationsGroup.find(ag => ag.name.includes("Anim|idle"));
         return {run: sprint!, walk: walk!, crouch: crouch!, idle: idle!};
     }
 
