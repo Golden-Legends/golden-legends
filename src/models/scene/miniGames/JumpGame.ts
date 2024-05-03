@@ -13,10 +13,12 @@ import {
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture, TextBlock } from "@babylonjs/gui";
 import { PlayerInput } from "../../inputsMangement/PlayerInput";
+import { storeJump } from "@/components/gui/storeJump.ts";
+import { GameState } from "@/models/GameState";
 
-export class JumpGame {
+export class JumpGame{
   progress: number;
-  private scene: Scene;
+  public scene: Scene;
   private player: Mesh;
   private cube!: Mesh;
   private guiTextureButton!: AdvancedDynamicTexture;
@@ -32,6 +34,8 @@ export class JumpGame {
 
   private countdownInProgress: boolean = false;
   private raceStartTime: number = 0;
+  private timer: number = 0;
+  private currentTime : number = 0;
 
   constructor(scene: Scene, player: Mesh, input: PlayerInput) {
     this.scene = scene;
@@ -49,6 +53,7 @@ export class JumpGame {
     this.initCube();
     this.registerBoxPickUpActions();
 
+    
     //apparition des plateformes
     // this.scene.registerBeforeRender(() => {
     //     if (this.isPlayerInsideTrigger && this.playerInput.inputMap["Space"]) {
@@ -67,6 +72,11 @@ export class JumpGame {
         this.playerInput.inputMap["KeyR"] &&
         !this.gameRunning
       ) {
+        this.timer = 0;
+        this.raceStartTime = 0;
+        this.currentTime = 0;
+        storeJump.commit('setTimer', 0.00);
+        document.getElementById("jumpGame-timer")!.classList.remove("hidden");
         this.miniGame();
       }
     });
@@ -85,13 +95,18 @@ export class JumpGame {
     if (!this.countdownInProgress) return; // Évite de terminer le compte à rebours si ce n'est pas déjà en cours
 
     const currentTime = performance.now();
-    const elapsedTime = (currentTime - this.raceStartTime) / 1000;
-    console.log("Temps écoulé: ", elapsedTime);
+    const elapsedTime = (currentTime - this.raceStartTime);
+    this.timer = parseFloat(elapsedTime.toFixed(1));  
+    storeJump.commit('setTimer', this.timer);
+    console.log("Temps écoulé: ", this.timer, elapsedTime);
   }
 
   private miniGame() {
     // Initialiser le jeu et démarrer le comptage des plateformes sautées
     this.startCountdown()
+
+    // this.update();
+
     this.resetGame();
     this.gameRunning = true;
 
@@ -218,11 +233,28 @@ export class JumpGame {
     fireworks.start();
   }
 
+  update(): void {
+    if (!this.countdownInProgress) return;
+      this.currentTime = performance.now();
+      let deltaTime = this.scene.getEngine().getDeltaTime();
+      deltaTime = deltaTime / 10;
+      this.currentTime = this.currentTime;
+
+
+    if(!this.gameRunning){
+      this.timer = Math.round((this.currentTime - this.raceStartTime));
+      console.log("Temps écoulé: ", this.timer);
+      storeJump.commit('setTimer', this.timer);
+    }
+  }
+
   showVictoryMessage() {
-    // Créer un message de victoire à afficher à l'écran
+    // Créer un message de victoire à afficher à l'écran    
     document.getElementById("victory-jump-dialog")!.classList.remove("hidden");
     setTimeout(() => {
-        document.getElementById("victory-jump-dialog")!.classList.add("hidden");
+      storeJump.commit('setTimer', 0.00);
+      document.getElementById("victory-jump-dialog")!.classList.add("hidden");
+      document.getElementById("jumpGame-timer")!.classList.add("hidden");
     }, 3000);
   }
 
@@ -230,7 +262,9 @@ export class JumpGame {
     // Créer un message de défaite à afficher à l'écran
     document.getElementById("lose-jump-dialog")!.classList.remove("hidden");
     setTimeout(() => {
-        document.getElementById("lose-jump-dialog")!.classList.add("hidden");
+      storeJump.commit('setTimer', 0.00);
+      document.getElementById("jumpGame-timer")!.classList.add("hidden");
+      document.getElementById("lose-jump-dialog")!.classList.add("hidden");
     }, 3000);
   }
 

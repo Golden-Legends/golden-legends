@@ -252,6 +252,12 @@
     class="hidden absolute bottom-12 right-12"
     :timer="storeNatation.state.timer"
   />
+  <Timer
+    name="jumpGame-timer"
+    id="jumpGame-timer"
+    class="hidden absolute bottom-12 right-12"
+    :timer="storeJump.state.timer"
+  />
   <Results
     title="natation"
     name="natationGame-results"
@@ -326,7 +332,6 @@ import MainOptions from "./MainOptions.vue";
 import App from "../../src/models/App.ts";
 import Dialog from "@/components/gui/Dialog.vue";
 import ClassicButton from "@/components/landing/ClassicButton.vue";
-import SoundButton from "@/components/SoundButton.vue";
 import Timer from "@/components/gui/Timer.vue";
 import ResultsContent from "@/components/gui/results/ResultsContent.vue";
 import Results from "@/components/gui/results/Results.vue";
@@ -339,6 +344,7 @@ import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsCon
 import { storeObjects } from "./gui/storeObjects";
 import { store } from "@/components/gui/store.ts";
 import { storeNatation } from "@/components/gui/storeNatation.ts";
+import { storeJump } from "@/components/gui/storeJump.ts";
 
 import Options from "./gui/options/Options.vue";
 
