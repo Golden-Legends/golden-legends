@@ -14,10 +14,11 @@ import {
 import { AdvancedDynamicTexture, TextBlock } from "@babylonjs/gui";
 import { PlayerInput } from "../../inputsMangement/PlayerInput";
 import { storeJump } from "@/components/gui/storeJump.ts";
+import { GameState } from "@/models/GameState";
 
-export class JumpGame {
+export class JumpGame{
   progress: number;
-  private scene: Scene;
+  public scene: Scene;
   private player: Mesh;
   private cube!: Mesh;
   private guiTextureButton!: AdvancedDynamicTexture;
@@ -94,15 +95,17 @@ export class JumpGame {
     if (!this.countdownInProgress) return; // Évite de terminer le compte à rebours si ce n'est pas déjà en cours
 
     const currentTime = performance.now();
-    const elapsedTime = (currentTime - this.raceStartTime) / 1000;
-    this.timer = elapsedTime;
-    console.log("Temps écoulé: ", elapsedTime);
+    const elapsedTime = (currentTime - this.raceStartTime);
+    this.timer = parseFloat(elapsedTime.toFixed(1));  
+    storeJump.commit('setTimer', this.timer);
+    console.log("Temps écoulé: ", this.timer, elapsedTime);
   }
 
   private miniGame() {
     // Initialiser le jeu et démarrer le comptage des plateformes sautées
     this.startCountdown()
 
+    // this.update();
 
     this.resetGame();
     this.gameRunning = true;
@@ -135,7 +138,7 @@ export class JumpGame {
           this.gameRunning = false;
           this.stopMiniGame();
           this.playFireworksAnimation(this.scene, this.player.position);
-          // this.endCountdown();
+          this.endCountdown();
           return;
         }
 
@@ -154,7 +157,7 @@ export class JumpGame {
         this.invisiblePlatform(1, 20);
         this.gameRunning = false;
         this.stopMiniGame();
-        // this.endCountdown();
+        this.endCountdown();
       }
     };
   }
@@ -240,6 +243,7 @@ export class JumpGame {
 
     if(!this.gameRunning){
       this.timer = Math.round((this.currentTime - this.raceStartTime));
+      console.log("Temps écoulé: ", this.timer);
       storeJump.commit('setTimer', this.timer);
     }
   }
