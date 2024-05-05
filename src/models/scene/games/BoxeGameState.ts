@@ -31,4 +31,10 @@ export class BoxeGameState extends GameState {
     update() {}
     setEnvironment() {}
 
+    // Todo : Bases du jeu de la boxe
+    // chargement des éléments du jeu (map, les 2 persos en idleBoxe,...)
+    // faire l'animation de départ de caméra
+    // affichage du bouton passer et du bouton pret ensuite
+    // ensuite voir pour le jeu en lui même
+
 }
