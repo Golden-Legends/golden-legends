@@ -420,7 +420,7 @@ export class NatationGameState extends GameState {
         this._camera.animations.push(rotationAnim);
 
         await this.scene.beginAnimation(this._camera, 0, 17 * fps).waitAsync();
-        document.getElementById("runningGame-skip-button")!.style.display = "none";
+        document.getElementById("natationGame-skip-button")!.classList.add("hidden");
         // this.AfterCamAnim();
     }
 

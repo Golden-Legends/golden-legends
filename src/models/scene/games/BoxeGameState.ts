@@ -4,7 +4,7 @@ import { SoundManager } from "@/models/environments/sound";
 import { PlayerInputBoxeGame } from "@/models/inputsMangement/PlayerInputBoxeGame";
 import BoxeGameSettings from "../../../assets/boxeGameSettings.json";
 import { boxeGameEnv } from "@/models/environments/boxeGameEnv";
-import { FreeCamera, HemisphericLight, Mesh, Vector3 } from "@babylonjs/core";
+import { Animation, FreeCamera, HemisphericLight, Mesh, Vector3 } from "@babylonjs/core";
 import { PlayerBoxeGame } from "@/models/controller/PlayerBoxeGame";
 import { BotBoxe } from "@/models/controller/BotBoxe";
 
@@ -48,6 +48,9 @@ export class BoxeGameState extends GameState {
     
     private isMultiplayer: boolean = false;
     private difficulty: "easy" | "intermediate" | "hard";
+
+    private countdownInProgress: boolean = false;
+    private fightStartTime: number = 0;
 
     public soundManager!: SoundManager;
 
@@ -166,15 +169,11 @@ export class BoxeGameState extends GameState {
 
             this.runUpdateAndRender();   
             
-            this._camera = new FreeCamera("cameraBoxe", new Vector3(-4, 2.5, 14.45), this.scene);
+            this._camera = new FreeCamera("cameraBoxe", new Vector3(-4, 4, 14.45), this.scene);
             this._camera.rotation._y = Math.PI/2;
             this._camera.rotation._x = Math.PI/5;
             // Vector3(4.78, 3.27, 6.38)
-            
-            // this._camera.rotation = new Vector3(0, -Math.PI, 0);
-            // this._camera.setTarget(this.player.transform.position); // pas besoin 
-            // console.log(this._camera.rotation);
-            // console.log(this._camera.position);
+            // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
             document.getElementById("boxeGame-skip-button")!.classList.remove("hidden");
             document.getElementById("boxeGame-skip-button")!.addEventListener("click", () => {
@@ -191,7 +190,7 @@ export class BoxeGameState extends GameState {
                 document.getElementById("boxeGame-skip-button")!.classList.add("hidden");
 
                 document.getElementById("boxeGame-ready-button")!.addEventListener("click", () => {
-                    // this.startCountdown(["natationGame-text-1", "natationGame-text-2", "natationGame-text-3"]);
+                    this.startCountdown(["boxeGame-text-1", "boxeGame-text-2", "boxeGame-text-3", "boxeGame-text-4"]); 
                     this.AfterCamAnim(); 
                     this.initGui(); 
                     document.getElementById("boxeGame-ready-button")!.classList.add("hidden");
@@ -204,14 +203,82 @@ export class BoxeGameState extends GameState {
         }
     }
 
+    private startCountdown(countdownElements: string[]) {
+        if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
+        let countdownIndex = 0;
+        let previousElement = "";
+        // console.log(this._camera.position, this._camera.rotation);
+
+        const countdownInterval = setInterval(() => {
+            const countdownElement = countdownElements[countdownIndex];
+            if (previousElement !== "") document.getElementById(previousElement)!.classList.add("hidden");
+            document.getElementById(countdownElement)!.classList.remove("hidden");
+            previousElement = countdownElement;
+            countdownIndex++;
+    
+            if (countdownIndex >= countdownElements.length) {
+                clearInterval(countdownInterval);
+    
+                // Cache le dernier élément après une seconde
+                setTimeout(() => {
+                    document.getElementById(previousElement)!.classList.add("hidden");
+                }, 500);
+    
+                // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
+                this.countdownInProgress = true;
+                this.fightStartTime = performance.now();
+            }
+        }, 1000);
+    }
+
     AfterCamAnim(): void {
-        this._camera.dispose();
-        this._camera = this.player.createCameraPlayer(this.player.transform);
+        // this._camera.dispose();
+        // this._camera = this.player.createCameraPlayer(this.player.transform);
+        this._camera.position = new Vector3(-4, 2.5, 14.45);
+        this._camera.rotation._y = Math.PI/2;
+        this._camera.rotation._x = Math.PI/5;
         this.player.setCamera(this._camera);
     }
 
     async CreateCameraMouv(): Promise<void> {
-        console.log("CreateCameraMouv");
+        const fps = 60;
+        const camAnim = new Animation("camAnim", 
+                                    "position", 
+                                    fps, 
+                                    Animation.ANIMATIONTYPE_VECTOR3, 
+                                    Animation.ANIMATIONLOOPMODE_CONSTANT,
+                                    true);
+
+        const rotationAnim = new Animation("rotationAnim", 
+                                    "rotation", 
+                                    fps, 
+                                    Animation.ANIMATIONTYPE_VECTOR3, 
+                                    Animation.ANIMATIONLOOPMODE_CONSTANT,
+                                    true);
+
+        const camKeys: { frame: number, value: Vector3 }[] = [];
+        const rotationKeys: { frame: number, value: Vector3 }[] = [];
+
+        camKeys.push({frame: 0, value: new Vector3(-4, 3.6, 14.45)});
+        camKeys.push({frame: 2 * fps, value: new Vector3(0, 3.6, 11)});
+        camKeys.push({frame: 4 * fps, value: new Vector3(4, 3.6, 14.45)});
+        camKeys.push({frame: 6 * fps, value: new Vector3(0, 3.6, 17.90)});
+        camKeys.push({frame: 9 * fps, value: new Vector3(-4, 2.5, 14.45)});
+       
+        rotationKeys.push({frame: 0, value: new Vector3(Math.PI/4, Math.PI/2, 0)});
+        rotationKeys.push({frame: 2 * fps, value: new Vector3(Math.PI/4, 0, 0)});
+        rotationKeys.push({frame: 4 * fps, value: new Vector3(Math.PI/4, -Math.PI/2, 0)});
+        rotationKeys.push({frame: 6 * fps, value: new Vector3(Math.PI/4, -Math.PI, 0)});
+        rotationKeys.push({frame: 9 * fps, value: new Vector3(Math.PI/5, -3*Math.PI/2, 0)});
+
+        camAnim.setKeys(camKeys);
+        rotationAnim.setKeys(rotationKeys);
+
+        this._camera.animations.push(camAnim);
+        this._camera.animations.push(rotationAnim);
+
+        await this.scene.beginAnimation(this._camera, 0, 9 * fps).waitAsync();
+        document.getElementById("boxeGame-skip-button")!.classList.add("hidden");
     }
 
     async exit(): Promise<void> {
@@ -226,12 +293,7 @@ export class BoxeGameState extends GameState {
     update():void {
         console.log("update");
     }
-    
 
-    // Todo : Bases du jeu de la boxe
-    // chargement des éléments du jeu (map, les 2 persos en idleBoxe,...)
-    // faire l'animation de départ de caméra
-    // affichage du bouton passer et du bouton pret ensuite
-    // ensuite voir pour le jeu en lui même
+    //timer à revoir avec à la place un compteur de points (affichage différents juste)
 
 }

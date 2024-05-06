@@ -336,6 +336,30 @@
     id="boxeGame-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
   />
+  <RDSText
+    text="3"
+    name="boxeGame-text-1"
+    id="boxeGame-text-1"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="2"
+    name="boxeGame-text-2"
+    id="boxeGame-text-2"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="1"
+    name="boxeGame-text-3"
+    id="boxeGame-text-3"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Fight !"
+    name="boxeGame-text-4"
+    id="boxeGame-text-4"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
 </template>
 
 <script setup lang="ts">
