@@ -360,6 +360,44 @@
     id="boxeGame-text-4"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+
+  <!-- Plongeon -->
+  <ClassicButton
+    text="Passer"
+    name="plongeonGame-skip-button"
+    id="plongeonGame-skip-button"
+    class="hidden absolute bottom-12 right-12"
+  />
+  <ClassicButton
+    text="Prêt"
+    name="plongeonGame-ready-button"
+    id="plongeonGame-ready-button"
+    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
+  />
+  <RDSText
+    text="3"
+    name="plongeonGame-text-1"
+    id="plongeonGame-text-1"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="2"
+    name="plongeonGame-text-2"
+    id="plongeonGame-text-2"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="1"
+    name="plongeonGame-text-3"
+    id="plongeonGame-text-3"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Sautez !"
+    name="plongeonGame-text-4"
+    id="plongeonGame-text-4"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
 </template>
 
 <script setup lang="ts">

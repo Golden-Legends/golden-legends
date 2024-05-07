@@ -98,7 +98,8 @@ export class NatationGameState extends GameState {
 
             // Inspector.Show(this.scene, {});
             await this.setEnvironment();
-            this.createSkybox();
+            this.invisiblePlatform();
+            // this.createSkybox();
 		    this.addTextureEau();
             this.createLight();
             this.setLinePlacement();
@@ -470,8 +471,8 @@ export class NatationGameState extends GameState {
     public addTextureEau(){
         const waterMesh = this.scene.getMeshByName("eauNatation");
         if (waterMesh) {
-            waterMesh.scaling = new Vector3(750,1,750);
-            waterMesh.position = new Vector3(-145, -3.05, -54.1);	
+            // waterMesh.scaling = new Vector3(750,1,750);
+            // waterMesh.position = new Vector3(-145, -3.05, -54.1);	
             this.waterMaterial = new WaterMaterial("water_material", this.scene);
             this.waterMaterial.bumpTexture = new Texture(
                 "./assets/water/water_bump.jpg",
@@ -485,6 +486,10 @@ export class NatationGameState extends GameState {
             this.waterMaterial.addToRenderList(this.skyBox);
             waterMesh.material = this.waterMaterial;
         }
+        const waterMesh2 = this.scene.getMeshByName("eauPlongeon");
+        if(waterMesh2){
+            waterMesh2.material = this.waterMaterial;
+        }
     }
 
     public createSkybox(): void {
@@ -497,4 +502,30 @@ export class NatationGameState extends GameState {
 		this.skyBox.material = skyMaterial;
 	}
 
+    public invisiblePlatform(): void {
+        const platform = this.scene.getMeshByName("cylindreArrivéePlongeon");
+        if (platform) {
+            platform.isVisible = false;
+        }
+        const platform2 = this.scene.getMeshByName("cylindrediff");
+        if (platform2) {
+            platform2.isVisible = false;
+        }
+        const platform3 = this.scene.getMeshByName("cylindreMoyen");
+        if (platform3) {
+            platform3.isVisible = false;
+        }
+        const platform4 = this.scene.getMeshByName("cylindreFacile");
+        if (platform4) {
+            platform4.isVisible = false;
+        }
+        const platform5 = this.scene.getMeshByName("cylindreNoobg");
+        if (platform5) {
+            platform5.isVisible = false;
+        }
+        const platform6 = this.scene.getMeshByName("cylindreNoobd");
+        if (platform6) {
+            platform6.isVisible = false;
+        }
+    }
 }

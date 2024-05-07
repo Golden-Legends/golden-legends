@@ -6,8 +6,8 @@ export class PlayerInputBoxeGame extends InputManager {
         KEY_PARAGEJAMBES: "KeyD",
     };
 
-    public left: boolean = false;
-    public right: boolean = false;
+    public jambes: boolean = false;
+    public poing: boolean = false;
 
     constructor(scene) {
         super(scene);
@@ -21,17 +21,17 @@ export class PlayerInputBoxeGame extends InputManager {
     
     private updateJambesKeys(): void {
         if (this.inputMap[this.keys.KEY_PARAGEJAMBES]) {
-            this.left = true;
+            this.jambes = true;
         } else {
-            this.left = false;
+            this.jambes = false;
         }
     }
 
     private updatePoingKeys(): void {
         if (this.inputMap[this.keys.KEY_PARAGEPOING]) {
-            this.right = true;
+            this.poing = true;
         } else {
-            this.right = false;
+            this.poing = false;
         }
     }
 

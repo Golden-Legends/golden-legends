@@ -5,6 +5,7 @@ import { CustomLoadingScreen } from "./loadingScreen/customLoadingScreen";
 import {InGameState} from "./scene/InGameState.ts";
 import { RunningGameState } from "./scene/games/RunningGameState.ts";
 import { NatationGameState } from "./scene/games/NatationGameState.ts";
+import { PlongeonGameState } from "./scene/games/PlongeonGameState.ts";
 
 export class Game {
   public engine: Engine;
