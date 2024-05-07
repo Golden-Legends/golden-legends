@@ -6,6 +6,7 @@ import {InGameState} from "./scene/InGameState.ts";
 import { RunningGameState } from "./scene/games/RunningGameState.ts";
 import { NatationGameState } from "./scene/games/NatationGameState.ts";
 import { PlongeonGameState } from "./scene/games/PlongeonGameState.ts";
+import { TirArcGameState } from "./scene/games/TirArcGameState.ts";
 
 export class Game {
   public engine: Engine;
