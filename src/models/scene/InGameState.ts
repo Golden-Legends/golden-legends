@@ -307,7 +307,7 @@ export class InGameState extends GameState {
   }
 
   public goToRunningGame() {
-    this.game.changeState(new PlongeonGameState(this.soundManager, this.game, this.canvas));
+    this.game.changeState(new RunningGameState(this.soundManager, this.game, this.canvas));
     // document.getElementById("options-keybind")!.style.display = "none";
     document.getElementById("objects-keybind")!.classList.add("hidden");
     document.getElementById("map-keybind")!.classList.add("hidden");

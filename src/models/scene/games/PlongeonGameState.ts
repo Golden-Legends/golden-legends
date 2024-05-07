@@ -169,9 +169,9 @@ export class PlongeonGameState extends GameState {
 
             this.runUpdateAndRender();   
             
-            this._camera = new FreeCamera("cameraPlongeon", new Vector3(4.78, 2, 20), this.scene);
-            this._camera.rotation._y = Math.PI/2;
-            this._camera.rotation._x = Math.PI/5;
+            this._camera = new FreeCamera("cameraPlongeon", new Vector3(0, 5, -3), this.scene);
+            // this._camera.rotation._y = Math.PI/2;
+            // this._camera.rotation._x = Math.PI/5;
             // Vector3(4.78, 3.27, 6.38)
             // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
@@ -234,9 +234,9 @@ export class PlongeonGameState extends GameState {
     AfterCamAnim(): void {
         // this._camera.dispose();
         // this._camera = this.player.createCameraPlayer(this.player.transform);
-        this._camera.position = new Vector3(-4, 2.5, 14.45);
-        this._camera.rotation._y = Math.PI/2;
-        this._camera.rotation._x = Math.PI/5;
+        this._camera.position = new Vector3(-4, 2, 13);
+        this._camera.rotation._y = Math.PI/3.5;
+        this._camera.rotation._x = Math.PI/10;
         this.player.setCamera(this._camera);
     }
 
@@ -259,17 +259,15 @@ export class PlongeonGameState extends GameState {
         const camKeys: { frame: number, value: Vector3 }[] = [];
         const rotationKeys: { frame: number, value: Vector3 }[] = [];
 
-        camKeys.push({frame: 0, value: new Vector3(-4, 3.6, 14.45)});
-        camKeys.push({frame: 2 * fps, value: new Vector3(0, 3.6, 11)});
-        camKeys.push({frame: 4 * fps, value: new Vector3(4, 3.6, 14.45)});
-        camKeys.push({frame: 6 * fps, value: new Vector3(0, 3.6, 17.90)});
-        camKeys.push({frame: 9 * fps, value: new Vector3(-4, 2.5, 14.45)});
+        camKeys.push({frame: 0, value: new Vector3(0, 5, -3)});
+        camKeys.push({frame: 2 * fps, value: new Vector3(0, 1.5, -1)});
+        camKeys.push({frame: 4 * fps, value: new Vector3(2, 1.5, 3)});
+        camKeys.push({frame: 8 * fps, value: new Vector3(-4, 2, 13)});
        
-        rotationKeys.push({frame: 0, value: new Vector3(Math.PI/4, Math.PI/2, 0)});
-        rotationKeys.push({frame: 2 * fps, value: new Vector3(Math.PI/4, 0, 0)});
-        rotationKeys.push({frame: 4 * fps, value: new Vector3(Math.PI/4, -Math.PI/2, 0)});
-        rotationKeys.push({frame: 6 * fps, value: new Vector3(Math.PI/4, -Math.PI, 0)});
-        rotationKeys.push({frame: 9 * fps, value: new Vector3(Math.PI/5, -3*Math.PI/2, 0)});
+        rotationKeys.push({frame: 0, value: new Vector3(0, 0, 0)});
+        rotationKeys.push({frame: 2 * fps, value: new Vector3(0, 0, 0)});
+        rotationKeys.push({frame: 4 * fps, value: new Vector3(0, -Math.PI/6, 0)});
+        rotationKeys.push({frame: 8 * fps, value: new Vector3(Math.PI/10, Math.PI/3.5, 0)});
 
         camAnim.setKeys(camKeys);
         rotationAnim.setKeys(rotationKeys);
@@ -277,7 +275,7 @@ export class PlongeonGameState extends GameState {
         this._camera.animations.push(camAnim);
         this._camera.animations.push(rotationAnim);
 
-        await this.scene.beginAnimation(this._camera, 0, 9 * fps).waitAsync();
+        await this.scene.beginAnimation(this._camera, 0, 8 * fps).waitAsync();
         document.getElementById("plongeonGame-skip-button")!.classList.add("hidden");
     }
 

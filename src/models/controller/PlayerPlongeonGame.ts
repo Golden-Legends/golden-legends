@@ -213,7 +213,7 @@ export class PlayerPlongeonGame {
     }
 
     public createCameraPlayer(mesh : Mesh) : FreeCamera { 
-        const camera = new FreeCamera("camera1", new Vector3(-4, 4, 14.45), this.scene);
+        const camera = new FreeCamera("camera1", new Vector3(-4, 2, 13), this.scene);
         camera.setTarget(new Vector3(mesh.position.x, mesh.position.y, mesh.position.z));
         return camera;
     }
