@@ -27,6 +27,8 @@ import { JumpGame } from "./miniGames/JumpGame.ts";
 import { ObjectGame } from "./miniGames/ObjectGame.ts";
 import { SoundManager } from "../environments/sound.ts";
 import { BoxeGameState } from "./games/BoxeGameState.ts";
+import { NatationGameState } from "./games/NatationGameState.ts";
+import { PlongeonGameState } from "./games/PlongeonGameState.ts";
 
 export class InGameState extends GameState {
   public assets;
@@ -305,7 +307,7 @@ export class InGameState extends GameState {
   }
 
   public goToRunningGame() {
-    this.game.changeState(new BoxeGameState(this.soundManager, this.game, this.canvas));
+    this.game.changeState(new PlongeonGameState(this.soundManager, this.game, this.canvas));
     // document.getElementById("options-keybind")!.style.display = "none";
     document.getElementById("objects-keybind")!.classList.add("hidden");
     document.getElementById("map-keybind")!.classList.add("hidden");

@@ -1,0 +1,20 @@
+{
+    "placement" : 
+    [ 
+        {  
+            "start" : "cylindreFacile",
+            "end" : "cylindreArrivéePlongeon"   
+        }
+    ],
+    "level" : { 
+        "easy" : {
+            "pointToSucceed" : 50
+        },
+        "intermediate" : {
+            "pointToSucceed" : 100
+        },
+        "hard" : {
+            "pointToSucceed" : 200
+        }
+    }
+}

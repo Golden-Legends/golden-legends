@@ -1,13 +1,13 @@
 import { ActionManager, AnimationGroup, Camera, ExecuteCodeAction, FreeCamera, Mesh, MeshBuilder, Ray, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
 import { store } from "@/components/gui/store.ts";
-import { PlayerInputBoxeGame } from "../inputsMangement/PlayerInputBoxeGame";
+import { PlayerInputPlongeonGame } from "../inputsMangement/PlayerInputPlongeonGame";
 
 const PLAYER_HEIGHT = 3;
 const PLAYER_RADIUS = 0.05;
-const PLAYER_SCALING = 0.03 ;
+const PLAYER_SCALING = 0.018 ;
 
-export class PlayerBoxeGame {
+export class PlayerPlongeonGame {
 
     private static readonly GRAVITY: number = -0.25;
 
@@ -46,7 +46,7 @@ export class PlayerBoxeGame {
 
     // input
     // mettrre input manager et retravailler input manager pour qu'il soit plus générique et permettent la création de déplacement de bot
-    private _input: PlayerInputBoxeGame;
+    private _input: PlayerInputPlongeonGame;
     // camera
     private _camera ?: Camera;
 
@@ -58,7 +58,7 @@ export class PlayerBoxeGame {
 
     private currentTime : number = 0;
 
-    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputBoxeGame, activeCamera: boolean) {
+    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputPlongeonGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
         this._z = z;
@@ -122,7 +122,7 @@ export class PlayerBoxeGame {
     }
     
     private setAnimation () : {idle: AnimationGroup} {
-        const idle = this.animationsGroup.find(ag => ag.name === "Anim|idleBoxe");
+        const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
         return {idle: idle!};
     }
 
@@ -135,35 +135,35 @@ export class PlayerBoxeGame {
         }
     }
 
-    public processInput(): void {
+    // public processInput(): void {
     
-        // Check if the minimum delay between each alternation is respected
-        if (this.currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {
-            return;
-        }
+    //     // Check if the minimum delay between each alternation is respected
+    //     if (this.currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {
+    //         return;
+    //     }
     
-        // If the left key or the right key is pressed
-        if (this._input.jambes !== this._input.poing) {
-            const keyJustPressed = this._input.jambes ? !this.leftPressed : !this.rightPressed;
+    //     // If the left key or the right key is pressed
+    //     if (this._input.left !== this._input.right) {
+    //         const keyJustPressed = this._input.left ? !this.leftPressed : !this.rightPressed;
     
-            // If the key was just pressed, increase the speed
-            if (keyJustPressed) {
-                this.baseSpeed += this.acceleration;
-                this.leftPressed = this._input.jambes;
-                this.rightPressed = this._input.poing;
-                this.lastSwitchTime = this.currentTime; // Update the time of the last alternation
-            }
-        }
-        // If neither key is pressed or both keys are pressed
-        else {
-            // If both keys were pressed previously or speed is greater than 0, reset the speed or decelerate
-            if ((this.leftPressed && this.rightPressed) || this.baseSpeed > 0) {
-                this.baseSpeed = Math.max(0, this.baseSpeed - this.deceleration);
-                this.leftPressed = false;
-                this.rightPressed = false;
-            }
-        }
-    }
+    //         // If the key was just pressed, increase the speed
+    //         if (keyJustPressed) {
+    //             this.baseSpeed += this.acceleration;
+    //             this.leftPressed = this._input.left;
+    //             this.rightPressed = this._input.right;
+    //             this.lastSwitchTime = this.currentTime; // Update the time of the last alternation
+    //         }
+    //     }
+    //     // If neither key is pressed or both keys are pressed
+    //     else {
+    //         // If both keys were pressed previously or speed is greater than 0, reset the speed or decelerate
+    //         if ((this.leftPressed && this.rightPressed) || this.baseSpeed > 0) {
+    //             this.baseSpeed = Math.max(0, this.baseSpeed - this.deceleration);
+    //             this.leftPressed = false;
+    //             this.rightPressed = false;
+    //         }
+    //     }
+    // }
 
     
     private _floorRaycast(
@@ -201,7 +201,7 @@ export class PlayerBoxeGame {
         const isGrounded = this._isGrounded();
     
         if (!isGrounded) {
-            this.transform.moveWithCollisions(new Vector3(0, PlayerBoxeGame.GRAVITY, 0));
+            this.transform.moveWithCollisions(new Vector3(0, PlayerPlongeonGame.GRAVITY, 0));
         }
     }
 
