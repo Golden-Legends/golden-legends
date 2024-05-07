@@ -29,6 +29,7 @@ import { SoundManager } from "../environments/sound.ts";
 import { BoxeGameState } from "./games/BoxeGameState.ts";
 import { NatationGameState } from "./games/NatationGameState.ts";
 import { PlongeonGameState } from "./games/PlongeonGameState.ts";
+import { TirArcGameState } from "./games/TirArcGameState.ts";
 
 export class InGameState extends GameState {
   public assets;
