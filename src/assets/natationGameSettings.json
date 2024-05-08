@@ -39,12 +39,12 @@
                 "botInfo" : [ 
                     {
                         "name": "bot1",
-                        "speed": 0.0102,
+                        "speed": 0.0095,
                         "pathFile": "./models/characters/perso1.glb"
                     },
                     {
                         "name": "bot2",
-                        "speed": 0.01,
+                        "speed": 0.0075,
                         "pathFile": "./models/characters/perso3.glb"
                     },
                     {
@@ -65,31 +65,31 @@
                 ]
             },
             "intermediate" : {
-                "maxSpeed" : 0.11,
+                "maxSpeed" : 0.15,
                 "botInfo" : [ 
                     {
                         "name": "bot1",
-                        "speed": 0.11,
+                        "speed": 0.01075,
                         "pathFile": "./models/characters/perso1.glb"
                     },
                     {
                         "name": "bot2",
-                        "speed": 0.10,
+                        "speed": 0.0105,
                         "pathFile": "./models/characters/perso2.glb"
                     },
                     {
                         "name": "bot3",
-                        "speed": 0.09,
+                        "speed": 0.010,
                         "pathFile": "./models/characters/perso4.glb"
                     },
                     {
                         "name": "bot4",
-                        "speed": 0.08,
+                        "speed": 0.0115,
                         "pathFile": "./models/characters/perso5.glb"
                     },
                     {
                         "name": "bot5",
-                        "speed": 0.07,
+                        "speed": 0.011,
                         "pathFile": "./models/characters/perso7.glb"
                     }
                 ]
@@ -99,27 +99,27 @@
                 "botInfo" : [ 
                     {
                         "name": "bot1",
-                        "speed": 0.13,
+                        "speed": 0.013,
                         "pathFile": "./models/characters/perso3.glb"
                     },
                     {
                         "name": "bot2",
-                        "speed": 0.12,
+                        "speed": 0.01275,
                         "pathFile": "./models/characters/perso4.glb"
                     },
                     {
                         "name": "bot3",
-                        "speed": 0.11,
+                        "speed": 0.0125,
                         "pathFile": "./models/characters/perso6.glb"
                     },
                     {
                         "name": "bot4",
-                        "speed": 0.10,
+                        "speed": 0.012,
                         "pathFile": "./models/characters/perso7.glb"
                     },
                     {
                         "name": "bot5",
-                        "speed": 0.09,
+                        "speed": 0.0135,
                         "pathFile": "./models/characters/perso8.glb"
                     }
                 ]

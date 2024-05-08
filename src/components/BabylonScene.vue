@@ -164,25 +164,25 @@
   />
   <GameGate title="100m" name="100mtp" id="100mtp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <GateButton id="100mFacile" name="Facile" difficulty="easy" />
-    <GateButton name="Moyen" difficulty="medium" />
-    <GateButton name="Difficile" difficulty="hard" />
+    <GateButton id="100mMoyen" name="Moyen" difficulty="medium" />
+    <GateButton id="100mDifficile" name="Difficile" difficulty="hard" />
   </GameGate>
   <GameGate title="Natation" name="natationtp" id="natationtp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <GateButton id="natationFacile" name="Facile" difficulty="easy" />
-    <GateButton name="Moyen" difficulty="medium" />
-    <GateButton name="Difficile" difficulty="hard" />
+    <GateButton id="natationMoyen" name="Moyen" difficulty="medium" />
+    <GateButton id="natationDifficile" name="Difficile" difficulty="hard" />
+  </GameGate>
+  <GameGate title="Plongeon" name="plongeontp" id="plongeontp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <GateButton id="plongeonFacile" name="Facile" difficulty="easy" />
+    <GateButton id="plongeonMoyen" name="Moyen" difficulty="medium" />
+    <GateButton id="plongeonDifficile" name="Difficile" difficulty="hard" />
   </GameGate>
   <GameGate title="Boxe" name="boxetp" id="boxetp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <GateButton id="boxeDefense" name="Défense" difficulty="easy" />
   </GameGate>
-  <GameGate title="Plongeon" name="plongeontp" id="plongeontp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-    <GateButton id="plongeonFacile" name="Facile" difficulty="easy" />
-    <GateButton name="Moyen" difficulty="medium" />
-    <GateButton name="Difficile" difficulty="hard" />
-  </GameGate>
   <GameGate title="Tir à l'arc" name="tirArctp" id="tirArctp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <GateButton id="tirArcFacile" name="Facile" difficulty="easy" />
-    <GateButton name="Moyen" difficulty="medium" />
+    <GateButton id="tirArcMoyen" name="Moyen" difficulty="medium" />
   </GameGate>
   <MainOptions />
   <!-- RUNNINGGAME -->

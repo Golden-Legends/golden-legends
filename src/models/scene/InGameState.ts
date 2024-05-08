@@ -318,6 +318,22 @@ export class InGameState extends GameState {
       document.getElementById("100mtp")!.classList.add("hidden");
       this.soundManager.stopTrack('inGame');
     });
+    document.getElementById("100mMoyen")?.addEventListener("click", () => {
+      this.game.changeState(new RunningGameState(this.soundManager, this.game, this.canvas, "intermediate"));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("100mtp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
+    document.getElementById("100mDifficile")?.addEventListener("click", () => {
+      this.game.changeState(new RunningGameState(this.soundManager, this.game, this.canvas, "hard"));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("100mtp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
 
     //Natation
     document.getElementById("natationFacile")?.addEventListener("click", () => {
@@ -328,10 +344,42 @@ export class InGameState extends GameState {
       document.getElementById("natationtp")!.classList.add("hidden");
       this.soundManager.stopTrack('inGame');
     });
+    document.getElementById("natationMoyen")?.addEventListener("click", () => {
+      this.game.changeState(new NatationGameState(this.soundManager, this.game, this.canvas, "intermediate"));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("natationtp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
+    document.getElementById("natationDifficile")?.addEventListener("click", () => {
+      this.game.changeState(new NatationGameState(this.soundManager, this.game, this.canvas, "hard"));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("natationtp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
 
     //Plongeon
     document.getElementById("plongeonFacile")?.addEventListener("click", () => {
       this.game.changeState(new PlongeonGameState(this.soundManager, this.game, this.canvas));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("plongeontp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
+    document.getElementById("plongeonMoyen")?.addEventListener("click", () => {
+      this.game.changeState(new PlongeonGameState(this.soundManager, this.game, this.canvas, "intermediate"));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("plongeontp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
+    document.getElementById("plongeonDifficile")?.addEventListener("click", () => {
+      this.game.changeState(new PlongeonGameState(this.soundManager, this.game, this.canvas, "hard"));
       // document.getElementById("options-keybind")!.style.display = "none";
       document.getElementById("objects-keybind")!.classList.add("hidden");
       document.getElementById("map-keybind")!.classList.add("hidden");
@@ -352,6 +400,14 @@ export class InGameState extends GameState {
     //Tir à l'arc
     document.getElementById("tirArcFacile")?.addEventListener("click", () => {
       this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("tirArctp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
+    document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
+      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "intermediate"));
       // document.getElementById("options-keybind")!.style.display = "none";
       document.getElementById("objects-keybind")!.classList.add("hidden");
       document.getElementById("map-keybind")!.classList.add("hidden");
