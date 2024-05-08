@@ -162,6 +162,28 @@
     id="tpGame-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+  <GameGate title="100m" name="100mtp" id="100mtp" class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <GateButton id="100mFacile" name="Facile" difficulty="easy" />
+    <GateButton name="Moyen" difficulty="medium" />
+    <GateButton name="Difficile" difficulty="hard" />
+  </GameGate>
+  <GameGate title="Natation" name="natationtp" id="natationtp" class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <GateButton id="natationFacile" name="Facile" difficulty="easy" />
+    <GateButton name="Moyen" difficulty="medium" />
+    <GateButton name="Difficile" difficulty="hard" />
+  </GameGate>
+  <GameGate title="Boxe" name="boxetp" id="boxetp" class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <GateButton id="boxeDefense" name="Défense" difficulty="easy" />
+  </GameGate>
+  <GameGate title="Plongeon" name="plongeontp" id="plongeontp" class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <GateButton id="plongeonFacile" name="Facile" difficulty="easy" />
+    <GateButton name="Moyen" difficulty="medium" />
+    <GateButton name="Difficile" difficulty="hard" />
+  </GameGate>
+  <GameGate title="Tir à l'arc" name="tirArctp" id="tirArctp" class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <GateButton id="tirArcFacile" name="Facile" difficulty="easy" />
+    <GateButton name="Moyen" difficulty="medium" />
+  </GameGate>
   <MainOptions />
   <!-- RUNNINGGAME -->
   <ClassicButton
@@ -453,6 +475,8 @@ import Finish from "@/components/gui/running/Finish.vue";
 import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
 import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
+import GameGate from "./gui/tp/GameGate.vue";
+import GateButton from "./gui/tp/GateButton.vue";
 import { storeObjects } from "./gui/storeObjects";
 import { store } from "@/components/gui/store.ts";
 import { storeNatation } from "@/components/gui/storeNatation.ts";
@@ -490,7 +514,7 @@ const loseJumpText = "Pas pour cette fois... Retente ta chance !";
 //scoreboard station
 const stationScoreboard = "GUI Scoreboard TODO...";
 //TP game
-const tpGame = "GUI TP GAME TODO...";
+const tpGame = "Comeback later...";
 
 
 onMounted(() => {

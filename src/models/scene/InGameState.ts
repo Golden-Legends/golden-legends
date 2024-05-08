@@ -298,13 +298,66 @@ export class InGameState extends GameState {
 
   async setEnvironment(): Promise<void> {
     // ENVIRONMENT
-    this._environment = new Environment(this.scene, this._player, this);
-
     this.soundManager = new SoundManager(this.scene);
 		this.soundManager.addTrack('inGame', './sounds/musiqueJeu.m4a', 0.05);
 		this.soundManager.playTrack('inGame');
 
+    this._environment = new Environment(this.scene, this._player, this);
+    this.tpButtonListener();
+
     await this._environment.load();
+  }
+
+  public tpButtonListener(): void {
+    ///100m
+    document.getElementById("100mFacile")?.addEventListener("click", () => {
+      this.game.changeState(new RunningGameState(this.soundManager, this.game, this.canvas));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("100mtp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
+
+    //Natation
+    document.getElementById("natationFacile")?.addEventListener("click", () => {
+      this.game.changeState(new NatationGameState(this.soundManager, this.game, this.canvas));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("natationtp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
+
+    //Plongeon
+    document.getElementById("plongeonFacile")?.addEventListener("click", () => {
+      this.game.changeState(new PlongeonGameState(this.soundManager, this.game, this.canvas));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("plongeontp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
+
+    //Boxe
+    document.getElementById("boxeDefense")?.addEventListener("click", () => {
+      this.game.changeState(new BoxeGameState(this.soundManager, this.game, this.canvas));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("boxetp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
+
+    //Tir à l'arc
+    document.getElementById("tirArcFacile")?.addEventListener("click", () => {
+      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("tirArctp")!.classList.add("hidden");
+      this.soundManager.stopTrack('inGame');
+    });
   }
 
   public goToRunningGame() {

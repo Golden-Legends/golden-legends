@@ -64,7 +64,27 @@ import {
               parameter: this.player,
             },
             () => {
-                document.getElementById("tpGame-dialog")!.classList.remove("hidden");
+              switch (i) {
+                case 0:
+                  document.getElementById("100mtp")!.classList.remove("hidden");
+                  break;
+                case 1:
+                  document.getElementById("natationtp")!.classList.remove("hidden");
+                  break;
+                case 2: 
+                  document.getElementById("boxetp")!.classList.remove("hidden");
+                  break;
+                case 3: 
+                  document.getElementById("plongeontp")!.classList.remove("hidden");
+                  break;
+                case 4:
+                  document.getElementById("tirArctp")!.classList.remove("hidden");
+                  break;
+                default:
+                  document.getElementById("tpGame-dialog")!.classList.remove("hidden");
+                  console.log("no tp");
+                  break;
+              }
             },
           ),
         );
@@ -76,7 +96,27 @@ import {
               parameter: this.player,
             },
             () => {
-                document.getElementById("tpGame-dialog")!.classList.add("hidden");
+              switch (i) {
+                case 0:
+                  document.getElementById("100mtp")!.classList.add("hidden");
+                  break;
+                case 1:
+                  document.getElementById("natationtp")!.classList.add("hidden");
+                  break;
+                case 2: 
+                  document.getElementById("boxetp")!.classList.add("hidden");
+                  break;
+                case 3: 
+                  document.getElementById("plongeontp")!.classList.add("hidden");
+                  break;
+                case 4:
+                  document.getElementById("tirArctp")!.classList.add("hidden");
+                  break;
+                default:
+                  document.getElementById("tpGame-dialog")!.classList.add("hidden");
+                  console.log("no tp");
+                  break;
+              }
             },
           ),
         );

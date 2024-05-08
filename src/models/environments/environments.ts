@@ -16,7 +16,6 @@ import { InGameState } from "../scene/InGameState";
 import { Pnj } from "./pnj";
 import { PnjTalk } from "./pnjTalk";
 import { PnjMobile } from "./pnjMobile";
-import { SoundManager } from "./sound";
 import { Voitures } from "./voitures";
 import { StationScore } from "./stationScore";
 import { TpGame } from "./tp";
@@ -39,7 +38,6 @@ export class Environment {
 	public options!: Options;
 	public waterMaterial!: WaterMaterial;
 	private skyBox!: Mesh;
-	public soundManager!: SoundManager;
 
 	private gateInformations: gateInformation[] = [
 		{
@@ -96,7 +94,7 @@ export class Environment {
 		this._scene = scene;
 		this.player = player;
 		this.inGameState = inGameState;
-		this.createRunningGates(scene);
+		// this.createRunningGates(scene);
 	}
 
 	public async load() {
@@ -131,8 +129,8 @@ export class Environment {
 		this.voitures.init();
 		this.stationScore = new StationScore(this._scene, this.player?.mesh as Mesh);
 		this.stationScore.init();		
-		// this.tpGame = new TpGame(this._scene, this.player?.mesh as Mesh);
-		// this.tpGame.init();
+		this.tpGame = new TpGame(this._scene, this.player?.mesh as Mesh);
+		this.tpGame.init();
 		this.createSkybox(this._scene);
 		this.createWater();
 		this.moveLogo();
