@@ -1,20 +1,34 @@
 {
-    "placement" : 
-    [ 
-        {  
-            "start" : "cylindreFacile",
-            "end" : "cylindreArrivéePlongeon"   
-        }
-    ],
     "level" : { 
         "easy" : {
+            "placement" : 
+            [ 
+                {  
+                    "start" : "cylindreFacile",
+                    "end" : "cylindreArrivéePlongeon"   
+                }
+            ],
             "pointToSucceed" : 50
         },
         "intermediate" : {
-            "pointToSucceed" : 100
+            "placement" : 
+            [ 
+                {  
+                    "start" : "cylindreMoyen",
+                    "end" : "cylindreArrivéePlongeon"   
+                }
+            ],
+            "pointToSucceed" : 75
         },
         "hard" : {
-            "pointToSucceed" : 200
+            "placement" : 
+            [ 
+                {  
+                    "start" : "cylindrediff",
+                    "end" : "cylindreArrivéePlongeon"   
+                }
+            ],
+            "pointToSucceed" : 150
         }
     }
 }

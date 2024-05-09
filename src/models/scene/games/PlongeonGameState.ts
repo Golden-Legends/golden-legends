@@ -14,11 +14,11 @@ interface line {
 }
 
 interface level {
+    placement : line[],
     pointToSucceed : number;
 }
 
 interface IPlongeonGameState {
-    placement : line[],
     level : {
         easy : level;
         intermediate : level;
@@ -49,16 +49,16 @@ export class PlongeonGameState extends GameState {
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
 
-    constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
+    constructor(/*soundManager: SoundManager, */game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputPlongeonGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
         this.settings = PlongeonGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        this.soundManager = soundManager;
-        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
-        this.soundManager.playTrack('100m');
+        // this.soundManager = soundManager;
+        // this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
+        // this.soundManager.playTrack('100m');
     }
 
     async setEnvironment(): Promise<void> {
@@ -78,7 +78,7 @@ export class PlongeonGameState extends GameState {
     private setLinePlacement () {
         const startTab : Mesh[] = [];
         const EndTab : Mesh[] = [];
-        const placement = this.settings.placement;
+        const placement = this.settings.level[this.difficulty].placement;
         placement.forEach((line) => {
             const startMesh = this.scene.getMeshByName(line.start) as Mesh;
             const firstEndMesh = this.scene.getMeshByName(line.end) as Mesh;
@@ -116,27 +116,13 @@ export class PlongeonGameState extends GameState {
     }
     
     private async runSoloGame() {
-        // await this.initSoloWithBot(this.difficulty);
         // this.buildScoreBoard();
     }
 
-    // private async initSoloWithBot(difficulty : string) {
-    //     const infoBot = this.settings.level[difficulty].botInfo;
-    //     for (let i = 0; i < 1; i++) {
-    //         const startMesh = this.startPlacement[i];
-    //         const endMesh = this.endPlacement[i];
-    //         //nicolas changer le pathfile dans le fichier natationGameSettings.json --> DONE
-    //         const bot = new BotPlongeon("bot" + i, startMesh.getAbsolutePosition(), 
-    //                 endMesh,
-    //                 this.scene,
-    //                 infoBot[i].pathFile, infoBot[i].speed);
-    //         await bot.init();
-    //         this.botArray.push(bot);
-    //     }        
-    // }
 
     initGui() {
-        document.getElementById("runningGame-timer")!.classList.remove("hidden");
+        document.getElementById("plongeonGame-score")!.classList.remove("hidden");
+        document.getElementById("plongeonGame-keyPressed")!.classList.remove("hidden");
     }
 
     // Implement abstract members of GameState
@@ -146,14 +132,12 @@ export class PlongeonGameState extends GameState {
             this.game.engine.displayLoadingUI();
             this.scene.detachControl();
         
-            document.getElementById("options-keybind")!.classList.add("hidden");
             document.getElementById("objects-keybind")!.classList.add("hidden");
             document.getElementById("map-keybind")!.classList.add("hidden");
 
             // Inspector.Show(this.scene, {});
             await this.setEnvironment();
             this.invisiblePlatform();
-            // this.createSkybox();
 		    this.addTextureEau();
             this.createLight();
             this.setLinePlacement();
@@ -201,6 +185,20 @@ export class PlongeonGameState extends GameState {
         } catch (error) {
             throw new Error(`error in enter method : ${error}`);
         }
+    }
+
+    async exit(): Promise<void> {
+        console.log("exit plongeon game");
+         
+        document.getElementById("plongeonGame-score")!.classList.add("hidden");
+        document.getElementById("plongeonGame-keyPressed")!.classList.add("hidden");
+
+        this.soundManager.stopTrack('100m');
+        this.clearScene();
+    }
+
+    update():void {
+        console.log("update");
     }
 
     private startCountdown(countdownElements: string[]) {
@@ -279,19 +277,6 @@ export class PlongeonGameState extends GameState {
         document.getElementById("plongeonGame-skip-button")!.classList.add("hidden");
     }
 
-    async exit(): Promise<void> {
-        console.log("exit plongeon game");
-         
-        document.getElementById("runningGame-timer")!.classList.add("hidden");
-
-        this.soundManager.stopTrack('100m');
-        this.clearScene();
-    }
-
-    update():void {
-        console.log("update");
-    }
-
     public addTextureEau(){
         const waterMesh = this.scene.getMeshByName("eauNatation");
         if (waterMesh) {
@@ -366,7 +351,5 @@ export class PlongeonGameState extends GameState {
             }
         }   
     }
-
-    //timer à revoir avec à la place un compteur de points (affichage différents juste)
 
 }

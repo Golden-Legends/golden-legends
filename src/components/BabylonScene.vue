@@ -337,7 +337,7 @@
     name="natationGame-text-plongeon"
     id="natationGame-text-plongeon"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-/>
+  />
   <RDSText
     text="Demi-tour !"
     subText="Appuyez sur Espace"
@@ -345,6 +345,76 @@
     id="natationGame-text-demitour"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+
+  <!-- Plongeon -->
+  <ClassicButton
+    text="Passer"
+    name="plongeonGame-skip-button"
+    id="plongeonGame-skip-button"
+    class="hidden absolute bottom-12 right-12"
+  />
+  <ClassicButton
+    text="Prêt"
+    name="plongeonGame-ready-button"
+    id="plongeonGame-ready-button"
+    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
+  />
+  <RDSText
+    text="3"
+    name="plongeonGame-text-1"
+    id="plongeonGame-text-1"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="2"
+    name="plongeonGame-text-2"
+    id="plongeonGame-text-2"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="1"
+    name="plongeonGame-text-3"
+    id="plongeonGame-text-3"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text=""
+    name="plongeonGame-text-4"
+    id="plongeonGame-text-4"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Plongez !"
+    subText="Appuyez sur Espace"
+    name="plongeonGame-text-plongeon"
+    id="plongeonGame-text-plongeon"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <KeyPressInteraction
+    :keys="['f', 'g', 'h', 'j']"
+    name="plongeonGame-keyPressed"
+    id="plongeonGame-keyPressed"
+    class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <Score
+    name="plongeonGame-score"
+    id="plongeonGame-score"
+    class="hidden absolute bottom-12 right-12"
+    :score="storePlongeon.state.score"
+  />
+  <RDSText
+    text="✅"
+    name="plongeonGame-correct"
+    id="plongeonGame-correct"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="❌"
+    name="plongeonGame-incorrect"
+    id="plongeonGame-incorrect"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+
   <!-- BOXE -->
   <ClassicButton
     text="Passer"
@@ -380,44 +450,6 @@
     text="Fight !"
     name="boxeGame-text-4"
     id="boxeGame-text-4"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-
-  <!-- Plongeon -->
-  <ClassicButton
-    text="Passer"
-    name="plongeonGame-skip-button"
-    id="plongeonGame-skip-button"
-    class="hidden absolute bottom-12 right-12"
-  />
-  <ClassicButton
-    text="Prêt"
-    name="plongeonGame-ready-button"
-    id="plongeonGame-ready-button"
-    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
-  />
-  <RDSText
-    text="3"
-    name="plongeonGame-text-1"
-    id="plongeonGame-text-1"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="2"
-    name="plongeonGame-text-2"
-    id="plongeonGame-text-2"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="1"
-    name="plongeonGame-text-3"
-    id="plongeonGame-text-3"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="Sautez !"
-    name="plongeonGame-text-4"
-    id="plongeonGame-text-4"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
 
@@ -477,10 +509,12 @@ import KeybindHint from "./gui/KeybindHint.vue";
 import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 import GameGate from "./gui/tp/GameGate.vue";
 import GateButton from "./gui/tp/GateButton.vue";
+import Score from "@/components/gui/Score.vue";
 import { storeObjects } from "./gui/storeObjects";
 import { store } from "@/components/gui/store.ts";
 import { storeNatation } from "@/components/gui/storeNatation.ts";
 import { storeJump } from "@/components/gui/storeJump.ts";
+import { storePlongeon } from "@/components/gui/storePlongeon.ts";
 
 import Options from "./gui/options/Options.vue";
 
