@@ -6,12 +6,14 @@ export class PlayerInputPlongeonGame extends InputManager {
         KEY_FIGURE2: "KeyG",
         KEY_FIGURE3: "KeyH",
         KEY_FIGURE4: "KeyJ",
+        KEY_SPACE: "Space"
     };
 
     public figure1: boolean = false;
     public figure2: boolean = false;
     public figure3: boolean = false;
     public figure4: boolean = false;
+    public space: boolean = false;
 
     constructor(scene) {
         super(scene);
@@ -23,6 +25,7 @@ export class PlayerInputPlongeonGame extends InputManager {
         this.updateFigure2Keys();
         this.updateFigure3Keys();
         this.updateFigure4Keys();
+        this.updateSpacekeys();
     }
     
     private updateFigure1Keys(): void {
@@ -57,5 +60,12 @@ export class PlayerInputPlongeonGame extends InputManager {
         }
     }
 
+    private updateSpacekeys(): void {
+        if (this.inputMap[this.keys.KEY_SPACE]) {
+            this.space = true;
+        } else {
+            this.space = false;
+        }
+    }
     
 }

@@ -32,6 +32,7 @@ export class PlayerPlongeonGame {
     private idleAnim : AnimationGroup = new AnimationGroup("idle");
 
     private _isIdle : boolean = false;
+    public isSpacedPressedForAnim: boolean = false;
 
     // run
     private readonly MIN_RUN_SPEED = 0.10;
@@ -57,6 +58,8 @@ export class PlayerPlongeonGame {
     private raceEndTime: number = 0;
 
     private currentTime : number = 0;
+
+    private gameActive : boolean = false;
 
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputPlongeonGame, activeCamera: boolean) {
         this._x = x;
@@ -112,6 +115,35 @@ export class PlayerPlongeonGame {
         this._isIdle = true;     
     }
 
+    public isTextPlongeonShow : boolean = false;
+
+
+    public play (delta : number, currentTime : number) {
+        // console.log("play");
+        this._deltaTime = delta / 10;
+        this.currentTime = currentTime;
+        if (!this.isEndGame) {
+            if(!this.gameActive){
+                if (!this.isTextPlongeonShow) {
+                    this.isTextPlongeonShow = true;
+                    document.getElementById("plongeonGame-text-plongeon")!.classList.remove("hidden");
+                }
+                if (this._input.space) {
+                    document.getElementById("plongeonGame-text-plongeon")!.classList.add("hidden");
+                    this.isSpacedPressedForAnim = true;
+                }
+            }
+            else{
+                //todo récuperer ici les touches qu'enfonce le player
+                // console.log("gameActive");
+                // this.processInput();
+            }
+        }
+    }
+
+    public gameActiveState() :void{
+        this.gameActive = !this.gameActive;
+    }
 
     public getIsEndGame() : boolean {
         return this.isEndGame;

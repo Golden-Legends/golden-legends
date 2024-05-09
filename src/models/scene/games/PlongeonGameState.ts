@@ -56,6 +56,7 @@ export class PlongeonGameState extends GameState {
     private letterIsGenerated: boolean = false;
     private countdownDone: boolean = false;
     private playActive: boolean = false;
+    private suiteLettersAffiche: boolean = false;
 
     constructor(/*soundManager: SoundManager, */game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -211,11 +212,23 @@ export class PlongeonGameState extends GameState {
             this.generateLetters(this.settings.level[this.difficulty].numLetters);
             this.letterIsGenerated = true;
         }
+
+        if(this.letterIsGenerated && !this.suiteLettersAffiche){
+            const deltaTime = this.scene.getEngine().getDeltaTime();
+            this.player.play(deltaTime, performance.now());
+            if(this.player.isSpacedPressedForAnim && !this.suiteLettersAffiche){
+                // console.log("suite");
+                this.suiteLettersAffiche = true;
+                this.affichageLettersDebut();
+            }
+        }
+
         if(!this.playActive) return;
 
         if(this.playActive && this.settings.level[this.difficulty].limitTime >= performance.now() - this.plongeonStartTime){
             // récupérer les x premières touches que le joueur appuie
-            
+            const deltaTime = this.scene.getEngine().getDeltaTime();
+            this.player.play(deltaTime, performance.now());
         }
         else if(this.playActive && this.settings.level[this.difficulty].limitTime < performance.now() - this.plongeonStartTime){
             console.log("temps dépassé");
@@ -253,14 +266,7 @@ export class PlongeonGameState extends GameState {
         }, 1000);
     }
 
-    private generateLetters(num: number): string[]{
-        let lettersArray: string[] = [];
-        for (let i = 0; i < num; i++) {
-            let randomNumber = Math.floor(Math.random() * 4);
-            lettersArray.push(this.letterPossible[randomNumber]);
-        }
-        console.log(lettersArray);
-        storePlongeon.commit("setLetters", lettersArray);
+    private affichageLettersDebut(){
         setTimeout(() => {
             document.getElementById("plongeonGame-suiteLetters")!.classList.remove("hidden");
             document.getElementById("plongeonGame-text-retenir")!.classList.remove("hidden");
@@ -274,7 +280,18 @@ export class PlongeonGameState extends GameState {
             document.getElementById("plongeonGame-text-avous")!.classList.add("hidden");
             this.playActive = true;
             this.plongeonStartTime = performance.now();
+            this.player.gameActiveState();
         }, 4500);
+    }
+
+    private generateLetters(num: number): string[]{
+        let lettersArray: string[] = [];
+        for (let i = 0; i < num; i++) {
+            let randomNumber = Math.floor(Math.random() * 4);
+            lettersArray.push(this.letterPossible[randomNumber]);
+        }
+        console.log(lettersArray);
+        storePlongeon.commit("setLetters", lettersArray);
         return lettersArray;
     }
 
