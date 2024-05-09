@@ -63,7 +63,7 @@ export class NatationGameState extends GameState {
     private endGame: boolean = false;
 
     private countdownInProgress: boolean = false;
-    private readonly limitTime = 25;
+    private readonly limitTime = 35;
 
     private continueButtonIsPressed: boolean = false;
     private rectangleReturn : Mesh;
@@ -81,9 +81,9 @@ export class NatationGameState extends GameState {
         this.playerName = localStorage.getItem("playerName") || "Playertest";
         this.rectangleReturn = MeshBuilder.CreateBox("rectangleReturn");
 
-        this.soundManager = soundManager;
-        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
-		this.soundManager.playTrack('100m');
+        // this.soundManager = soundManager;
+        // this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
+		// this.soundManager.playTrack('100m');
     }
 
     async enter(): Promise<void> {

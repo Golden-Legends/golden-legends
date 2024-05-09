@@ -220,40 +220,40 @@
     id="runningGame-speed-bar"
     class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <KeyPressInteraction
-    :keys="['s', 'd']"
-    name="runningGame-keyPressed"
-    id="runningGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  />
   <RDSText
     text="À vos marques"
     name="runningGame-text-1"
     id="runningGame-text-1"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
     text="Prêt ?"
     name="runningGame-text-2"
     id="runningGame-text-2"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
     text="Partez"
     name="runningGame-text-3"
     id="runningGame-text-3"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Finish
     name="runningGame-text-finish"
     id="runningGame-text-finish"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <SpeedBar 
     name="runningGame-text-speedbar"
     id="runningGame-text-speedbar"
-    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
     :speed="store.state.setSpeedBar" :min="0" :max="2.7"
+  />
+  <KeyPressInteraction
+    :keys="['s', 'd']"
+    name="runningGame-keyPressed"
+    id="runningGame-keyPressed"
+    class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <!-- NATATION -->
   <ClassicButton
@@ -296,40 +296,40 @@
     id="natationGame-speed-bar"
     class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <KeyPressInteraction
-    :keys="['s', 'd', ' ']"
-    name="natationGame-keyPressed"
-    id="natationGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  />
   <RDSText
     text="À vos marques"
     name="natationGame-text-1"
     id="natationGame-text-1"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
     text="Prêt ?"
     name="natationGame-text-2"
     id="natationGame-text-2"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="Partez"
+    text=""
     name="natationGame-text-3"
     id="natationGame-text-3"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Finish
     name="natationGame-text-finish"
     id="natationGame-text-finish"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <SpeedBar 
     name="natationGame-text-speedbar"
     id="natationGame-text-speedbar"
-    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
     :speed="store.state.setSpeedBar" :min="0" :max="0.3"
+  />
+  <KeyPressInteraction
+    :keys="['s', 'd', ' ']"
+    name="natationGame-keyPressed"
+    id="natationGame-keyPressed"
+    class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <RDSText
     text="Plongez !"
