@@ -9,7 +9,8 @@ export const storePlongeon = createStore({
   state () {
     return {
       score: 0,
-      results: results
+      results: results,
+      letters: []
     }
   },
   mutations: {
@@ -18,6 +19,9 @@ export const storePlongeon = createStore({
     },
     setResults (state, value) {
       state.results = value
+    },
+    setLetters (state, value){
+      state.letters = value
     }
   }
 })

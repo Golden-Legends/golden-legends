@@ -8,7 +8,9 @@
                     "end" : "cylindreArrivéePlongeon"   
                 }
             ],
-            "pointToSucceed" : 50
+            "pointToSucceed" : 50,
+            "numLetters" : 3,
+            "limitTime" : 4500
         },
         "intermediate" : {
             "placement" : 
@@ -18,7 +20,9 @@
                     "end" : "cylindreArrivéePlongeon"   
                 }
             ],
-            "pointToSucceed" : 75
+            "pointToSucceed" : 75,
+            "numLetters" : 5,
+            "limitTime" : 7500
         },
         "hard" : {
             "placement" : 
@@ -28,7 +32,9 @@
                     "end" : "cylindreArrivéePlongeon"   
                 }
             ],
-            "pointToSucceed" : 150
+            "pointToSucceed" : 150,
+            "numLetters" : 7,
+            "limitTime" : 10000
         }
     }
 }

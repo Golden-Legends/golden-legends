@@ -7,6 +7,8 @@ import { PlayerInputPlongeonGame } from "@/models/inputsMangement/PlayerInputPlo
 import { PlayerPlongeonGame } from "@/models/controller/PlayerPlongeonGame";
 import { plongeonGameEnv } from "@/models/environments/plongeonGameEnv";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
+import { storePlongeon } from "@/components/gui/storePlongeon";
+import { doc } from "prettier";
 
 interface line {
     start : string;
@@ -16,6 +18,8 @@ interface line {
 interface level {
     placement : line[],
     pointToSucceed : number;
+    numLetters : number;
+    limitTime: number;
 }
 
 interface IPlongeonGameState {
@@ -43,11 +47,15 @@ export class PlongeonGameState extends GameState {
     private difficulty: "easy" | "intermediate" | "hard";
 
     private countdownInProgress: boolean = false;
-    private fightStartTime: number = 0;
+    private plongeonStartTime: number = 0;
 
     public soundManager!: SoundManager;
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
+    private letterPossible = ['f', 'g', 'h', 'j']
+    private letterIsGenerated: boolean = false;
+    private countdownDone: boolean = false;
+    private playActive: boolean = false;
 
     constructor(/*soundManager: SoundManager, */game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -174,11 +182,11 @@ export class PlongeonGameState extends GameState {
                 document.getElementById("plongeonGame-skip-button")!.classList.add("hidden");
 
                 document.getElementById("plongeonGame-ready-button")!.addEventListener("click", () => {
-                    this.startCountdown(["plongeonGame-text-1", "plongeonGame-text-2", "plongeonGame-text-3", "plongeonGame-text-4"]); 
                     this.AfterCamAnim(); 
                     this.initGui(); 
                     document.getElementById("plongeonGame-ready-button")!.classList.add("hidden");
                     this.game.canvas.focus();
+                    this.startCountdown(["plongeonGame-text-1", "plongeonGame-text-2", "plongeonGame-text-3", "plongeonGame-text-4"]); 
                 });
             });
 
@@ -198,7 +206,22 @@ export class PlongeonGameState extends GameState {
     }
 
     update():void {
-        console.log("update");
+        // console.log("update");
+        if(this.countdownDone && !this.letterIsGenerated){//todo rajouter que le perso vient de sauter et est entrain de tomber
+            this.generateLetters(this.settings.level[this.difficulty].numLetters);
+            this.letterIsGenerated = true;
+        }
+        if(!this.playActive) return;
+
+        if(this.playActive && this.settings.level[this.difficulty].limitTime >= performance.now() - this.plongeonStartTime){
+            // récupérer les x premières touches que le joueur appuie
+            
+        }
+        else if(this.playActive && this.settings.level[this.difficulty].limitTime < performance.now() - this.plongeonStartTime){
+            console.log("temps dépassé");
+            this.playActive = false;
+            //fin de jeu (afficher score)
+        }
     }
 
     private startCountdown(countdownElements: string[]) {
@@ -224,9 +247,35 @@ export class PlongeonGameState extends GameState {
     
                 // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
                 this.countdownInProgress = true;
-                this.fightStartTime = performance.now();
+                // this.plongeonStartTime = performance.now();
+                this.countdownDone = true;
             }
         }, 1000);
+    }
+
+    private generateLetters(num: number): string[]{
+        let lettersArray: string[] = [];
+        for (let i = 0; i < num; i++) {
+            let randomNumber = Math.floor(Math.random() * 4);
+            lettersArray.push(this.letterPossible[randomNumber]);
+        }
+        console.log(lettersArray);
+        storePlongeon.commit("setLetters", lettersArray);
+        setTimeout(() => {
+            document.getElementById("plongeonGame-suiteLetters")!.classList.remove("hidden");
+            document.getElementById("plongeonGame-text-retenir")!.classList.remove("hidden");
+        }, 500);
+        setTimeout(() => {
+            document.getElementById("plongeonGame-suiteLetters")!.classList.add("hidden");
+            document.getElementById("plongeonGame-text-retenir")!.classList.add("hidden");
+            document.getElementById("plongeonGame-text-avous")!.classList.remove("hidden");
+        }, 3000);
+        setTimeout(() => {
+            document.getElementById("plongeonGame-text-avous")!.classList.add("hidden");
+            this.playActive = true;
+            this.plongeonStartTime = performance.now();
+        }, 4500);
+        return lettersArray;
     }
 
     AfterCamAnim(): void {

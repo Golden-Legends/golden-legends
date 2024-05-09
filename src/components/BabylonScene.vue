@@ -390,11 +390,29 @@
     id="plongeonGame-text-plongeon"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+  <RDSText
+    text="Retenez !"
+    name="plongeonGame-text-retenir"
+    id="plongeonGame-text-retenir"
+    class="hidden absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="À vous !"
+    name="plongeonGame-text-avous"
+    id="plongeonGame-text-avous"
+    class="hidden absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <KeyLetters
+    :keys="storePlongeon.state.letters"
+    name="plongeonGame-suiteLetters"
+    id="plongeonGame-suiteLetters"
+    class="hidden absolute left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
   <KeyPressInteraction
     :keys="['f', 'g', 'h', 'j']"
     name="plongeonGame-keyPressed"
     id="plongeonGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Score
     name="plongeonGame-score"
@@ -506,6 +524,7 @@ import RDSText from "@/components/gui/running/RDSText.vue";
 import Finish from "@/components/gui/running/Finish.vue";
 import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
+import KeyLetters from "./gui/KeyLetters.vue";
 import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 import GameGate from "./gui/tp/GameGate.vue";
 import GateButton from "./gui/tp/GateButton.vue";
