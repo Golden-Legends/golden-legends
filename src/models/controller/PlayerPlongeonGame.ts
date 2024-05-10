@@ -315,9 +315,9 @@ export class PlayerPlongeonGame {
     }
 
     public runFallAnim () {
-        this.fallAnim.start(true, 1.0, this.fallAnim.from, 71, false);
+        this.fallAnim.start(true, 1.0, this.fallAnim.from, this.fallAnim.to, false);
         this.transform.position = new Vector3(-1.172302484512329,
-            1.60,
+            this.transform.position._y - 0.064287,
             16.58);
         this._isFalling = true;
     }   
@@ -329,7 +329,7 @@ export class PlayerPlongeonGame {
         // console.log(this.plongeonAnim.to);
         this.plongeonAnim.onAnimationEndObservable.addOnce(() => {
             this.transform.position = new Vector3(-1.172302484512329,
-                1.6642875671386719,
+                this.transform.position._y,
                 16.5);
             // recupérer le début de la course
             this.runFallAnim();
