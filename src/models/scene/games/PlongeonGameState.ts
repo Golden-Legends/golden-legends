@@ -225,16 +225,27 @@ export class PlongeonGameState extends GameState {
 
         if(!this.playActive) return;
 
-        if(this.playActive && this.settings.level[this.difficulty].limitTime >= performance.now() - this.plongeonStartTime){
-            // récupérer les x premières touches que le joueur appuie
-            const deltaTime = this.scene.getEngine().getDeltaTime();
-            this.player.play(deltaTime, performance.now());
+        if(!this.player.getIsEndGame()){
+            if(this.playActive && this.settings.level[this.difficulty].limitTime >= performance.now() - this.plongeonStartTime){
+                // récupérer les x premières touches que le joueur appuie
+                const deltaTime = this.scene.getEngine().getDeltaTime();
+                this.player.play(deltaTime, performance.now());
+            }
+            else if(this.playActive && this.settings.level[this.difficulty].limitTime < performance.now() - this.plongeonStartTime){
+                console.log("temps dépassé");
+                this.endGame();
+            }
         }
-        else if(this.playActive && this.settings.level[this.difficulty].limitTime < performance.now() - this.plongeonStartTime){
-            console.log("temps dépassé");
-            this.playActive = false;
-            //fin de jeu (afficher score)
+        else{
+            console.log("nombres de lettres atteint");
+            this.endGame();
         }
+    }
+
+    private endGame(){
+        this.playActive = false;
+        this.player.descendrePerso();
+        //fin de jeu (afficher score)
     }
 
     private startCountdown(countdownElements: string[]) {

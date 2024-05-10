@@ -31,8 +31,17 @@ export class PlayerPlongeonGame {
 
     // ANIMATIONS
     private idleAnim : AnimationGroup = new AnimationGroup("idle");
+    private plongeonAnim : AnimationGroup = new AnimationGroup("Anim|jumpForward");
+    private poolAnim : AnimationGroup = new AnimationGroup("Anim|fallPool");
+    private winAnim : AnimationGroup = new AnimationGroup("Anim|win");
+    private standAnim : AnimationGroup = new AnimationGroup("Anim|stand");
+    private fallAnim : AnimationGroup = new AnimationGroup("Anim|falling");
 
     private _isIdle : boolean = false;
+    private _isPool : boolean = false;
+    private _isWin : boolean = false;
+    private _isStand : boolean = false;
+    private _isFalling : boolean = false;
     public isSpacedPressedForAnim: boolean = false;
 
     // run
@@ -64,6 +73,7 @@ export class PlayerPlongeonGame {
     private suiteLetters: string[] = [];
     private currentLetters: number = 0;
     private score: number = 0;
+    private isSequentialAnimation: boolean = false;
 
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputPlongeonGame, activeCamera: boolean) {
         this._x = x;
@@ -113,7 +123,12 @@ export class PlayerPlongeonGame {
         this.animationsGroup = result.animationGroups;
         this.animationsGroup[0].stop();
         // set animation
-        const {idle} = this.setAnimation();
+        const {idle, plongeon, pool, win, stand, fall} = this.setAnimation();
+        this.fallAnim = fall;
+        this.standAnim = stand;
+        this.winAnim = win;
+        this.poolAnim = pool;
+        this.plongeonAnim = plongeon;
         this.idleAnim = idle;
         this.idleAnim.start(true);
         this._isIdle = true;     
@@ -135,6 +150,7 @@ export class PlayerPlongeonGame {
                 if (this._input.space) {
                     document.getElementById("plongeonGame-text-plongeon")!.classList.add("hidden");
                     this.isSpacedPressedForAnim = true;
+                    this.playSequentialAnimation();
                 }
             }
             else{
@@ -157,6 +173,7 @@ export class PlayerPlongeonGame {
         }
         console.log(this._input.figuref, this._input.figureg, this._input.figureh, this._input.figurej);
         if(this._input.figuref){
+            //TODO ajouter anim de chaque lettre
             this._input.figuref = false;
             if(this.suiteLetters[this.currentLetters] === "f"){
                 //ok
@@ -260,9 +277,67 @@ export class PlayerPlongeonGame {
         return this.raceEndTime;
     }
     
-    private setAnimation () : {idle: AnimationGroup} {
+    private setAnimation () : {idle: AnimationGroup, 
+                                plongeon: AnimationGroup, 
+                                pool: AnimationGroup, 
+                                win: AnimationGroup,
+                                stand: AnimationGroup,
+                                fall: AnimationGroup} {
         const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
-        return {idle: idle!};
+        const plongeon = this.animationsGroup.find(ag => ag.name === "Anim|jumpForward");
+        const pool = this.animationsGroup.find(ag => ag.name === "Anim|fallPool");
+        const win = this.animationsGroup.find(ag => ag.name === "Anim|win");
+        const stand = this.animationsGroup.find(ag => ag.name === "Anim|stand");
+        const fall = this.animationsGroup.find(ag => ag.name === "Anim|falling");
+        return {idle: idle!, plongeon: plongeon!, pool: pool!, win: win!, stand: stand!, fall: fall!};
+    }
+
+    public async descendrePerso(){
+        //lancer l'animation de falling
+        while(this.transform.position.y > 0.5){
+            this.transform.position.y -= 0.01;
+            await new Promise(resolve => setTimeout(resolve, 15));
+        }
+        this.runPoolAnim();
+    }
+
+    public runPoolAnim () {
+        this.poolAnim.start(false, 1.0, 60, this.poolAnim.to, false);
+        this.poolAnim.onAnimationEndObservable.addOnce(() => {
+            this.winAnim.start(true, 1.0, this.winAnim.from, this.winAnim.to, false);
+            this.transform.position = new Vector3(-1.172302484512329,
+                0.5,
+                16.5);
+            this._isWin = true;
+            // this.isEndGame = true;
+        });
+        // stop les autres anims
+    }
+
+    public runFallAnim () {
+        this.fallAnim.start(true, 1.0, this.fallAnim.from, 71, false);
+        this.transform.position = new Vector3(-1.172302484512329,
+            1.60,
+            16.58);
+        this._isFalling = true;
+    }   
+
+    public playSequentialAnimation () {
+        this.plongeonAnim.start(false, 1.0, this.plongeonAnim.from, 85, false);
+        this.idleAnim.stop();
+        // console.log(this.transform.position);
+        // console.log(this.plongeonAnim.to);
+        this.plongeonAnim.onAnimationEndObservable.addOnce(() => {
+            this.transform.position = new Vector3(-1.172302484512329,
+                1.6642875671386719,
+                16.5);
+            // recupérer le début de la course
+            this.runFallAnim();
+            this._isFalling = true;
+            this.isSequentialAnimation = true;
+            // const refPosition = this.secondfirstEndMesh.getAbsolutePosition();
+            // Nicolas , position post plongeon
+        });
     }
 
     stopAnimations() {
