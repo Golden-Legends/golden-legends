@@ -292,6 +292,7 @@ export class PlongeonGameState extends GameState {
         }
         console.log(lettersArray);
         storePlongeon.commit("setLetters", lettersArray);
+        this.player.putLetters(lettersArray);
         return lettersArray;
     }
 

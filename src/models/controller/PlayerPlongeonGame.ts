@@ -2,6 +2,7 @@ import { ActionManager, AnimationGroup, Camera, ExecuteCodeAction, FreeCamera, M
 import { Scaling } from "../../utils/Scaling";
 import { store } from "@/components/gui/store.ts";
 import { PlayerInputPlongeonGame } from "../inputsMangement/PlayerInputPlongeonGame";
+import { storePlongeon } from "@/components/gui/storePlongeon.ts";
 
 const PLAYER_HEIGHT = 3;
 const PLAYER_RADIUS = 0.05;
@@ -60,6 +61,9 @@ export class PlayerPlongeonGame {
     private currentTime : number = 0;
 
     private gameActive : boolean = false;
+    private suiteLetters: string[] = [];
+    private currentLetters: number = 0;
+    private score: number = 0;
 
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputPlongeonGame, activeCamera: boolean) {
         this._x = x;
@@ -136,34 +140,77 @@ export class PlayerPlongeonGame {
             else{
                 //todo récuperer ici les touches qu'enfonce le player
                 // console.log("gameActive");
-                // this.processInput();
+                document.getElementById("plongeonGame-incorrect")!.classList.add("hidden");
+                document.getElementById("plongeonGame-correct")!.classList.add("hidden");
+                this.processInput();
             }
+        }
+        else{
+            // console.log("endGame");
         }
     }
 
-    public gameActiveState() :void{
-        this.gameActive = !this.gameActive;
-    }
-
-    public getIsEndGame() : boolean {
-        return this.isEndGame;
-    }
-
-    public getEndTime() : number {
-        return this.raceEndTime;
-    }
-    
-    private setAnimation () : {idle: AnimationGroup} {
-        const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
-        return {idle: idle!};
-    }
-
-    stopAnimations() {
-        try {
-            this.idleAnim.start(true);
-            this._isIdle = true;            
-        } catch (error) {
-            throw new Error("Method not implemented.");
+    public processInput(){
+        if(this.currentLetters >= this.suiteLetters.length) {
+            this.isEndGame = true;
+            return;
+        }
+        console.log(this._input.figuref, this._input.figureg, this._input.figureh, this._input.figurej);
+        if(this._input.figuref){
+            this._input.figuref = false;
+            if(this.suiteLetters[this.currentLetters] === "f"){
+                //ok
+                document.getElementById("plongeonGame-correct")!.classList.remove("hidden");
+                this.score += 25;
+                storePlongeon.commit("setScore", this.score);
+            }
+            else{
+                //pas bon
+                document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
+            }
+            this.currentLetters++;
+        }
+        else if(this._input.figureg){
+            this._input.figureg = false;
+            if(this.suiteLetters[this.currentLetters] === "g"){
+                //ok
+                document.getElementById("plongeonGame-correct")!.classList.remove("hidden");
+                this.score += 25;
+                storePlongeon.commit("setScore", this.score);
+            }
+            else{
+                //pas bon
+                document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
+            }
+            this.currentLetters++;
+        }
+        else if(this._input.figureh){
+            this._input.figureh = false;
+            if(this.suiteLetters[this.currentLetters] === "h"){
+                //ok
+                document.getElementById("plongeonGame-correct")!.classList.remove("hidden");
+                this.score += 25;
+                storePlongeon.commit("setScore", this.score);
+            }
+            else{
+                //pas bon
+                document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
+            }
+            this.currentLetters++;
+        }
+        else if(this._input.figurej){
+            this._input.figurej = false;
+            if(this.suiteLetters[this.currentLetters] === "j"){
+                //ok
+                document.getElementById("plongeonGame-correct")!.classList.remove("hidden");
+                this.score += 25;
+                storePlongeon.commit("setScore", this.score);
+            }
+            else{
+                //pas bon
+                document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
+            }
+            this.currentLetters++;   
         }
     }
 
@@ -197,6 +244,35 @@ export class PlayerPlongeonGame {
     //     }
     // }
 
+    public putLetters(chaine: string[]){
+        this.suiteLetters = chaine;
+    }
+
+    public gameActiveState() :void{
+        this.gameActive = !this.gameActive;
+    }
+
+    public getIsEndGame() : boolean {
+        return this.isEndGame;
+    }
+
+    public getEndTime() : number {
+        return this.raceEndTime;
+    }
+    
+    private setAnimation () : {idle: AnimationGroup} {
+        const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
+        return {idle: idle!};
+    }
+
+    stopAnimations() {
+        try {
+            this.idleAnim.start(true);
+            this._isIdle = true;            
+        } catch (error) {
+            throw new Error("Method not implemented.");
+        }
+    }
     
     private _floorRaycast(
 		offsetx: number,
