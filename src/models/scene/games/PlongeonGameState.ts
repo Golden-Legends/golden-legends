@@ -20,6 +20,7 @@ interface level {
     pointToSucceed : number;
     numLetters : number;
     limitTime: number;
+    timeAffichageSuite: number;
 }
 
 interface IPlongeonGameState {
@@ -286,13 +287,13 @@ export class PlongeonGameState extends GameState {
             document.getElementById("plongeonGame-suiteLetters")!.classList.add("hidden");
             document.getElementById("plongeonGame-text-retenir")!.classList.add("hidden");
             document.getElementById("plongeonGame-text-avous")!.classList.remove("hidden");
-        }, 3000);
+        }, this.settings.level[this.difficulty].timeAffichageSuite);
         setTimeout(() => {
             document.getElementById("plongeonGame-text-avous")!.classList.add("hidden");
             this.playActive = true;
             this.plongeonStartTime = performance.now();
             this.player.gameActiveState();
-        }, 4500);
+        }, this.settings.level[this.difficulty].timeAffichageSuite + 1500);
     }
 
     private generateLetters(num: number): string[]{

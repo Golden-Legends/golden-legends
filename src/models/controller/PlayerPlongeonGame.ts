@@ -36,12 +36,21 @@ export class PlayerPlongeonGame {
     private winAnim : AnimationGroup = new AnimationGroup("Anim|win");
     private standAnim : AnimationGroup = new AnimationGroup("Anim|stand");
     private fallAnim : AnimationGroup = new AnimationGroup("Anim|falling");
+    private pose1Anim : AnimationGroup = new AnimationGroup("Anim|pose1");
+    private pose2Anim : AnimationGroup = new AnimationGroup("Anim|pose2");
+    private pose3Anim : AnimationGroup = new AnimationGroup("Anim|pose3");
+    private pose4Anim : AnimationGroup = new AnimationGroup("Anim|pose4");
+
 
     private _isIdle : boolean = false;
     private _isPool : boolean = false;
     private _isWin : boolean = false;
     private _isStand : boolean = false;
     private _isFalling : boolean = false;
+    private _isPose1 : boolean = false;
+    private _isPose2 : boolean = false;
+    private _isPose3 : boolean = false;
+    private _isPose4 : boolean = false;
     public isSpacedPressedForAnim: boolean = false;
 
     // run
@@ -123,7 +132,12 @@ export class PlayerPlongeonGame {
         this.animationsGroup = result.animationGroups;
         this.animationsGroup[0].stop();
         // set animation
-        const {idle, plongeon, pool, win, stand, fall} = this.setAnimation();
+        const {idle, plongeon, pool, win, stand, 
+            fall, pose1, pose2, pose3, pose4} = this.setAnimation();
+        this.pose1Anim = pose1;
+        this.pose2Anim = pose2;
+        this.pose3Anim = pose3;
+        this.pose4Anim = pose4;
         this.fallAnim = fall;
         this.standAnim = stand;
         this.winAnim = win;
@@ -173,7 +187,7 @@ export class PlayerPlongeonGame {
         }
         console.log(this._input.figuref, this._input.figureg, this._input.figureh, this._input.figurej);
         if(this._input.figuref){
-            //TODO ajouter anim de chaque lettre
+            this.runPose1Anim();
             this._input.figuref = false;
             if(this.suiteLetters[this.currentLetters] === "f"){
                 //ok
@@ -188,6 +202,7 @@ export class PlayerPlongeonGame {
             this.currentLetters++;
         }
         else if(this._input.figureg){
+            this.runPose2Anim();
             this._input.figureg = false;
             if(this.suiteLetters[this.currentLetters] === "g"){
                 //ok
@@ -202,6 +217,7 @@ export class PlayerPlongeonGame {
             this.currentLetters++;
         }
         else if(this._input.figureh){
+            this.runPose3Anim();
             this._input.figureh = false;
             if(this.suiteLetters[this.currentLetters] === "h"){
                 //ok
@@ -216,6 +232,7 @@ export class PlayerPlongeonGame {
             this.currentLetters++;
         }
         else if(this._input.figurej){
+            this.runPose4Anim();
             this._input.figurej = false;
             if(this.suiteLetters[this.currentLetters] === "j"){
                 //ok
@@ -282,18 +299,28 @@ export class PlayerPlongeonGame {
                                 pool: AnimationGroup, 
                                 win: AnimationGroup,
                                 stand: AnimationGroup,
-                                fall: AnimationGroup} {
+                                fall: AnimationGroup,
+                                pose1: AnimationGroup,
+                                pose2: AnimationGroup,
+                                pose3: AnimationGroup,
+                                pose4: AnimationGroup} {
         const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
         const plongeon = this.animationsGroup.find(ag => ag.name === "Anim|jumpForward");
         const pool = this.animationsGroup.find(ag => ag.name === "Anim|fallPool");
         const win = this.animationsGroup.find(ag => ag.name === "Anim|win");
         const stand = this.animationsGroup.find(ag => ag.name === "Anim|stand");
         const fall = this.animationsGroup.find(ag => ag.name === "Anim|falling");
-        return {idle: idle!, plongeon: plongeon!, pool: pool!, win: win!, stand: stand!, fall: fall!};
+        const pose1 = this.animationsGroup.find(ag => ag.name === "Anim|pose1");
+        const pose2 = this.animationsGroup.find(ag => ag.name === "Anim|pose2");
+        const pose3 = this.animationsGroup.find(ag => ag.name === "Anim|pose3");
+        const pose4 = this.animationsGroup.find(ag => ag.name === "Anim|pose4");
+        return {idle: idle!, plongeon: plongeon!, pool: pool!, win: win!, stand: stand!, 
+            fall: fall!, pose1: pose1!, pose2: pose2!, pose3: pose3!, pose4: pose4!};
     }
 
     public async descendrePerso(){
         //lancer l'animation de falling
+        this.runFallAnim();
         while(this.transform.position.y > 0.5){
             this.transform.position.y -= 0.01;
             await new Promise(resolve => setTimeout(resolve, 15));
@@ -320,7 +347,32 @@ export class PlayerPlongeonGame {
             this.transform.position._y - 0.064287,
             16.58);
         this._isFalling = true;
-    }   
+    }  
+
+    public runPose1Anim () {
+        this.fallAnim.stop();
+        this.pose1Anim.start(true, 1.0, this.pose1Anim.from, this.pose1Anim.to, false);
+        this._isPose1 = true;
+    }
+    
+    public runPose2Anim () {
+        this.fallAnim.stop();
+        this.pose2Anim.start(true, 1.0, this.pose2Anim.from, this.pose2Anim.to, false);
+        this._isPose2 = true;
+    }
+
+    public runPose3Anim () {
+        this.fallAnim.stop();
+        this.pose3Anim.start(true, 1.0, this.pose3Anim.from, this.pose3Anim.to, false);
+        this._isPose3 = true;
+    }
+
+    public runPose4Anim () {
+        this.fallAnim.stop();
+        this.pose4Anim.start(true, 1.0, this.pose4Anim.from, this.pose4Anim.to, false);
+        this._isPose4 = true;
+    }
+    
 
     public playSequentialAnimation () {
         this.plongeonAnim.start(false, 1.0, this.plongeonAnim.from, 85, false);
