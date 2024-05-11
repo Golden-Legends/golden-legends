@@ -214,7 +214,7 @@ export class RunningGameState extends GameState {
 
         store.commit('setTimer', 0.00);
         store.commit('setSpeedBar', 0);
-        this.buildScoreBoard();
+        //this.buildScoreBoard(); WHY ??
 
         this.soundManager.stopTrack('100m');
         this.clearScene();

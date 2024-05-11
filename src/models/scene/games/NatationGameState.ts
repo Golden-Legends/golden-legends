@@ -152,10 +152,8 @@ export class NatationGameState extends GameState {
     }
     async exit(): Promise<void> {
         try { 
-            console.log("exit running game");
-            this.soundManager.stopTrack('100m');
-            this.clearScene();
-         
+            console.log("exit natation game");
+            
             document.getElementById("natationGame-timer")!.classList.add("hidden");
             document.getElementById("natationGame-keyPressed")!.classList.add("hidden");
             document.getElementById("natationGame-text-speedbar")!.classList.add("hidden");
@@ -165,6 +163,9 @@ export class NatationGameState extends GameState {
             storeNatation.commit('setTimer', 0.00);
             storeNatation.commit('setSpeedBar', 0);
             storeNatation.commit('setResults', []);
+
+            this.soundManager.stopTrack('100m');
+            this.clearScene();
 
         } catch {
             throw new Error("Method not implemented.");

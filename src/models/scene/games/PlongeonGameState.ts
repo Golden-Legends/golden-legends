@@ -210,6 +210,10 @@ export class PlongeonGameState extends GameState {
         document.getElementById("plongeonGame-keyPressed")!.classList.add("hidden");
         document.getElementById("plongeonGame-results")!.classList.add("hidden");
 
+        storePlongeon.commit('setScore', 0);
+        storePlongeon.commit('setLetters', []);
+        storePlongeon.commit('setResults', []);
+
         this.soundManager.stopTrack('100m');
         this.clearScene();
     }
