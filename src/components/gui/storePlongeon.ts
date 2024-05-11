@@ -1,8 +1,8 @@
 import { createStore } from 'vuex'
 import { Result } from './results/ResultsContent.vue';
 
-const results: Result = 
-  { place: 1, name: "Sebastien", result: "0" };
+const results: Result[] = 
+  [ {place: 1, name: "Sebastien", result: "0"}];
   
 // Create a new store instance.
 export const storePlongeon = createStore({

@@ -286,7 +286,7 @@
     id="natationGame-results"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-  <ResultsContent :results="storeNatation.state.results" />
+    <ResultsContent :results="storeNatation.state.results" />
   </Results>
   <SpeedBar
     :min="0"
@@ -432,6 +432,19 @@
     id="plongeonGame-incorrect"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+  <Results
+    title="plongeon"
+    name="plongeonGame-results"
+    id="plongeonGame-results"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+  <ResultsContent :results="storePlongeon.state.results" />
+  </Results>
+  <Saut
+    name="plongeonGame-text-finish"
+    id="plongeonGame-text-finish"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
 
   <!-- BOXE -->
   <ClassicButton
@@ -522,6 +535,7 @@ import Results from "@/components/gui/results/Results.vue";
 import KeyPressInteraction from "@/components/gui/KeyPressInteraction.vue";
 import RDSText from "@/components/gui/running/RDSText.vue";
 import Finish from "@/components/gui/running/Finish.vue";
+import Saut from "@/components/gui/finish/Saut.vue";
 import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
 import KeyLetters from "./gui/KeyLetters.vue";

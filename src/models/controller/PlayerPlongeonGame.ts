@@ -44,7 +44,7 @@ export class PlayerPlongeonGame {
 
     private _isIdle : boolean = false;
     private _isPool : boolean = false;
-    private _isWin : boolean = false;
+    public _isWin : boolean = false;
     private _isStand : boolean = false;
     private _isFalling : boolean = false;
     private _isPose1 : boolean = false;
@@ -81,7 +81,7 @@ export class PlayerPlongeonGame {
     private gameActive : boolean = false;
     private suiteLetters: string[] = [];
     private currentLetters: number = 0;
-    private score: number = 0;
+    public score: number = 0;
     private isSequentialAnimation: boolean = false;
 
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputPlongeonGame, activeCamera: boolean) {

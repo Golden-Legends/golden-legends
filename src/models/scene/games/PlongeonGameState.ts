@@ -9,6 +9,9 @@ import { plongeonGameEnv } from "@/models/environments/plongeonGameEnv";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
 import { storePlongeon } from "@/components/gui/storePlongeon";
 import { doc } from "prettier";
+import { Result } from "@/components/gui/results/ResultsContent.vue";
+import { store } from "@/components/gui/store";
+import { InGameState } from "../InGameState";
 
 interface line {
     start : string;
@@ -58,17 +61,20 @@ export class PlongeonGameState extends GameState {
     private countdownDone: boolean = false;
     private playActive: boolean = false;
     private suiteLettersAffiche: boolean = false;
+    private results : Result[] = [];
+    private continueButtonIsPressed: boolean = false;
+    private scoreboardIsShow : boolean = false;
 
-    constructor(/*soundManager: SoundManager, */game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
+    constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputPlongeonGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
         this.settings = PlongeonGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        // this.soundManager = soundManager;
-        // this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
-        // this.soundManager.playTrack('100m');
+        this.soundManager = soundManager;
+        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
+        this.soundManager.playTrack('100m');
     }
 
     async setEnvironment(): Promise<void> {
@@ -126,7 +132,7 @@ export class PlongeonGameState extends GameState {
     }
     
     private async runSoloGame() {
-        // this.buildScoreBoard();
+        this.buildScoreBoard();
     }
 
 
@@ -202,6 +208,7 @@ export class PlongeonGameState extends GameState {
          
         document.getElementById("plongeonGame-score")!.classList.add("hidden");
         document.getElementById("plongeonGame-keyPressed")!.classList.add("hidden");
+        document.getElementById("plongeonGame-results")!.classList.add("hidden");
 
         this.soundManager.stopTrack('100m');
         this.clearScene();
@@ -224,9 +231,12 @@ export class PlongeonGameState extends GameState {
             }
         }
 
-        if(!this.playActive) return;
-
-        if(!this.player.getIsEndGame()){
+        if(!this.playActive){
+            if(this.player._isWin && !this.scoreboardIsShow){
+                this.showScoreBoard();
+            }
+        }
+        else if(!this.player.getIsEndGame()){
             if(this.playActive && this.settings.level[this.difficulty].limitTime >= performance.now() - this.plongeonStartTime){
                 // récupérer les x premières touches que le joueur appuie
                 const deltaTime = this.scene.getEngine().getDeltaTime();
@@ -246,7 +256,36 @@ export class PlongeonGameState extends GameState {
     private endGame(){
         this.playActive = false;
         this.player.descendrePerso();
-        //fin de jeu (afficher score)
+        this.createFinaleScoreBoard();
+    }
+
+    showScoreBoard(): void {
+        this.scoreboardIsShow = true;
+        document.getElementById("plongeonGame-text-finish")!.classList.remove("hidden");
+        let continueButton = document.querySelector('#plongeonGame-results #continue-button');
+        if (continueButton) {
+            continueButton.addEventListener('click', () => {
+                if (this.continueButtonIsPressed) return;
+                this.game.changeState(new InGameState(this.game, this.game.canvas));
+            });
+        }
+        // attendre 2 secondes avant d'afficher le tableau des scores
+        setTimeout(() => {
+            document.getElementById("plongeonGame-text-finish")!.classList.add("hidden");
+            document.getElementById("plongeonGame-results")!.classList.remove("hidden");
+        }, 2000);   
+        
+    }  
+
+    buildScoreBoard() : void {
+        this.results.push({place: 1, name: this.playerName, result: "0"});
+        storePlongeon.commit('setResults', this.results);
+    }
+    
+    createFinaleScoreBoard() : void{
+        this.results = [];
+        this.results.push({place: 1, name: this.playerName, result: ""+this.player.score});
+        storePlongeon.commit('setResults', this.results);
     }
 
     private startCountdown(countdownElements: string[]) {
