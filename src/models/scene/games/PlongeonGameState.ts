@@ -341,7 +341,7 @@ export class PlongeonGameState extends GameState {
             let randomNumber = Math.floor(Math.random() * 4);
             lettersArray.push(this.letterPossible[randomNumber]);
         }
-        console.log(lettersArray);
+        // console.log(lettersArray);
         storePlongeon.commit("setLetters", lettersArray);
         this.player.putLetters(lettersArray);
         return lettersArray;
