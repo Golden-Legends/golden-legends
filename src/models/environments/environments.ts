@@ -21,6 +21,7 @@ import { StationScore } from "./stationScore";
 import { TpGame } from "./tp";
 import { Carte } from "./carte";
 import { Options } from "./options";
+import { Music } from "@/utils/Music";
 
 export class Environment {
 	private _scene: Scene;
@@ -98,6 +99,8 @@ export class Environment {
 	}
 
 	public async load() {
+		const music = Music.getInstance("./sounds/musiqueAccueilShort.m4a", 0.1);
+		music.stop();
 		// var ground = Mesh.CreateBox("ground", 24, this._scene);
 		// ground.scaling = new Vector3(1,.02,1);
 
