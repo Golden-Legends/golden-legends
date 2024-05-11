@@ -63,7 +63,7 @@ export class NatationGameState extends GameState {
     private endGame: boolean = false;
 
     private countdownInProgress: boolean = false;
-    private readonly limitTime = 25;
+    private readonly limitTime = 35;
 
     private continueButtonIsPressed: boolean = false;
     private rectangleReturn : Mesh;

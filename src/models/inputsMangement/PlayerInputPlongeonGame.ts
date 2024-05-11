@@ -2,16 +2,18 @@ import { InputManager } from "./InputManager";
 
 export class PlayerInputPlongeonGame extends InputManager {
     readonly keys = {
-        KEY_FIGURE1: "KeyF",
-        KEY_FIGURE2: "KeyG",
-        KEY_FIGURE3: "KeyH",
-        KEY_FIGURE4: "KeyJ",
+        KEY_FIGUREF: "KeyF",
+        KEY_FIGUREG: "KeyG",
+        KEY_FIGUREH: "KeyH",
+        KEY_FIGUREJ: "KeyJ",
+        KEY_SPACE: "Space"
     };
 
-    public figure1: boolean = false;
-    public figure2: boolean = false;
-    public figure3: boolean = false;
-    public figure4: boolean = false;
+    public figuref: boolean = false;
+    public figureg: boolean = false;
+    public figureh: boolean = false;
+    public figurej: boolean = false;
+    public space: boolean = false;
 
     constructor(scene) {
         super(scene);
@@ -23,39 +25,47 @@ export class PlayerInputPlongeonGame extends InputManager {
         this.updateFigure2Keys();
         this.updateFigure3Keys();
         this.updateFigure4Keys();
+        this.updateSpacekeys();
     }
     
     private updateFigure1Keys(): void {
-        if (this.inputMap[this.keys.KEY_FIGURE1]) {
-            this.figure1 = true;
+        if (this.inputMap[this.keys.KEY_FIGUREF]) {
+            this.figuref = true;
         } else {
-            this.figure1 = false;
+            this.figuref = false;
         }
     }
 
     private updateFigure2Keys(): void {
-        if (this.inputMap[this.keys.KEY_FIGURE2]) {
-            this.figure2 = true;
+        if (this.inputMap[this.keys.KEY_FIGUREG]) {
+            this.figureg = true;
         } else {
-            this.figure2 = false;
+            this.figureg = false;
         }
     }
 
     private updateFigure3Keys(): void {
-        if (this.inputMap[this.keys.KEY_FIGURE3]) {
-            this.figure3 = true;
+        if (this.inputMap[this.keys.KEY_FIGUREH]) {
+            this.figureh = true;
         } else {
-            this.figure3 = false;
+            this.figureh = false;
         }
     }
 
     private updateFigure4Keys(): void {
-        if (this.inputMap[this.keys.KEY_FIGURE4]) {
-            this.figure4 = true;
+        if (this.inputMap[this.keys.KEY_FIGUREJ]) {
+            this.figurej = true;
         } else {
-            this.figure4 = false;
+            this.figurej = false;
         }
     }
 
+    private updateSpacekeys(): void {
+        if (this.inputMap[this.keys.KEY_SPACE]) {
+            this.space = true;
+        } else {
+            this.space = false;
+        }
+    }
     
 }

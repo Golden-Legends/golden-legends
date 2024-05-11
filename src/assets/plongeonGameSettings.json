@@ -1,20 +1,43 @@
 {
-    "placement" : 
-    [ 
-        {  
-            "start" : "cylindreFacile",
-            "end" : "cylindreArrivéePlongeon"   
-        }
-    ],
     "level" : { 
         "easy" : {
-            "pointToSucceed" : 50
+            "placement" : 
+            [ 
+                {  
+                    "start" : "cylindreFacile",
+                    "end" : "cylindreArrivéePlongeon"   
+                }
+            ],
+            "pointToSucceed" : 50,
+            "numLetters" : 3,
+            "limitTime" : 4500,
+            "timeAffichageSuite" : 4000
         },
         "intermediate" : {
-            "pointToSucceed" : 100
+            "placement" : 
+            [ 
+                {  
+                    "start" : "cylindreMoyen",
+                    "end" : "cylindreArrivéePlongeon"   
+                }
+            ],
+            "pointToSucceed" : 75,
+            "numLetters" : 5,
+            "limitTime" : 7500,
+            "timeAffichageSuite" : 6000
         },
         "hard" : {
-            "pointToSucceed" : 200
+            "placement" : 
+            [ 
+                {  
+                    "start" : "cylindrediff",
+                    "end" : "cylindreArrivéePlongeon"   
+                }
+            ],
+            "pointToSucceed" : 150,
+            "numLetters" : 7,
+            "limitTime" : 10000,
+            "timeAffichageSuite" : 8000
         }
     }
 }

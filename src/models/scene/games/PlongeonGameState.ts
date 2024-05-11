@@ -7,6 +7,11 @@ import { PlayerInputPlongeonGame } from "@/models/inputsMangement/PlayerInputPlo
 import { PlayerPlongeonGame } from "@/models/controller/PlayerPlongeonGame";
 import { plongeonGameEnv } from "@/models/environments/plongeonGameEnv";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
+import { storePlongeon } from "@/components/gui/storePlongeon";
+import { doc } from "prettier";
+import { Result } from "@/components/gui/results/ResultsContent.vue";
+import { store } from "@/components/gui/store";
+import { InGameState } from "../InGameState";
 
 interface line {
     start : string;
@@ -14,11 +19,14 @@ interface line {
 }
 
 interface level {
+    placement : line[],
     pointToSucceed : number;
+    numLetters : number;
+    limitTime: number;
+    timeAffichageSuite: number;
 }
 
 interface IPlongeonGameState {
-    placement : line[],
     level : {
         easy : level;
         intermediate : level;
@@ -43,11 +51,19 @@ export class PlongeonGameState extends GameState {
     private difficulty: "easy" | "intermediate" | "hard";
 
     private countdownInProgress: boolean = false;
-    private fightStartTime: number = 0;
+    private plongeonStartTime: number = 0;
 
     public soundManager!: SoundManager;
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
+    private letterPossible = ['f', 'g', 'h', 'j']
+    private letterIsGenerated: boolean = false;
+    private countdownDone: boolean = false;
+    private playActive: boolean = false;
+    private suiteLettersAffiche: boolean = false;
+    private results : Result[] = [];
+    private continueButtonIsPressed: boolean = false;
+    private scoreboardIsShow : boolean = false;
 
     constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
@@ -78,7 +94,7 @@ export class PlongeonGameState extends GameState {
     private setLinePlacement () {
         const startTab : Mesh[] = [];
         const EndTab : Mesh[] = [];
-        const placement = this.settings.placement;
+        const placement = this.settings.level[this.difficulty].placement;
         placement.forEach((line) => {
             const startMesh = this.scene.getMeshByName(line.start) as Mesh;
             const firstEndMesh = this.scene.getMeshByName(line.end) as Mesh;
@@ -116,27 +132,13 @@ export class PlongeonGameState extends GameState {
     }
     
     private async runSoloGame() {
-        // await this.initSoloWithBot(this.difficulty);
-        // this.buildScoreBoard();
+        this.buildScoreBoard();
     }
 
-    // private async initSoloWithBot(difficulty : string) {
-    //     const infoBot = this.settings.level[difficulty].botInfo;
-    //     for (let i = 0; i < 1; i++) {
-    //         const startMesh = this.startPlacement[i];
-    //         const endMesh = this.endPlacement[i];
-    //         //nicolas changer le pathfile dans le fichier natationGameSettings.json --> DONE
-    //         const bot = new BotPlongeon("bot" + i, startMesh.getAbsolutePosition(), 
-    //                 endMesh,
-    //                 this.scene,
-    //                 infoBot[i].pathFile, infoBot[i].speed);
-    //         await bot.init();
-    //         this.botArray.push(bot);
-    //     }        
-    // }
 
     initGui() {
-        document.getElementById("runningGame-timer")!.classList.remove("hidden");
+        document.getElementById("plongeonGame-score")!.classList.remove("hidden");
+        document.getElementById("plongeonGame-keyPressed")!.classList.remove("hidden");
     }
 
     // Implement abstract members of GameState
@@ -146,14 +148,12 @@ export class PlongeonGameState extends GameState {
             this.game.engine.displayLoadingUI();
             this.scene.detachControl();
         
-            document.getElementById("options-keybind")!.classList.add("hidden");
             document.getElementById("objects-keybind")!.classList.add("hidden");
             document.getElementById("map-keybind")!.classList.add("hidden");
 
             // Inspector.Show(this.scene, {});
             await this.setEnvironment();
             this.invisiblePlatform();
-            // this.createSkybox();
 		    this.addTextureEau();
             this.createLight();
             this.setLinePlacement();
@@ -190,17 +190,102 @@ export class PlongeonGameState extends GameState {
                 document.getElementById("plongeonGame-skip-button")!.classList.add("hidden");
 
                 document.getElementById("plongeonGame-ready-button")!.addEventListener("click", () => {
-                    this.startCountdown(["plongeonGame-text-1", "plongeonGame-text-2", "plongeonGame-text-3", "plongeonGame-text-4"]); 
                     this.AfterCamAnim(); 
                     this.initGui(); 
                     document.getElementById("plongeonGame-ready-button")!.classList.add("hidden");
                     this.game.canvas.focus();
+                    this.startCountdown(["plongeonGame-text-1", "plongeonGame-text-2", "plongeonGame-text-3", "plongeonGame-text-4"]); 
                 });
             });
 
         } catch (error) {
             throw new Error(`error in enter method : ${error}`);
         }
+    }
+
+    async exit(): Promise<void> {
+        console.log("exit plongeon game");
+         
+        document.getElementById("plongeonGame-score")!.classList.add("hidden");
+        document.getElementById("plongeonGame-keyPressed")!.classList.add("hidden");
+        document.getElementById("plongeonGame-results")!.classList.add("hidden");
+
+        this.soundManager.stopTrack('100m');
+        this.clearScene();
+    }
+
+    update():void {
+        // console.log("update");
+        if(this.countdownDone && !this.letterIsGenerated){//todo rajouter que le perso vient de sauter et est entrain de tomber
+            this.generateLetters(this.settings.level[this.difficulty].numLetters);
+            this.letterIsGenerated = true;
+        }
+
+        if(this.letterIsGenerated && !this.suiteLettersAffiche){
+            const deltaTime = this.scene.getEngine().getDeltaTime();
+            this.player.play(deltaTime, performance.now());
+            if(this.player.isSpacedPressedForAnim && !this.suiteLettersAffiche){
+                // console.log("suite");
+                this.suiteLettersAffiche = true;
+                this.affichageLettersDebut();
+            }
+        }
+
+        if(!this.playActive){
+            if(this.player._isWin && !this.scoreboardIsShow){
+                this.showScoreBoard();
+            }
+        }
+        else if(!this.player.getIsEndGame()){
+            if(this.playActive && this.settings.level[this.difficulty].limitTime >= performance.now() - this.plongeonStartTime){
+                // récupérer les x premières touches que le joueur appuie
+                const deltaTime = this.scene.getEngine().getDeltaTime();
+                this.player.play(deltaTime, performance.now());
+            }
+            else if(this.playActive && this.settings.level[this.difficulty].limitTime < performance.now() - this.plongeonStartTime){
+                console.log("temps dépassé");
+                this.endGame();
+            }
+        }
+        else{
+            console.log("nombres de lettres atteint");
+            this.endGame();
+        }
+    }
+
+    private endGame(){
+        this.playActive = false;
+        this.player.descendrePerso();
+        this.createFinaleScoreBoard();
+    }
+
+    showScoreBoard(): void {
+        this.scoreboardIsShow = true;
+        document.getElementById("plongeonGame-text-finish")!.classList.remove("hidden");
+        let continueButton = document.querySelector('#plongeonGame-results #continue-button');
+        if (continueButton) {
+            continueButton.addEventListener('click', () => {
+                if (this.continueButtonIsPressed) return;
+                this.game.changeState(new InGameState(this.game, this.game.canvas));
+            });
+        }
+        // attendre 2 secondes avant d'afficher le tableau des scores
+        setTimeout(() => {
+            document.getElementById("plongeonGame-text-finish")!.classList.add("hidden");
+            document.getElementById("plongeonGame-results")!.classList.remove("hidden");
+        }, 2000);   
+        
+    }  
+
+    buildScoreBoard() : void {
+        this.results.push({place: 1, name: this.playerName, result: "0"});
+        storePlongeon.commit('setResults', this.results);
+    }
+    
+    createFinaleScoreBoard() : void{
+        this.results = [];
+        this.results.push({place: 1, name: this.playerName, result: ""+this.player.score});
+        storePlongeon.commit('setResults', this.results);
     }
 
     private startCountdown(countdownElements: string[]) {
@@ -226,9 +311,40 @@ export class PlongeonGameState extends GameState {
     
                 // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
                 this.countdownInProgress = true;
-                this.fightStartTime = performance.now();
+                // this.plongeonStartTime = performance.now();
+                this.countdownDone = true;
             }
         }, 1000);
+    }
+
+    private affichageLettersDebut(){
+        setTimeout(() => {
+            document.getElementById("plongeonGame-suiteLetters")!.classList.remove("hidden");
+            document.getElementById("plongeonGame-text-retenir")!.classList.remove("hidden");
+        }, 500);
+        setTimeout(() => {
+            document.getElementById("plongeonGame-suiteLetters")!.classList.add("hidden");
+            document.getElementById("plongeonGame-text-retenir")!.classList.add("hidden");
+            document.getElementById("plongeonGame-text-avous")!.classList.remove("hidden");
+        }, this.settings.level[this.difficulty].timeAffichageSuite);
+        setTimeout(() => {
+            document.getElementById("plongeonGame-text-avous")!.classList.add("hidden");
+            this.playActive = true;
+            this.plongeonStartTime = performance.now();
+            this.player.gameActiveState();
+        }, this.settings.level[this.difficulty].timeAffichageSuite + 1500);
+    }
+
+    private generateLetters(num: number): string[]{
+        let lettersArray: string[] = [];
+        for (let i = 0; i < num; i++) {
+            let randomNumber = Math.floor(Math.random() * 4);
+            lettersArray.push(this.letterPossible[randomNumber]);
+        }
+        // console.log(lettersArray);
+        storePlongeon.commit("setLetters", lettersArray);
+        this.player.putLetters(lettersArray);
+        return lettersArray;
     }
 
     AfterCamAnim(): void {
@@ -277,19 +393,6 @@ export class PlongeonGameState extends GameState {
 
         await this.scene.beginAnimation(this._camera, 0, 8 * fps).waitAsync();
         document.getElementById("plongeonGame-skip-button")!.classList.add("hidden");
-    }
-
-    async exit(): Promise<void> {
-        console.log("exit plongeon game");
-         
-        document.getElementById("runningGame-timer")!.classList.add("hidden");
-
-        this.soundManager.stopTrack('100m');
-        this.clearScene();
-    }
-
-    update():void {
-        console.log("update");
     }
 
     public addTextureEau(){
@@ -366,7 +469,5 @@ export class PlongeonGameState extends GameState {
             }
         }   
     }
-
-    //timer à revoir avec à la place un compteur de points (affichage différents juste)
 
 }

@@ -220,40 +220,40 @@
     id="runningGame-speed-bar"
     class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <KeyPressInteraction
-    :keys="['s', 'd']"
-    name="runningGame-keyPressed"
-    id="runningGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  />
   <RDSText
     text="À vos marques"
     name="runningGame-text-1"
     id="runningGame-text-1"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
     text="Prêt ?"
     name="runningGame-text-2"
     id="runningGame-text-2"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
     text="Partez"
     name="runningGame-text-3"
     id="runningGame-text-3"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Finish
     name="runningGame-text-finish"
     id="runningGame-text-finish"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <SpeedBar 
     name="runningGame-text-speedbar"
     id="runningGame-text-speedbar"
-    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
     :speed="store.state.setSpeedBar" :min="0" :max="2.7"
+  />
+  <KeyPressInteraction
+    :keys="['s', 'd']"
+    name="runningGame-keyPressed"
+    id="runningGame-keyPressed"
+    class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <!-- NATATION -->
   <ClassicButton
@@ -286,7 +286,7 @@
     id="natationGame-results"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-  <ResultsContent :results="storeNatation.state.results" />
+    <ResultsContent :results="storeNatation.state.results" />
   </Results>
   <SpeedBar
     :min="0"
@@ -296,40 +296,40 @@
     id="natationGame-speed-bar"
     class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <KeyPressInteraction
-    :keys="['s', 'd', ' ']"
-    name="natationGame-keyPressed"
-    id="natationGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  />
   <RDSText
     text="À vos marques"
     name="natationGame-text-1"
     id="natationGame-text-1"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
     text="Prêt ?"
     name="natationGame-text-2"
     id="natationGame-text-2"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="Partez"
+    text=""
     name="natationGame-text-3"
     id="natationGame-text-3"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Finish
     name="natationGame-text-finish"
     id="natationGame-text-finish"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <SpeedBar 
     name="natationGame-text-speedbar"
     id="natationGame-text-speedbar"
-    class="hidden absolute left-1/2 bottom-12 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
     :speed="store.state.setSpeedBar" :min="0" :max="0.3"
+  />
+  <KeyPressInteraction
+    :keys="['s', 'd', ' ']"
+    name="natationGame-keyPressed"
+    id="natationGame-keyPressed"
+    class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <RDSText
     text="Plongez !"
@@ -337,7 +337,7 @@
     name="natationGame-text-plongeon"
     id="natationGame-text-plongeon"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-/>
+  />
   <RDSText
     text="Demi-tour !"
     subText="Appuyez sur Espace"
@@ -345,6 +345,107 @@
     id="natationGame-text-demitour"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+
+  <!-- Plongeon -->
+  <ClassicButton
+    text="Passer"
+    name="plongeonGame-skip-button"
+    id="plongeonGame-skip-button"
+    class="hidden absolute bottom-12 right-12"
+  />
+  <ClassicButton
+    text="Prêt"
+    name="plongeonGame-ready-button"
+    id="plongeonGame-ready-button"
+    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
+  />
+  <RDSText
+    text="3"
+    name="plongeonGame-text-1"
+    id="plongeonGame-text-1"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="2"
+    name="plongeonGame-text-2"
+    id="plongeonGame-text-2"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="1"
+    name="plongeonGame-text-3"
+    id="plongeonGame-text-3"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text=""
+    name="plongeonGame-text-4"
+    id="plongeonGame-text-4"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Plongez !"
+    subText="Appuyez sur Espace"
+    name="plongeonGame-text-plongeon"
+    id="plongeonGame-text-plongeon"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="Retenez !"
+    name="plongeonGame-text-retenir"
+    id="plongeonGame-text-retenir"
+    class="hidden absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="À vous !"
+    name="plongeonGame-text-avous"
+    id="plongeonGame-text-avous"
+    class="hidden absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <KeyLetters
+    :keys="storePlongeon.state.letters"
+    name="plongeonGame-suiteLetters"
+    id="plongeonGame-suiteLetters"
+    class="hidden absolute left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <KeyPressInteraction
+    :keys="['f', 'g', 'h', 'j']"
+    name="plongeonGame-keyPressed"
+    id="plongeonGame-keyPressed"
+    class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <Score
+    name="plongeonGame-score"
+    id="plongeonGame-score"
+    class="hidden absolute bottom-12 right-12"
+    :score="storePlongeon.state.score"
+  />
+  <RDSText
+    text="✅"
+    name="plongeonGame-correct"
+    id="plongeonGame-correct"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="❌"
+    name="plongeonGame-incorrect"
+    id="plongeonGame-incorrect"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Results
+    title="plongeon"
+    name="plongeonGame-results"
+    id="plongeonGame-results"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+  <ResultsContent :results="storePlongeon.state.results" />
+  </Results>
+  <Saut
+    name="plongeonGame-text-finish"
+    id="plongeonGame-text-finish"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+
   <!-- BOXE -->
   <ClassicButton
     text="Passer"
@@ -380,44 +481,6 @@
     text="Fight !"
     name="boxeGame-text-4"
     id="boxeGame-text-4"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-
-  <!-- Plongeon -->
-  <ClassicButton
-    text="Passer"
-    name="plongeonGame-skip-button"
-    id="plongeonGame-skip-button"
-    class="hidden absolute bottom-12 right-12"
-  />
-  <ClassicButton
-    text="Prêt"
-    name="plongeonGame-ready-button"
-    id="plongeonGame-ready-button"
-    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
-  />
-  <RDSText
-    text="3"
-    name="plongeonGame-text-1"
-    id="plongeonGame-text-1"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="2"
-    name="plongeonGame-text-2"
-    id="plongeonGame-text-2"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="1"
-    name="plongeonGame-text-3"
-    id="plongeonGame-text-3"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="Sautez !"
-    name="plongeonGame-text-4"
-    id="plongeonGame-text-4"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
 
@@ -472,15 +535,19 @@ import Results from "@/components/gui/results/Results.vue";
 import KeyPressInteraction from "@/components/gui/KeyPressInteraction.vue";
 import RDSText from "@/components/gui/running/RDSText.vue";
 import Finish from "@/components/gui/running/Finish.vue";
+import Saut from "@/components/gui/finish/Saut.vue";
 import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
+import KeyLetters from "./gui/KeyLetters.vue";
 import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 import GameGate from "./gui/tp/GameGate.vue";
 import GateButton from "./gui/tp/GateButton.vue";
+import Score from "@/components/gui/Score.vue";
 import { storeObjects } from "./gui/storeObjects";
 import { store } from "@/components/gui/store.ts";
 import { storeNatation } from "@/components/gui/storeNatation.ts";
 import { storeJump } from "@/components/gui/storeJump.ts";
+import { storePlongeon } from "@/components/gui/storePlongeon.ts";
 
 import Options from "./gui/options/Options.vue";
 
