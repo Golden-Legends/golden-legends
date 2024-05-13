@@ -5,7 +5,7 @@ import { SkyMaterial } from "@babylonjs/materials";
 export class runningGameEnv {
     private _scene: Scene;
 	public assets;
-	public filename: string[] = ["pnjStrong.glb", "pnjMan.glb", "pnjWoman.glb", "pnjKid.glb", "pnjGirl.glb", "pnjStrong.glb", "pnjMan.glb"];
+	public filename: string[] = ["perso1.glb", "perso2.glb", "perso3.glb", "perso4.glb", "perso5.glb", "perso6.glb", "perso7.glb", "perso8.glb", "perso1.glb"];
 
     constructor(scene: Scene) {
 		this._scene = scene;
@@ -320,7 +320,7 @@ export class runningGameEnv {
 			//--IMPORTING MESH--
 			return SceneLoader.ImportMeshAsync(
 				null,
-				"./models/characters/pnj/",
+				"./models/characters/",
 				path,
 				scene,
 			).then(result => {
@@ -332,7 +332,7 @@ export class runningGameEnv {
 				body.getChildMeshes().forEach(m => {
 					m.isPickable = false;
 				});
-				body.scaling = new Scaling(2);
+				body.scaling = new Scaling(0.09);
 				body.showBoundingBox = true;
 
                 outer.position = position;
@@ -340,11 +340,22 @@ export class runningGameEnv {
 
 				// enlever l'animation à l'indice 0 de animationsGroups
 				result.animationGroups[0].stop();
-				const idle = result.animationGroups.find(ag => ag.name === "idle");
-				if(idle){
-                    idle.loopAnimation = true;
-                    idle.play(true);
-                }
+
+				let randomNumber = Math.floor(Math.random() * 2) + 1;
+				if(randomNumber == 1){
+					const idle = result.animationGroups.find(ag => ag.name === "Anim|idle");
+					if(idle){
+						idle.loopAnimation = true;
+						idle.play(true);
+					}
+				}
+				else{
+					const applause = result.animationGroups.find(ag => ag.name === "Anim|applause");
+					if(applause){
+						applause.loopAnimation = true;
+						applause.play(true);
+					}
+				}
 				//return the mesh and animations
 				return {
 					mesh: outer as Mesh,

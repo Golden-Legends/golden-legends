@@ -109,7 +109,9 @@ export class PlongeonGameState extends GameState {
         this.startPlacement = startTab;
         this.endPlacement = EndTab;
         const rectangleReturn = this.scene.getMeshByName("returnRectangle") as Mesh;
-        rectangleReturn.isVisible = false;
+        if(rectangleReturn){
+            rectangleReturn.isVisible = false;
+        }
     }
 
     private async initPlayer () {
