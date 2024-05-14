@@ -245,7 +245,9 @@ export class NatationGameState extends GameState {
         this.firstEndPlacement = firstEndTab;
         this.secondEndPlacement = secondEndTab;
         this.rectangleReturn = this.scene.getMeshByName("returnRectangle") as Mesh;
-        this.rectangleReturn.isVisible = false;
+        if(this.rectangleReturn){
+            this.rectangleReturn.isVisible = false;
+        }
     }
     
     async setEnvironment(): Promise<void> {
