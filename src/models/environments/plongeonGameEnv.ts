@@ -79,13 +79,36 @@ export class plongeonGameEnv {
 				} while (randomNumber1 === randomNumber2 || randomNumber1 === randomNumber3 || randomNumber2 === randomNumber3);
 			}
 		}
-		for(let i=109 ; i<=118 ; i++){
+
+		randomNumber1 = Math.floor(Math.random() * 6) + 1;
+
+		for(let i=109 ; i<=216 ; i++){
 			let pos = this._scene.getMeshByName("perso1." + i);
 			if(pos){
 				pos.isVisible = false;
-				let position = new Vector3(-pos.position.x, pos.position.y, pos.position.z);
-				let rotation = new Vector3(0, 80, 0);
-				await this._loadCharacterAssets(this._scene, position, this.filename[i-tour*6], "public" + i, rotation);
+				if(i-tour*6 === randomNumber1){
+					let rotation;
+					if(i<=180){
+						rotation = new Vector3(0, 80, 0);
+					}
+					else if(i>=181 && i<=204){
+						rotation = new Vector3(0, 170, 0);
+					}
+					else if(i>=205 && i<=210){
+						rotation = new Vector3(0, 40, 0);
+					}
+					else if(i>=211 && i<=216){
+						rotation = new Vector3(0, -40, 0);
+					}
+					let position = new Vector3(-pos.position.x, pos.position.y, pos.position.z);
+					await this._loadCharacterAssets(this._scene, position, this.filename[i-tour*6], "public" + i, rotation);
+				}
+				compteur += 1;	
+				if(compteur === 6){
+					tour += 1;
+					compteur = 0;
+					randomNumber1 = Math.floor(Math.random() * 6) + 1;
+				}
 			}
 			
 		}
