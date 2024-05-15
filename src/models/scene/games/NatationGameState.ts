@@ -72,6 +72,8 @@ export class NatationGameState extends GameState {
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
 
+    private posFinale : number = -1;
+
     constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this.difficulty = difficulty ? difficulty : "easy";
@@ -122,7 +124,12 @@ export class NatationGameState extends GameState {
             // console.log(this._camera.rotation);
             // console.log(this._camera.position);
 
+            document.getElementById("objects-keybind")!.classList.add("hidden");
+            document.getElementById("map-keybind")!.classList.add("hidden");
+            document.getElementById("natationtp")!.classList.add("hidden");
             document.getElementById("natationGame-skip-button")!.classList.remove("hidden");
+            document.getElementById("natationGame-command-container")!.classList.remove("hidden");
+            document.getElementById("natationGame-action-container")!.classList.remove("hidden");
             document.getElementById("natationGame-skip-button")!.addEventListener("click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
@@ -158,6 +165,9 @@ export class NatationGameState extends GameState {
             document.getElementById("natationGame-text-speedbar")!.classList.add("hidden");
             document.getElementById("natationGame-text-finish")!.classList.add("hidden");
             document.getElementById("natationGame-results")!.classList.add("hidden");
+            document.getElementById("natationGame-command-container")!.classList.add("hidden");
+            document.getElementById("natationGame-action-container")!.classList.add("hidden");
+            this.undisplayPosition();
 
             storeNatation.commit('setTimer', 0.00);
             storeNatation.commit('setSpeedBar', 0);
@@ -345,6 +355,7 @@ export class NatationGameState extends GameState {
         // attendre 2 secondes avant d'afficher le tableau des scores
         setTimeout(() => {
             this.createFinaleScoreBoard();
+            this.displayPosition();
             document.getElementById("natationGame-text-finish")!.classList.add("hidden");
             document.getElementById("natationGame-results")!.classList.remove("hidden");
             this.scoreboardIsShow = true;
@@ -371,6 +382,8 @@ export class NatationGameState extends GameState {
             result.place = index + 1;
         });
     
+        this.posFinale = this.results.findIndex((result) => result.name === this.playerName) + 1;
+
         // Enregistrement des résultats dans le store
         storeNatation.commit('setResults', this.results);
     }
@@ -528,6 +541,58 @@ export class NatationGameState extends GameState {
         const platform6 = this.scene.getMeshByName("cylindreNoobd");
         if (platform6) {
             platform6.isVisible = false;
+        }
+    }
+
+    public displayPosition() {
+        switch (this.posFinale) {
+            case 1:
+                document.getElementById("position-1")!.classList.remove("hidden");
+                break;
+            case 2:
+                document.getElementById("position-2")!.classList.remove("hidden");
+                break;
+            case 3:
+                document.getElementById("position-3")!.classList.remove("hidden");
+                break;
+            case 4:
+                document.getElementById("position-4")!.classList.remove("hidden");
+                break;
+            case 5:
+                document.getElementById("position-5")!.classList.remove("hidden");
+                break;
+            case 6:
+                document.getElementById("position-6")!.classList.remove("hidden");
+                break;
+            default:
+                console.log("Position non trouvée");
+                break;
+        }
+    }
+
+    public undisplayPosition() {
+        switch (this.posFinale) {
+            case 1:
+                document.getElementById("position-1")!.classList.add("hidden");
+                break;
+            case 2:
+                document.getElementById("position-2")!.classList.add("hidden");
+                break;
+            case 3:
+                document.getElementById("position-3")!.classList.add("hidden");
+                break;
+            case 4:
+                document.getElementById("position-4")!.classList.add("hidden");
+                break;
+            case 5:
+                document.getElementById("position-5")!.classList.add("hidden");
+                break;
+            case 6:
+                document.getElementById("position-6")!.classList.add("hidden");
+                break;
+            default:
+                console.log("Position non trouvée");
+                break;
         }
     }
 }

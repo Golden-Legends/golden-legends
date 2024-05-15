@@ -184,8 +184,20 @@
     <GateButton id="tirArcFacile" name="Facile" difficulty="easy" />
     <GateButton id="tirArcMoyen" name="Moyen" difficulty="medium" />
   </GameGate>
+  <Position id="position-1" position="1" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
+  <Position id="position-2" position="2" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
+  <Position id="position-3" position="3" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
+  <Position id="position-4" position="4" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
+  <Position id="position-5" position="5" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
+  <Position id="position-6" position="6" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
   <MainOptions />
   <!-- RUNNINGGAME -->
+  <CommandContainer
+    name="COURIR"
+    :keys="['s', 'd']"
+    id="runningGame-command-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  /> 
   <ClassicButton
     text="Passer"
     name="runningGame-skip-button"
@@ -256,6 +268,18 @@
     class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <!-- NATATION -->
+  <CommandContainer
+    name="NAGER"
+    :keys="['s', 'd']"
+    id="natationGame-command-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  /> 
+  <CommandContainer
+    name="ACTION"
+    :keys="['espace']"
+    id="natationGame-action-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  /> 
   <ClassicButton
     text="Passer"
     name="natationGame-skip-button"
@@ -347,6 +371,19 @@
   />
 
   <!-- Plongeon -->
+  <CommandContainer
+    name="FIGURES"
+    :keys="['f', 'g', 'h', 'j']"
+    width="260"
+    id="plongeonGame-command-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <CommandContainer
+    name="ACTION"
+    :keys="['espace']"
+    id="plongeonGame-action-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  /> 
   <ClassicButton
     text="Passer"
     name="plongeonGame-skip-button"
@@ -543,6 +580,8 @@ import FoundObjectsContainer from "@/components/gui/foundobjects/FoundObjectsCon
 import GameGate from "./gui/tp/GameGate.vue";
 import GateButton from "./gui/tp/GateButton.vue";
 import Score from "@/components/gui/Score.vue";
+import CommandContainer from "./gui/commands/CommandContainer.vue";
+import Position from "./gui/Position.vue";
 import { storeObjects } from "./gui/storeObjects";
 import { store } from "@/components/gui/store.ts";
 import { storeNatation } from "@/components/gui/storeNatation.ts";

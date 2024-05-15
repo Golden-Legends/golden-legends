@@ -177,7 +177,13 @@ export class PlongeonGameState extends GameState {
             // Vector3(4.78, 3.27, 6.38)
             // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
+            
+            document.getElementById("objects-keybind")!.classList.add("hidden");
+            document.getElementById("map-keybind")!.classList.add("hidden");
+            document.getElementById("plongeontp")!.classList.add("hidden");
             document.getElementById("plongeonGame-skip-button")!.classList.remove("hidden");
+            document.getElementById("plongeonGame-command-container")!.classList.remove("hidden");
+            document.getElementById("plongeonGame-action-container")!.classList.remove("hidden");
             document.getElementById("plongeonGame-skip-button")!.addEventListener("click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
@@ -211,6 +217,8 @@ export class PlongeonGameState extends GameState {
         document.getElementById("plongeonGame-score")!.classList.add("hidden");
         document.getElementById("plongeonGame-keyPressed")!.classList.add("hidden");
         document.getElementById("plongeonGame-results")!.classList.add("hidden");
+        document.getElementById("plongeonGame-command-container")!.classList.add("hidden");
+        document.getElementById("plongeonGame-action-container")!.classList.add("hidden");
 
         storePlongeon.commit('setScore', 0);
         storePlongeon.commit('setLetters', []);

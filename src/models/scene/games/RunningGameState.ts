@@ -61,6 +61,8 @@ export class RunningGameState extends GameState {
     private scoreboardIsShow : boolean = false;
     private currentTime : number = 0;
 
+    private posFinale : number = -1;
+
     public soundManager!: SoundManager;
 
     constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
@@ -114,8 +116,13 @@ export class RunningGameState extends GameState {
             this._camera = new FreeCamera("camera100m", new Vector3(-2, 10, 20), this.scene);
             this._camera.rotation = new Vector3(0, Math.PI, 0);
             this._camera.setTarget(startMesh.getAbsolutePosition());  
-                        
+    
+
+            document.getElementById("objects-keybind")!.classList.add("hidden");
+            document.getElementById("map-keybind")!.classList.add("hidden");
+            document.getElementById("100mtp")!.classList.add("hidden");
             document.getElementById("runningGame-skip-button")!.classList.remove("hidden");
+            document.getElementById("runningGame-command-container")!.classList.remove("hidden");
             document.getElementById("runningGame-skip-button")!.addEventListener("click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
@@ -211,6 +218,8 @@ export class RunningGameState extends GameState {
         document.getElementById("runningGame-text-speedbar")!.classList.add("hidden");
         document.getElementById("runningGame-results")!.classList.add("hidden");
         document.getElementById("runningGame-text-finish")!.classList.add("hidden");
+        document.getElementById("runningGame-command-container")!.classList.add("hidden");
+        this.undisplayPosition();
 
         store.commit('setTimer', 0.00);
         store.commit('setSpeedBar', 0);
@@ -233,6 +242,7 @@ export class RunningGameState extends GameState {
         // attendre 2 secondes avant d'afficher le tableau des scores
         setTimeout(() => {
             this.createFinaleScoreBoard();
+            this.displayPosition();
             document.getElementById("runningGame-text-finish")!.classList.add("hidden");
             document.getElementById("runningGame-results")!.classList.remove("hidden");
             let continueButton = document.querySelector('#runningGame-results #continue-button');
@@ -246,6 +256,58 @@ export class RunningGameState extends GameState {
         }, 2000);   
         
     }   
+
+    public displayPosition() {
+        switch (this.posFinale) {
+            case 1:
+                document.getElementById("position-1")!.classList.remove("hidden");
+                break;
+            case 2:
+                document.getElementById("position-2")!.classList.remove("hidden");
+                break;
+            case 3:
+                document.getElementById("position-3")!.classList.remove("hidden");
+                break;
+            case 4:
+                document.getElementById("position-4")!.classList.remove("hidden");
+                break;
+            case 5:
+                document.getElementById("position-5")!.classList.remove("hidden");
+                break;
+            case 6:
+                document.getElementById("position-6")!.classList.remove("hidden");
+                break;
+            default:
+                console.log("Position non trouvée");
+                break;
+        }
+    }
+
+    public undisplayPosition() {
+        switch (this.posFinale) {
+            case 1:
+                document.getElementById("position-1")!.classList.add("hidden");
+                break;
+            case 2:
+                document.getElementById("position-2")!.classList.add("hidden");
+                break;
+            case 3:
+                document.getElementById("position-3")!.classList.add("hidden");
+                break;
+            case 4:
+                document.getElementById("position-4")!.classList.add("hidden");
+                break;
+            case 5:
+                document.getElementById("position-5")!.classList.add("hidden");
+                break;
+            case 6:
+                document.getElementById("position-6")!.classList.add("hidden");
+                break;
+            default:
+                console.log("Position non trouvée");
+                break;
+        }
+    }
     
     timerToSMS (time: number) : string {
         const seconds = Math.floor(time / 1000);
@@ -271,6 +333,8 @@ export class RunningGameState extends GameState {
         this.results.forEach((result, index) => {
             result.place = index + 1;
         });
+
+        this.posFinale = this.results.findIndex((result) => result.name === this.playerName) + 1;
     
         // Enregistrement des résultats dans le store
         store.commit('setResults', this.results);
