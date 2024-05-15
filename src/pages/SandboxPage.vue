@@ -152,6 +152,8 @@ setInterval(() => {
           width="240"
         />
         <CommandContainer class="mb-4" name="ACTION" :keys="['espace']" />
+        <CommandContainer class="mb-4" name="FIGURES" :keys="['f', 'g', 'h', 'j']" width="260"/>
+        <CommandContainer class="mb-4" name="NAGER" :keys="['s', 'd']" />
       </SandboxContainer>
       <SandboxContainer name="Départ">
         <RDSText text="À vos marques" />
