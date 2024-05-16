@@ -48,7 +48,7 @@ export class TirArcGameState extends GameState {
     private playActive: boolean = false;
     private scoreboardIsShow : boolean = false;
     private animationFleche : boolean = false;
-    private tableauScore : number[] = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+    private tableauScore : number[] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
     private animArc : boolean = false;
 
     private env !: tirArcGameEnv;
@@ -310,12 +310,11 @@ export class TirArcGameState extends GameState {
     }
 
     update():void {
-        // console.log("update");
         if(this.countdownDone && !this.guiGame){
             const deltaTime = this.scene.getEngine().getDeltaTime();
             this.player.play(deltaTime, performance.now());
             if(this.player.isSpacedPressedForAnim && !this.guiGame){
-                // console.log("suite");
+                //TODO ADD GUI
                 this.guiGame = true;
                 console.log("afficher gui game")
                 this.playActive = true;
