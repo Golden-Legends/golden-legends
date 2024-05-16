@@ -1,11 +1,14 @@
 import { Scaling } from "@/utils/Scaling";
-import { Matrix, Mesh, MeshBuilder, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
+import { AnimationGroup, Matrix, Mesh, MeshBuilder, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
 import { SkyMaterial } from "@babylonjs/materials";
 
 export class tirArcGameEnv {
     private _scene: Scene;
 	public assets;
 	public filename: string[] = ["perso1.glb", "perso2.glb", "perso3.glb", "perso4.glb", "perso5.glb", "perso6.glb", "perso7.glb"];
+	public gameAssets;
+	public animArc : AnimationGroup | undefined = new AnimationGroup("Anim|corde");
+	public flecheAssets;
 
     constructor(scene: Scene) {
 		this._scene = scene;
@@ -19,7 +22,7 @@ export class tirArcGameEnv {
 			m.checkCollisions = true;
 		});
 		this.createSkybox(this._scene);
-		this.loadPublic();
+		// this.loadPublic();
 	}
 
 	public async loadPublic() {
@@ -171,6 +174,125 @@ export class tirArcGameEnv {
 
 		return loadCharacter().then(assets=> {
 			this.assets = assets;
+		})
+
+	}
+
+
+	public async _loadGameAssets(scene: Scene, position: Vector3, path: string, name: string, rotation: Vector3){
+
+		async function loadAsset(){
+			//collision mesh
+			const outer = MeshBuilder.CreateBox(
+				name,
+				{ width: 1, depth: 1, height: 15 },
+				scene,
+			);
+			// pour afficher la box qui sert de collision
+			outer.isVisible = false;
+			outer.isPickable = false;
+			outer.checkCollisions = true;
+			//move origin of box collider to the bottom of the mesh (to match player mesh)
+			outer.bakeTransformIntoVertices(Matrix.Translation(0, 7, 0));
+			//for collisions
+			outer.ellipsoid = new Vector3(1, 1.5, 1);
+			outer.ellipsoidOffset = new Vector3(0, 1.5, 0);
+
+			//--IMPORTING MESH--
+			return SceneLoader.ImportMeshAsync(
+				null,
+				"./models/maps/games/",
+				path,
+				scene,
+			).then(result => {
+				const root = result.meshes[0];
+				//body is our actual player mesh
+				const body = root;
+				body.parent = outer;
+				body.isPickable = false;
+                body.checkCollisions = false;
+				body.getChildMeshes().forEach(m => {
+					m.isPickable = false;
+                    m.checkCollisions = false;
+				});
+				body.scaling = new Scaling(0.02);
+				body.showBoundingBox = true;
+
+                outer.position = position;
+                outer.rotation = rotation;
+
+				result.animationGroups[0].stop();
+
+				return {
+					mesh: outer as Mesh,
+					animationGroups: result.animationGroups,
+				};
+			});
+		}	
+
+		return loadAsset().then(assets=> {
+            // console.log(assets);
+			this.gameAssets = assets.mesh;
+			this.animArc = assets.animationGroups.find(ag => ag.name === "Take 001");
+			// console.log(this.animArc);
+            return assets;
+		})
+
+	}
+
+
+	public async _loadFlecheAssets(scene: Scene, position: Vector3, path: string, name: string, rotation: Vector3){
+
+		async function loadFleche(){
+			//collision mesh
+			const outer = MeshBuilder.CreateBox(
+				name,
+				{ width: 1, depth: 1, height: 15 },
+				scene,
+			);
+			// pour afficher la box qui sert de collision
+			outer.isVisible = false;
+			outer.isPickable = false;
+			outer.checkCollisions = true;
+			//move origin of box collider to the bottom of the mesh (to match player mesh)
+			outer.bakeTransformIntoVertices(Matrix.Translation(0, 7, 0));
+			//for collisions
+			outer.ellipsoid = new Vector3(1, 1.5, 1);
+			outer.ellipsoidOffset = new Vector3(0, 1.5, 0);
+
+			//--IMPORTING MESH--
+			return SceneLoader.ImportMeshAsync(
+				null,
+				"./models/maps/games/",
+				path,
+				scene,
+			).then(result => {
+				const root = result.meshes[0];
+				//body is our actual player mesh
+				const body = root;
+				body.parent = outer;
+				body.isPickable = false;
+                body.checkCollisions = false;
+				body.getChildMeshes().forEach(m => {
+					m.isPickable = false;
+                    m.checkCollisions = false;
+				});
+				body.scaling = new Scaling(0.5);
+				body.showBoundingBox = true;
+
+                outer.position = position;
+                outer.rotation = rotation;
+
+				return {
+					mesh: outer as Mesh,
+				};
+			});
+		}	
+
+		return loadFleche().then(assets=> {
+            // console.log(assets);
+			this.flecheAssets = assets;
+            return assets;
 		})
 
 	}

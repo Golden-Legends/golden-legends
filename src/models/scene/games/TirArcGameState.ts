@@ -49,6 +49,9 @@ export class TirArcGameState extends GameState {
     private scoreboardIsShow : boolean = false;
     private animationFleche : boolean = false;
     private tableauScore : number[] = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+    private animArc : boolean = false;
+
+    private env !: tirArcGameEnv;
 
     public soundManager!: SoundManager;
     public waterMaterial!: WaterMaterial;
@@ -69,6 +72,7 @@ export class TirArcGameState extends GameState {
     async setEnvironment(): Promise<void> {
         try {
             const maps = new tirArcGameEnv(this.scene);
+            this.env = maps;
             await maps.load();
         } catch (error) {
             throw new Error("Method not implemented.");
@@ -87,6 +91,7 @@ export class TirArcGameState extends GameState {
         const placement = this.settings.level[this.difficulty].placement;
         placement.forEach((line) => {
             const startMesh = this.scene.getMeshByName(line.start) as Mesh;
+            // console.log(startMesh.getAbsolutePosition());
             const firstEndMesh = this.scene.getMeshByName(line.end) as Mesh;
             startMesh.isVisible = false;
             firstEndMesh.isVisible = false;
@@ -208,7 +213,7 @@ export class TirArcGameState extends GameState {
         }
     }
 
-    private startCountdown(countdownElements: string[]) {
+    private async startCountdown(countdownElements: string[]) {
         if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
         let countdownIndex = 0;
         let previousElement = "";
@@ -236,6 +241,8 @@ export class TirArcGameState extends GameState {
             }
         }, 1000);
         this.player.runPriseArc();
+        await this.env._loadGameAssets(this.scene, new Vector3(-0.38, 0.2, 4), "arc.glb", "arc", new Vector3(0, 0, 0));
+        // console.log(this.env.animArc);
     }
 
     AfterCamAnim(): void {
@@ -319,7 +326,7 @@ export class TirArcGameState extends GameState {
         if(!this.playActive){
             if(this.player._isWin && !this.scoreboardIsShow){
                 // this.showScoreBoard();
-                console.log("scoreboard");
+                // console.log("scoreboard");
             }
         }
         else{
@@ -327,18 +334,36 @@ export class TirArcGameState extends GameState {
                 const deltaTime = this.scene.getEngine().getDeltaTime();
                 this.player.play(deltaTime, performance.now());
             }
-            else if(this.player._isIdle && !this.animationFleche){
-                //remove GUI and animation de la flèche sur la cible
-                console.log("animation flèche");
-                // this.animationFleche = true;
+            else if(this.player.compteur === 2 && !this.animArc){
+                //TODO REMOVE GUI
+                this.animArc = true;
+                this.env.gameAssets.position = new Vector3(-0.32, 0.2, 3.92); //new Vector3(-0.38, 0.2, 4)
+                const loadFlecheAssets = async () => {
+                    await this.env._loadFlecheAssets(this.scene, new Vector3(-0.31, 0.2, 3.85), "fleche.glb", "fleche", new Vector3(0, 0, 0));
+                };
+                loadFlecheAssets();
+                this.env.animArc?.start(true, 0.09, this.env.animArc.from, this.env.animArc.to, false);
+                setTimeout(() => {
+                    this.env.animArc?.stop();
+                    this.env.animArc?.start(false, 0.09, this.env.animArc.from, this.env.animArc.from , false);
+                }, 3500);
             }
-            else if(this.player._isIdle && this.animationFleche){
+            else if(this.player._isIdle && !this.animationFleche){
+                this.animationFleche = true;
+                this.animateFleche();
+                //TODO player en anim isWin
+                setTimeout(() => this.player.runWin(), 4000);
+            }
+            else if(this.player._isWin && this.animationFleche){
                 this.endGame();
-                // console.log(Math.abs(this.tableauScore[this.player.verticalDirection]) * Math.abs(this.tableauScore[this.player.horizontalDirection]));
+                // console.log(this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]);
             }
         }
-
     }
+
+    public animateFleche(){
+		console.log("animate fleche");
+	}
 
     private endGame(){
         this.playActive = false;
