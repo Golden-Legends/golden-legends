@@ -590,6 +590,25 @@
     id="tirArcGame-action-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   /> 
+  <CommandContainer
+    name="VISÉE↕️"
+    :keys="['V']"
+    id="tirArcGame-vertical-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <CommandContainer
+    name="VISÉE↔️"
+    :keys="['H']"
+    id="tirArcGame-horizontal-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <RDSText
+    text="Tirez !"
+    subText="Appuyez sur Espace"
+    name="tirArcGame-text-tir"
+    id="tirArcGame-text-tir"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
 
   <!-- BOXE -->
   <ClassicButton

@@ -32,12 +32,21 @@ export class PlayerTirArcGame {
     private idleAnim : AnimationGroup = new AnimationGroup("idle");
     private priseArc : AnimationGroup = new AnimationGroup("Anim|bow2");
     private tir : AnimationGroup = new AnimationGroup("Anim|bow1");
+    private win : AnimationGroup = new AnimationGroup("Anim|win");
 
-    private _isIdle : boolean = false;
+    public _isIdle : boolean = false;
     private _isPriseArc : boolean = false;
     private _isTir : boolean = false;
+    public _isWin : boolean = false;
 
     private afficherGuiTir : boolean = false;
+    private gameActive : boolean = false;
+    private isTextTirShow : boolean = false;
+    public isSpacedPressedForAnim : boolean = false;
+
+    public horizontalDirection : number = 0;
+    public verticalDirection : number = 0;
+    public compteur : number = 0;
 
     // run
     private readonly MIN_RUN_SPEED = 0.10;
@@ -112,7 +121,8 @@ export class PlayerTirArcGame {
         this.animationsGroup = result.animationGroups;
         this.animationsGroup[0].stop();
         // set animation
-        const {idle, priseArc, tir} = this.setAnimation();
+        const {idle, priseArc, tir, win} = this.setAnimation();
+        this.win = win;
         this.priseArc = priseArc;
         this.tir = tir;
         this.idleAnim = idle;
@@ -120,6 +130,53 @@ export class PlayerTirArcGame {
         this._isIdle = true;     
     }
 
+    public play (delta : number, currentTime : number) {
+        // console.log("play");
+        this._deltaTime = delta / 10;
+        this.currentTime = currentTime;
+        if (!this.isEndGame) {
+            if(!this.gameActive){
+                if (!this.isTextTirShow) {
+                    this.isTextTirShow = true;
+                    document.getElementById("tirArcGame-text-tir")!.classList.remove("hidden");
+                }
+                else if (this._input.space) {
+                    document.getElementById("tirArcGame-text-tir")!.classList.add("hidden");
+                    this.isSpacedPressedForAnim = true;
+                    this.gameActiveState();
+                }
+            }
+            else{
+                //todo récuperer ici les touches qu'enfonce le player
+                // console.log("gameActive");
+                this.processInput();
+            }
+        }
+        else{
+            // console.log("endGame");
+        }
+    }
+
+    public processInput(): void {
+        if(this.compteur === 0){
+            if (this._input.figureh) {
+                this.horizontalDirection = Math.floor(Math.random() * 21) - 10;
+                this.compteur ++;
+            }
+        }
+        else if(this.compteur === 1){
+            if (this._input.figurev) {
+                this.verticalDirection = Math.floor(Math.random() * 21) - 10;
+                this.compteur ++;
+                this.isEndGame = true;
+                this.runTir();
+            }
+        }
+    }
+
+    public gameActiveState() :void{
+        this.gameActive = !this.gameActive;
+    }
 
     public getIsEndGame() : boolean {
         return this.isEndGame;
@@ -129,19 +186,21 @@ export class PlayerTirArcGame {
         return this.raceEndTime;
     }
     
-    private setAnimation () : {idle: AnimationGroup, priseArc: AnimationGroup, tir: AnimationGroup} {
+    private setAnimation () : {idle: AnimationGroup, priseArc: AnimationGroup, tir: AnimationGroup, win: AnimationGroup} {
         const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
         const priseArc = this.animationsGroup.find(ag => ag.name === "Anim|bow2");
         const tir = this.animationsGroup.find(ag => ag.name === "Anim|bow1");
-        return {idle: idle!, priseArc: priseArc!, tir: tir!};
+        const win = this.animationsGroup.find(ag => ag.name === "Anim|win");
+        return {idle: idle!, priseArc: priseArc!, tir: tir!, win: win!};
     }
 
     public runPriseArc() {
         this.idleAnim.stop();
+        this._isIdle = false;
         this.priseArc.start(false, 1.0, this.priseArc.from, this.priseArc.to, false);
         this._isPriseArc = true;
         this.priseArc.onAnimationEndObservable.addOnce(() => {
-           this.afficherGuiTir = true;
+        //    this.afficherGuiTir = true;
         });
     }
 
@@ -153,6 +212,13 @@ export class PlayerTirArcGame {
             this._isTir = false;
             this.stopAnimations();
         });
+    }
+
+    public runWin() {
+        this.idleAnim.stop();
+        this._isIdle = false;
+        this.win.start(true, 1.0, this.win.from, this.win.to, false);
+        this._isWin = true;
     }
 
 

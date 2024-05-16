@@ -2,10 +2,14 @@ import { InputManager } from "./InputManager";
 
 export class PlayerInputTirArcGame extends InputManager {
     readonly keys = {
-        KEY_FIGURE1: "KeySpace"
+        KEY_SPACE: "Space",
+        KEY_FIGUREV: "KeyV",
+        KEY_FIGUREH: "KeyH"
     };
 
-    public figure1: boolean = false;
+    public space: boolean = false;
+    public figurev: boolean = false;
+    public figureh: boolean = false;
 
     constructor(scene) {
         super(scene);
@@ -13,14 +17,32 @@ export class PlayerInputTirArcGame extends InputManager {
     }
 
     protected updateFromKeyboard = () => {
-        this.updateFigure1Keys();
+        this.updateSpacekeys();
+        this.updateFigureVKeys();
+        this.updateFigureHKeys();
     }
     
-    private updateFigure1Keys(): void {
-        if (this.inputMap[this.keys.KEY_FIGURE1]) {
-            this.figure1 = true;
+    private updateSpacekeys(): void {
+        if (this.inputMap[this.keys.KEY_SPACE]) {
+            this.space = true;
         } else {
-            this.figure1 = false;
+            this.space = false;
+        }
+    }
+
+    private updateFigureVKeys(): void {
+        if (this.inputMap[this.keys.KEY_FIGUREV]) {
+            this.figurev = true;
+        } else {
+            this.figurev = false;
+        }
+    }
+
+    private updateFigureHKeys(): void {
+        if (this.inputMap[this.keys.KEY_FIGUREH]) {
+            this.figureh = true;
+        } else {
+            this.figureh = false;
         }
     }
 

@@ -42,7 +42,13 @@ export class TirArcGameState extends GameState {
     private difficulty: "easy" | "intermediate" | "hard";
 
     private countdownInProgress: boolean = false;
+    private countdownDone: boolean = false;
     private fightStartTime: number = 0;
+    private guiGame: boolean = false;
+    private playActive: boolean = false;
+    private scoreboardIsShow : boolean = false;
+    private animationFleche : boolean = false;
+    private tableauScore : number[] = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
     public soundManager!: SoundManager;
     public waterMaterial!: WaterMaterial;
@@ -173,6 +179,8 @@ export class TirArcGameState extends GameState {
             document.getElementById("tirArctp")!.classList.add("hidden");
             document.getElementById("tirArcGame-skip-button")!.classList.remove("hidden");
             document.getElementById("tirArcGame-action-container")!.classList.remove("hidden");
+            document.getElementById("tirArcGame-vertical-container")!.classList.remove("hidden");
+            document.getElementById("tirArcGame-horizontal-container")!.classList.remove("hidden");
             document.getElementById("tirArcGame-skip-button")!.addEventListener("click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
@@ -224,6 +232,7 @@ export class TirArcGameState extends GameState {
                 // Permet au joueur de jouer ou exécutez d'autres actions nécessaires
                 this.countdownInProgress = true;
                 this.fightStartTime = performance.now();
+                this.countdownDone = true;
             }
         }, 1000);
         this.player.runPriseArc();
@@ -286,6 +295,8 @@ export class TirArcGameState extends GameState {
          
         document.getElementById("tirArcGame-score")!.classList.add("hidden");
         document.getElementById("plongeonGame-action-container")!.classList.add("hidden");
+        document.getElementById("plongeonGame-vertical-container")!.classList.add("hidden");
+        document.getElementById("plongeonGame-horizontal-container")!.classList.add("hidden");
 
         this.soundManager.stopTrack('100m');
         this.clearScene();
@@ -293,10 +304,46 @@ export class TirArcGameState extends GameState {
 
     update():void {
         // console.log("update");
-        if(this.player.afficherGui()) {
-            console.log('afficher gui');
-            this.player.setAfficherGui();
+        if(this.countdownDone && !this.guiGame){
+            const deltaTime = this.scene.getEngine().getDeltaTime();
+            this.player.play(deltaTime, performance.now());
+            if(this.player.isSpacedPressedForAnim && !this.guiGame){
+                // console.log("suite");
+                this.guiGame = true;
+                console.log("afficher gui game")
+                this.playActive = true;
+                // this.player.setAfficherGui();
+            }
         }
+
+        if(!this.playActive){
+            if(this.player._isWin && !this.scoreboardIsShow){
+                // this.showScoreBoard();
+                console.log("scoreboard");
+            }
+        }
+        else{
+            if(this.player.compteur < 2){
+                const deltaTime = this.scene.getEngine().getDeltaTime();
+                this.player.play(deltaTime, performance.now());
+            }
+            else if(this.player._isIdle && !this.animationFleche){
+                //remove GUI and animation de la flèche sur la cible
+                console.log("animation flèche");
+                // this.animationFleche = true;
+            }
+            else if(this.player._isIdle && this.animationFleche){
+                this.endGame();
+                // console.log(Math.abs(this.tableauScore[this.player.verticalDirection]) * Math.abs(this.tableauScore[this.player.horizontalDirection]));
+            }
+        }
+
+    }
+
+    private endGame(){
+        this.playActive = false;
+        this.player.runWin();
+        // this.createFinaleScoreBoard();
     }
 
     public invisiblePlatform(): void {
