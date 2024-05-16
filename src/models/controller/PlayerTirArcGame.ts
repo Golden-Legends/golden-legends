@@ -30,8 +30,14 @@ export class PlayerTirArcGame {
 
     // ANIMATIONS
     private idleAnim : AnimationGroup = new AnimationGroup("idle");
+    private priseArc : AnimationGroup = new AnimationGroup("Anim|bow2");
+    private tir : AnimationGroup = new AnimationGroup("Anim|bow1");
 
     private _isIdle : boolean = false;
+    private _isPriseArc : boolean = false;
+    private _isTir : boolean = false;
+
+    private afficherGuiTir : boolean = false;
 
     // run
     private readonly MIN_RUN_SPEED = 0.10;
@@ -106,7 +112,9 @@ export class PlayerTirArcGame {
         this.animationsGroup = result.animationGroups;
         this.animationsGroup[0].stop();
         // set animation
-        const {idle} = this.setAnimation();
+        const {idle, priseArc, tir} = this.setAnimation();
+        this.priseArc = priseArc;
+        this.tir = tir;
         this.idleAnim = idle;
         this.idleAnim.start(true);
         this._isIdle = true;     
@@ -121,10 +129,32 @@ export class PlayerTirArcGame {
         return this.raceEndTime;
     }
     
-    private setAnimation () : {idle: AnimationGroup} {
+    private setAnimation () : {idle: AnimationGroup, priseArc: AnimationGroup, tir: AnimationGroup} {
         const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
-        return {idle: idle!};
+        const priseArc = this.animationsGroup.find(ag => ag.name === "Anim|bow2");
+        const tir = this.animationsGroup.find(ag => ag.name === "Anim|bow1");
+        return {idle: idle!, priseArc: priseArc!, tir: tir!};
     }
+
+    public runPriseArc() {
+        this.idleAnim.stop();
+        this.priseArc.start(false, 1.0, this.priseArc.from, this.priseArc.to, false);
+        this._isPriseArc = true;
+        this.priseArc.onAnimationEndObservable.addOnce(() => {
+           this.afficherGuiTir = true;
+        });
+    }
+
+    public runTir() {
+        this.priseArc.stop();
+        this.tir.start(false, 1.0, this.tir.from, this.tir.to, false);
+        this._isTir = true;
+        this.tir.onAnimationEndObservable.addOnce(() => {
+            this._isTir = false;
+            this.stopAnimations();
+        });
+    }
+
 
     stopAnimations() {
         try {
@@ -133,6 +163,13 @@ export class PlayerTirArcGame {
         } catch (error) {
             throw new Error("Method not implemented.");
         }
+    }
+
+    public afficherGui(): boolean {
+        return this.afficherGuiTir;
+    }
+    public setAfficherGui(){
+       this.afficherGuiTir = !this.afficherGuiTir;
     }
 
     // public processInput(): void {

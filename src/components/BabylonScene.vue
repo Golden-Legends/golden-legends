@@ -541,6 +541,56 @@
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
 
+  <!-- Tir à l'arc -->
+  <ClassicButton
+    text="Passer"
+    name="tirArcGame-skip-button"
+    id="tirArcGame-skip-button"
+    class="hidden absolute bottom-12 right-12"
+  />
+  <ClassicButton
+    text="Prêt"
+    name="tirArcGame-ready-button"
+    id="tirArcGame-ready-button"
+    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
+  />
+  <RDSText
+    text="3"
+    name="tirArcGame-text-1"
+    id="tirArcGame-text-1"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="2"
+    name="tirArcGame-text-2"
+    id="tirArcGame-text-2"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="1"
+    name="tirArcGame-text-3"
+    id="tirArcGame-text-3"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="En place !"
+    name="tirArcGame-text-4"
+    id="tirArcGame-text-4"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Score
+    name="tirArcGame-score"
+    id="tirArcGame-score"
+    class="hidden absolute bottom-12 right-12"
+    :score="storeTirArc.state.score"
+  />
+  <CommandContainer
+    name="ACTION"
+    :keys="['espace']"
+    id="tirArcGame-action-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  /> 
+
   <!-- BOXE -->
   <ClassicButton
     text="Passer"
@@ -579,43 +629,7 @@
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
 
-  <!-- Tir à l'arc -->
-  <ClassicButton
-    text="Passer"
-    name="tirArcGame-skip-button"
-    id="tirArcGame-skip-button"
-    class="hidden absolute bottom-12 right-12"
-  />
-  <ClassicButton
-    text="Prêt"
-    name="tirArcGame-ready-button"
-    id="tirArcGame-ready-button"
-    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
-  />
-  <RDSText
-    text="3"
-    name="tirArcGame-text-1"
-    id="tirArcGame-text-1"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="2"
-    name="tirArcGame-text-2"
-    id="tirArcGame-text-2"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="1"
-    name="tirArcGame-text-3"
-    id="tirArcGame-text-3"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="En place !"
-    name="tirArcGame-text-4"
-    id="tirArcGame-text-4"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
+  
 </template>
 
 <script setup lang="ts">
@@ -645,6 +659,7 @@ import { store } from "@/components/gui/store.ts";
 import { storeNatation } from "@/components/gui/storeNatation.ts";
 import { storeJump } from "@/components/gui/storeJump.ts";
 import { storePlongeon } from "@/components/gui/storePlongeon.ts";
+import { storeTirArc } from "@/components/gui/storeTirArc.ts";
 
 import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";

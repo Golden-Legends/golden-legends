@@ -435,31 +435,14 @@ export class InGameState extends GameState {
     });
 
     //Tir à l'arc
-    document.getElementById("tirArcFacile")?.addEventListener("click", () => {
-      this.game.changeState(
-        new TirArcGameState(this.soundManager, this.game, this.canvas),
-      );
-      // document.getElementById("options-keybind")!.style.display = "none";
-      document.getElementById("objects-keybind")!.classList.add("hidden");
-      document.getElementById("map-keybind")!.classList.add("hidden");
-      document.getElementById("tirArctp")!.classList.add("hidden");
-      this.soundManager.stopTrack("inGame");
-    });
-    document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
-      this.game.changeState(
-        new TirArcGameState(
-          this.soundManager,
-          this.game,
-          this.canvas,
-          "intermediate",
-        ),
-      );
-      // document.getElementById("options-keybind")!.style.display = "none";
-      document.getElementById("objects-keybind")!.classList.add("hidden");
-      document.getElementById("map-keybind")!.classList.add("hidden");
-      document.getElementById("tirArctp")!.classList.add("hidden");
-      this.soundManager.stopTrack("inGame");
-    });
+    // document.getElementById("tirArcFacile")?.addEventListener("click", () => {
+    //   this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
+    //   this.soundManager.stopTrack('inGame');
+    // });
+    // document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
+    //   this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "intermediate"));
+    //   this.soundManager.stopTrack('inGame');
+    // });
   }
 
   public goToRunningGame() {

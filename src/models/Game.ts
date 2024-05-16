@@ -17,7 +17,7 @@ export class Game {
   constructor(canvas: HTMLCanvasElement) {
     this.engine = new Engine(canvas, true);
     this.canvas = canvas;
-    this.changeState(new InGameState(this, canvas));
+    this.changeState(new TirArcGameState(this, canvas));
 
   }
 

@@ -48,16 +48,16 @@ export class TirArcGameState extends GameState {
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
 
-    constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
+    constructor(/*soundManager: SoundManager, */game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputTirArcGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
         this.settings = TirArcGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        this.soundManager = soundManager;
-        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
-        this.soundManager.playTrack('100m');
+        // this.soundManager = soundManager;
+        // this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
+        // this.soundManager.playTrack('100m');
     }
 
     async setEnvironment(): Promise<void> {
@@ -134,7 +134,7 @@ export class TirArcGameState extends GameState {
     // }
 
     initGui() {
-        document.getElementById("runningGame-timer")!.classList.remove("hidden");
+        document.getElementById("tirArcGame-score")!.classList.remove("hidden");
     }
 
     // Implement abstract members of GameState
@@ -144,8 +144,6 @@ export class TirArcGameState extends GameState {
             this.game.engine.displayLoadingUI();
             this.scene.detachControl();
         
-            document.getElementById("objects-keybind")!.classList.add("hidden");
-            document.getElementById("map-keybind")!.classList.add("hidden");
 
             // Inspector.Show(this.scene, {});
             await this.setEnvironment();
@@ -165,12 +163,16 @@ export class TirArcGameState extends GameState {
             this.runUpdateAndRender();   
             
             this._camera = new FreeCamera("cameraTirArc", new Vector3(5, 4, -2), this.scene);
-            this._camera.rotation._y = -Math.PI/2;
+            this._camera.rotation._y = 0;
             this._camera.rotation._x = Math.PI/5;
             // Vector3(4.78, 3.27, 6.38)
             // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
+            document.getElementById("objects-keybind")!.classList.add("hidden");
+            document.getElementById("map-keybind")!.classList.add("hidden");
+            document.getElementById("tirArctp")!.classList.add("hidden");
             document.getElementById("tirArcGame-skip-button")!.classList.remove("hidden");
+            document.getElementById("tirArcGame-action-container")!.classList.remove("hidden");
             document.getElementById("tirArcGame-skip-button")!.addEventListener("click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
@@ -224,6 +226,7 @@ export class TirArcGameState extends GameState {
                 this.fightStartTime = performance.now();
             }
         }, 1000);
+        this.player.runPriseArc();
     }
 
     AfterCamAnim(): void {
@@ -261,7 +264,7 @@ export class TirArcGameState extends GameState {
         // camKeys.push({frame: 4 * fps, value: new Vector3(2, 1.5, 3)});
         // camKeys.push({frame: 8 * fps, value: new Vector3(-4, 2, 13)});
        
-        rotationKeys.push({frame: 0, value: new Vector3(Math.PI/5, -Math.PI/2, 0)});
+        rotationKeys.push({frame: 0, value: new Vector3(Math.PI/5, 0, 0)});
         rotationKeys.push({frame: 5 * fps, value: new Vector3(0, -Math.PI, 0)});
         rotationKeys.push({frame: 9 * fps, value: new Vector3(Math.PI/12, -5*Math.PI/6, 0)});
         // rotationKeys.push({frame: 2 * fps, value: new Vector3(0, 0, 0)});
@@ -281,14 +284,19 @@ export class TirArcGameState extends GameState {
     async exit(): Promise<void> {
         console.log("exit tir arc game");
          
-        document.getElementById("runningGame-timer")!.classList.add("hidden");
+        document.getElementById("tirArcGame-score")!.classList.add("hidden");
+        document.getElementById("plongeonGame-action-container")!.classList.add("hidden");
 
         this.soundManager.stopTrack('100m');
         this.clearScene();
     }
 
     update():void {
-        console.log("update");
+        // console.log("update");
+        if(this.player.afficherGui()) {
+            console.log('afficher gui');
+            this.player.setAfficherGui();
+        }
     }
 
     public invisiblePlatform(): void {
