@@ -160,13 +160,13 @@ export class PlayerTirArcGame {
     public processInput(): void {
         if(this.compteur === 0){
             if (this._input.figureh) {
-                this.horizontalDirection = Math.floor(Math.random() * 21) - 10;
+                this.horizontalDirection = Math.floor(Math.random() * 19) - 9;
                 this.compteur ++;
             }
         }
         else if(this.compteur === 1){
             if (this._input.figurev) {
-                this.verticalDirection = Math.floor(Math.random() * 21) - 10;
+                this.verticalDirection = Math.floor(Math.random() * 19) - 9;
                 this.compteur ++;
                 this.isEndGame = true;
                 this.runTir();

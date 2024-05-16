@@ -609,6 +609,19 @@
     id="tirArcGame-text-tir"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+  <Tir
+    name="tirArcGame-text-finish"
+    id="tirArcGame-text-finish"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Results
+    title="tir à l'arc"
+    name="tirArcGame-results"
+    id="tirArcGame-results"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+  <ResultsContent :results="storeTirArc.state.results" />
+  </Results>
 
   <!-- BOXE -->
   <ClassicButton
@@ -664,6 +677,7 @@ import KeyPressInteraction from "@/components/gui/KeyPressInteraction.vue";
 import RDSText from "@/components/gui/running/RDSText.vue";
 import Finish from "@/components/gui/running/Finish.vue";
 import Saut from "@/components/gui/finish/Saut.vue";
+import Tir from "@/components/gui/finish/Tir.vue";
 import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
 import KeyLetters from "./gui/KeyLetters.vue";

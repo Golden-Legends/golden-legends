@@ -7,6 +7,10 @@ import { WaterMaterial } from "@babylonjs/materials";
 import { PlayerInputTirArcGame } from "@/models/inputsMangement/PlayerInputTirArcGame";
 import { PlayerTirArcGame } from "@/models/controller/PlayerTirArcGame";
 import { tirArcGameEnv } from "@/models/environments/tirArcGameEnv";
+import { storeTirArc } from "@/components/gui/storeTirArc";
+import { Result } from "@/components/gui/results/ResultsContent.vue";
+import { InGameState } from "../InGameState";
+
 
 interface line {
     start : string;
@@ -50,6 +54,9 @@ export class TirArcGameState extends GameState {
     private animationFleche : boolean = false;
     private tableauScore : number[] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
     private animArc : boolean = false;
+    private score : number = 0;
+    private results : Result[] = [];
+    private continueButtonIsPressed: boolean = false;
 
     private env !: tirArcGameEnv;
 
@@ -125,24 +132,8 @@ export class TirArcGameState extends GameState {
     }
     
     private async runSoloGame() {
-        // await this.initSoloWithBot(this.difficulty);
-        // this.buildScoreBoard();
+        this.buildScoreBoard();
     }
-
-    // private async initSoloWithBot(difficulty : string) {
-    //     const infoBot = this.settings.level[difficulty].botInfo;
-    //     for (let i = 0; i < 1; i++) {
-    //         const startMesh = this.startPlacement[i];
-    //         const endMesh = this.endPlacement[i];
-    //         //nicolas changer le pathfile dans le fichier natationGameSettings.json --> DONE
-    //         const bot = new BotPlongeon("bot" + i, startMesh.getAbsolutePosition(), 
-    //                 endMesh,
-    //                 this.scene,
-    //                 infoBot[i].pathFile, infoBot[i].speed);
-    //         await bot.init();
-    //         this.botArray.push(bot);
-    //     }        
-    // }
 
     initGui() {
         document.getElementById("tirArcGame-score")!.classList.remove("hidden");
@@ -301,9 +292,12 @@ export class TirArcGameState extends GameState {
         console.log("exit tir arc game");
          
         document.getElementById("tirArcGame-score")!.classList.add("hidden");
-        document.getElementById("plongeonGame-action-container")!.classList.add("hidden");
-        document.getElementById("plongeonGame-vertical-container")!.classList.add("hidden");
-        document.getElementById("plongeonGame-horizontal-container")!.classList.add("hidden");
+        document.getElementById("tirArcGame-action-container")!.classList.add("hidden");
+        document.getElementById("tirArcGame-vertical-container")!.classList.add("hidden");
+        document.getElementById("tirArcGame-horizontal-container")!.classList.add("hidden");
+
+        storeTirArc.commit('setScore', 0);
+        storeTirArc.commit('setResults', []);
 
         this.soundManager.stopTrack('100m');
         this.clearScene();
@@ -324,7 +318,7 @@ export class TirArcGameState extends GameState {
 
         if(!this.playActive){
             if(this.player._isWin && !this.scoreboardIsShow){
-                // this.showScoreBoard();
+                this.showScoreBoard();
                 // console.log("scoreboard");
             }
         }
@@ -354,6 +348,8 @@ export class TirArcGameState extends GameState {
                 setTimeout(() => this.player.runWin(), 4000);
             }
             else if(this.player._isWin && this.animationFleche){
+                this.score = this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]
+                storeTirArc.commit('setScore', this.score);
                 this.endGame();
                 // console.log(this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]);
             }
@@ -367,7 +363,36 @@ export class TirArcGameState extends GameState {
     private endGame(){
         this.playActive = false;
         this.player.runWin();
-        // this.createFinaleScoreBoard();
+        this.createFinaleScoreBoard();
+    }
+
+    showScoreBoard(): void {
+        this.scoreboardIsShow = true;
+        document.getElementById("tirArcGame-text-finish")!.classList.remove("hidden");
+        let continueButton = document.querySelector('#tirArcGame-results #continue-button');
+        if (continueButton) {
+            continueButton.addEventListener('click', () => {
+                if (this.continueButtonIsPressed) return;
+                this.game.changeState(new InGameState(this.game, this.game.canvas));
+            });
+        }
+        // attendre 2 secondes avant d'afficher le tableau des scores
+        setTimeout(() => {
+            document.getElementById("tirArcGame-text-finish")!.classList.add("hidden");
+            document.getElementById("tirArcGame-results")!.classList.remove("hidden");
+        }, 2000);   
+        
+    }
+
+    buildScoreBoard() : void {
+        this.results.push({place: 1, name: this.playerName, result: "0"});
+        storeTirArc.commit('setResults', this.results);
+    }
+
+    createFinaleScoreBoard() : void{
+        this.results = [];
+        this.results.push({place: 1, name: this.playerName, result: ""+this.score});
+        storeTirArc.commit('setResults', this.results);
     }
 
     public invisiblePlatform(): void {
