@@ -295,6 +295,7 @@ export class TirArcGameState extends GameState {
         document.getElementById("tirArcGame-action-container")!.classList.add("hidden");
         document.getElementById("tirArcGame-vertical-container")!.classList.add("hidden");
         document.getElementById("tirArcGame-horizontal-container")!.classList.add("hidden");
+        document.getElementById("tirArcGame-results")!.classList.add("hidden");
 
         storeTirArc.commit('setScore', 0);
         storeTirArc.commit('setResults', []);
