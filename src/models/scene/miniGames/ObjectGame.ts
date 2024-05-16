@@ -99,7 +99,7 @@ export class ObjectGame {
 
 
     private miniGame(){
-        console.log("miniGame");
+        // console.log("miniGame");
     }
 
     private collectObject(): void {
