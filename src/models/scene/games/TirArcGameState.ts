@@ -349,12 +349,19 @@ export class TirArcGameState extends GameState {
                 // setTimeout(() => this.player.runWin(), 4000);
             }
             else if(this.player._isWin && this.animationFleche){
+                // console.log("win"); 
                 this.score = this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]
                 storeTirArc.commit('setScore', this.score);
                 this.endGame();
                 // console.log(this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]);
             }
         }
+    }
+
+    private endGame(){
+        this.playActive = false;
+        this.player.runWin();
+        this.createFinaleScoreBoard();
     }
 
     public async animateFleche(){
@@ -381,6 +388,7 @@ export class TirArcGameState extends GameState {
 
         while(booleanPos1 === false || booleanPos2 === false || booleanPos3 === false){
             //z
+            // console.log(booleanPos1, booleanPos2, booleanPos3);
             if(booleanPos3 === false){
                 if(this.env.flecheAssets.mesh.position.z > -1.13807){
                     this.env.flecheAssets.mesh.position.z -= 0.07;
@@ -430,24 +438,7 @@ export class TirArcGameState extends GameState {
             //faire le x +++ positionner la cible comme il faut sur blender dans l'axe (pas forcément, faire comme pour le y)
             if(booleanPos2 === false){
                 const eloignement = Math.abs(horizontalDirection);
-                if(horizontalDirection === 0){
-                    if(this.env.flecheAssets.mesh.position.x > -0.36){
-                        // console.log("horizontal 0");
-                        this.env.flecheAssets.mesh.position.x -= 0.007;
-                        await new Promise(resolve => setTimeout(resolve, 7));
-                    }
-                    else{
-                        booleanPos2 = true;
-                    }
-                }
-                else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x > -0.36 - (0.01883 * eloignement + 0.00836)){
-                    this.env.flecheAssets.mesh.position.x -= 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
-                }
-                else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x > -0.36 - (0.01883 * eloignement + 0.00836)){
-                    booleanPos2 = true;
-                }
-                else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal2){
+                if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal2){
                     booleanHorizontal1 = true;
                     this.env.flecheAssets.mesh.position.x += 0.007;
                     await new Promise(resolve => setTimeout(resolve, 7));
@@ -463,10 +454,29 @@ export class TirArcGameState extends GameState {
                 else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal1){
                     booleanPos2 = true;
                 }
+                else if(horizontalDirection === 0){
+                    if(this.env.flecheAssets.mesh.position.x > -0.36){
+                        // console.log("horizontal 0");
+                        this.env.flecheAssets.mesh.position.x -= 0.007;
+                        await new Promise(resolve => setTimeout(resolve, 7));
+                    }
+                    else{
+                        booleanPos2 = true;
+                    }
+                }
+                else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x > -0.36 - (0.01883 * eloignement + 0.00836)){
+                    this.env.flecheAssets.mesh.position.x -= 0.007;
+                    await new Promise(resolve => setTimeout(resolve, 7));
+                }
+                else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x < -0.36 - (0.01883 * eloignement + 0.00836)){
+                    booleanPos2 = true;
+                }
+                
             }
         }
+        // console.log(booleanPos1, booleanPos2, booleanPos3);
         console.log("fin anim fleche");
-        this.player.runWin();
+        this.player._isWin = true;
         // }
         // this.env.flecheAssets.mesh.position.x = -0.367833;
         // this.env.flecheAssets.mesh.position.y = 0.362621 + 0.01883 *2+ 0.00836 ;
@@ -474,11 +484,6 @@ export class TirArcGameState extends GameState {
         
 	}
 
-    private endGame(){
-        this.playActive = false;
-        this.player.runWin();
-        this.createFinaleScoreBoard();
-    }
 
     showScoreBoard(): void {
         this.scoreboardIsShow = true;
