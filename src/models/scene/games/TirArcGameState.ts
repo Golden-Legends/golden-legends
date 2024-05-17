@@ -346,7 +346,7 @@ export class TirArcGameState extends GameState {
                 this.animationFleche = true;
                 this.animateFleche();
                 //TODO player en anim isWin
-                setTimeout(() => this.player.runWin(), 4000);
+                // setTimeout(() => this.player.runWin(), 4000);
             }
             else if(this.player._isWin && this.animationFleche){
                 this.score = this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]
@@ -357,8 +357,86 @@ export class TirArcGameState extends GameState {
         }
     }
 
-    public animateFleche(){
+    public async animateFleche(){
 		console.log("animate fleche");
+        // this.env.flecheAssets.position = new Vector3(-0.31, 0.4, 3.85)
+        // console.log(this.env.flecheAssets.mesh.position);
+        // while(this.env.flecheAssets.mesh.position.z < 1.13807){
+        //     this.env.flecheAssets.mesh.position.z += 0.1;
+        //     console.log("fleche move");
+        // }
+        // console.log("fleche end");
+        //faire une anim de caméra
+        // this._camera.position.z = 0;
+        // ANIMATION FLECHE
+        let booleanPos1 = false;
+        let booleanPos2 = false
+        let booleanPos3 = false;
+        const verticalDirection = this.player.verticalDirection// const verticalDirection = 0;
+        const horizontalDirection = this.player.horizontalDirection;
+        console.log(verticalDirection, horizontalDirection);
+        // this.env.flecheAssets.mesh.position.y = 0.362621;
+        console.log(this.env.flecheAssets.mesh.position.y);
+
+        let booleanVertical1 = false;
+        let booleanVertical2 = false;
+
+        while(/*booleanPos1 === false || booleanPos2 === false || */booleanPos3 === false){
+            //z
+            if(booleanPos3 === false){
+                if(this.env.flecheAssets.mesh.position.z > -1.13807){
+                    this.env.flecheAssets.mesh.position.z -= 0.07;
+                    await new Promise(resolve => setTimeout(resolve, 7));
+                }
+                else{
+                    booleanPos3 = true;
+                }
+            }
+            //y
+            if(booleanPos1 === false){
+                const eloignement = Math.abs(verticalDirection);
+                if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.362621 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
+                    booleanVertical1 = true;
+                    this.env.flecheAssets.mesh.position.y += 0.007;
+                    await new Promise(resolve => setTimeout(resolve, 7));
+                }
+                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.362621 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
+                    booleanPos1 = true;
+                }
+                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.362621 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
+                    booleanVertical2 = true;
+                    this.env.flecheAssets.mesh.position.y -= 0.007;
+                    await new Promise(resolve => setTimeout(resolve, 7));
+                }
+                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.362621 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
+                    booleanPos1 = true;
+                }
+                else if(verticalDirection === 0){
+                    if(this.env.flecheAssets.mesh.position.y < 0.362621){
+                        console.log("vertical 0");
+                        this.env.flecheAssets.mesh.position.y += 0.007;
+                        await new Promise(resolve => setTimeout(resolve, 7));
+                    }
+                    else{
+                        booleanPos1 = true;
+                    }
+                }
+                else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y < 0.362621 + (0.01883 * eloignement + 0.00836)){
+                    this.env.flecheAssets.mesh.position.y += 0.007;
+                    await new Promise(resolve => setTimeout(resolve, 7));
+                }
+                else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y > 0.362621 + (0.01883 * eloignement + 0.00836)){
+                    booleanPos1 = true;
+                }
+            }
+            //faire le x
+        }
+
+        // }
+        // this.env.flecheAssets.mesh.position.x = -0.367833;
+        // this.env.flecheAssets.mesh.position.y = 0.362621 + 0.01883 *2+ 0.00836 ;
+        // this.env.flecheAssets.mesh.position.z = -1.13807;
+        
 	}
 
     private endGame(){
@@ -415,6 +493,5 @@ export class TirArcGameState extends GameState {
         }
     }
 
-    //timer à revoir avec à la place un compteur de points (affichage différents juste)
 
 }
