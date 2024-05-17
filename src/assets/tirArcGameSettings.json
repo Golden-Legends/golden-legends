@@ -14,8 +14,8 @@
             "placement" : 
             [ 
                 {  
-                    "start" : "CylinderTirMoyenAtt",
-                    "end" : "CylinderTirMoyen"   
+                    "start" : "CylinderTirFacileAtt",
+                    "end" : "CylinderTirFacile"   
                 }
             ],
             "pointToSucceed" : 100

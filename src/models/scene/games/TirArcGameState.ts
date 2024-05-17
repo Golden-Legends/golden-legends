@@ -358,30 +358,28 @@ export class TirArcGameState extends GameState {
     }
 
     public async animateFleche(){
-		console.log("animate fleche");
+		// console.log("animate fleche");
         // this.env.flecheAssets.position = new Vector3(-0.31, 0.4, 3.85)
-        // console.log(this.env.flecheAssets.mesh.position);
-        // while(this.env.flecheAssets.mesh.position.z < 1.13807){
-        //     this.env.flecheAssets.mesh.position.z += 0.1;
-        //     console.log("fleche move");
-        // }
-        // console.log("fleche end");
-        //faire une anim de caméra
+        //TODO faire une anim de caméra
         // this._camera.position.z = 0;
         // ANIMATION FLECHE
         let booleanPos1 = false;
         let booleanPos2 = false
         let booleanPos3 = false;
-        const verticalDirection = this.player.verticalDirection// const verticalDirection = 0;
+        const verticalDirection = this.player.verticalDirection
         const horizontalDirection = this.player.horizontalDirection;
         console.log(verticalDirection, horizontalDirection);
         // this.env.flecheAssets.mesh.position.y = 0.362621;
-        console.log(this.env.flecheAssets.mesh.position.y);
+        // console.log(this.env.flecheAssets.mesh.position.y);
+        // console.log(this.env.flecheAssets.mesh.position.x);
 
         let booleanVertical1 = false;
         let booleanVertical2 = false;
 
-        while(/*booleanPos1 === false || booleanPos2 === false || */booleanPos3 === false){
+        let booleanHorizontal1 = false;
+        let booleanHorizontal2 = false;
+
+        while(booleanPos1 === false || booleanPos2 === false || booleanPos3 === false){
             //z
             if(booleanPos3 === false){
                 if(this.env.flecheAssets.mesh.position.z > -1.13807){
@@ -395,25 +393,25 @@ export class TirArcGameState extends GameState {
             //y
             if(booleanPos1 === false){
                 const eloignement = Math.abs(verticalDirection);
-                if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.362621 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
+                if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
                     booleanVertical1 = true;
                     this.env.flecheAssets.mesh.position.y += 0.007;
                     await new Promise(resolve => setTimeout(resolve, 7));
                 }
-                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.362621 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
+                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
                     booleanPos1 = true;
                 }
-                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.362621 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
+                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
                     booleanVertical2 = true;
                     this.env.flecheAssets.mesh.position.y -= 0.007;
                     await new Promise(resolve => setTimeout(resolve, 7));
                 }
-                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.362621 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
+                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
                     booleanPos1 = true;
                 }
                 else if(verticalDirection === 0){
-                    if(this.env.flecheAssets.mesh.position.y < 0.362621){
-                        console.log("vertical 0");
+                    if(this.env.flecheAssets.mesh.position.y < 0.361){
+                        // console.log("vertical 0");
                         this.env.flecheAssets.mesh.position.y += 0.007;
                         await new Promise(resolve => setTimeout(resolve, 7));
                     }
@@ -421,17 +419,54 @@ export class TirArcGameState extends GameState {
                         booleanPos1 = true;
                     }
                 }
-                else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y < 0.362621 + (0.01883 * eloignement + 0.00836)){
+                else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y < 0.361 + (0.01883 * eloignement + 0.00836)){
                     this.env.flecheAssets.mesh.position.y += 0.007;
                     await new Promise(resolve => setTimeout(resolve, 7));
                 }
-                else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y > 0.362621 + (0.01883 * eloignement + 0.00836)){
+                else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y > 0.361 + (0.01883 * eloignement + 0.00836)){
                     booleanPos1 = true;
                 }
             }
-            //faire le x
+            //faire le x +++ positionner la cible comme il faut sur blender dans l'axe (pas forcément, faire comme pour le y)
+            if(booleanPos2 === false){
+                const eloignement = Math.abs(horizontalDirection);
+                if(horizontalDirection === 0){
+                    if(this.env.flecheAssets.mesh.position.x > -0.36){
+                        // console.log("horizontal 0");
+                        this.env.flecheAssets.mesh.position.x -= 0.007;
+                        await new Promise(resolve => setTimeout(resolve, 7));
+                    }
+                    else{
+                        booleanPos2 = true;
+                    }
+                }
+                else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x > -0.36 - (0.01883 * eloignement + 0.00836)){
+                    this.env.flecheAssets.mesh.position.x -= 0.007;
+                    await new Promise(resolve => setTimeout(resolve, 7));
+                }
+                else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x > -0.36 - (0.01883 * eloignement + 0.00836)){
+                    booleanPos2 = true;
+                }
+                else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal2){
+                    booleanHorizontal1 = true;
+                    this.env.flecheAssets.mesh.position.x += 0.007;
+                    await new Promise(resolve => setTimeout(resolve, 7));
+                }
+                else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x > -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal2){
+                    booleanPos2 = true;
+                }
+                else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x > -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal1){
+                    booleanHorizontal2 = true;
+                    this.env.flecheAssets.mesh.position.x -= 0.007;
+                    await new Promise(resolve => setTimeout(resolve, 7));
+                }
+                else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal1){
+                    booleanPos2 = true;
+                }
+            }
         }
-
+        console.log("fin anim fleche");
+        this.player.runWin();
         // }
         // this.env.flecheAssets.mesh.position.x = -0.367833;
         // this.env.flecheAssets.mesh.position.y = 0.362621 + 0.01883 *2+ 0.00836 ;
