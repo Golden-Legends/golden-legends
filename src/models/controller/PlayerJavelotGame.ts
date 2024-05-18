@@ -146,13 +146,13 @@ export class PlayerJavelotGame {
     public processInput(): void {
         if(this.compteur === 0){
             if (this._input.figureh) {
-                this.horizontalDirection = Math.floor(Math.random() * 4) + 1;
+                this.horizontalDirection = Math.floor(Math.random() * 7) - 3;
                 this.compteur ++;
             }
         }
         else if(this.compteur === 1){
             if (this._input.figurev) {
-                this.verticalDirection = Math.floor(Math.random() * 7) - 3;
+                this.verticalDirection = Math.floor(Math.random() * 7) +1;
                 this.compteur ++;
                 this.isEndGame = true;
                 this.runLancer();

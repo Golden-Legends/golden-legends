@@ -334,7 +334,7 @@ export class JavelotGameState extends GameState {
             else if(this.player.compteur === 2 && !this.animArc){
                 //TODO REMOVE GUI
                 this.animArc = true;
-                //TODO attendre quelques secondes et load le javelot puis démarrer l'anim du javelot 
+                //attendre quelques secondes et load le javelot puis démarrer l'anim du javelot 
                 // this.animationJavelot = true;
                 setTimeout(() => {
                     const loadJavelotAssets = async () => {
@@ -344,15 +344,14 @@ export class JavelotGameState extends GameState {
                     setTimeout(() => {
                         this.animateJavelot();
                         this.animationJavelot = true;
-                    }, 500);
-                }, 1500);            
+                    }, 50);
+                }, 1300);            
             }
             else if(this.player._isWin && this.animationJavelot){
                 // console.log("win"); 
                 this.score = this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]
                 storeJavelot.commit('setScore', this.score);
                 this.endGame();
-                // console.log(this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]);
             }
         }
     }
@@ -364,139 +363,136 @@ export class JavelotGameState extends GameState {
     }
 
     public async animateJavelot(){
-		// console.log("animate javelot");
-        // this.env.flecheAssets.position = new Vector3(-0.31, 0.4, 3.85)
         //TODO faire une anim de caméra
         // this._camera.position.z = 0;
-        // ANIMATION FLECHE
-        // let booleanPos1 = false;
-        // let booleanPos2 = false
+        // ANIMATION JAVELOT
+        let booleanPos1 = false;
+        let booleanPos2 = false
         let booleanPos3 = false;
-        // const verticalDirection = this.player.verticalDirection
-        // const horizontalDirection = this.player.horizontalDirection;
-        // console.log(verticalDirection, horizontalDirection);
-        // // this.env.flecheAssets.mesh.position.y = 0.362621;
-        // // console.log(this.env.flecheAssets.mesh.position.y);
-        // // console.log(this.env.flecheAssets.mesh.position.x);
-
-        // let booleanVertical1 = false;
-        // let booleanVertical2 = false;
-
-        // let booleanHorizontal1 = false;
-        // let booleanHorizontal2 = false;
+        const verticalDirection = this.player.verticalDirection;
+        const horizontalDirection = this.player.horizontalDirection;
+        console.log(verticalDirection, horizontalDirection);
         let booleanMonteeFinit = false;
-        let mesh = this.env.getJavelot();
-        console.log(mesh);
-        //console.log(this.env.javelotAssets);
 
-        while(/*booleanPos1 === false || booleanPos2 === false || */booleanPos3 === false){
-            //z
+
+        let position;
+        let rotation;
+        let position2;
+        let rotation2;
+        let timeExec;
+        switch(verticalDirection){
+            case 1:
+                position = 0.03;
+                rotation = 0.017;
+                position2 = 0.025;
+                rotation2 = 0.01;
+                timeExec = 7;
+                break;
+            case 2:
+                position = 0.0245;
+                rotation = 0.0135;
+                position2 = 0.022;
+                rotation2 = 0.009;
+                timeExec = 6.5;
+                break;
+            case 3:
+                position = 0.019;
+                rotation = 0.01;
+                position2 = 0.020;
+                rotation2 = 0.008;
+                timeExec = 6;
+                break;
+            case 4:
+                position = 0.015;
+                rotation = 0.00650;
+                position2 = 0.018;
+                rotation2 = 0.007;
+                timeExec = 5.5;
+                break;
+            case 5:
+                position = 0.013;
+                rotation = 0.00450;
+                position2 = 0.014;
+                rotation2 = 0.004;
+                timeExec = 5;
+                break;
+            case 6:
+                position = 0.011;
+                rotation = 0.00400;
+                position2 = 0.010;
+                rotation2 = 0.002;
+                timeExec = 4.5;
+                break;
+            case 7:
+                position = 0.01;
+                rotation = 0.00350;
+                position2 = 0.008;
+                rotation2 = 0.001;
+                timeExec = 4;
+            default:    
+                break;
+        }
+        while(booleanPos1 === false || booleanPos2 === false || booleanPos3 === false){
+            //y
             // console.log(booleanPos1, booleanPos2, booleanPos3);
             if(booleanPos3 === false){
                 if(this.env.javelotAssets.mesh.position.y < 1 && !booleanMonteeFinit){
-                    this.env.javelotAssets.mesh.position.y += 0.035;
-                    this.env.javelotAssets.mesh.rotation.x -= 0.025;
-                    await new Promise(resolve => setTimeout(resolve, 10));   
+                    this.env.javelotAssets.mesh.position.y += position;
+                    this.env.javelotAssets.mesh.rotation.x -= rotation;
+                    await new Promise(resolve => setTimeout(resolve, timeExec));   
                 }
                 else if(this.env.javelotAssets.mesh.position.y > 1 && !booleanMonteeFinit){
                     booleanMonteeFinit = true;
                 }
                 else if(this.env.javelotAssets.mesh.position.y > 0.1 && booleanMonteeFinit){
-                    this.env.javelotAssets.mesh.position.y -= 0.035;
-                    this.env.javelotAssets.mesh.rotation.x -= 0.025;
-                    await new Promise(resolve => setTimeout(resolve, 10));
+                    this.env.javelotAssets.mesh.position.y -= position;
+                    this.env.javelotAssets.mesh.rotation.x -= rotation;
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
                 else if(this.env.javelotAssets.mesh.position.y <= 0.1 && booleanMonteeFinit){
                     booleanPos3 = true;
                 }
             }
-        //     //y
-        //     if(booleanPos1 === false){
-        //         const eloignement = Math.abs(verticalDirection);
-        //         if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
-        //             booleanVertical1 = true;
-        //             this.env.flecheAssets.mesh.position.y += 0.007;
-        //             await new Promise(resolve => setTimeout(resolve, 7));
-        //         }
-        //         else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
-        //             booleanPos1 = true;
-        //         }
-        //         else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
-        //             booleanVertical2 = true;
-        //             this.env.flecheAssets.mesh.position.y -= 0.007;
-        //             await new Promise(resolve => setTimeout(resolve, 7));
-        //         }
-        //         else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
-        //             booleanPos1 = true;
-        //         }
-        //         else if(verticalDirection === 0){
-        //             if(this.env.flecheAssets.mesh.position.y < 0.361){
-        //                 // console.log("vertical 0");
-        //                 this.env.flecheAssets.mesh.position.y += 0.007;
-        //                 await new Promise(resolve => setTimeout(resolve, 7));
-        //             }
-        //             else{
-        //                 booleanPos1 = true;
-        //             }
-        //         }
-        //         else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y < 0.361 + (0.01883 * eloignement + 0.00836)){
-        //             this.env.flecheAssets.mesh.position.y += 0.007;
-        //             await new Promise(resolve => setTimeout(resolve, 7));
-        //         }
-        //         else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y > 0.361 + (0.01883 * eloignement + 0.00836)){
-        //             booleanPos1 = true;
-        //         }
-        //     }
-        //     //faire le x +++ positionner la cible comme il faut sur blender dans l'axe (pas forcément, faire comme pour le y)
-        //     if(booleanPos2 === false){
-        //         const eloignement = Math.abs(horizontalDirection);
-        //         if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal2){
-        //             booleanHorizontal1 = true;
-        //             this.env.flecheAssets.mesh.position.x += 0.007;
-        //             await new Promise(resolve => setTimeout(resolve, 7));
-        //         }
-        //         else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x > -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal2){
-        //             booleanPos2 = true;
-        //         }
-        //         else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x > -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal1){
-        //             booleanHorizontal2 = true;
-        //             this.env.flecheAssets.mesh.position.x -= 0.007;
-        //             await new Promise(resolve => setTimeout(resolve, 7));
-        //         }
-        //         else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal1){
-        //             booleanPos2 = true;
-        //         }
-        //         else if(horizontalDirection === 0){
-        //             if(this.env.flecheAssets.mesh.position.x > -0.36){
-        //                 // console.log("horizontal 0");
-        //                 this.env.flecheAssets.mesh.position.x -= 0.007;
-        //                 await new Promise(resolve => setTimeout(resolve, 7));
-        //             }
-        //             else{
-        //                 booleanPos2 = true;
-        //             }
-        //         }
-        //         else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x > -0.36 - (0.01883 * eloignement + 0.00836)){
-        //             this.env.flecheAssets.mesh.position.x -= 0.007;
-        //             await new Promise(resolve => setTimeout(resolve, 7));
-        //         }
-        //         else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x < -0.36 - (0.01883 * eloignement + 0.00836)){
-        //             booleanPos2 = true;
-        //         }
-                
-        //     }
+            //z
+            if(booleanPos1 === false){
+                // console.log(this.env.javelotAssets.mesh.position.z);
+                const eloignement = verticalDirection -1;
+                if(this.env.javelotAssets.mesh.position.z > 4.49666 - (1.00621 * eloignement) ){
+                    this.env.javelotAssets.mesh.position.z -= 0.05;
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
+                }
+                else if(this.env.javelotAssets.mesh.position.z < 4.49666 - (1.00621 * eloignement)){
+                    booleanPos1 = true;
+                }
+            }
+            //x
+            if(booleanPos2 === false){
+                const eloignement = Math.abs(horizontalDirection);
+                if(horizontalDirection === 0){
+                    booleanPos2 = true;
+                }
+                else if(horizontalDirection < 0 && this.env.javelotAssets.mesh.position.x < -0.95 + (0.49518 * eloignement)){
+                    this.env.javelotAssets.mesh.position.x += position2;
+                    this.env.javelotAssets.mesh.rotation.y -= rotation2;
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
+                }
+                else if(horizontalDirection < 0 && this.env.javelotAssets.mesh.position.x > -0.95 + (0.49518 * eloignement)){
+                    booleanPos2 = true;
+                }
+                else if(horizontalDirection > 0 && this.env.javelotAssets.mesh.position.x > -0.95 - (0.49518 * eloignement)){
+                    this.env.javelotAssets.mesh.position.x -= position2;
+                    this.env.javelotAssets.mesh.rotation.y += rotation2;
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
+                }
+                else if(horizontalDirection > 0 && this.env.javelotAssets.mesh.position.x < -0.95 - (0.49518 * eloignement)){
+                    booleanPos2 = true;
+                }
+            }
         }
         setTimeout(() => {
             console.log("fin anim javelot");
             this.player._isWin = true;
-        }, 2500);
-        // console.log(booleanPos1, booleanPos2, booleanPos3);
-        
-        // }
-        // this.env.flecheAssets.mesh.position.x = -0.367833;
-        // this.env.flecheAssets.mesh.position.y = 0.362621 + 0.01883 *2+ 0.00836 ;
-        // this.env.flecheAssets.mesh.position.z = -1.13807;
-        
+        }, 2500);        
 	}
 
 
