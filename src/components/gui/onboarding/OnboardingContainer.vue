@@ -4,7 +4,8 @@ import arrow from "@/assets/arrow.svg";
 import CarouselContent from "@/components/gui/onboarding/CarouselContent.vue";
 import CommandContainer from "@/components/gui/commands/CommandContainer.vue";
 import Title from "@/components/gui/onboarding/Title.vue";
-
+import map_overview from "@/assets/map_overview.png";
+import lobby from "@/assets/lobby.png";
 const carousel = ref(0);
 </script>
 
@@ -14,7 +15,7 @@ const carousel = ref(0);
   >
     <button
       id="close-onboarding"
-      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
     >
       <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
@@ -25,22 +26,39 @@ const carousel = ref(0);
       <button
         :disabled="carousel === 0"
         @click="carousel--"
-        class="disabled:opacity-30 mr-8 p-4 rounded-full backdrop-brightness-50"
+        class="disabled:opacity-30 mr-8 p-4 rounded-full backdrop-brightness-50 w-20"
       >
         <img :src="arrow" alt="left-arrow" class="w-12 h-8" />
       </button>
-      <div class="rounded-xl backdrop-brightness-75 px-4 py-4">
+      <div class="rounded-xl backdrop-brightness-75 px-4 py-4 w-3/4">
         <CarouselContent v-if="carousel === 0">
+          <div>
+            <Title text="Prêt à jouer ?"></Title>
+            <span
+              >Épreuves, mini-jeux, objets... La carte de Paris n'attend que
+              toi. Explore les alentours pour trouver tous les secrets de cette
+              carte.</span
+            >
+            <img
+              :src="map_overview"
+              alt="map-overview"
+              class="w-full rounded-lg my-2"
+            />
+          </div>
+        </CarouselContent>
+        <CarouselContent v-if="carousel === 1">
           <div>
             <Title text="Des portails ?"></Title>
             <span>Ils servent à accéder à nos différentes épreuves.</span>
+            <img :src="lobby" alt="lobby" class="w-full rounded-lg my-2" />
           </div>
 
           <div>
             <Title text="Comment les utiliser ?"></Title>
             <span>Vous n'avez qu'à aller devant pour tester 😄</span>
           </div>
-
+        </CarouselContent>
+        <CarouselContent v-if="carousel === 2">
           <div>
             <Title text="Comment jouer ?"></Title>
             <span
@@ -60,12 +78,6 @@ const carousel = ref(0);
               />
             </div>
           </div>
-        </CarouselContent>
-        <CarouselContent v-if="carousel === 1">
-          <div>
-            <Title text="Où suis-je ?"></Title>
-            <span>À Paris, à notre façon.</span>
-          </div>
           <div>
             <Title text="Mais qu'est-ce que je peux bien faire ?"></Title>
             <span
@@ -77,9 +89,9 @@ const carousel = ref(0);
       </div>
 
       <button
-        :disabled="carousel === 1"
+        :disabled="carousel === 2"
         @click="carousel++"
-        class="disabled:opacity-30 ml-8 p-4 rounded-full backdrop-brightness-50"
+        class="disabled:opacity-30 ml-8 p-4 rounded-full backdrop-brightness-50 w-20"
       >
         <img :src="arrow" alt="right-arrow" class="w-12 h-8 rotate-180" />
       </button>
