@@ -52,7 +52,7 @@ export class JavelotGameState extends GameState {
     private guiGame: boolean = false;
     private playActive: boolean = false;
     private scoreboardIsShow : boolean = false;
-    private animationFleche : boolean = false;
+    private animationJavelot : boolean = false;
     private tableauScore : number[] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
     private animArc : boolean = false;
     private score : number = 0;
@@ -335,19 +335,19 @@ export class JavelotGameState extends GameState {
                 //TODO REMOVE GUI
                 this.animArc = true;
                 //TODO attendre quelques secondes et load le javelot puis démarrer l'anim du javelot 
-                // this.animationFleche = true;
+                // this.animationJavelot = true;
                 setTimeout(() => {
-                    this.animateJavelot();
-                    this.animationFleche = true;
-                }, 6000);
-                
-                // const loadFlecheAssets = async () => {
-                //     await this.env._loadFlecheAssets(this.scene, new Vector3(-0.31, 0.2, 3.85), "fleche.glb", "fleche", new Vector3(0, 0, 0));
-                // };
-                // loadFlecheAssets();
-                
+                    const loadJavelotAssets = async () => {
+                            await this.env._loadJavelotAssets(this.scene, new Vector3(-0.95, 0.1, 7.1), "jav.glb", "javelot", new Vector3(0, 0, 0));
+                        };
+                    loadJavelotAssets();
+                    setTimeout(() => {
+                        this.animateJavelot();
+                        this.animationJavelot = true;
+                    }, 500);
+                }, 1500);            
             }
-            else if(this.player._isWin && this.animationFleche){
+            else if(this.player._isWin && this.animationJavelot){
                 // console.log("win"); 
                 this.score = this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]
                 storeJavelot.commit('setScore', this.score);
@@ -371,7 +371,7 @@ export class JavelotGameState extends GameState {
         // ANIMATION FLECHE
         // let booleanPos1 = false;
         // let booleanPos2 = false
-        // let booleanPos3 = false;
+        let booleanPos3 = false;
         // const verticalDirection = this.player.verticalDirection
         // const horizontalDirection = this.player.horizontalDirection;
         // console.log(verticalDirection, horizontalDirection);
@@ -384,19 +384,32 @@ export class JavelotGameState extends GameState {
 
         // let booleanHorizontal1 = false;
         // let booleanHorizontal2 = false;
+        let booleanMonteeFinit = false;
+        let mesh = this.env.getJavelot();
+        console.log(mesh);
+        //console.log(this.env.javelotAssets);
 
-        // while(booleanPos1 === false || booleanPos2 === false || booleanPos3 === false){
-        //     //z
-        //     // console.log(booleanPos1, booleanPos2, booleanPos3);
-        //     if(booleanPos3 === false){
-        //         if(this.env.flecheAssets.mesh.position.z > -1.13807){
-        //             this.env.flecheAssets.mesh.position.z -= 0.07;
-        //             await new Promise(resolve => setTimeout(resolve, 7));
-        //         }
-        //         else{
-        //             booleanPos3 = true;
-        //         }
-        //     }
+        while(/*booleanPos1 === false || booleanPos2 === false || */booleanPos3 === false){
+            //z
+            // console.log(booleanPos1, booleanPos2, booleanPos3);
+            if(booleanPos3 === false){
+                if(this.env.javelotAssets.mesh.position.y < 1 && !booleanMonteeFinit){
+                    this.env.javelotAssets.mesh.position.y += 0.035;
+                    this.env.javelotAssets.mesh.rotation.x -= 0.025;
+                    await new Promise(resolve => setTimeout(resolve, 10));   
+                }
+                else if(this.env.javelotAssets.mesh.position.y > 1 && !booleanMonteeFinit){
+                    booleanMonteeFinit = true;
+                }
+                else if(this.env.javelotAssets.mesh.position.y > 0.1 && booleanMonteeFinit){
+                    this.env.javelotAssets.mesh.position.y -= 0.035;
+                    this.env.javelotAssets.mesh.rotation.x -= 0.025;
+                    await new Promise(resolve => setTimeout(resolve, 10));
+                }
+                else if(this.env.javelotAssets.mesh.position.y <= 0.1 && booleanMonteeFinit){
+                    booleanPos3 = true;
+                }
+            }
         //     //y
         //     if(booleanPos1 === false){
         //         const eloignement = Math.abs(verticalDirection);
@@ -472,10 +485,13 @@ export class JavelotGameState extends GameState {
         //         }
                 
         //     }
-        // }
+        }
+        setTimeout(() => {
+            console.log("fin anim javelot");
+            this.player._isWin = true;
+        }, 2500);
         // console.log(booleanPos1, booleanPos2, booleanPos3);
-        console.log("fin anim javelot");
-        this.player._isWin = true;
+        
         // }
         // this.env.flecheAssets.mesh.position.x = -0.367833;
         // this.env.flecheAssets.mesh.position.y = 0.362621 + 0.01883 *2+ 0.00836 ;

@@ -6,7 +6,7 @@ export class javelotGameEnv {
     private _scene: Scene;
 	public assets;
 	public filename: string[] = ["perso1.glb", "perso2.glb", "perso3.glb", "perso4.glb", "perso5.glb", "perso6.glb", "perso7.glb"];
-	public flecheAssets;
+	public javelotAssets;
 
     constructor(scene: Scene) {
 		this._scene = scene;
@@ -178,9 +178,9 @@ export class javelotGameEnv {
 
 
     //remplacer par le javelot
-	public async _loadFlecheAssets(scene: Scene, position: Vector3, path: string, name: string, rotation: Vector3){
+	public async _loadJavelotAssets(scene: Scene, position: Vector3, path: string, name: string, rotation: Vector3){
 
-		async function loadFleche(){
+		async function loadJavelot(){
 			//collision mesh
 			const outer = MeshBuilder.CreateBox(
 				name,
@@ -226,11 +226,15 @@ export class javelotGameEnv {
 			});
 		}	
 
-		return loadFleche().then(assets=> {
+		return loadJavelot().then(assets=> {
             // console.log(assets);
-			this.flecheAssets = assets;
+			this.javelotAssets = assets;
             return assets;
 		})
 
+	}
+
+	public getJavelot(){
+		return this.javelotAssets;
 	}
 }
