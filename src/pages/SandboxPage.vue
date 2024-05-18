@@ -25,6 +25,7 @@ import GateButton from "@/components/gui/tp/GateButton.vue";
 
 import { ref } from "vue";
 import ArcheryContainer from "@/components/gui/archery/ArcheryContainer.vue";
+import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
 const longDialogText =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
@@ -188,9 +189,11 @@ const position = (position: number) => {
         <KeybindHint keybind="Esc" name="Options" event-key="escape" />
         <KeybindHint keybind="M" name="Carte" event-key="m" />
       </SandboxContainer>
+      <!--
       <SandboxContainer name="Speed bar">
         <SpeedBar :speed="speed" :min="0" :max="20" />
       </SandboxContainer>
+-->
       <SandboxContainer name="Game gate">
         <GameGate title="100m">
           <GateButton name="Facile" difficulty="easy" />
@@ -203,7 +206,7 @@ const position = (position: number) => {
           <GateButton name="Difficile" difficulty="hard" disabled />
         </GameGate>
       </SandboxContainer>
-      <SandboxContainer name="Archery">
+      <!--      <SandboxContainer name="Archery">
         <ArcheryContainer
           orientation="horizontal"
           :ms="20"
@@ -214,6 +217,9 @@ const position = (position: number) => {
           :ms="20"
           @update-position="position"
         />
+      </SandboxContainer>-->
+      <SandboxContainer name="Onboarding">
+        <OnboardingContainer class="mt-4" />
       </SandboxContainer>
     </div>
   </div>

@@ -46,6 +46,14 @@ export class InGameState extends GameState {
     this._input = new PlayerInput(this.scene);
     document.getElementById("objects-keybind")!.classList.remove("hidden");
     document.getElementById("map-keybind")!.classList.remove("hidden");
+
+    document
+      .getElementById("close-onboarding")!
+      .addEventListener("click", () => {
+        document
+          .getElementById("onboarding-container")!
+          .classList.add("hidden");
+      });
   }
 
   async enter() {
@@ -117,7 +125,6 @@ export class InGameState extends GameState {
     this.game.engine.hideLoadingUI();
   }
 
-
   public animStartGame() {
     console.log("animStartGame");
     //camera 1
@@ -125,8 +132,12 @@ export class InGameState extends GameState {
     // camera.rotation = new Vector3(Math.PI/6, 0, 0);
 
     //camera 2
-    const camera = new FollowCamera("carteCamera", new Vector3(-142, 4, -54.1), this.scene);
-    camera.rotation = new Vector3(Math.PI/2, 0, 0);
+    const camera = new FollowCamera(
+      "carteCamera",
+      new Vector3(-142, 4, -54.1),
+      this.scene,
+    );
+    camera.rotation = new Vector3(Math.PI / 2, 0, 0);
 
     //camera.lockedTarget = this.player.mesh;
     //camera.radius = 10;
@@ -134,17 +145,17 @@ export class InGameState extends GameState {
     //camera.rotationOffset = 180;
 
     const animation = new Animation(
-        "cameraAnimation",
-        "position",
-        30,
-        Animation.ANIMATIONTYPE_VECTOR3,
-        Animation.ANIMATIONLOOPMODE_CONSTANT
+      "cameraAnimation",
+      "position",
+      30,
+      Animation.ANIMATIONTYPE_VECTOR3,
+      Animation.ANIMATIONLOOPMODE_CONSTANT,
     );
 
     // Définir les frames clés de l'animation
-    const camKeys: { frame: number, value: Vector3 }[] = [];
+    const camKeys: { frame: number; value: Vector3 }[] = [];
     //anim num 1
-    // camKeys.push({frame: 0, value: new Vector3(-145, 80, -260)}); // Position actuelle de la caméra 
+    // camKeys.push({frame: 0, value: new Vector3(-145, 80, -260)}); // Position actuelle de la caméra
     // camKeys.push({frame: 2 * this.fps, value: new Vector3(-1.1, 80, -201.9)});
     // camKeys.push({frame: 4 * this.fps, value: new Vector3(39.6, 80, -54.1)});
     // camKeys.push({frame: 6 * this.fps, value: new Vector3(-1.1, 80, 94.53)});
@@ -157,28 +168,27 @@ export class InGameState extends GameState {
     // Durée de l'animation (en frames) // Nouvelle position de la caméra
 
     //anim num 2
-    camKeys.push({frame: 0, value: new Vector3(-142, 4, -54.1)});
-    camKeys.push({frame: 4 * this.fps, value: new Vector3(39.6, 80, -54.1)});
-    camKeys.push({frame: 9 * this.fps, value: new Vector3(39.6, 80, -54.1)});
-    camKeys.push({frame: 11 * this.fps, value: new Vector3(-170, 8, -10)});
+    camKeys.push({ frame: 0, value: new Vector3(-142, 4, -54.1) });
+    camKeys.push({ frame: 4 * this.fps, value: new Vector3(39.6, 80, -54.1) });
+    camKeys.push({ frame: 9 * this.fps, value: new Vector3(39.6, 80, -54.1) });
+    camKeys.push({ frame: 11 * this.fps, value: new Vector3(-170, 8, -10) });
 
-    
     // Ajouter les keys à l'animation
     animation.setKeys(camKeys);
-    
+
     // Ajouter l'animation à la caméra
     camera.animations.push(animation);
 
     const rotationAnimation = new Animation(
-        "cameraRotationAnimation",
-        "rotation",
-        30,
-        Animation.ANIMATIONTYPE_VECTOR3,
-        Animation.ANIMATIONLOOPMODE_CONSTANT
+      "cameraRotationAnimation",
+      "rotation",
+      30,
+      Animation.ANIMATIONTYPE_VECTOR3,
+      Animation.ANIMATIONLOOPMODE_CONSTANT,
     );
 
     // Définir les frames clés de l'animation de rotation
-    const rotationKeys: { frame: number, value: Vector3 }[] = [];
+    const rotationKeys: { frame: number; value: Vector3 }[] = [];
     // anim num 1
     // rotationKeys.push({frame: 0, value: new Vector3(Math.PI/6, 0, 0)});// Rotation actuelle de la caméra
     // rotationKeys.push({frame: 2 * this.fps, value: new Vector3(Math.PI/6, -Math.PI/4, 0)});
@@ -192,10 +202,19 @@ export class InGameState extends GameState {
     // rotationKeys.push({frame: 18 * this.fps, value: new Vector3(Math.PI/6, -2*Math.PI, 0)});
 
     // anim num 2
-    rotationKeys.push({frame: 0, value: new Vector3(Math.PI/2, 0, 0)});
-    rotationKeys.push({frame: 4 * this.fps, value: new Vector3(Math.PI/6, -2*Math.PI/3, 0)});
-    rotationKeys.push({frame: 9 * this.fps, value: new Vector3(Math.PI/6, -Math.PI/3, 0)});
-    rotationKeys.push({frame: 11 * this.fps, value: new Vector3(Math.PI/6, -Math.PI, 0)});
+    rotationKeys.push({ frame: 0, value: new Vector3(Math.PI / 2, 0, 0) });
+    rotationKeys.push({
+      frame: 4 * this.fps,
+      value: new Vector3(Math.PI / 6, (-2 * Math.PI) / 3, 0),
+    });
+    rotationKeys.push({
+      frame: 9 * this.fps,
+      value: new Vector3(Math.PI / 6, -Math.PI / 3, 0),
+    });
+    rotationKeys.push({
+      frame: 11 * this.fps,
+      value: new Vector3(Math.PI / 6, -Math.PI, 0),
+    });
 
     rotationAnimation.setKeys(rotationKeys);
     camera.animations.push(rotationAnimation);
@@ -203,9 +222,12 @@ export class InGameState extends GameState {
     // Lancer l'animation
     this.scene.beginAnimation(camera, 0, 11 * this.fps, false);
 
-    setTimeout(() => {
-      this.scene._activeCamera = this._player!.activatePlayerCamera();
-    }, 11*this.fps*40);
+    setTimeout(
+      () => {
+        this.scene._activeCamera = this._player!.activatePlayerCamera();
+      },
+      11 * this.fps * 40,
+    );
 
     this.scene.activeCamera = camera;
   }
@@ -235,10 +257,10 @@ export class InGameState extends GameState {
       //for collisions
       outer.ellipsoid = new Vector3(1, 1.5, 1);
       outer.ellipsoidOffset = new Vector3(0, 1.5, 0);
-      
+
       let urlPath = localStorage.getItem("pathCharacter");
       if (!urlPath) {
-        urlPath = "perso.glb"
+        urlPath = "perso.glb";
       }
 
       //--IMPORTING MESH--
@@ -260,7 +282,9 @@ export class InGameState extends GameState {
         body.showBoundingBox = true;
         // enlever l'animation à l'indice 0 de animationsGroups
         result.animationGroups[0].stop();
-        const idle = result.animationGroups.find((ag) => ag.name === "Anim|idle");
+        const idle = result.animationGroups.find(
+          (ag) => ag.name === "Anim|idle",
+        );
         idle?.start();
         //return the mesh and animations
         return {
@@ -299,8 +323,8 @@ export class InGameState extends GameState {
   async setEnvironment(): Promise<void> {
     // ENVIRONMENT
     this.soundManager = new SoundManager(this.scene);
-		this.soundManager.addTrack('inGame', './sounds/musiqueJeu.m4a', 0.05);
-		this.soundManager.playTrack('inGame');
+    this.soundManager.addTrack("inGame", "./sounds/musiqueJeu.m4a", 0.05);
+    this.soundManager.playTrack("inGame");
 
     this._environment = new Environment(this.scene, this._player, this);
     this.tpButtonListener();
@@ -311,72 +335,130 @@ export class InGameState extends GameState {
   public tpButtonListener(): void {
     ///100m
     document.getElementById("100mFacile")?.addEventListener("click", () => {
-      this.game.changeState(new RunningGameState(this.soundManager, this.game, this.canvas));
-      this.soundManager.stopTrack('inGame');
+      this.game.changeState(
+        new RunningGameState(this.soundManager, this.game, this.canvas),
+      );
+      this.soundManager.stopTrack("inGame");
     });
     document.getElementById("100mMoyen")?.addEventListener("click", () => {
-      this.game.changeState(new RunningGameState(this.soundManager, this.game, this.canvas, "intermediate"));
-      this.soundManager.stopTrack('inGame');
+      this.game.changeState(
+        new RunningGameState(
+          this.soundManager,
+          this.game,
+          this.canvas,
+          "intermediate",
+        ),
+      );
+      this.soundManager.stopTrack("inGame");
     });
     document.getElementById("100mDifficile")?.addEventListener("click", () => {
-      this.game.changeState(new RunningGameState(this.soundManager, this.game, this.canvas, "hard"));
-      this.soundManager.stopTrack('inGame');
+      this.game.changeState(
+        new RunningGameState(this.soundManager, this.game, this.canvas, "hard"),
+      );
+      this.soundManager.stopTrack("inGame");
     });
 
     //Natation
     document.getElementById("natationFacile")?.addEventListener("click", () => {
-      this.game.changeState(new NatationGameState(this.soundManager, this.game, this.canvas));
-      this.soundManager.stopTrack('inGame');
+      this.game.changeState(
+        new NatationGameState(this.soundManager, this.game, this.canvas),
+      );
+      this.soundManager.stopTrack("inGame");
     });
     document.getElementById("natationMoyen")?.addEventListener("click", () => {
-      this.game.changeState(new NatationGameState(this.soundManager, this.game, this.canvas, "intermediate"));
-      this.soundManager.stopTrack('inGame');
+      this.game.changeState(
+        new NatationGameState(
+          this.soundManager,
+          this.game,
+          this.canvas,
+          "intermediate",
+        ),
+      );
+      this.soundManager.stopTrack("inGame");
     });
-    document.getElementById("natationDifficile")?.addEventListener("click", () => {
-      this.game.changeState(new NatationGameState(this.soundManager, this.game, this.canvas, "hard"));
-      this.soundManager.stopTrack('inGame');
-    });
+    document
+      .getElementById("natationDifficile")
+      ?.addEventListener("click", () => {
+        this.game.changeState(
+          new NatationGameState(
+            this.soundManager,
+            this.game,
+            this.canvas,
+            "hard",
+          ),
+        );
+        this.soundManager.stopTrack("inGame");
+      });
 
     //Plongeon
     document.getElementById("plongeonFacile")?.addEventListener("click", () => {
-      this.game.changeState(new PlongeonGameState(this.soundManager, this.game, this.canvas));
-      this.soundManager.stopTrack('inGame');
+      this.game.changeState(
+        new PlongeonGameState(this.soundManager, this.game, this.canvas),
+      );
+      this.soundManager.stopTrack("inGame");
     });
     document.getElementById("plongeonMoyen")?.addEventListener("click", () => {
-      this.game.changeState(new PlongeonGameState(this.soundManager, this.game, this.canvas, "intermediate"));
-      this.soundManager.stopTrack('inGame');
+      this.game.changeState(
+        new PlongeonGameState(
+          this.soundManager,
+          this.game,
+          this.canvas,
+          "intermediate",
+        ),
+      );
+      this.soundManager.stopTrack("inGame");
     });
-    document.getElementById("plongeonDifficile")?.addEventListener("click", () => {
-      this.game.changeState(new PlongeonGameState(this.soundManager, this.game, this.canvas, "hard"));
-      this.soundManager.stopTrack('inGame');
-    });
+    document
+      .getElementById("plongeonDifficile")
+      ?.addEventListener("click", () => {
+        this.game.changeState(
+          new PlongeonGameState(
+            this.soundManager,
+            this.game,
+            this.canvas,
+            "hard",
+          ),
+        );
+        this.soundManager.stopTrack("inGame");
+      });
 
     //Boxe
     document.getElementById("boxeDefense")?.addEventListener("click", () => {
-      this.game.changeState(new BoxeGameState(this.soundManager, this.game, this.canvas));
+      this.game.changeState(
+        new BoxeGameState(this.soundManager, this.game, this.canvas),
+      );
       // document.getElementById("options-keybind")!.style.display = "none";
       document.getElementById("objects-keybind")!.classList.add("hidden");
       document.getElementById("map-keybind")!.classList.add("hidden");
       document.getElementById("boxetp")!.classList.add("hidden");
-      this.soundManager.stopTrack('inGame');
+      this.soundManager.stopTrack("inGame");
     });
 
     //Tir à l'arc
     document.getElementById("tirArcFacile")?.addEventListener("click", () => {
-      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
+      this.game.changeState(
+        new TirArcGameState(this.soundManager, this.game, this.canvas),
+      );
       // document.getElementById("options-keybind")!.style.display = "none";
       document.getElementById("objects-keybind")!.classList.add("hidden");
       document.getElementById("map-keybind")!.classList.add("hidden");
       document.getElementById("tirArctp")!.classList.add("hidden");
-      this.soundManager.stopTrack('inGame');
+      this.soundManager.stopTrack("inGame");
     });
     document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
-      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "intermediate"));
+      this.game.changeState(
+        new TirArcGameState(
+          this.soundManager,
+          this.game,
+          this.canvas,
+          "intermediate",
+        ),
+      );
       // document.getElementById("options-keybind")!.style.display = "none";
       document.getElementById("objects-keybind")!.classList.add("hidden");
       document.getElementById("map-keybind")!.classList.add("hidden");
       document.getElementById("tirArctp")!.classList.add("hidden");
-      this.soundManager.stopTrack('inGame');
+      this.soundManager.stopTrack("inGame");
     });
   }
 
@@ -385,7 +467,7 @@ export class InGameState extends GameState {
     // document.getElementById("options-keybind")!.style.display = "none";
     document.getElementById("objects-keybind")!.classList.add("hidden");
     document.getElementById("map-keybind")!.classList.add("hidden");
-    this.soundManager.stopTrack('inGame');
+    this.soundManager.stopTrack("inGame");
   }
 
   private initButtons(gui: AdvancedDynamicTexture) {
