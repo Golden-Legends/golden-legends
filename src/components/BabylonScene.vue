@@ -8,23 +8,24 @@
     eventKey="o"
     id="options-keybind"
   />
-  <Options 
+  <Options
     title="options"
     name="options"
-    id="options" 
-    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-      <div class="flex justify-between">
-        <span class="text-2xl">Son global</span>
-        <input type="range" min="0" max="100" class="accent-black" />
-      </div>
-      <div class="flex justify-between">
-        <span class="text-2xl">Musique</span>
-        <input type="range" min="0" max="100" class="accent-black" />
-      </div>
-      <div class="flex justify-between">
-        <span class="text-2xl">Montrer les noms</span>
-        <input type="checkbox" class="accent-black w-6 h-6" />
-      </div>
+    id="options"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+    <div class="flex justify-between">
+      <span class="text-2xl">Son global</span>
+      <input type="range" min="0" max="100" class="accent-black" />
+    </div>
+    <div class="flex justify-between">
+      <span class="text-2xl">Musique</span>
+      <input type="range" min="0" max="100" class="accent-black" />
+    </div>
+    <div class="flex justify-between">
+      <span class="text-2xl">Montrer les noms</span>
+      <input type="checkbox" class="accent-black w-6 h-6" />
+    </div>
   </Options>
   <KeybindHint
     class="absolute top-20 left-4"
@@ -39,6 +40,10 @@
     name="Carte"
     eventKey="m"
     id="map-keybind"
+  />
+  <OnboardingContainer
+    id="onboarding-container"
+    class="left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <FoundObjectsContainer
     title="objectsFound"
@@ -162,34 +167,83 @@
     id="tpGame-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <GameGate title="100m" name="100mtp" id="100mtp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+  <GameGate
+    title="100m"
+    name="100mtp"
+    id="100mtp"
+    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
     <GateButton id="100mFacile" name="Facile" difficulty="easy" />
     <GateButton id="100mMoyen" name="Moyen" difficulty="medium" />
     <GateButton id="100mDifficile" name="Difficile" difficulty="hard" />
   </GameGate>
-  <GameGate title="Natation" name="natationtp" id="natationtp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+  <GameGate
+    title="Natation"
+    name="natationtp"
+    id="natationtp"
+    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
     <GateButton id="natationFacile" name="Facile" difficulty="easy" />
     <GateButton id="natationMoyen" name="Moyen" difficulty="medium" />
     <GateButton id="natationDifficile" name="Difficile" difficulty="hard" />
   </GameGate>
-  <GameGate title="Plongeon" name="plongeontp" id="plongeontp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+  <GameGate
+    title="Plongeon"
+    name="plongeontp"
+    id="plongeontp"
+    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
     <GateButton id="plongeonFacile" name="Facile" difficulty="easy" />
     <GateButton id="plongeonMoyen" name="Moyen" difficulty="medium" />
     <GateButton id="plongeonDifficile" name="Difficile" difficulty="hard" />
   </GameGate>
-  <GameGate title="Boxe" name="boxetp" id="boxetp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+  <GameGate
+    title="Boxe"
+    name="boxetp"
+    id="boxetp"
+    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
     <GateButton id="boxeDefense" name="Défense" difficulty="easy" />
   </GameGate>
-  <GameGate title="Tir à l'arc" name="tirArctp" id="tirArctp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+  <GameGate
+    title="Tir à l'arc"
+    name="tirArctp"
+    id="tirArctp"
+    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
     <GateButton id="tirArcFacile" name="Facile" difficulty="easy" />
     <GateButton id="tirArcMoyen" name="Moyen" difficulty="medium" />
   </GameGate>
-  <Position id="position-1" position="1" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
-  <Position id="position-2" position="2" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
-  <Position id="position-3" position="3" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
-  <Position id="position-4" position="4" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
-  <Position id="position-5" position="5" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
-  <Position id="position-6" position="6" class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"/>
+  <Position
+    id="position-1"
+    position="1"
+    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <Position
+    id="position-2"
+    position="2"
+    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <Position
+    id="position-3"
+    position="3"
+    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <Position
+    id="position-4"
+    position="4"
+    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <Position
+    id="position-5"
+    position="5"
+    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <Position
+    id="position-6"
+    position="6"
+    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
   <MainOptions />
   <!-- RUNNINGGAME -->
   <CommandContainer
@@ -197,7 +251,7 @@
     :keys="['s', 'd']"
     id="runningGame-command-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  /> 
+  />
   <ClassicButton
     text="Passer"
     name="runningGame-skip-button"
@@ -222,7 +276,7 @@
     id="runningGame-results"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-  <ResultsContent :results="store.state.results" />
+    <ResultsContent :results="store.state.results" />
   </Results>
   <SpeedBar
     :min="0"
@@ -255,11 +309,13 @@
     id="runningGame-text-finish"
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <SpeedBar 
+  <SpeedBar
     name="runningGame-text-speedbar"
     id="runningGame-text-speedbar"
     class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
-    :speed="store.state.setSpeedBar" :min="0" :max="2.7"
+    :speed="store.state.setSpeedBar"
+    :min="0"
+    :max="2.7"
   />
   <KeyPressInteraction
     :keys="['s', 'd']"
@@ -273,13 +329,13 @@
     :keys="['s', 'd']"
     id="natationGame-command-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  /> 
+  />
   <CommandContainer
     name="ACTION"
     :keys="['espace']"
     id="natationGame-action-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  /> 
+  />
   <ClassicButton
     text="Passer"
     name="natationGame-skip-button"
@@ -343,11 +399,13 @@
     id="natationGame-text-finish"
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <SpeedBar 
+  <SpeedBar
     name="natationGame-text-speedbar"
     id="natationGame-text-speedbar"
     class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
-    :speed="store.state.setSpeedBar" :min="0" :max="0.3"
+    :speed="store.state.setSpeedBar"
+    :min="0"
+    :max="0.3"
   />
   <KeyPressInteraction
     :keys="['s', 'd', ' ']"
@@ -383,7 +441,7 @@
     :keys="['espace']"
     id="plongeonGame-action-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  /> 
+  />
   <ClassicButton
     text="Passer"
     name="plongeonGame-skip-button"
@@ -475,7 +533,7 @@
     id="plongeonGame-results"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-  <ResultsContent :results="storePlongeon.state.results" />
+    <ResultsContent :results="storePlongeon.state.results" />
   </Results>
   <Saut
     name="plongeonGame-text-finish"
@@ -589,6 +647,7 @@ import { storeJump } from "@/components/gui/storeJump.ts";
 import { storePlongeon } from "@/components/gui/storePlongeon.ts";
 
 import Options from "./gui/options/Options.vue";
+import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
@@ -603,8 +662,7 @@ const footGameText =
 //Objects message
 const objetHaieText = "Récupére la Haie olympique en appuyant sur R";
 const objetgGantText = "Récupére le Gant de boxe en appuyant sur R";
-const objetRaquetteText =
-  "Récupére la Raquette de tennis en appuyant sur R";
+const objetRaquetteText = "Récupére la Raquette de tennis en appuyant sur R";
 const objetBallonText = "Récupére le Ballon de basket en appuyant sur R";
 const objetSkateText = "Récupére le Skateboard en appuyant sur R";
 const objetArcText = "Récupére l'Arc olympique en appuyant sur R";
@@ -621,7 +679,6 @@ const loseJumpText = "Pas pour cette fois... Retente ta chance !";
 const stationScoreboard = "GUI Scoreboard TODO...";
 //TP game
 const tpGame = "Comeback later...";
-
 
 onMounted(() => {
   if (bjsCanvas.value) {
