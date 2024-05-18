@@ -24,6 +24,7 @@ import GameGate from "@/components/gui/tp/GameGate.vue";
 import GateButton from "@/components/gui/tp/GateButton.vue";
 
 import { ref } from "vue";
+import ArcheryContainer from "@/components/gui/archery/ArcheryContainer.vue";
 const longDialogText =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
@@ -89,6 +90,12 @@ setInterval(() => {
     speed.value = 20;
   }
 }, 75);
+
+// GET THE POSITION
+const position = (position: number) => {
+  // You can get the position in params from the child
+  // console.log(position);
+};
 </script>
 
 <template>
@@ -152,7 +159,12 @@ setInterval(() => {
           width="240"
         />
         <CommandContainer class="mb-4" name="ACTION" :keys="['espace']" />
-        <CommandContainer class="mb-4" name="FIGURES" :keys="['f', 'g', 'h', 'j']" width="260"/>
+        <CommandContainer
+          class="mb-4"
+          name="FIGURES"
+          :keys="['f', 'g', 'h', 'j']"
+          width="260"
+        />
         <CommandContainer class="mb-4" name="NAGER" :keys="['s', 'd']" />
       </SandboxContainer>
       <SandboxContainer name="Départ">
@@ -187,9 +199,21 @@ setInterval(() => {
         </GameGate>
         <GameGate title="Natation">
           <GateButton name="Facile" difficulty="easy" />
-          <GateButton name="Moyen" difficulty="medium" disabled/>
-          <GateButton name="Difficile" difficulty="hard" disabled/>
+          <GateButton name="Moyen" difficulty="medium" disabled />
+          <GateButton name="Difficile" difficulty="hard" disabled />
         </GameGate>
+      </SandboxContainer>
+      <SandboxContainer name="Archery">
+        <ArcheryContainer
+          orientation="horizontal"
+          :ms="20"
+          @update-position="position"
+        />
+        <ArcheryContainer
+          orientation="vertical"
+          :ms="20"
+          @update-position="position"
+        />
       </SandboxContainer>
     </div>
   </div>
