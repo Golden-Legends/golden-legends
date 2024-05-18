@@ -30,6 +30,7 @@ import { BoxeGameState } from "./games/BoxeGameState.ts";
 import { NatationGameState } from "./games/NatationGameState.ts";
 import { PlongeonGameState } from "./games/PlongeonGameState.ts";
 import { TirArcGameState } from "./games/TirArcGameState.ts";
+import { JavelotGameState } from "./games/JavelotGameState.ts";
 
 export class InGameState extends GameState {
   public assets;
@@ -435,12 +436,22 @@ export class InGameState extends GameState {
     });
 
     //Tir à l'arc
-    // document.getElementById("tirArcFacile")?.addEventListener("click", () => {
-    //   this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
+    document.getElementById("tirArcFacile")?.addEventListener("click", () => {
+      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
+      this.soundManager.stopTrack('inGame');
+    });
+    document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
+      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "intermediate"));
+      this.soundManager.stopTrack('inGame');
+    });
+
+    //Javelot
+    // document.getElementById("javelotFacile")?.addEventListener("click", () => {
+    //   this.game.changeState(new JavelotGameState(this.soundManager, this.game, this.canvas));
     //   this.soundManager.stopTrack('inGame');
     // });
-    // document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
-    //   this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "intermediate"));
+    // document.getElementById("javelotMoyen")?.addEventListener("click", () => {
+    //   this.game.changeState(new JavelotGameState(this.soundManager, this.game, this.canvas, "intermediate"));
     //   this.soundManager.stopTrack('inGame');
     // });
   }
