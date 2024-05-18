@@ -219,7 +219,7 @@ const position = (position: number) => {
         />
       </SandboxContainer>-->
       <SandboxContainer name="Onboarding">
-        <OnboardingContainer />
+        <OnboardingContainer class="mt-4" />
       </SandboxContainer>
     </div>
   </div>

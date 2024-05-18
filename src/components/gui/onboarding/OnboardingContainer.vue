@@ -10,62 +10,78 @@ const carousel = ref(0);
 
 <template>
   <div
-    class="relative border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white items-center p-2 px-4 rounded-lg h-fit w-[700px]"
+    class="relative border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white items-center p-2 px-4 rounded-lg h-fit w-[1000px]"
   >
-    <div class="text-4xl font-bold text-center mt-2 mb-8">
+    <button
+      id="close-onboarding"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700"
+    >
+      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <div class="text-4xl font-bold text-center mt-2 mb-4">
       Bienvenue sur GoldenLegends !
     </div>
     <div class="w-full h-fit flex justify-between items-center">
       <button
         :disabled="carousel === 0"
         @click="carousel--"
-        class="disabled:opacity-50 mr-8 w-12 h-12"
+        class="disabled:opacity-30 mr-8 p-4 rounded-full backdrop-brightness-50"
       >
-        <img :src="arrow" alt="left-arrow" class="w-12 h-12" />
+        <img :src="arrow" alt="left-arrow" class="w-12 h-8" />
       </button>
-      <CarouselContent v-if="carousel === 0">
-        <div>
-          <Title text="Des portails ?"></Title>
-          <span>Ils servent à accéder à nos différentes épreuves.</span>
-        </div>
+      <div class="rounded-xl backdrop-brightness-75 px-4 py-4">
+        <CarouselContent v-if="carousel === 0">
+          <div>
+            <Title text="Des portails ?"></Title>
+            <span>Ils servent à accéder à nos différentes épreuves.</span>
+          </div>
 
-        <div>
-          <Title text="Comment les utiliser ?"></Title>
-          <span>Vous n'avez qu'à aller devant pour tester 😄</span>
-        </div>
+          <div>
+            <Title text="Comment les utiliser ?"></Title>
+            <span>Vous n'avez qu'à aller devant pour tester 😄</span>
+          </div>
 
-        <div>
-          <Title text="Quelles sont les touches ?"></Title>
-          <span
-            >Chaque jeu à des touches différentes, n'oubliez pas de les
-            consulter! Voici comment cela sera affiché :
-          </span>
-          <CommandContainer
-            name="COURIR"
-            :keys="['s', 'd']"
-            class="w-fit my-4"
-          />
-        </div>
-      </CarouselContent>
-      <CarouselContent v-if="carousel === 1">
-        <div>
-          <Title text="Où suis-je ?"></Title>
-          <span>À Paris, à notre façon.</span>
-        </div>
-        <div>
-          <Title text="Mais qu'est-ce que je peux bien faire ?"></Title>
-          <span
-            >Tu peux visiter la carte, découvrir des lieux emblématiques,
-            trouver d'autres mini-jeux ou des objets cachés...</span
-          >
-        </div>
-      </CarouselContent>
+          <div>
+            <Title text="Comment jouer ?"></Title>
+            <span
+              >Chaque jeu à des touches différentes, n'oubliez pas de les
+              consulter! Voici comment cela sera affiché :
+            </span>
+            <div class="flex gap-2">
+              <CommandContainer
+                name="COURIR"
+                :keys="['s', 'd']"
+                class="w-fit my-4"
+              />
+              <CommandContainer
+                name="NAGER"
+                :keys="['ESPACE']"
+                class="w-fit my-4"
+              />
+            </div>
+          </div>
+        </CarouselContent>
+        <CarouselContent v-if="carousel === 1">
+          <div>
+            <Title text="Où suis-je ?"></Title>
+            <span>À Paris, à notre façon.</span>
+          </div>
+          <div>
+            <Title text="Mais qu'est-ce que je peux bien faire ?"></Title>
+            <span
+              >Tu peux visiter la carte, découvrir des lieux emblématiques,
+              trouver d'autres mini-jeux ou des objets cachés...</span
+            >
+          </div>
+        </CarouselContent>
+      </div>
+
       <button
         :disabled="carousel === 1"
         @click="carousel++"
-        class="disabled:opacity-50 ml-8 w-12 h-12"
+        class="disabled:opacity-30 ml-8 p-4 rounded-full backdrop-brightness-50"
       >
-        <img :src="arrow" alt="right-arrow" class="w-12 h-12 rotate-180" />
+        <img :src="arrow" alt="right-arrow" class="w-12 h-8 rotate-180" />
       </button>
     </div>
   </div>
