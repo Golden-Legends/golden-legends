@@ -53,7 +53,6 @@ export class PlongeonGameState extends GameState {
     private countdownInProgress: boolean = false;
     private plongeonStartTime: number = 0;
 
-    public soundManager!: SoundManager;
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
     private letterPossible = ['f', 'g', 'h', 'j']
@@ -65,16 +64,14 @@ export class PlongeonGameState extends GameState {
     private continueButtonIsPressed: boolean = false;
     private scoreboardIsShow : boolean = false;
 
-    constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
+    constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputPlongeonGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
         this.settings = PlongeonGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        this.soundManager = soundManager;
-        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
-        this.soundManager.playTrack('100m');
+        this.game.playTrack('100m');
     }
 
     async setEnvironment(): Promise<void> {
@@ -224,7 +221,6 @@ export class PlongeonGameState extends GameState {
         storePlongeon.commit('setLetters', []);
         storePlongeon.commit('setResults', []);
 
-        this.soundManager.stopTrack('100m');
         this.clearScene();
     }
 

@@ -25,7 +25,6 @@ import ky from "ky";
 import { BACK_URL } from "../../utils/constants.ts";
 import { JumpGame } from "./miniGames/JumpGame.ts";
 import { ObjectGame } from "./miniGames/ObjectGame.ts";
-import { SoundManager } from "../environments/sound.ts";
 import { BoxeGameState } from "./games/BoxeGameState.ts";
 import { NatationGameState } from "./games/NatationGameState.ts";
 import { PlongeonGameState } from "./games/PlongeonGameState.ts";
@@ -40,7 +39,6 @@ export class InGameState extends GameState {
   private jumpGame!: JumpGame;
   private objectGame!: ObjectGame;
   private fps: number = 30;
-  public soundManager!: SoundManager;
 
   constructor(game, canvas) {
     super(game, canvas);
@@ -66,16 +64,6 @@ export class InGameState extends GameState {
         playerName: "test",
       },
     });
-
-    this.loadedGui = await AdvancedDynamicTexture.ParseFromFileAsync(
-      "/gui/gui_gate_runningGame.json",
-      true,
-    );
-    this.background = this.loadedGui.getControlByName("CONTAINER");
-    this.initButtons(this.loadedGui);
-    if (this.background) {
-      this.closeGui(this.background);
-    }
     await this._loadCharacterAssets(this.scene);
 
     // création des controlles du joueur
@@ -322,12 +310,10 @@ export class InGameState extends GameState {
 
   async setEnvironment(): Promise<void> {
     // ENVIRONMENT
-    this.soundManager = new SoundManager(this.scene);
-    this.soundManager.addTrack("inGame", "./sounds/musiqueJeu.m4a", 0.05);
-    this.soundManager.playTrack("inGame");
-
     this._environment = new Environment(this.scene, this._player, this);
     this.tpButtonListener();
+
+    this.game.playTrack('inGame');
 
     await this._environment.load();
   }
@@ -335,127 +321,70 @@ export class InGameState extends GameState {
   public tpButtonListener(): void {
     ///100m
     document.getElementById("100mFacile")?.addEventListener("click", () => {
-      this.game.changeState(
-        new RunningGameState(this.soundManager, this.game, this.canvas),
-      );
-      this.soundManager.stopTrack("inGame");
+      this.game.changeState(new RunningGameState(this.game, this.canvas));
     });
     document.getElementById("100mMoyen")?.addEventListener("click", () => {
-      this.game.changeState(
-        new RunningGameState(
-          this.soundManager,
-          this.game,
-          this.canvas,
-          "intermediate",
-        ),
-      );
-      this.soundManager.stopTrack("inGame");
+      this.game.changeState(new RunningGameState(this.game, this.canvas, "intermediate"));
     });
     document.getElementById("100mDifficile")?.addEventListener("click", () => {
-      this.game.changeState(
-        new RunningGameState(this.soundManager, this.game, this.canvas, "hard"),
-      );
-      this.soundManager.stopTrack("inGame");
+      this.game.changeState(new RunningGameState(this.game, this.canvas, "hard"));
+
     });
 
     //Natation
     document.getElementById("natationFacile")?.addEventListener("click", () => {
-      this.game.changeState(
-        new NatationGameState(this.soundManager, this.game, this.canvas),
-      );
-      this.soundManager.stopTrack("inGame");
+      this.game.changeState(new NatationGameState(this.game, this.canvas));
+
     });
     document.getElementById("natationMoyen")?.addEventListener("click", () => {
-      this.game.changeState(
-        new NatationGameState(
-          this.soundManager,
-          this.game,
-          this.canvas,
-          "intermediate",
-        ),
-      );
-      this.soundManager.stopTrack("inGame");
+      this.game.changeState(new NatationGameState(this.game, this.canvas, "intermediate"));
+
     });
-    document
-      .getElementById("natationDifficile")
-      ?.addEventListener("click", () => {
-        this.game.changeState(
-          new NatationGameState(
-            this.soundManager,
-            this.game,
-            this.canvas,
-            "hard",
-          ),
-        );
-        this.soundManager.stopTrack("inGame");
-      });
+    document.getElementById("natationDifficile")?.addEventListener("click", () => {
+      this.game.changeState(new NatationGameState(this.game, this.canvas, "hard"));
+
+    });
 
     //Plongeon
     document.getElementById("plongeonFacile")?.addEventListener("click", () => {
-      this.game.changeState(
-        new PlongeonGameState(this.soundManager, this.game, this.canvas),
-      );
-      this.soundManager.stopTrack("inGame");
+      this.game.changeState(new PlongeonGameState( this.game, this.canvas));
+
     });
     document.getElementById("plongeonMoyen")?.addEventListener("click", () => {
-      this.game.changeState(
-        new PlongeonGameState(
-          this.soundManager,
-          this.game,
-          this.canvas,
-          "intermediate",
-        ),
-      );
-      this.soundManager.stopTrack("inGame");
+      this.game.changeState(new PlongeonGameState(this.game, this.canvas, "intermediate"));
+
     });
-    document
-      .getElementById("plongeonDifficile")
-      ?.addEventListener("click", () => {
-        this.game.changeState(
-          new PlongeonGameState(
-            this.soundManager,
-            this.game,
-            this.canvas,
-            "hard",
-          ),
-        );
-        this.soundManager.stopTrack("inGame");
-      });
+    document.getElementById("plongeonDifficile")?.addEventListener("click", () => {
+      this.game.changeState(new PlongeonGameState(this.game, this.canvas, "hard"));
+
+    });
 
     //Boxe
     document.getElementById("boxeDefense")?.addEventListener("click", () => {
-      this.game.changeState(
-        new BoxeGameState(this.soundManager, this.game, this.canvas),
-      );
+      this.game.changeState(new BoxeGameState(this.game, this.canvas));
       // document.getElementById("options-keybind")!.style.display = "none";
       document.getElementById("objects-keybind")!.classList.add("hidden");
       document.getElementById("map-keybind")!.classList.add("hidden");
       document.getElementById("boxetp")!.classList.add("hidden");
-      this.soundManager.stopTrack("inGame");
+
     });
 
     //Tir à l'arc
     document.getElementById("tirArcFacile")?.addEventListener("click", () => {
-      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
-      this.soundManager.stopTrack('inGame');
+      this.game.changeState(new TirArcGameState(this.game, this.canvas));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("tirArctp")!.classList.add("hidden");
+
     });
     document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
-      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "intermediate"));
-      this.soundManager.stopTrack('inGame');
-    });
-    document.getElementById("tirArcDifficile")?.addEventListener("click", () => {
-      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "hard"));
-      this.soundManager.stopTrack('inGame');
-    });
+      this.game.changeState(new TirArcGameState(this.game, this.canvas, "intermediate"));
+      // document.getElementById("options-keybind")!.style.display = "none";
+      document.getElementById("objects-keybind")!.classList.add("hidden");
+      document.getElementById("map-keybind")!.classList.add("hidden");
+      document.getElementById("tirArctp")!.classList.add("hidden");
 
-    //Javelot
-    document.getElementById("javelotFacile")?.addEventListener("click", () => {
-      this.game.changeState(new JavelotGameState(this.soundManager, this.game, this.canvas));
-      this.soundManager.stopTrack('inGame');
-    });
-    document.getElementById("javelotMoyen")?.addEventListener("click", () => {
-      this.game.changeState(new JavelotGameState(this.soundManager, this.game, this.canvas, "intermediate"));
-      this.soundManager.stopTrack('inGame');
     });
   }
 
@@ -464,7 +393,6 @@ export class InGameState extends GameState {
     // document.getElementById("options-keybind")!.style.display = "none";
     document.getElementById("objects-keybind")!.classList.add("hidden");
     document.getElementById("map-keybind")!.classList.add("hidden");
-    this.soundManager.stopTrack("inGame");
   }
 
   private initButtons(gui: AdvancedDynamicTexture) {

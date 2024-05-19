@@ -61,11 +61,10 @@ export class TirArcGameState extends GameState {
 
     private env !: tirArcGameEnv;
 
-    public soundManager!: SoundManager;
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
 
-    constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
+    constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputTirArcGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
@@ -73,9 +72,7 @@ export class TirArcGameState extends GameState {
         this.difficulty = difficulty ? difficulty : "easy";
         storeTirArc.commit('setSpeed', this.settings.level[this.difficulty].speedCurseur);
         this.isMultiplayer = multi ? multi : false;
-        this.soundManager = soundManager;
-        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
-        this.soundManager.playTrack('100m');
+        this.game.playTrack('100m');
     }
 
     async setEnvironment(): Promise<void> {
@@ -292,7 +289,6 @@ export class TirArcGameState extends GameState {
 
     async exit(): Promise<void> {
         console.log("exit tir arc game");
-         
         document.getElementById("tirArcGame-score")!.classList.add("hidden");
         document.getElementById("tirArcGame-action-container")!.classList.add("hidden");
         document.getElementById("tirArcGame-vertical-container")!.classList.add("hidden");
@@ -301,8 +297,6 @@ export class TirArcGameState extends GameState {
 
         storeTirArc.commit('setScore', 0);
         storeTirArc.commit('setResults', []);
-
-        this.soundManager.stopTrack('100m');
         this.clearScene();
     }
 
