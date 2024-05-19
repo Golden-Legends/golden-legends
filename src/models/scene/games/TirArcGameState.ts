@@ -64,16 +64,16 @@ export class TirArcGameState extends GameState {
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
 
-    constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
+    constructor(/*soundManager: SoundManager,*/ game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputTirArcGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
         this.settings = TirArcGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        this.soundManager = soundManager;
-        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
-        this.soundManager.playTrack('100m');
+        // this.soundManager = soundManager;
+        // this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
+        // this.soundManager.playTrack('100m');
     }
 
     async setEnvironment(): Promise<void> {
@@ -345,7 +345,7 @@ export class TirArcGameState extends GameState {
             else if(this.player._isIdle && !this.animationFleche){
                 this.animationFleche = true;
                 this.animateFleche();
-                //TODO player en anim isWin
+                //player en anim isWin à la fin de la flèche
                 // setTimeout(() => this.player.runWin(), 4000);
             }
             else if(this.player._isWin && this.animationFleche){

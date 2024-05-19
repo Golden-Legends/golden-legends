@@ -436,14 +436,14 @@ export class InGameState extends GameState {
     });
 
     //Tir à l'arc
-    document.getElementById("tirArcFacile")?.addEventListener("click", () => {
-      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
-      this.soundManager.stopTrack('inGame');
-    });
-    document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
-      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "intermediate"));
-      this.soundManager.stopTrack('inGame');
-    });
+    // document.getElementById("tirArcFacile")?.addEventListener("click", () => {
+    //   this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
+    //   this.soundManager.stopTrack('inGame');
+    // });
+    // document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
+    //   this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "intermediate"));
+    //   this.soundManager.stopTrack('inGame');
+    // });
 
     //Javelot
     // document.getElementById("javelotFacile")?.addEventListener("click", () => {
