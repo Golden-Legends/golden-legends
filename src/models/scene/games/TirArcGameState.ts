@@ -20,6 +20,7 @@ interface line {
 interface level {
     placement : line[],
     pointToSucceed : number;
+    speedCurseur : number;
 }
 
 interface ITirArcGameState {
@@ -70,6 +71,7 @@ export class TirArcGameState extends GameState {
         this.playerName = localStorage.getItem("playerName") || "Playertest";
         this.settings = TirArcGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
+        storeTirArc.commit('setSpeed', this.settings.level[this.difficulty].speedCurseur);
         this.isMultiplayer = multi ? multi : false;
         // this.soundManager = soundManager;
         // this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
@@ -310,6 +312,8 @@ export class TirArcGameState extends GameState {
             this.player.play(deltaTime, performance.now());
             if(this.player.isSpacedPressedForAnim && !this.guiGame){
                 //TODO ADD GUI
+                document.getElementById("tirArcGame-horizontalgui")!.classList.remove("hidden");
+                document.getElementById("tirArcGame-verticalgui")!.classList.remove("hidden");
                 this.guiGame = true;
                 console.log("afficher gui game")
                 this.playActive = true;
@@ -330,6 +334,8 @@ export class TirArcGameState extends GameState {
             }
             else if(this.player.compteur === 2 && !this.animArc){
                 //TODO REMOVE GUI
+                document.getElementById("tirArcGame-horizontalgui")!.classList.add("hidden");
+                document.getElementById("tirArcGame-verticalgui")!.classList.add("hidden");
                 this.animArc = true;
                 this.env.gameAssets.position = new Vector3(-0.32, 0.2, 3.92); //new Vector3(-0.38, 0.2, 4)
                 const loadFlecheAssets = async () => {
@@ -510,7 +516,7 @@ export class TirArcGameState extends GameState {
 
     createFinaleScoreBoard() : void{
         this.results = [];
-        this.results.push({place: 1, name: this.playerName, result: ""+this.score});
+        this.results.push({place: 1, name: this.playerName, result: ""+this.score+"/100"});
         storeTirArc.commit('setResults', this.results);
     }
 

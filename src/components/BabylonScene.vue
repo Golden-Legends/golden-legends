@@ -43,7 +43,7 @@
   />
   <OnboardingContainer
     id="onboarding-container"
-    class="left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <FoundObjectsContainer
     title="objectsFound"
@@ -626,6 +626,20 @@
   >
   <ResultsContent :results="storeTirArc.state.results" />
   </Results>
+  <div id="tirArcGame-verticalgui" class="hidden absolute top-1/3 left-2/3 transform -translate-x-1/2 -ml-24">
+    <ArcheryContainer
+      orientation="vertical"
+      :ms="storeTirArc.state.speed"
+      @update-position="positionV"
+    />
+  </div>
+  <div id="tirArcGame-horizontalgui" class="hidden absolute top-2/3 left-1/2 transform -translate-x-1/2 mt-12">
+    <ArcheryContainer
+      orientation="horizontal"
+      :ms="storeTirArc.state.speed"
+      @update-position="positionH"
+    />
+  </div>
 
   <!-- Javelot -->
   <ClassicButton
@@ -784,6 +798,7 @@ import { storeTirArc } from "@/components/gui/storeTirArc.ts";
 import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
 import { storeJavelot } from "./gui/storeJavelot";
+import ArcheryContainer from "./gui/archery/ArcheryContainer.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
@@ -815,6 +830,19 @@ const loseJumpText = "Pas pour cette fois... Retente ta chance !";
 const stationScoreboard = "GUI Scoreboard TODO...";
 //TP game
 const tpGame = "Comeback later...";
+
+const positionH = (position: number) => {
+  // You can get the position in params from the child
+  // console.log(position);
+  storeTirArc.commit('setPosH', position);
+};
+
+const positionV = (position: number) => {
+  // You can get the position in params from the child
+  // console.log(position);
+  storeTirArc.commit('setPosV', position);
+};
+
 
 onMounted(() => {
   if (bjsCanvas.value) {

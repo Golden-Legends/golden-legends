@@ -2,6 +2,7 @@ import { ActionManager, AnimationGroup, Camera, ExecuteCodeAction, FreeCamera, M
 import { Scaling } from "../../utils/Scaling";
 import { store } from "@/components/gui/store.ts";
 import { PlayerInputTirArcGame } from "../inputsMangement/PlayerInputTirArcGame";
+import { storeTirArc } from "@/components/gui/storeTirArc";
 
 const PLAYER_HEIGHT = 3;
 const PLAYER_RADIUS = 0.05;
@@ -160,18 +161,42 @@ export class PlayerTirArcGame {
     public processInput(): void {
         if(this.compteur === 0){
             if (this._input.figureh) {
-                this.horizontalDirection = Math.floor(Math.random() * 19) - 9;
+                // this.horizontalDirection = Math.floor(Math.random() * 19) - 9;
+                console.log(storeTirArc.state.positionH);
+                this.horizontalDirection = this.mapValueToDiscreteRange(storeTirArc.state.positionH);
                 this.compteur ++;
+                console.log(this.horizontalDirection);
             }
         }
         else if(this.compteur === 1){
             if (this._input.figurev) {
-                this.verticalDirection = Math.floor(Math.random() * 19) - 9;
+                // this.verticalDirection = Math.floor(Math.random() * 19) - 9;
+                console.log(storeTirArc.state.positionV);
+                this.verticalDirection = -this.mapValueToDiscreteRange(storeTirArc.state.positionV);
                 this.compteur ++;
                 this.isEndGame = true;
+                console.log(this.verticalDirection);
                 this.runTir();
             }
         }
+    }
+
+    public mapValueToDiscreteRange(value: number, srcMin: number = -4, srcMax: number = 24, destMin: number = -9, destMax: number = 9): number {
+        // Vérifier si la valeur est dans la plage d'origine
+        if (value < srcMin || value > srcMax) {
+            throw new Error(`La valeur ${value} est en dehors de la plage de source [${srcMin}, ${srcMax}]`);
+        }
+    
+        // Normaliser la valeur dans la plage [0, 1]
+        const normalizedValue = (value - srcMin) / (srcMax - srcMin);
+        
+        // Mapper la valeur normalisée dans la plage de destination [-9, 9]
+        const mappedValue = normalizedValue * (destMax - destMin) + destMin;
+        
+        // Arrondir au nombre entier le plus proche
+        const discreteValue = Math.round(mappedValue);
+        
+        return discreteValue;
     }
 
     public gameActiveState() :void{
