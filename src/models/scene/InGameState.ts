@@ -227,7 +227,9 @@ export class InGameState extends GameState {
     this.loadedGui?.dispose();
   }
 
-  update() { }
+  update() { 
+    this.jumpGame.update();
+  }
 
   private async _loadCharacterAssets(scene: Scene) {
     async function loadCharacter() {
