@@ -106,7 +106,7 @@ export class InGameState extends GameState {
 
     // lancer la boucle de rendu
     this.runUpdateAndRender();
-    this.handlePointerLockChange();
+    this.initializePointerLock();
 
     // lancer le mini jeu
     if (this.jumpGame) {
@@ -239,7 +239,7 @@ export class InGameState extends GameState {
     this.loadedGui?.dispose();
   }
 
-  update() {}
+  update() { }
 
   private async _loadCharacterAssets(scene: Scene) {
     async function loadCharacter() {
@@ -316,7 +316,7 @@ export class InGameState extends GameState {
     shadowGenerator.darkness = 0.4;
 
     //Create the player
-    this._player = new Player(this.assets, scene, shadowGenerator, this._input);
+    this._player = new Player(this.assets, scene, shadowGenerator, this, this._input);
     this._player.mesh.position = new Vector3(-185, 7, -90);
   }
 

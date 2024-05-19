@@ -12,6 +12,8 @@ import {
 	ActionManager,
 } from "@babylonjs/core";
 import { PlayerInput } from "../inputsMangement/PlayerInput";
+import { GameState } from "../GameState";
+import { InGameState } from "../scene/InGameState";
 
 // clavier anglais (qwerty)
 // const KEY_UP = "KeyW";
@@ -96,10 +98,13 @@ export class Player extends TransformNode {
 	private readonly CAMERA_MAX_ANGLE = Math.PI / 3; // Limite de rotation vers le bas
 	private isMouseVisible: boolean = true;
 
+	private gameState : GameState;
 
-	constructor(assets, scene: Scene, shadowGenerator: ShadowGenerator, input?) {
+
+	constructor(assets, scene: Scene, shadowGenerator: ShadowGenerator, gameState : InGameState, input?) {
 		super("player", scene);
 		this.scene = scene;
+		this.gameState = gameState;
 		this._setupPlayerCamera();
 
 		this.mesh = assets.mesh;
@@ -119,7 +124,8 @@ export class Player extends TransformNode {
 
 		//--COLLISIONS--
 		this.mesh.actionManager = new ActionManager(this.scene);
-		this._handleEscapeKey();
+
+		this._updateCameraWithMouse();
 	}
 
 	public setInput(input: PlayerInput | null) {
@@ -174,7 +180,6 @@ export class Player extends TransformNode {
 
 	private _updateFromControls(): void {
 		if (this._input) {
-			this._deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
 			// console.log(this.mesh.position); // utilie pour récup les positions du joueur
 			this._moveDirection = Vector3.Zero(); // vector that holds movement information
 			this._h = this._input.horizontal; //x-axis
@@ -354,7 +359,8 @@ export class Player extends TransformNode {
 	}
 
 	private _updateGroundDetection(): void {
-		this._deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
+
+
 
 		// Stocker le résultat de la première invocation de _isGrounded()
 		const isGrounded = this._isGrounded();
@@ -422,24 +428,18 @@ export class Player extends TransformNode {
 
 	private _beforeRenderUpdate(): void {
 		if (this._input) {
+			this._deltaTime = this.scene.getEngine().getDeltaTime() / 1000.0;
 			this._updateFromControls();
 			this._updateGroundDetection();
 			this._animatePlayer();
-			this._updateCameraWithMouse();
 		}
 	}
 
 	private _updateCameraWithMouse(): void {
-		const mouseSensitivity = 0.000002; // Ajustez la sensibilité de la souris selon vos besoins
+		const mouseSensitivity = 0.0003; // Ajustez la sensibilité de la souris selon vos besoins
 
-		window.addEventListener('mousedown', () => {
-			// Cachez la souris lorsqu'elle est cliquée
-			this.isMouseVisible = false;
-			document.body.style.cursor = 'none'; // Cachez le curseur de la souris
-		});
-	
 		window.addEventListener('mousemove', (event) => {
-			if(this.isMouseVisible) return;
+			if(!this.gameState.alreadylocked) return;
 			let deltaX = event.movementX * mouseSensitivity;
 			let deltaY = event.movementY * mouseSensitivity;
 	
@@ -452,16 +452,6 @@ export class Player extends TransformNode {
 			if (newRotationX > this.CAMERA_MIN_ANGLE && newRotationX < this.CAMERA_MAX_ANGLE) {
 				// console.log(newRotationX);
 				this._yTilt.rotation.x = newRotationX;
-			}
-		});
-	}
-
-	private _handleEscapeKey(): void {
-		window.addEventListener('keydown', (event) => {
-			if (event.key === 'Escape') {
-				// Réinitialisez l'état de visibilité de la souris à true lorsque la touche "Échap" est pressée
-				this.isMouseVisible = true;
-				document.body.style.cursor = 'auto'; // Réaffichez le curseur de la souris
 			}
 		});
 	}
