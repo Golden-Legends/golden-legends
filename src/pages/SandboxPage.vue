@@ -19,13 +19,15 @@ import FoundObjectsContainer, {
 } from "@/components/gui/foundobjects/FoundObjectsContainer.vue";
 import SoundButton from "@/components/SoundButton.vue";
 import KeybindHint from "@/components/gui/KeybindHint.vue";
-import SpeedBar from "@/components/gui/running/SpeedBar.vue";
 import GameGate from "@/components/gui/tp/GameGate.vue";
 import GateButton from "@/components/gui/tp/GateButton.vue";
 
 import { ref } from "vue";
-import ArcheryContainer from "@/components/gui/archery/ArcheryContainer.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
+import GameHelpContainer from "@/components/gui/games/GameHelpContainer.vue";
+import CustomKBD from "@/components/gui/commands/CustomKBD.vue";
+import Tips from "@/components/gui/games/Tips.vue";
+import ContinueButton from "@/components/gui/results/ContinueButton.vue";
 const longDialogText =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
@@ -220,6 +222,44 @@ const position = (position: number) => {
       </SandboxContainer>-->
       <SandboxContainer name="Onboarding">
         <OnboardingContainer class="mt-4" />
+      </SandboxContainer>
+      <SandboxContainer name="GameHelp">
+        <GameHelpContainer title="100m" class="mt-4">
+          <template #commands>
+            <CommandContainer class="w-fit" name="COURIR" :keys="['s', 'd']" />
+          </template>
+          <template #tips>
+            <Tips
+              :content="[
+                'Pour aller le plus vite possible, alternez les touches sans vous tromper !',
+              ]"
+            />
+          </template>
+          <div class="flex justify-center mt-4">
+            <ContinueButton name="Continuer" />
+          </div>
+        </GameHelpContainer>
+        <GameHelpContainer title="Natation" class="mt-4">
+          <template #commands>
+            <CommandContainer class="w-fit" name="NAGER" :keys="['s', 'd']" />
+            <CommandContainer
+              name="SE RETOURNER"
+              width="300"
+              :keys="['espace']"
+            />
+          </template>
+          <template #tips>
+            <Tips
+              :content="[
+                'Pour aller le plus vite possible, alternez les touches sans vous tromper !',
+                'Retournez-vous le plus vite possible pour ne pas perdre de temps.',
+              ]"
+            />
+          </template>
+          <div class="flex justify-center mt-4">
+            <ContinueButton name="Continuer" />
+          </div>
+        </GameHelpContainer>
       </SandboxContainer>
     </div>
   </div>

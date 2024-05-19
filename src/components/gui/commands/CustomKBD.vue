@@ -5,7 +5,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <kbd
+  <div
     class="border-4 border-black bg-neutral-900 rounded-lg h-12 w-fit min-w-[3rem]"
   >
     <div
@@ -15,7 +15,7 @@ const props = defineProps({
         {{ props.keybind }}
       </span>
     </div>
-  </kbd>
+  </div>
 </template>
 
 <style scoped>
