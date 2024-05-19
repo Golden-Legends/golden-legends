@@ -3,7 +3,7 @@ import HorizontalColorBar from "@/components/gui/archery/HorizontalColorBar.vue"
 import VerticalColorBar from "@/components/gui/archery/VerticalColorBar.vue";
 import HorizontalMovingArrow from "@/components/gui/archery/HorizontalMovingArrow.vue";
 import VerticalMovingArrow from "@/components/gui/archery/VerticalMovingArrow.vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 const props = defineProps({
   orientation: {
@@ -17,35 +17,81 @@ const props = defineProps({
 });
 
 // GOES TO -4 TO 24
-const position = ref(-4);
+const positionH = ref(-4);
+const positionV = ref(-1);
 const increasing = ref(true);
+const horizontalPlaying = ref(true);
+const verticalPlaying = ref(false);
 
 const arrowMarginLeft = computed(() => {
-  return 2 + (position.value * 70) / 100;
+  if (horizontalPlaying.value) {
+    return 2 + (positionH.value * 70) / 100;
+  } else {
+    return positionH.value;
+  }
 });
 
 const arrowMarginTop = computed(() => {
-  return 2 + (position.value * 70) / 100;
+  if (verticalPlaying.value) {
+    return 2 + (positionV.value * 70) / 100;
+  } else {
+    return positionV.value;
+  }
 });
 
 const emit = defineEmits(["update-position"]);
 
 const updatePosition = () => {
-  if (increasing.value) {
-    position.value += 1;
-  } else {
-    position.value -= 1;
+  if (horizontalPlaying.value) {
+    if (increasing.value) {
+      positionH.value += 1;
+    } else {
+      positionH.value -= 1;
+    }
+    if (positionH.value === 24) {
+      increasing.value = false;
+    } else if (positionH.value === -4) {
+      increasing.value = true;
+    }
   }
-  if (position.value === 24) {
-    increasing.value = false;
-  } else if (position.value === -4) {
-    increasing.value = true;
+  if (verticalPlaying.value) {
+    if (increasing.value) {
+      positionV.value += 1;
+    } else {
+      positionV.value -= 1;
+    }
+    if (positionV.value === 24) {
+      increasing.value = false;
+    } else if (positionV.value === -4) {
+      increasing.value = true;
+    }
   }
-  // Emit event to parent component
-  emit("update-position", position.value);
 };
 
-setInterval(updatePosition, props.ms);
+// Listen to H key to stop the horizontal arrow
+window.addEventListener("keydown", (e) => {
+  if (e.key === "h") {
+    horizontalPlaying.value = !horizontalPlaying.value;
+    emit("update-position", positionH.value);
+    verticalPlaying.value = !verticalPlaying.value;
+  }
+});
+
+// Listen to V key to stop the vertical arrow
+window.addEventListener("keydown", (e) => {
+  if (e.key === "v") {
+    verticalPlaying.value = !verticalPlaying.value;
+    emit("update-position", positionV.value);
+  }
+});
+
+const interval = setInterval(updatePosition, props.ms);
+//when prop.ms update, clear interval and set new interval
+watch(() => props.ms, () => {
+  clearInterval(interval);
+  setInterval(updatePosition, props.ms);
+});
+
 </script>
 
 <template>

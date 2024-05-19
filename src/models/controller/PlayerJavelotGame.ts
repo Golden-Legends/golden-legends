@@ -1,14 +1,13 @@
 import { ActionManager, AnimationGroup, Camera, ExecuteCodeAction, FreeCamera, Mesh, MeshBuilder, Ray, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
 import { store } from "@/components/gui/store.ts";
-import { PlayerInputTirArcGame } from "../inputsMangement/PlayerInputTirArcGame";
-import { storeTirArc } from "@/components/gui/storeTirArc";
+import { PlayerInputJavelotGame } from "../inputsMangement/PlayerInputJavelotGame";
 
 const PLAYER_HEIGHT = 3;
 const PLAYER_RADIUS = 0.05;
 const PLAYER_SCALING = 0.018 ;
 
-export class PlayerTirArcGame {
+export class PlayerJavelotGame {
 
     private static readonly GRAVITY: number = -0.25;
 
@@ -31,14 +30,12 @@ export class PlayerTirArcGame {
 
     // ANIMATIONS
     private idleAnim : AnimationGroup = new AnimationGroup("idle");
-    private priseArc : AnimationGroup = new AnimationGroup("Anim|bow2");
-    private tir : AnimationGroup = new AnimationGroup("Anim|bow1");
     private win : AnimationGroup = new AnimationGroup("Anim|win");
+    private lancer : AnimationGroup = new AnimationGroup("Anim|throw");
 
     public _isIdle : boolean = false;
-    private _isPriseArc : boolean = false;
-    private _isTir : boolean = false;
     public _isWin : boolean = false;
+    public _isLancer : boolean = false;
 
     private afficherGuiTir : boolean = false;
     private gameActive : boolean = false;
@@ -49,20 +46,9 @@ export class PlayerTirArcGame {
     public verticalDirection : number = 0;
     public compteur : number = 0;
 
-    // run
-    private readonly MIN_RUN_SPEED = 0.10;
-    private baseSpeed: number = 0.04; // Vitesse de déplacement initiale
-    private acceleration: number = 0.02; // Ajustez selon vos besoins
-    private minDelayBetweenSwitches: number = 800; // Délai minimal entre chaque alternance en millisecondes
-    private lastSwitchTime: number = 0;
-    private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
-    private leftPressed: boolean = false;
-    private rightPressed: boolean = false;
-    private deceleration: number = 0.0035; // Décélération lorsqu'aucune touche n'est enfoncée
-
     // input
     // mettrre input manager et retravailler input manager pour qu'il soit plus générique et permettent la création de déplacement de bot
-    private _input: PlayerInputTirArcGame;
+    private _input: PlayerInputJavelotGame;
     // camera
     private _camera ?: Camera;
 
@@ -74,7 +60,7 @@ export class PlayerTirArcGame {
 
     private currentTime : number = 0;
 
-    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputTirArcGame, activeCamera: boolean) {
+    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputJavelotGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
         this._z = z;
@@ -122,10 +108,9 @@ export class PlayerTirArcGame {
         this.animationsGroup = result.animationGroups;
         this.animationsGroup[0].stop();
         // set animation
-        const {idle, priseArc, tir, win} = this.setAnimation();
+        const {idle, win, lancer} = this.setAnimation();
+        this.lancer = lancer;
         this.win = win;
-        this.priseArc = priseArc;
-        this.tir = tir;
         this.idleAnim = idle;
         this.idleAnim.start(true);
         this._isIdle = true;     
@@ -139,10 +124,10 @@ export class PlayerTirArcGame {
             if(!this.gameActive){
                 if (!this.isTextTirShow) {
                     this.isTextTirShow = true;
-                    document.getElementById("tirArcGame-text-tir")!.classList.remove("hidden");
+                    document.getElementById("javelotGame-text-tir")!.classList.remove("hidden");
                 }
                 else if (this._input.space) {
-                    document.getElementById("tirArcGame-text-tir")!.classList.add("hidden");
+                    document.getElementById("javelotGame-text-tir")!.classList.add("hidden");
                     this.isSpacedPressedForAnim = true;
                     this.gameActiveState();
                 }
@@ -161,42 +146,18 @@ export class PlayerTirArcGame {
     public processInput(): void {
         if(this.compteur === 0){
             if (this._input.figureh) {
-                // this.horizontalDirection = Math.floor(Math.random() * 19) - 9;
-                console.log(storeTirArc.state.positionH);
-                this.horizontalDirection = this.mapValueToDiscreteRange(storeTirArc.state.positionH);
+                this.horizontalDirection = Math.floor(Math.random() * 7) - 3;
                 this.compteur ++;
-                console.log(this.horizontalDirection);
             }
         }
         else if(this.compteur === 1){
             if (this._input.figurev) {
-                // this.verticalDirection = Math.floor(Math.random() * 19) - 9;
-                console.log(storeTirArc.state.positionV);
-                this.verticalDirection = -this.mapValueToDiscreteRange(storeTirArc.state.positionV);
+                this.verticalDirection = Math.floor(Math.random() * 7) +1;
                 this.compteur ++;
                 this.isEndGame = true;
-                console.log(this.verticalDirection);
-                this.runTir();
+                this.runLancer();
             }
         }
-    }
-
-    public mapValueToDiscreteRange(value: number, srcMin: number = -4, srcMax: number = 24, destMin: number = -9, destMax: number = 9): number {
-        // Vérifier si la valeur est dans la plage d'origine
-        if (value < srcMin || value > srcMax) {
-            throw new Error(`La valeur ${value} est en dehors de la plage de source [${srcMin}, ${srcMax}]`);
-        }
-    
-        // Normaliser la valeur dans la plage [0, 1]
-        const normalizedValue = (value - srcMin) / (srcMax - srcMin);
-        
-        // Mapper la valeur normalisée dans la plage de destination [-9, 9]
-        const mappedValue = normalizedValue * (destMax - destMin) + destMin;
-        
-        // Arrondir au nombre entier le plus proche
-        const discreteValue = Math.round(mappedValue);
-        
-        return discreteValue;
     }
 
     public gameActiveState() :void{
@@ -211,30 +172,22 @@ export class PlayerTirArcGame {
         return this.raceEndTime;
     }
     
-    private setAnimation () : {idle: AnimationGroup, priseArc: AnimationGroup, tir: AnimationGroup, win: AnimationGroup} {
+    private setAnimation () : {idle: AnimationGroup, win: AnimationGroup, lancer: AnimationGroup} {
         const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
-        const priseArc = this.animationsGroup.find(ag => ag.name === "Anim|bow2");
-        const tir = this.animationsGroup.find(ag => ag.name === "Anim|bow1");
         const win = this.animationsGroup.find(ag => ag.name === "Anim|win");
-        return {idle: idle!, priseArc: priseArc!, tir: tir!, win: win!};
+        const lancer = this.animationsGroup.find(ag => ag.name === "Anim|throw");
+        return {idle: idle!, win: win!, lancer: lancer!};
     }
 
-    public runPriseArc() {
+    public runLancer() {
         this.idleAnim.stop();
-        this._isIdle = false;
-        this.priseArc.start(false, 1.0, this.priseArc.from, this.priseArc.to, false);
-        this._isPriseArc = true;
-        this.priseArc.onAnimationEndObservable.addOnce(() => {
-        //    this.afficherGuiTir = true;
-        });
-    }
-
-    public runTir() {
-        this.priseArc.stop();
-        this.tir.start(false, 1.0, this.tir.from, this.tir.to, false);
-        this._isTir = true;
-        this.tir.onAnimationEndObservable.addOnce(() => {
-            this._isTir = false;
+        this.lancer.start(false, 1.0, this.lancer.from, this.lancer.to, false);
+        this._isLancer = true;
+        this.lancer.onAnimationEndObservable.addOnce(() => {
+            this.transform.position = new Vector3(this.transform.position.x, 
+                this.transform.position.y, 
+                this.transform.position.z - 0.14); 
+            this._isLancer = false;
             this.stopAnimations();
         });
     }
@@ -262,36 +215,6 @@ export class PlayerTirArcGame {
     public setAfficherGui(){
        this.afficherGuiTir = !this.afficherGuiTir;
     }
-
-    // public processInput(): void {
-    
-    //     // Check if the minimum delay between each alternation is respected
-    //     if (this.currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {
-    //         return;
-    //     }
-    
-    //     // If the left key or the right key is pressed
-    //     if (this._input.left !== this._input.right) {
-    //         const keyJustPressed = this._input.left ? !this.leftPressed : !this.rightPressed;
-    
-    //         // If the key was just pressed, increase the speed
-    //         if (keyJustPressed) {
-    //             this.baseSpeed += this.acceleration;
-    //             this.leftPressed = this._input.left;
-    //             this.rightPressed = this._input.right;
-    //             this.lastSwitchTime = this.currentTime; // Update the time of the last alternation
-    //         }
-    //     }
-    //     // If neither key is pressed or both keys are pressed
-    //     else {
-    //         // If both keys were pressed previously or speed is greater than 0, reset the speed or decelerate
-    //         if ((this.leftPressed && this.rightPressed) || this.baseSpeed > 0) {
-    //             this.baseSpeed = Math.max(0, this.baseSpeed - this.deceleration);
-    //             this.leftPressed = false;
-    //             this.rightPressed = false;
-    //         }
-    //     }
-    // }
 
     
     private _floorRaycast(
@@ -329,7 +252,7 @@ export class PlayerTirArcGame {
         const isGrounded = this._isGrounded();
     
         if (!isGrounded) {
-            this.transform.moveWithCollisions(new Vector3(0, PlayerTirArcGame.GRAVITY, 0));
+            this.transform.moveWithCollisions(new Vector3(0, PlayerJavelotGame.GRAVITY, 0));
         }
     }
 

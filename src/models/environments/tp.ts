@@ -80,6 +80,9 @@ import {
                 case 4:
                   document.getElementById("tirArctp")!.classList.remove("hidden");
                   break;
+                case 5: 
+                document.getElementById("javelottp")!.classList.remove("hidden");
+                break;
                 default:
                   document.getElementById("tpGame-dialog")!.classList.remove("hidden");
                   console.log("no tp");
@@ -111,6 +114,9 @@ import {
                   break;
                 case 4:
                   document.getElementById("tirArctp")!.classList.add("hidden");
+                  break;
+                case 5:
+                  document.getElementById("javelottp")!.classList.add("hidden");
                   break;
                 default:
                   document.getElementById("tpGame-dialog")!.classList.add("hidden");

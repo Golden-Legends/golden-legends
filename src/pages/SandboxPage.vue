@@ -25,7 +25,7 @@ import GateButton from "@/components/gui/tp/GateButton.vue";
 import { ref } from "vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
 import GameHelpContainer from "@/components/gui/games/GameHelpContainer.vue";
-import CustomKBD from "@/components/gui/commands/CustomKBD.vue";
+import ArcheryContainer from "@/components/gui/archery/ArcheryContainer.vue";
 import Tips from "@/components/gui/games/Tips.vue";
 import ContinueButton from "@/components/gui/results/ContinueButton.vue";
 const longDialogText =
@@ -208,7 +208,7 @@ const position = (position: number) => {
           <GateButton name="Difficile" difficulty="hard" disabled />
         </GameGate>
       </SandboxContainer>
-      <!--      <SandboxContainer name="Archery">
+      <!-- <SandboxContainer name="Archery">
         <ArcheryContainer
           orientation="horizontal"
           :ms="20"
@@ -219,7 +219,7 @@ const position = (position: number) => {
           :ms="20"
           @update-position="position"
         />
-      </SandboxContainer>-->
+      </SandboxContainer> -->
       <SandboxContainer name="Onboarding">
         <OnboardingContainer class="mt-4" />
       </SandboxContainer>

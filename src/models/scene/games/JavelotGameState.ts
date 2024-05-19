@@ -1,15 +1,16 @@
 import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
 import { SoundManager } from "@/models/environments/sound";
-import TirArcGameSettings from "../../../assets/tirArcGameSettings.json";
+import JavelotGameSettings from "../../../assets/javelotGameSettings.json";
 import { Animation, FreeCamera, HemisphericLight, Mesh, Vector3 } from "@babylonjs/core";
 import { WaterMaterial } from "@babylonjs/materials";
-import { PlayerInputTirArcGame } from "@/models/inputsMangement/PlayerInputTirArcGame";
-import { PlayerTirArcGame } from "@/models/controller/PlayerTirArcGame";
-import { tirArcGameEnv } from "@/models/environments/tirArcGameEnv";
-import { storeTirArc } from "@/components/gui/storeTirArc";
+
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { InGameState } from "../InGameState";
+import { PlayerJavelotGame } from "@/models/controller/PlayerJavelotGame";
+import { PlayerInputJavelotGame } from "@/models/inputsMangement/PlayerInputJavelotGame";
+import { javelotGameEnv } from "@/models/environments/javelotGameEnv";
+import { storeJavelot } from "@/components/gui/storeJavelot";
 
 
 interface line {
@@ -20,26 +21,25 @@ interface line {
 interface level {
     placement : line[],
     pointToSucceed : number;
-    speedCurseur : number;
 }
 
-interface ITirArcGameState {
+interface IJavelotGameState {
     level : {
         easy : level;
         intermediate : level;
     }
 }
 
-export class TirArcGameState extends GameState {
+export class JavelotGameState extends GameState {
     public _camera !: FreeCamera;
 
-    private settings : ITirArcGameState;
+    private settings : IJavelotGameState;
     private startPlacement : Mesh[] = [];
     private endPlacement : Mesh[] = [];
 
-    private player !: PlayerTirArcGame;
+    private player !: PlayerJavelotGame;
     private playerName : string;
-    private _input : PlayerInputTirArcGame;
+    private _input : PlayerInputJavelotGame;
 
     // private botArray : BotPlongeon[] = [];
     
@@ -52,14 +52,14 @@ export class TirArcGameState extends GameState {
     private guiGame: boolean = false;
     private playActive: boolean = false;
     private scoreboardIsShow : boolean = false;
-    private animationFleche : boolean = false;
+    private animationJavelot : boolean = false;
     private tableauScore : number[] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
     private animArc : boolean = false;
     private score : number = 0;
     private results : Result[] = [];
     private continueButtonIsPressed: boolean = false;
 
-    private env !: tirArcGameEnv;
+    private env !: javelotGameEnv;
 
     public soundManager!: SoundManager;
     public waterMaterial!: WaterMaterial;
@@ -67,11 +67,10 @@ export class TirArcGameState extends GameState {
 
     constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
-        this._input = new PlayerInputTirArcGame(this.scene);
+        this._input = new PlayerInputJavelotGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
-        this.settings = TirArcGameSettings; //settings running to do later
+        this.settings = JavelotGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
-        storeTirArc.commit('setSpeed', this.settings.level[this.difficulty].speedCurseur);
         this.isMultiplayer = multi ? multi : false;
         this.soundManager = soundManager;
         this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
@@ -80,7 +79,7 @@ export class TirArcGameState extends GameState {
 
     async setEnvironment(): Promise<void> {
         try {
-            const maps = new tirArcGameEnv(this.scene);
+            const maps = new javelotGameEnv(this.scene);
             this.env = maps;
             await maps.load();
         } catch (error) {
@@ -118,7 +117,7 @@ export class TirArcGameState extends GameState {
         const indexForPlayerPlacement = 0;
         const startMesh = this.startPlacement[indexForPlayerPlacement];
         const getFileName = localStorage.getItem("pathCharacter");
-        this.player = new PlayerTirArcGame(startMesh.getAbsolutePosition().x || 0, 
+        this.player = new PlayerJavelotGame(startMesh.getAbsolutePosition().x || 0, 
                                             startMesh.getAbsolutePosition().y || 0, 
                                             startMesh.getAbsolutePosition().z || 0, 
                                             this.scene, 
@@ -138,7 +137,7 @@ export class TirArcGameState extends GameState {
     }
 
     initGui() {
-        document.getElementById("tirArcGame-score")!.classList.remove("hidden");
+        document.getElementById("javelotGame-score")!.classList.remove("hidden");
     }
 
     // Implement abstract members of GameState
@@ -174,12 +173,12 @@ export class TirArcGameState extends GameState {
 
             document.getElementById("objects-keybind")!.classList.add("hidden");
             document.getElementById("map-keybind")!.classList.add("hidden");
-            document.getElementById("tirArctp")!.classList.add("hidden");
-            document.getElementById("tirArcGame-skip-button")!.classList.remove("hidden");
-            document.getElementById("tirArcGame-action-container")!.classList.remove("hidden");
-            document.getElementById("tirArcGame-vertical-container")!.classList.remove("hidden");
-            document.getElementById("tirArcGame-horizontal-container")!.classList.remove("hidden");
-            document.getElementById("tirArcGame-skip-button")!.addEventListener("click", () => {
+            document.getElementById("javelottp")!.classList.add("hidden");
+            document.getElementById("javelotGame-skip-button")!.classList.remove("hidden");
+            document.getElementById("javelotGame-action-container")!.classList.remove("hidden");
+            document.getElementById("javelotGame-vertical-container")!.classList.remove("hidden");
+            document.getElementById("javelotGame-horizontal-container")!.classList.remove("hidden");
+            document.getElementById("javelotGame-skip-button")!.addEventListener("click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
@@ -189,14 +188,14 @@ export class TirArcGameState extends GameState {
             this.game.engine.hideLoadingUI();
 
             this.CreateCameraMouv().then(() => {
-                document.getElementById("tirArcGame-ready-button")!.classList.remove("hidden");
-                document.getElementById("tirArcGame-skip-button")!.classList.add("hidden");
+                document.getElementById("javelotGame-ready-button")!.classList.remove("hidden");
+                document.getElementById("javelotGame-skip-button")!.classList.add("hidden");
 
-                document.getElementById("tirArcGame-ready-button")!.addEventListener("click", () => {
-                    this.startCountdown(["tirArcGame-text-1", "tirArcGame-text-2", "tirArcGame-text-3", "tirArcGame-text-4"]); 
+                document.getElementById("javelotGame-ready-button")!.addEventListener("click", () => {
+                    this.startCountdown(["javelotGame-text-1", "javelotGame-text-2", "javelotGame-text-3", "javelotGame-text-4"]); 
                     this.AfterCamAnim(); 
                     this.initGui(); 
-                    document.getElementById("tirArcGame-ready-button")!.classList.add("hidden");
+                    document.getElementById("javelotGame-ready-button")!.classList.add("hidden");
                     this.game.canvas.focus();
                 });
             });
@@ -233,17 +232,17 @@ export class TirArcGameState extends GameState {
                 this.countdownDone = true;
             }
         }, 1000);
-        this.player.runPriseArc();
-        await this.env._loadGameAssets(this.scene, new Vector3(-0.38, 0.2, 4), "arc.glb", "arc", new Vector3(0, 0, 0));
+        // this.player.runPriseArc();
+        // await this.env._loadGameAssets(this.scene, new Vector3(-0.38, 0.2, 4), "arc.glb", "arc", new Vector3(0, 0, 0));
         // console.log(this.env.animArc);
     }
 
     AfterCamAnim(): void {
         // this._camera.dispose();
         // this._camera = this.player.createCameraPlayer(this.player.transform);
-        this._camera.position = new Vector3(1, 1, 6);
-        this._camera.rotation._y = -5*Math.PI/6
-        this._camera.rotation._x = Math.PI/12;
+        this._camera.position = new Vector3(0.5, 1, 9);
+        this._camera.rotation._y = -5*Math.PI/6;
+        this._camera.rotation._x = Math.PI/10;
         this.player.setCamera(this._camera);
     }
 
@@ -268,14 +267,16 @@ export class TirArcGameState extends GameState {
 
         camKeys.push({frame: 0, value: new Vector3(5, 4, -2)});
         camKeys.push({frame: 5 * fps, value: new Vector3(-1, 0.5, 10)});
-        camKeys.push({frame: 9 * fps, value: new Vector3(1, 1, 6)});
+        camKeys.push({frame: 7 * fps, value: new Vector3(0.5, 1, 9)});
+        // camKeys.push({frame: 9 * fps, value: new Vector3(1, 1, 6)});
         // camKeys.push({frame: 2 * fps, value: new Vector3(0, 1.5, -1)});
         // camKeys.push({frame: 4 * fps, value: new Vector3(2, 1.5, 3)});
         // camKeys.push({frame: 8 * fps, value: new Vector3(-4, 2, 13)});
        
         rotationKeys.push({frame: 0, value: new Vector3(Math.PI/5, 0, 0)});
         rotationKeys.push({frame: 5 * fps, value: new Vector3(0, -Math.PI, 0)});
-        rotationKeys.push({frame: 9 * fps, value: new Vector3(Math.PI/12, -5*Math.PI/6, 0)});
+        rotationKeys.push({frame: 7 * fps, value: new Vector3(Math.PI/10, -5*Math.PI/6, 0)});
+        // rotationKeys.push({frame: 9 * fps, value: new Vector3(Math.PI/12, -5*Math.PI/6, 0)});
         // rotationKeys.push({frame: 2 * fps, value: new Vector3(0, 0, 0)});
         // rotationKeys.push({frame: 4 * fps, value: new Vector3(0, -Math.PI/6, 0)});
         // rotationKeys.push({frame: 8 * fps, value: new Vector3(Math.PI/10, Math.PI/3.5, 0)});
@@ -286,21 +287,21 @@ export class TirArcGameState extends GameState {
         this._camera.animations.push(camAnim);
         this._camera.animations.push(rotationAnim);
 
-        await this.scene.beginAnimation(this._camera, 0, 9 * fps).waitAsync();
-        document.getElementById("tirArcGame-skip-button")!.classList.add("hidden");
+        await this.scene.beginAnimation(this._camera, 0, 7 * fps).waitAsync();
+        document.getElementById("javelotGame-skip-button")!.classList.add("hidden");
     }
 
     async exit(): Promise<void> {
         console.log("exit tir arc game");
          
-        document.getElementById("tirArcGame-score")!.classList.add("hidden");
-        document.getElementById("tirArcGame-action-container")!.classList.add("hidden");
-        document.getElementById("tirArcGame-vertical-container")!.classList.add("hidden");
-        document.getElementById("tirArcGame-horizontal-container")!.classList.add("hidden");
-        document.getElementById("tirArcGame-results")!.classList.add("hidden");
+        document.getElementById("javelotGame-score")!.classList.add("hidden");
+        document.getElementById("javelotGame-action-container")!.classList.add("hidden");
+        document.getElementById("javelotGame-vertical-container")!.classList.add("hidden");
+        document.getElementById("javelotGame-horizontal-container")!.classList.add("hidden");
+        document.getElementById("javelotGame-results")!.classList.add("hidden");
 
-        storeTirArc.commit('setScore', 0);
-        storeTirArc.commit('setResults', []);
+        storeJavelot.commit('setScore', 0);
+        storeJavelot.commit('setResults', []);
 
         this.soundManager.stopTrack('100m');
         this.clearScene();
@@ -312,8 +313,6 @@ export class TirArcGameState extends GameState {
             this.player.play(deltaTime, performance.now());
             if(this.player.isSpacedPressedForAnim && !this.guiGame){
                 //TODO ADD GUI
-                document.getElementById("tirArcGame-horizontalgui")!.classList.remove("hidden");
-                document.getElementById("tirArcGame-verticalgui")!.classList.remove("hidden");
                 this.guiGame = true;
                 console.log("afficher gui game")
                 this.playActive = true;
@@ -334,32 +333,25 @@ export class TirArcGameState extends GameState {
             }
             else if(this.player.compteur === 2 && !this.animArc){
                 //TODO REMOVE GUI
-                document.getElementById("tirArcGame-horizontalgui")!.classList.add("hidden");
-                document.getElementById("tirArcGame-verticalgui")!.classList.add("hidden");
                 this.animArc = true;
-                this.env.gameAssets.position = new Vector3(-0.32, 0.2, 3.92); //new Vector3(-0.38, 0.2, 4)
-                const loadFlecheAssets = async () => {
-                    await this.env._loadFlecheAssets(this.scene, new Vector3(-0.31, 0.2, 3.85), "fleche.glb", "fleche", new Vector3(0, 0, 0));
-                };
-                loadFlecheAssets();
-                this.env.animArc?.start(true, 0.09, this.env.animArc.from, this.env.animArc.to, false);
+                //attendre quelques secondes et load le javelot puis démarrer l'anim du javelot 
+                // this.animationJavelot = true;
                 setTimeout(() => {
-                    this.env.animArc?.stop();
-                    this.env.animArc?.start(false, 0.09, this.env.animArc.from, this.env.animArc.from , false);
-                }, 3500);
+                    const loadJavelotAssets = async () => {
+                            await this.env._loadJavelotAssets(this.scene, new Vector3(-0.95, 0.1, 7.1), "jav.glb", "javelot", new Vector3(0, 0, 0));
+                        };
+                    loadJavelotAssets();
+                    setTimeout(() => {
+                        this.animateJavelot();
+                        this.animationJavelot = true;
+                    }, 50);
+                }, 1300);            
             }
-            else if(this.player._isIdle && !this.animationFleche){
-                this.animationFleche = true;
-                this.animateFleche();
-                //player en anim isWin à la fin de la flèche
-                // setTimeout(() => this.player.runWin(), 4000);
-            }
-            else if(this.player._isWin && this.animationFleche){
+            else if(this.player._isWin && this.animationJavelot){
                 // console.log("win"); 
                 this.score = this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]
-                storeTirArc.commit('setScore', this.score);
+                storeJavelot.commit('setScore', this.score);
                 this.endGame();
-                // console.log(this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]);
             }
         }
     }
@@ -370,131 +362,144 @@ export class TirArcGameState extends GameState {
         this.createFinaleScoreBoard();
     }
 
-    public async animateFleche(){
-		// console.log("animate fleche");
-        // this.env.flecheAssets.position = new Vector3(-0.31, 0.4, 3.85)
+    public async animateJavelot(){
         //TODO faire une anim de caméra
         // this._camera.position.z = 0;
-        // ANIMATION FLECHE
+        // ANIMATION JAVELOT
         let booleanPos1 = false;
         let booleanPos2 = false
         let booleanPos3 = false;
-        const verticalDirection = this.player.verticalDirection
+        const verticalDirection = this.player.verticalDirection;
         const horizontalDirection = this.player.horizontalDirection;
         console.log(verticalDirection, horizontalDirection);
-        // this.env.flecheAssets.mesh.position.y = 0.362621;
-        // console.log(this.env.flecheAssets.mesh.position.y);
-        // console.log(this.env.flecheAssets.mesh.position.x);
+        let booleanMonteeFinit = false;
 
-        let booleanVertical1 = false;
-        let booleanVertical2 = false;
 
-        let booleanHorizontal1 = false;
-        let booleanHorizontal2 = false;
-
+        let position;
+        let rotation;
+        let position2;
+        let rotation2;
+        let timeExec;
+        switch(verticalDirection){
+            case 1:
+                position = 0.03;
+                rotation = 0.017;
+                position2 = 0.025;
+                rotation2 = 0.01;
+                timeExec = 7;
+                break;
+            case 2:
+                position = 0.0245;
+                rotation = 0.0135;
+                position2 = 0.022;
+                rotation2 = 0.009;
+                timeExec = 6.5;
+                break;
+            case 3:
+                position = 0.019;
+                rotation = 0.01;
+                position2 = 0.020;
+                rotation2 = 0.008;
+                timeExec = 6;
+                break;
+            case 4:
+                position = 0.015;
+                rotation = 0.00650;
+                position2 = 0.018;
+                rotation2 = 0.007;
+                timeExec = 5.5;
+                break;
+            case 5:
+                position = 0.013;
+                rotation = 0.00450;
+                position2 = 0.014;
+                rotation2 = 0.004;
+                timeExec = 5;
+                break;
+            case 6:
+                position = 0.011;
+                rotation = 0.00400;
+                position2 = 0.010;
+                rotation2 = 0.002;
+                timeExec = 4.5;
+                break;
+            case 7:
+                position = 0.01;
+                rotation = 0.00350;
+                position2 = 0.008;
+                rotation2 = 0.001;
+                timeExec = 4;
+            default:    
+                break;
+        }
         while(booleanPos1 === false || booleanPos2 === false || booleanPos3 === false){
-            //z
+            //y
             // console.log(booleanPos1, booleanPos2, booleanPos3);
             if(booleanPos3 === false){
-                if(this.env.flecheAssets.mesh.position.z > -1.13807){
-                    this.env.flecheAssets.mesh.position.z -= 0.07;
-                    await new Promise(resolve => setTimeout(resolve, 7));
+                if(this.env.javelotAssets.mesh.position.y < 1 && !booleanMonteeFinit){
+                    this.env.javelotAssets.mesh.position.y += position;
+                    this.env.javelotAssets.mesh.rotation.x -= rotation;
+                    await new Promise(resolve => setTimeout(resolve, timeExec));   
                 }
-                else{
+                else if(this.env.javelotAssets.mesh.position.y > 1 && !booleanMonteeFinit){
+                    booleanMonteeFinit = true;
+                }
+                else if(this.env.javelotAssets.mesh.position.y > 0.1 && booleanMonteeFinit){
+                    this.env.javelotAssets.mesh.position.y -= position;
+                    this.env.javelotAssets.mesh.rotation.x -= rotation;
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
+                }
+                else if(this.env.javelotAssets.mesh.position.y <= 0.1 && booleanMonteeFinit){
                     booleanPos3 = true;
                 }
             }
-            //y
+            //z
             if(booleanPos1 === false){
-                const eloignement = Math.abs(verticalDirection);
-                if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
-                    booleanVertical1 = true;
-                    this.env.flecheAssets.mesh.position.y += 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
+                // console.log(this.env.javelotAssets.mesh.position.z);
+                const eloignement = verticalDirection -1;
+                if(this.env.javelotAssets.mesh.position.z > 4.49666 - (1.00621 * eloignement) ){
+                    this.env.javelotAssets.mesh.position.z -= 0.05;
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
-                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
-                    booleanPos1 = true;
-                }
-                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
-                    booleanVertical2 = true;
-                    this.env.flecheAssets.mesh.position.y -= 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
-                }
-                else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
-                    booleanPos1 = true;
-                }
-                else if(verticalDirection === 0){
-                    if(this.env.flecheAssets.mesh.position.y < 0.361){
-                        // console.log("vertical 0");
-                        this.env.flecheAssets.mesh.position.y += 0.007;
-                        await new Promise(resolve => setTimeout(resolve, 7));
-                    }
-                    else{
-                        booleanPos1 = true;
-                    }
-                }
-                else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y < 0.361 + (0.01883 * eloignement + 0.00836)){
-                    this.env.flecheAssets.mesh.position.y += 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
-                }
-                else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y > 0.361 + (0.01883 * eloignement + 0.00836)){
+                else if(this.env.javelotAssets.mesh.position.z < 4.49666 - (1.00621 * eloignement)){
                     booleanPos1 = true;
                 }
             }
-            //faire le x +++ positionner la cible comme il faut sur blender dans l'axe (pas forcément, faire comme pour le y)
+            //x
             if(booleanPos2 === false){
                 const eloignement = Math.abs(horizontalDirection);
-                if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal2){
-                    booleanHorizontal1 = true;
-                    this.env.flecheAssets.mesh.position.x += 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
-                }
-                else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x > -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal2){
+                if(horizontalDirection === 0){
                     booleanPos2 = true;
                 }
-                else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x > -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal1){
-                    booleanHorizontal2 = true;
-                    this.env.flecheAssets.mesh.position.x -= 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
+                else if(horizontalDirection < 0 && this.env.javelotAssets.mesh.position.x < -0.95 + (0.49518 * eloignement)){
+                    this.env.javelotAssets.mesh.position.x += position2;
+                    this.env.javelotAssets.mesh.rotation.y -= rotation2;
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
-                else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal1){
+                else if(horizontalDirection < 0 && this.env.javelotAssets.mesh.position.x > -0.95 + (0.49518 * eloignement)){
                     booleanPos2 = true;
                 }
-                else if(horizontalDirection === 0){
-                    if(this.env.flecheAssets.mesh.position.x > -0.36){
-                        // console.log("horizontal 0");
-                        this.env.flecheAssets.mesh.position.x -= 0.007;
-                        await new Promise(resolve => setTimeout(resolve, 7));
-                    }
-                    else{
-                        booleanPos2 = true;
-                    }
+                else if(horizontalDirection > 0 && this.env.javelotAssets.mesh.position.x > -0.95 - (0.49518 * eloignement)){
+                    this.env.javelotAssets.mesh.position.x -= position2;
+                    this.env.javelotAssets.mesh.rotation.y += rotation2;
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
-                else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x > -0.36 - (0.01883 * eloignement + 0.00836)){
-                    this.env.flecheAssets.mesh.position.x -= 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
-                }
-                else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x < -0.36 - (0.01883 * eloignement + 0.00836)){
+                else if(horizontalDirection > 0 && this.env.javelotAssets.mesh.position.x < -0.95 - (0.49518 * eloignement)){
                     booleanPos2 = true;
                 }
-                
             }
         }
-        // console.log(booleanPos1, booleanPos2, booleanPos3);
-        console.log("fin anim fleche");
-        this.player._isWin = true;
-        // }
-        // this.env.flecheAssets.mesh.position.x = -0.367833;
-        // this.env.flecheAssets.mesh.position.y = 0.362621 + 0.01883 *2+ 0.00836 ;
-        // this.env.flecheAssets.mesh.position.z = -1.13807;
-        
+        setTimeout(() => {
+            console.log("fin anim javelot");
+            this.player._isWin = true;
+        }, 2500);        
 	}
 
 
     showScoreBoard(): void {
         this.scoreboardIsShow = true;
-        document.getElementById("tirArcGame-text-finish")!.classList.remove("hidden");
-        let continueButton = document.querySelector('#tirArcGame-results #continue-button');
+        document.getElementById("javelotGame-text-finish")!.classList.remove("hidden");
+        let continueButton = document.querySelector('#javelotGame-results #continue-button');
         if (continueButton) {
             continueButton.addEventListener('click', () => {
                 if (this.continueButtonIsPressed) return;
@@ -503,21 +508,21 @@ export class TirArcGameState extends GameState {
         }
         // attendre 2 secondes avant d'afficher le tableau des scores
         setTimeout(() => {
-            document.getElementById("tirArcGame-text-finish")!.classList.add("hidden");
-            document.getElementById("tirArcGame-results")!.classList.remove("hidden");
+            document.getElementById("javelotGame-text-finish")!.classList.add("hidden");
+            document.getElementById("javelotGame-results")!.classList.remove("hidden");
         }, 2000);   
         
     }
 
     buildScoreBoard() : void {
         this.results.push({place: 1, name: this.playerName, result: "0"});
-        storeTirArc.commit('setResults', this.results);
+        storeJavelot.commit('setResults', this.results);
     }
 
     createFinaleScoreBoard() : void{
         this.results = [];
-        this.results.push({place: 1, name: this.playerName, result: ""+this.score+"/100"});
-        storeTirArc.commit('setResults', this.results);
+        this.results.push({place: 1, name: this.playerName, result: ""+this.score});
+        storeJavelot.commit('setResults', this.results);
     }
 
     public invisiblePlatform(): void {
@@ -528,14 +533,6 @@ export class TirArcGameState extends GameState {
         const platform2 = this.scene.getMeshByName("CylinderTirFacileAtt");
         if (platform2) {
             platform2.isVisible = false;
-        }
-        const platform3 = this.scene.getMeshByName("CylinderTirMoyen");
-        if (platform3) {
-            platform3.isVisible = false;
-        }
-        const platform4 = this.scene.getMeshByName("CylinderTirMoyenAtt");
-        if (platform4) {
-            platform4.isVisible = false;
         }
     }
 

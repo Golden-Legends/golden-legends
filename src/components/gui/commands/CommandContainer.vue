@@ -10,7 +10,7 @@ const props = defineProps({
 
 <template>
   <div
-    class="relative mb-4 justify-between border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white min-w-[160px] min-h-[64px] items-center p-2 px-4 rounded-lg"
+    class="relative mb-8 justify-between border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white min-w-[160px] min-h-[64px] items-center p-2 px-4 rounded-lg"
     :style="{ width: `${props.width}px` }"
   >
     <div

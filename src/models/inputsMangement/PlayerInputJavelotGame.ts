@@ -1,6 +1,6 @@
 import { InputManager } from "./InputManager";
 
-export class PlayerInputTirArcGame extends InputManager {
+export class PlayerInputJavelotGame extends InputManager {
     readonly keys = {
         KEY_SPACE: "Space",
         KEY_FIGUREV: "KeyV",

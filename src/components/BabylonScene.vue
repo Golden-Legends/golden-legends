@@ -43,7 +43,7 @@
   />
   <OnboardingContainer
     id="onboarding-container"
-    class="left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <FoundObjectsContainer
     title="objectsFound"
@@ -213,6 +213,11 @@
   >
     <GateButton id="tirArcFacile" name="Facile" difficulty="easy" />
     <GateButton id="tirArcMoyen" name="Moyen" difficulty="medium" />
+    <GateButton id="tirArcDifficile" name="Difficle" difficulty="hard" />
+  </GameGate>
+  <GameGate title="Javelot" name="javelottp" id="javelottp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <GateButton id="javelotFacile" name="Facile" difficulty="easy" />
+    <GateButton id="javelotMoyen" name="Moyen" difficulty="medium" />
   </GameGate>
   <Position
     id="position-1"
@@ -541,6 +546,184 @@
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
 
+  <!-- Tir à l'arc -->
+  <ClassicButton
+    text="Passer"
+    name="tirArcGame-skip-button"
+    id="tirArcGame-skip-button"
+    class="hidden absolute bottom-12 right-12"
+  />
+  <ClassicButton
+    text="Prêt"
+    name="tirArcGame-ready-button"
+    id="tirArcGame-ready-button"
+    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
+  />
+  <RDSText
+    text="3"
+    name="tirArcGame-text-1"
+    id="tirArcGame-text-1"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="2"
+    name="tirArcGame-text-2"
+    id="tirArcGame-text-2"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="1"
+    name="tirArcGame-text-3"
+    id="tirArcGame-text-3"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="En place !"
+    name="tirArcGame-text-4"
+    id="tirArcGame-text-4"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Score
+    name="tirArcGame-score"
+    id="tirArcGame-score"
+    class="hidden absolute bottom-12 right-12"
+    :score="storeTirArc.state.score"
+  />
+  <CommandContainer
+    name="ACTION"
+    :keys="['espace']"
+    id="tirArcGame-action-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  /> 
+  <CommandContainer
+    name="VISÉE↕️"
+    :keys="['V']"
+    id="tirArcGame-vertical-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <CommandContainer
+    name="VISÉE↔️"
+    :keys="['H']"
+    id="tirArcGame-horizontal-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <RDSText
+    text="Tirez !"
+    subText="Appuyez sur Espace"
+    name="tirArcGame-text-tir"
+    id="tirArcGame-text-tir"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Tir
+    name="tirArcGame-text-finish"
+    id="tirArcGame-text-finish"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Results
+    title="tir à l'arc"
+    name="tirArcGame-results"
+    id="tirArcGame-results"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+  <ResultsContent :results="storeTirArc.state.results" />
+  </Results>
+  <div id="tirArcGame-verticalgui" class="hidden absolute top-1/3 left-2/3 transform -translate-x-1/2 -ml-24">
+    <ArcheryContainer
+      orientation="vertical"
+      :ms="storeTirArc.state.speed"
+      @update-position="positionV"
+    />
+  </div>
+  <div id="tirArcGame-horizontalgui" class="hidden absolute top-2/3 left-1/2 transform -translate-x-1/2 mt-12">
+    <ArcheryContainer
+      orientation="horizontal"
+      :ms="storeTirArc.state.speed"
+      @update-position="positionH"
+    />
+  </div>
+
+  <!-- Javelot -->
+  <ClassicButton
+    text="Passer"
+    name="javelotGame-skip-button"
+    id="javelotGame-skip-button"
+    class="hidden absolute bottom-12 right-12"
+  />
+  <ClassicButton
+    text="Prêt"
+    name="javelotGame-ready-button"
+    id="javelotGame-ready-button"
+    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
+  />
+  <RDSText
+    text="3"
+    name="javelotGame-text-1"
+    id="javelotGame-text-1"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="2"
+    name="javelotGame-text-2"
+    id="javelotGame-text-2"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="1"
+    name="javelotGame-text-3"
+    id="javelotGame-text-3"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="En place !"
+    name="javelotGame-text-4"
+    id="javelotGame-text-4"
+    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Score
+    name="javelotGame-score"
+    id="javelotGame-score"
+    class="hidden absolute bottom-12 right-12"
+    :score="storeJavelot.state.score"
+  />
+  <CommandContainer
+    name="ACTION"
+    :keys="['espace']"
+    id="javelotGame-action-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  /> 
+  <CommandContainer
+    name="VISÉE↕️"
+    :keys="['V']"
+    id="javelotGame-vertical-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <CommandContainer
+    name="VISÉE↔️"
+    :keys="['H']"
+    id="javelotGame-horizontal-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <RDSText
+    text="Lancez !"
+    subText="Appuyez sur Espace"
+    name="javelotGame-text-tir"
+    id="javelotGame-text-tir"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Lancer
+    name="javelotGame-text-finish"
+    id="javelotGame-text-finish"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Results
+    title="Javelot"
+    name="javelotGame-results"
+    id="javelotGame-results"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+  <ResultsContent :results="storeJavelot.state.results" />
+  </Results>
+
   <!-- BOXE -->
   <ClassicButton
     text="Passer"
@@ -579,43 +762,7 @@
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
 
-  <!-- Tir à l'arc -->
-  <ClassicButton
-    text="Passer"
-    name="tirArcGame-skip-button"
-    id="tirArcGame-skip-button"
-    class="hidden absolute bottom-12 right-12"
-  />
-  <ClassicButton
-    text="Prêt"
-    name="tirArcGame-ready-button"
-    id="tirArcGame-ready-button"
-    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
-  />
-  <RDSText
-    text="3"
-    name="tirArcGame-text-1"
-    id="tirArcGame-text-1"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="2"
-    name="tirArcGame-text-2"
-    id="tirArcGame-text-2"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="1"
-    name="tirArcGame-text-3"
-    id="tirArcGame-text-3"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <RDSText
-    text="En place !"
-    name="tirArcGame-text-4"
-    id="tirArcGame-text-4"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
+  
 </template>
 
 <script setup lang="ts">
@@ -631,6 +778,8 @@ import KeyPressInteraction from "@/components/gui/KeyPressInteraction.vue";
 import RDSText from "@/components/gui/running/RDSText.vue";
 import Finish from "@/components/gui/running/Finish.vue";
 import Saut from "@/components/gui/finish/Saut.vue";
+import Tir from "@/components/gui/finish/Tir.vue";
+import Lancer from "@/components/gui/finish/Lancer.vue";
 import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
 import KeyLetters from "./gui/KeyLetters.vue";
@@ -645,9 +794,12 @@ import { store } from "@/components/gui/store.ts";
 import { storeNatation } from "@/components/gui/storeNatation.ts";
 import { storeJump } from "@/components/gui/storeJump.ts";
 import { storePlongeon } from "@/components/gui/storePlongeon.ts";
+import { storeTirArc } from "@/components/gui/storeTirArc.ts";
 
 import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
+import { storeJavelot } from "./gui/storeJavelot";
+import ArcheryContainer from "./gui/archery/ArcheryContainer.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
@@ -679,6 +831,19 @@ const loseJumpText = "Pas pour cette fois... Retente ta chance !";
 const stationScoreboard = "GUI Scoreboard TODO...";
 //TP game
 const tpGame = "Comeback later...";
+
+const positionH = (position: number) => {
+  // You can get the position in params from the child
+  // console.log(position);
+  storeTirArc.commit('setPosH', position);
+};
+
+const positionV = (position: number) => {
+  // You can get the position in params from the child
+  // console.log(position);
+  storeTirArc.commit('setPosV', position);
+};
+
 
 onMounted(() => {
   if (bjsCanvas.value) {
