@@ -132,7 +132,7 @@ export class Environment {
 		this.voitures.init();
 		this.stationScore = new StationScore(this._scene, this.player?.mesh as Mesh);
 		this.stationScore.init();		
-		this.tpGame = new TpGame(this._scene, this.player?.mesh as Mesh);
+		this.tpGame = new TpGame(this._scene, this.player?.mesh as Mesh, this.inGameState);
 		this.tpGame.init();
 		this.createSkybox(this._scene);
 		this.createWater();

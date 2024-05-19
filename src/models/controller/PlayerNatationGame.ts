@@ -295,7 +295,7 @@ export class PlayerNatationGame {
     public createCameraPlayer(mesh : Mesh) : FreeCamera { 
         const camera = new FreeCamera("camera1", new Vector3(3.5, 2.5, 5), this.scene);
         camera.setTarget(new Vector3(mesh.position.x, mesh.position.y, mesh.position.z));
-        console.log(camera.rotation);
+        // console.log(camera.rotation);
         return camera;
     }
 
