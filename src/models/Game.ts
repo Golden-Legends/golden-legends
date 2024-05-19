@@ -7,6 +7,7 @@ import { RunningGameState } from "./scene/games/RunningGameState.ts";
 import { NatationGameState } from "./scene/games/NatationGameState.ts";
 import { PlongeonGameState } from "./scene/games/PlongeonGameState.ts";
 import { TirArcGameState } from "./scene/games/TirArcGameState.ts";
+import { JavelotGameState } from "./scene/games/JavelotGameState.ts";
 
 export class Game {
   public engine: Engine;
@@ -17,7 +18,7 @@ export class Game {
   constructor(canvas: HTMLCanvasElement) {
     this.engine = new Engine(canvas, true);
     this.canvas = canvas;
-    this.changeState(new TirArcGameState(this, canvas));
+    this.changeState(new JavelotGameState(this, canvas));
 
   }
 
