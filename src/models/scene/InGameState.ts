@@ -396,35 +396,5 @@ export class InGameState extends GameState {
     document.getElementById("objects-keybind")!.classList.add("hidden");
     document.getElementById("map-keybind")!.classList.add("hidden");
   }
-
-  private initButtons(gui: AdvancedDynamicTexture) {
-    const exitButton = gui.getControlByName("NO_BUTTON-bjs");
-    if (exitButton) {
-      exitButton.onPointerClickObservable.add(() => {
-        // dont display the gui
-        if (this.background) {
-          this.closeGui(this.background);
-        }
-      });
-    }
-
-    const enterButton = gui.getControlByName("YES_BUTTON-bjs");
-    if (enterButton) {
-      enterButton.onPointerClickObservable.add(() => {
-        this.goToRunningGame();
-      });
-    }
-  }
-
-  public closeGui(background: Control) {
-    background.isVisible = false;
-  }
-
-  public openGui(background: Control) {
-    background.isVisible = true;
-  }
-
-  public getBackground(): Nullable<Control> {
-    return this.background;
-  }
+  
 }
