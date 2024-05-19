@@ -3,7 +3,7 @@ import HorizontalColorBar from "@/components/gui/archery/HorizontalColorBar.vue"
 import VerticalColorBar from "@/components/gui/archery/VerticalColorBar.vue";
 import HorizontalMovingArrow from "@/components/gui/archery/HorizontalMovingArrow.vue";
 import VerticalMovingArrow from "@/components/gui/archery/VerticalMovingArrow.vue";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 
 const props = defineProps({
   orientation: {
@@ -85,7 +85,13 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-setInterval(updatePosition, props.ms);
+const interval = setInterval(updatePosition, props.ms);
+//when prop.ms update, clear interval and set new interval
+watch(() => props.ms, () => {
+  clearInterval(interval);
+  setInterval(updatePosition, props.ms);
+});
+
 </script>
 
 <template>

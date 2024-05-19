@@ -213,6 +213,7 @@
   >
     <GateButton id="tirArcFacile" name="Facile" difficulty="easy" />
     <GateButton id="tirArcMoyen" name="Moyen" difficulty="medium" />
+    <GateButton id="tirArcDifficile" name="Difficle" difficulty="hard" />
   </GameGate>
   <GameGate title="Javelot" name="javelottp" id="javelottp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
     <GateButton id="javelotFacile" name="Facile" difficulty="easy" />

@@ -436,24 +436,28 @@ export class InGameState extends GameState {
     });
 
     //Tir à l'arc
-    // document.getElementById("tirArcFacile")?.addEventListener("click", () => {
-    //   this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
-    //   this.soundManager.stopTrack('inGame');
-    // });
-    // document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
-    //   this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "intermediate"));
-    //   this.soundManager.stopTrack('inGame');
-    // });
+    document.getElementById("tirArcFacile")?.addEventListener("click", () => {
+      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas));
+      this.soundManager.stopTrack('inGame');
+    });
+    document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
+      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "intermediate"));
+      this.soundManager.stopTrack('inGame');
+    });
+    document.getElementById("tirArcDifficile")?.addEventListener("click", () => {
+      this.game.changeState(new TirArcGameState(this.soundManager, this.game, this.canvas, "hard"));
+      this.soundManager.stopTrack('inGame');
+    });
 
     //Javelot
-    // document.getElementById("javelotFacile")?.addEventListener("click", () => {
-    //   this.game.changeState(new JavelotGameState(this.soundManager, this.game, this.canvas));
-    //   this.soundManager.stopTrack('inGame');
-    // });
-    // document.getElementById("javelotMoyen")?.addEventListener("click", () => {
-    //   this.game.changeState(new JavelotGameState(this.soundManager, this.game, this.canvas, "intermediate"));
-    //   this.soundManager.stopTrack('inGame');
-    // });
+    document.getElementById("javelotFacile")?.addEventListener("click", () => {
+      this.game.changeState(new JavelotGameState(this.soundManager, this.game, this.canvas));
+      this.soundManager.stopTrack('inGame');
+    });
+    document.getElementById("javelotMoyen")?.addEventListener("click", () => {
+      this.game.changeState(new JavelotGameState(this.soundManager, this.game, this.canvas, "intermediate"));
+      this.soundManager.stopTrack('inGame');
+    });
   }
 
   public goToRunningGame() {

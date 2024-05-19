@@ -9,7 +9,7 @@
                 }
             ],
             "pointToSucceed" : 50,
-            "speedCurseur" : 40
+            "speedCurseur" : 35
         },
         "intermediate" : {
             "placement" : 
@@ -31,7 +31,7 @@
                 }
             ],
             "pointToSucceed" : 50,
-            "speedCurseur" : 10
+            "speedCurseur" : 15
         }
     }
 }
