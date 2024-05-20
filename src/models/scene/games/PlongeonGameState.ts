@@ -174,7 +174,6 @@ export class PlongeonGameState extends GameState {
             // Vector3(4.78, 3.27, 6.38)
             // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
-            
             document.getElementById("objects-keybind")!.classList.add("hidden");
             document.getElementById("map-keybind")!.classList.add("hidden");
             document.getElementById("plongeontp")!.classList.add("hidden");
@@ -225,46 +224,49 @@ export class PlongeonGameState extends GameState {
     }
 
     update():void {
-        // console.log("update");
-        if(this.countdownDone && !this.letterIsGenerated){//todo rajouter que le perso vient de sauter et est entrain de tomber
-            this.generateLetters(this.settings.level[this.difficulty].numLetters);
+        if (!this.countdownDone) return;
+
+        if(!this.letterIsGenerated){//todo rajouter que le perso vient de sauter et est entrain de tomber
+            const suiteLetters = this.generateLetters(this.settings.level[this.difficulty].numLetters);
+            this.player.putLetters(suiteLetters);
+            storePlongeon.commit("setLetters", suiteLetters);
             this.letterIsGenerated = true;
+            console.log("je génère mes première lettres ", suiteLetters)
+            return;
         }
 
-        if(this.letterIsGenerated && !this.suiteLettersAffiche){
-            const deltaTime = this.scene.getEngine().getDeltaTime();
-            this.player.play(deltaTime, performance.now());
-            if(this.player.isSpacedPressedForAnim && !this.suiteLettersAffiche){
-                // console.log("suite");
-                this.suiteLettersAffiche = true;
-                this.affichageLettersDebut();
-            }
-        }
-
-        if(!this.playActive){
-            if(this.player._isWin && !this.scoreboardIsShow){
+        if(this.player._isWin){ 
+            if (!this.scoreboardIsShow) {
                 this.showScoreBoard();
+                console.log("affiche le score board fin de jeu")
             }
-        }
-        else if(!this.player.getIsEndGame()){
-            if(this.playActive && this.settings.level[this.difficulty].limitTime >= performance.now() - this.plongeonStartTime){
-                // récupérer les x premières touches que le joueur appuie
-                const deltaTime = this.scene.getEngine().getDeltaTime();
-                this.player.play(deltaTime, performance.now());
+            console.log("FIN DE JEU");
+            return;
+        } else if(!this.player._isWin){
+            const deltaTime = this.scene.getEngine().getDeltaTime();
+            const timeNow = performance.now();
+            this.player.play(deltaTime, timeNow);
+
+            if(this.letterIsGenerated && !this.suiteLettersAffiche) { 
+                if (this.player.isSpacedPressedForAnim) {
+                    this.suiteLettersAffiche = true;
+                    this.affichageLettersDebut();
+                }
+                // tant que le joueur n'a pas lancé on fait rien
+                console.log("en attente que le joueru presse space")
+                return;
             }
-            else if(this.playActive && this.settings.level[this.difficulty].limitTime < performance.now() - this.plongeonStartTime){
-                console.log("temps dépassé");
+
+            if(this.playActive && this.settings.level[this.difficulty].limitTime < timeNow - this.plongeonStartTime){
+                this.playActive = false;
                 this.endGame();
             }
-        }
-        else{
-            console.log("nombres de lettres atteint");
-            this.endGame();
+
+            return;
         }
     }
 
     private endGame(){
-        this.playActive = false;
         this.player.descendrePerso();
         this.createFinaleScoreBoard();
     }
@@ -352,8 +354,6 @@ export class PlongeonGameState extends GameState {
             lettersArray.push(this.letterPossible[randomNumber]);
         }
         // console.log(lettersArray);
-        storePlongeon.commit("setLetters", lettersArray);
-        this.player.putLetters(lettersArray);
         return lettersArray;
     }
 
