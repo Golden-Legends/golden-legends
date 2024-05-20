@@ -23,7 +23,7 @@ export class tirArcGameEnv {
 		});
 		this.createSkybox(this._scene);
 		//TODO remettre le loadPublic
-		// this.loadPublic();
+		this.loadPublic();
 	}
 
 	public async loadPublic() {

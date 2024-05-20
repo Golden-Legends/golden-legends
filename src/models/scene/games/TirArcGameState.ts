@@ -392,13 +392,15 @@ export class TirArcGameState extends GameState {
         let booleanHorizontal1 = false;
         let booleanHorizontal2 = false;
 
+        const timeExec = 3;
+
         while(booleanPos1 === false || booleanPos2 === false || booleanPos3 === false){
             //z
             // console.log(booleanPos1, booleanPos2, booleanPos3);
             if(booleanPos3 === false){
                 if(this.env.flecheAssets.mesh.position.z > -1.13807){
                     this.env.flecheAssets.mesh.position.z -= 0.07;
-                    await new Promise(resolve => setTimeout(resolve, 7));
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
                 else{
                     booleanPos3 = true;
@@ -410,7 +412,7 @@ export class TirArcGameState extends GameState {
                 if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
                     booleanVertical1 = true;
                     this.env.flecheAssets.mesh.position.y += 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
                 else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical2){
                     booleanPos1 = true;
@@ -418,7 +420,7 @@ export class TirArcGameState extends GameState {
                 else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y > 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
                     booleanVertical2 = true;
                     this.env.flecheAssets.mesh.position.y -= 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
                 else if(verticalDirection < 0 && this.env.flecheAssets.mesh.position.y < 0.361 - (0.01883 * eloignement + 0.00836) && !booleanVertical1){
                     booleanPos1 = true;
@@ -427,7 +429,7 @@ export class TirArcGameState extends GameState {
                     if(this.env.flecheAssets.mesh.position.y < 0.361){
                         // console.log("vertical 0");
                         this.env.flecheAssets.mesh.position.y += 0.007;
-                        await new Promise(resolve => setTimeout(resolve, 7));
+                        await new Promise(resolve => setTimeout(resolve, timeExec));
                     }
                     else{
                         booleanPos1 = true;
@@ -435,7 +437,7 @@ export class TirArcGameState extends GameState {
                 }
                 else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y < 0.361 + (0.01883 * eloignement + 0.00836)){
                     this.env.flecheAssets.mesh.position.y += 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
                 else if(verticalDirection > 0 && this.env.flecheAssets.mesh.position.y > 0.361 + (0.01883 * eloignement + 0.00836)){
                     booleanPos1 = true;
@@ -447,7 +449,7 @@ export class TirArcGameState extends GameState {
                 if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal2){
                     booleanHorizontal1 = true;
                     this.env.flecheAssets.mesh.position.x += 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
                 else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x > -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal2){
                     booleanPos2 = true;
@@ -455,7 +457,7 @@ export class TirArcGameState extends GameState {
                 else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x > -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal1){
                     booleanHorizontal2 = true;
                     this.env.flecheAssets.mesh.position.x -= 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
                 else if(horizontalDirection < 0 && this.env.flecheAssets.mesh.position.x < -0.36 + (0.01883 * eloignement + 0.00836) && !booleanHorizontal1){
                     booleanPos2 = true;
@@ -464,7 +466,7 @@ export class TirArcGameState extends GameState {
                     if(this.env.flecheAssets.mesh.position.x > -0.36){
                         // console.log("horizontal 0");
                         this.env.flecheAssets.mesh.position.x -= 0.007;
-                        await new Promise(resolve => setTimeout(resolve, 7));
+                        await new Promise(resolve => setTimeout(resolve, timeExec));
                     }
                     else{
                         booleanPos2 = true;
@@ -472,7 +474,7 @@ export class TirArcGameState extends GameState {
                 }
                 else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x > -0.36 - (0.01883 * eloignement + 0.00836)){
                     this.env.flecheAssets.mesh.position.x -= 0.007;
-                    await new Promise(resolve => setTimeout(resolve, 7));
+                    await new Promise(resolve => setTimeout(resolve, timeExec));
                 }
                 else if(horizontalDirection > 0 && this.env.flecheAssets.mesh.position.x < -0.36 - (0.01883 * eloignement + 0.00836)){
                     booleanPos2 = true;
