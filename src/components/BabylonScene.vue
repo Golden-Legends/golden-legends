@@ -222,32 +222,32 @@
   <Position
     id="position-1"
     position="1"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Position
     id="position-2"
     position="2"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Position
     id="position-3"
     position="3"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Position
     id="position-4"
     position="4"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Position
     id="position-5"
     position="5"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Position
     id="position-6"
     position="6"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <MainOptions />
   <!-- RUNNINGGAME -->
@@ -255,7 +255,7 @@
     name="COURIR"
     :keys="['s', 'd']"
     id="runningGame-command-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden -mt-20 absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <ClassicButton
     text="Passer"
@@ -326,7 +326,7 @@
     :keys="['s', 'd']"
     name="runningGame-keyPressed"
     id="runningGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <!-- NATATION -->
   <CommandContainer

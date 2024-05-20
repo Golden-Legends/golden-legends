@@ -244,6 +244,8 @@ export class RunningGameState extends GameState {
             this.createFinaleScoreBoard();
             this.displayPosition();
             document.getElementById("runningGame-text-finish")!.classList.add("hidden");
+            document.getElementById("runningGame-keyPressed")!.classList.add("hidden");
+            document.getElementById("runningGame-text-speedbar")!.classList.add("hidden");
             document.getElementById("runningGame-results")!.classList.remove("hidden");
             let continueButton = document.querySelector('#runningGame-results #continue-button');
             if (continueButton) {
