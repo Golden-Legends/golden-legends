@@ -436,17 +436,17 @@
 
   <!-- Plongeon -->
   <CommandContainer
+    name="ACTION"
+    :keys="['espace']"
+    id="plongeonGame-action-container"
+    class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <CommandContainer
     name="FIGURES"
     :keys="['f', 'g', 'h', 'j']"
     width="260"
     id="plongeonGame-command-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  />
-  <CommandContainer
-    name="ACTION"
-    :keys="['espace']"
-    id="plongeonGame-action-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute -top-3/4 left-36 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <ClassicButton
     text="Passer"
@@ -507,13 +507,13 @@
     :keys="storePlongeon.state.letters"
     name="plongeonGame-suiteLetters"
     id="plongeonGame-suiteLetters"
-    class="hidden absolute left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute -mt-8 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <KeyPressInteraction
     :keys="['f', 'g', 'h', 'j']"
     name="plongeonGame-keyPressed"
     id="plongeonGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/2 bottom-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Score
     name="plongeonGame-score"
@@ -537,7 +537,7 @@
     title="plongeon"
     name="plongeonGame-results"
     id="plongeonGame-results"
-    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden -mt-40 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
     <ResultsContent :results="storePlongeon.state.results" />
   </Results>
