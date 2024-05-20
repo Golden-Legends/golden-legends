@@ -357,6 +357,8 @@ export class NatationGameState extends GameState {
             this.createFinaleScoreBoard();
             this.displayPosition();
             document.getElementById("natationGame-text-finish")!.classList.add("hidden");
+            document.getElementById("natationGame-keyPressed")!.classList.add("hidden");
+            document.getElementById("natationGame-text-speedbar")!.classList.add("hidden");
             document.getElementById("natationGame-results")!.classList.remove("hidden");
             this.scoreboardIsShow = true;
         }, 2000);   

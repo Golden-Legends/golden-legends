@@ -222,32 +222,32 @@
   <Position
     id="position-1"
     position="1"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Position
     id="position-2"
     position="2"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Position
     id="position-3"
     position="3"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Position
     id="position-4"
     position="4"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Position
     id="position-5"
     position="5"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Position
     id="position-6"
     position="6"
-    class="hidden absolute top-3/4 left-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <MainOptions />
   <!-- RUNNINGGAME -->
@@ -255,7 +255,7 @@
     name="COURIR"
     :keys="['s', 'd']"
     id="runningGame-command-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden -mt-20 absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <ClassicButton
     text="Passer"
@@ -326,14 +326,15 @@
     :keys="['s', 'd']"
     name="runningGame-keyPressed"
     id="runningGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+
   <!-- NATATION -->
   <CommandContainer
     name="NAGER"
     :keys="['s', 'd']"
     id="natationGame-command-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <CommandContainer
     name="ACTION"
@@ -369,7 +370,7 @@
     title="natation"
     name="natationGame-results"
     id="natationGame-results"
-    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden -mt-24 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
     <ResultsContent :results="storeNatation.state.results" />
   </Results>
@@ -416,7 +417,7 @@
     :keys="['s', 'd', ' ']"
     name="natationGame-keyPressed"
     id="natationGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/2 bottom-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <RDSText
     text="Plongez !"
@@ -435,17 +436,17 @@
 
   <!-- Plongeon -->
   <CommandContainer
+    name="ACTION"
+    :keys="['espace']"
+    id="plongeonGame-action-container"
+    class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <CommandContainer
     name="FIGURES"
     :keys="['f', 'g', 'h', 'j']"
     width="260"
     id="plongeonGame-command-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  />
-  <CommandContainer
-    name="ACTION"
-    :keys="['espace']"
-    id="plongeonGame-action-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute -top-3/4 left-36 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <ClassicButton
     text="Passer"
@@ -506,13 +507,13 @@
     :keys="storePlongeon.state.letters"
     name="plongeonGame-suiteLetters"
     id="plongeonGame-suiteLetters"
-    class="hidden absolute left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute -mt-8 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <KeyPressInteraction
     :keys="['f', 'g', 'h', 'j']"
     name="plongeonGame-keyPressed"
     id="plongeonGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/2 bottom-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Score
     name="plongeonGame-score"
@@ -536,7 +537,7 @@
     title="plongeon"
     name="plongeonGame-results"
     id="plongeonGame-results"
-    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden -mt-40 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
     <ResultsContent :results="storePlongeon.state.results" />
   </Results>
@@ -593,7 +594,7 @@
     name="ACTION"
     :keys="['espace']"
     id="tirArcGame-action-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   /> 
   <CommandContainer
     name="VISÉE↕️"
@@ -623,7 +624,7 @@
     title="tir à l'arc"
     name="tirArcGame-results"
     id="tirArcGame-results"
-    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden -mt-48 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
   <ResultsContent :results="storeTirArc.state.results" />
   </Results>
