@@ -594,7 +594,7 @@
     name="ACTION"
     :keys="['espace']"
     id="tirArcGame-action-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   /> 
   <CommandContainer
     name="VISÉE↕️"
@@ -624,7 +624,7 @@
     title="tir à l'arc"
     name="tirArcGame-results"
     id="tirArcGame-results"
-    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden -mt-48 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
   <ResultsContent :results="storeTirArc.state.results" />
   </Results>
