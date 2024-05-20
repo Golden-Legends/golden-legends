@@ -328,12 +328,13 @@
     id="runningGame-keyPressed"
     class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+
   <!-- NATATION -->
   <CommandContainer
     name="NAGER"
     :keys="['s', 'd']"
     id="natationGame-command-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <CommandContainer
     name="ACTION"
@@ -369,7 +370,7 @@
     title="natation"
     name="natationGame-results"
     id="natationGame-results"
-    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden -mt-24 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
     <ResultsContent :results="storeNatation.state.results" />
   </Results>
@@ -416,7 +417,7 @@
     :keys="['s', 'd', ' ']"
     name="natationGame-keyPressed"
     id="natationGame-keyPressed"
-    class="hidden absolute left-1/2 bottom-16 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/2 bottom-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <RDSText
     text="Plongez !"
