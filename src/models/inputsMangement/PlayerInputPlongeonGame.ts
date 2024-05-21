@@ -38,7 +38,6 @@ export class PlayerInputPlongeonGame extends InputManager {
     
     private updateFigure1Keys(): void {
         if (this.inputMap[this.keys.KEY_FIGUREF] && !this.keyHandled.figuref) {
-            console.log("figuref");
             this.figuref = true;
             this.keyHandled.figuref = true;
         } else if (!this.inputMap[this.keys.KEY_FIGUREF]) {
