@@ -220,7 +220,7 @@ export class PlongeonGameState extends GameState {
         storePlongeon.commit('setLetters', []);
         storePlongeon.commit('setResults', []);
 
-        this.clearScene();
+        this.cleanup();
     }
 
     update():void {

@@ -34,6 +34,19 @@ export abstract class GameState {
     this.scene.detachControl();
   }
 
+  // Arrêter la boucle de rendu
+  protected stopRenderLoop(): void {
+    this.game.engine.stopRenderLoop();
+  }
+
+  // Arrêter la boucle de rendu et nettoyer les ressources
+  protected cleanup(): void {
+    this.stopRenderLoop();
+    this.clearScene();
+    this.disposePointerLock();
+    console.log("Cleaned up the game state.");
+  }
+
   runRender () {
    this.scene.render();
   }
