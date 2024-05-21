@@ -18,6 +18,12 @@ const props = defineProps({
   <div
     class="relative border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white items-center p-2 px-4 rounded-lg h-fit w-[800px]"
   >
+    <button
+      id="close-objects"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
     <div class="flex flex-col gap-4 mt-4 mb-4">
       <FoundObject v-for="object in props.objects" :object="object" />
     </div>

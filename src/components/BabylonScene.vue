@@ -4,7 +4,7 @@
   <KeybindHint
     class="absolute top-4 left-4"
     keybind="O"
-    name="Options"
+    name="Menu"
     eventKey="o"
     id="options-keybind"
   />
@@ -22,7 +22,7 @@
   <KeybindHint
     class="absolute top-20 left-4"
     keybind="N"
-    name="Objets à trouver"
+    name="Objets trouvés"
     eventKey="n"
     id="objects-keybind"
   />
@@ -35,6 +35,14 @@
   />
   <OnboardingContainer
     id="onboarding-container"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Aide
+    id="aide-container"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Tips
+    id="tips-container"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <FoundObjectsContainer
@@ -791,6 +799,8 @@ import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
 import { storeJavelot } from "./gui/storeJavelot";
 import ArcheryContainer from "./gui/archery/ArcheryContainer.vue";
+import Aide from "@/components/gui/onboarding/Aide.vue";
+import Tips from "@/components/gui/onboarding/Tips.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
