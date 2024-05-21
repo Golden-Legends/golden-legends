@@ -404,5 +404,15 @@ export class InGameState extends GameState {
     this.addEventListenerById("tirArcMoyen", "click", () => {
       this.game.changeState(new TirArcGameState(this.game, this.canvas, "intermediate"));
     });
+    this.addEventListenerById("tirArcDifficile", "click", () => {
+      this.game.changeState(new TirArcGameState(this.game, this.canvas, "hard"));
+    });
+    // javelot
+    this.addEventListenerById("javelotFacile", "click", () => {
+      this.game.changeState(new JavelotGameState(this.game, this.canvas));
+    });
+    this.addEventListenerById("javelotMoyen", "click", () => {
+      this.game.changeState(new JavelotGameState(this.game, this.canvas, "intermediate"));
+    });
   }  
 }
