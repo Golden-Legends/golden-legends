@@ -36,9 +36,9 @@
   />
   <KeybindHint
     class="absolute top-36 left-4"
-    keybind="M"
+    keybind="C"
     name="Carte"
-    eventKey="m"
+    eventKey="c"
     id="map-keybind"
   />
   <OnboardingContainer
@@ -55,7 +55,7 @@
   <!-- log test carte a supprimer-->
   <Dialog
     name="Carte"
-    text="carte log"
+    text="Golden Legends minimap"
     id="carte-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
