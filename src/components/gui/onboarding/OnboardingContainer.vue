@@ -20,7 +20,7 @@ const carousel = ref(0);
       <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <div class="text-4xl font-bold text-center mt-2 mb-4">
-      Bienvenue sur GoldenLegends !
+      Bienvenue sur Golden Legends !
     </div>
     <div class="w-full h-fit flex justify-between items-center">
       <button
@@ -37,7 +37,7 @@ const carousel = ref(0);
             <span
               >Épreuves, mini-jeux, objets... La carte de Paris n'attend que
               toi. Explore les alentours pour trouver tous les secrets de cette
-              carte.</span
+              carte. Et des PNJ seront là pour t'aider si besoin.</span
             >
             <img
               :src="map_overview"
@@ -72,7 +72,7 @@ const carousel = ref(0);
                 class="w-fit my-4"
               />
               <CommandContainer
-                name="NAGER"
+                name="ACTION"
                 :keys="['ESPACE']"
                 class="w-fit my-4"
               />
@@ -82,7 +82,7 @@ const carousel = ref(0);
             <Title text="Mais qu'est-ce que je peux bien faire ?"></Title>
             <span
               >Tu peux visiter la carte, découvrir des lieux emblématiques,
-              trouver d'autres mini-jeux ou des objets cachés...</span
+              trouver d'autres mini-jeux ou des objets cachés...pour débloquer de nouveaux personnages.</span
             >
           </div>
         </CarouselContent>

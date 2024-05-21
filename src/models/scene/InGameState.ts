@@ -30,6 +30,8 @@ import { NatationGameState } from "./games/NatationGameState.ts";
 import { PlongeonGameState } from "./games/PlongeonGameState.ts";
 import { TirArcGameState } from "./games/TirArcGameState.ts";
 import { JavelotGameState } from "./games/JavelotGameState.ts";
+import { storeOnboard } from "@/components/gui/storeOnboard.ts";
+import { doc } from "prettier";
 
 export class InGameState extends GameState {
   public assets;
@@ -46,13 +48,43 @@ export class InGameState extends GameState {
     document.getElementById("objects-keybind")!.classList.remove("hidden");
     document.getElementById("map-keybind")!.classList.remove("hidden");
 
-    document
-      .getElementById("close-onboarding")!
-      .addEventListener("click", () => {
-        document
-          .getElementById("onboarding-container")!
-          .classList.add("hidden");
-      });
+    this.addEventListenerById("close-onboarding", "click", () => {
+      document.getElementById("onboarding-container")!.classList.add("hidden");
+    });
+    this.addEventListenerById("close-objects", "click", () => {
+      document.getElementById("objectsFound")!.classList.add("hidden");
+      setTimeout(() => {
+        this.isGameObjectInterfacedPressed = false;
+      },250);
+    });
+    this.addEventListenerById("open-objects-menu", "click", () => {
+      document.getElementById("options")!.classList.add("hidden");
+      document.getElementById("objectsFound")!.classList.remove("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = false;
+        this.isGameObjectInterfacedPressed = true;
+      },250);
+    });
+    this.addEventListenerById("open-aide-menu", "click", () => {
+      document.getElementById("aide-container")!.classList.remove("hidden");
+      document.getElementById("options")!.classList.add("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = false;
+      },250);
+    });
+    this.addEventListenerById("close-aide", "click", () => {
+      document.getElementById("aide-container")!.classList.add("hidden");
+    });
+    this.addEventListenerById("open-tips-menu", "click", () => {
+      document.getElementById("tips-container")!.classList.remove("hidden");
+      document.getElementById("options")!.classList.add("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = false;
+      },250);
+    });
+    this.addEventListenerById("close-tips", "click", () => {
+      document.getElementById("tips-container")!.classList.add("hidden");
+    });
   }
 
   async enter() {
@@ -88,6 +120,10 @@ export class InGameState extends GameState {
     //TO ACTIVATE WHEN THE LOADING SCREEN IS DONE
     // await this.animStartGame();
     // set environments
+    if(storeOnboard.state.debut === false){
+      document.getElementById("onboarding-container")!.classList.remove("hidden");
+      storeOnboard.commit("setDebut", true);
+    }
     await this.setEnvironment();
 
     // Inspector.Show(this.scene, {});
@@ -243,8 +279,10 @@ export class InGameState extends GameState {
     if (!this.isGameObjectInterfacedPressed && this._input.keyGameObjects && document.getElementById("objectsFound")!.classList.contains("hidden")
       && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
       document.getElementById("objectsFound")!.classList.remove("hidden");
+      document.getElementById("options")!.classList.add("hidden");
       setTimeout(() => {
         this.isGameObjectInterfacedPressed = true;
+        this.isOptionsInterfacedPressed = false;
       },250);
       
     } else if (this.isGameObjectInterfacedPressed && this._input.keyGameObjects && !document.getElementById("objectsFound")!.classList.contains("hidden")
@@ -264,9 +302,11 @@ export class InGameState extends GameState {
     else if (!this.isOptionsInterfacedPressed && this._input.keyOptions && document.getElementById("options")!.classList.contains("hidden")){
       // Jouvre les options    
       document.getElementById("options")!.classList.remove("hidden");
+      document.getElementById("objectsFound")!.classList.add("hidden");
       this.removeHandlePointerLock();
       setTimeout(() => {
         this.isOptionsInterfacedPressed = true;
+        this.isGameObjectInterfacedPressed = false;
       },250);
     }
 

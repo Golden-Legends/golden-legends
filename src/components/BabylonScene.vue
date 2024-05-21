@@ -4,7 +4,7 @@
   <KeybindHint
     class="absolute top-4 left-4"
     keybind="O"
-    name="Options"
+    name="Menu"
     eventKey="o"
     id="options-keybind"
   />
@@ -13,36 +13,36 @@
     name="options"
     id="options"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  >
-    <div class="flex justify-between">
-      <span class="text-2xl">Son global</span>
-      <input type="range" min="0" max="100" class="accent-black" />
-    </div>
+  > 
     <div class="flex justify-between">
       <span class="text-2xl">Musique</span>
       <input type="range" min="0" max="100" class="accent-black" />
-    </div>
-    <div class="flex justify-between">
-      <span class="text-2xl">Montrer les noms</span>
-      <input type="checkbox" class="accent-black w-6 h-6" />
     </div>
   </Options>
   <KeybindHint
     class="absolute top-20 left-4"
     keybind="N"
-    name="Objets à trouver"
+    name="Objets trouvés"
     eventKey="n"
     id="objects-keybind"
   />
   <KeybindHint
     class="absolute top-36 left-4"
-    keybind="M"
+    keybind="C"
     name="Carte"
-    eventKey="m"
+    eventKey="c"
     id="map-keybind"
   />
   <OnboardingContainer
     id="onboarding-container"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Aide
+    id="aide-container"
+    class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Tips
+    id="tips-container"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <FoundObjectsContainer
@@ -55,7 +55,7 @@
   <!-- log test carte a supprimer-->
   <Dialog
     name="Carte"
-    text="carte log"
+    text="Golden Legends minimap"
     id="carte-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
@@ -249,7 +249,6 @@
     position="6"
     class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
-  <MainOptions />
   <!-- RUNNINGGAME -->
   <CommandContainer
     name="COURIR"
@@ -768,7 +767,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import MainOptions from "./MainOptions.vue";
 import App from "../../src/models/App.ts";
 import Dialog from "@/components/gui/Dialog.vue";
 import ClassicButton from "@/components/landing/ClassicButton.vue";
@@ -801,6 +799,8 @@ import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
 import { storeJavelot } from "./gui/storeJavelot";
 import ArcheryContainer from "./gui/archery/ArcheryContainer.vue";
+import Aide from "@/components/gui/onboarding/Aide.vue";
+import Tips from "@/components/gui/onboarding/Tips.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs

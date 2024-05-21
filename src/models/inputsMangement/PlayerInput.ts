@@ -24,7 +24,7 @@ export class PlayerInput extends InputManager {
 		KEY_DASH : "KeyQ",
 		KEY_JUMP : "Space",
         KEY_COLLECT: "KeyR",
-        KEY_MAP: "KeyM",
+        KEY_MAP: "KeyC",
         KEY_OPTIONS: "KeyO",
         KEY_GAMEOBJECTS: "KeyN",
     };
