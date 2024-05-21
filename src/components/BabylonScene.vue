@@ -13,18 +13,10 @@
     name="options"
     id="options"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  >
-    <div class="flex justify-between">
-      <span class="text-2xl">Son global</span>
-      <input type="range" min="0" max="100" class="accent-black" />
-    </div>
+  > 
     <div class="flex justify-between">
       <span class="text-2xl">Musique</span>
       <input type="range" min="0" max="100" class="accent-black" />
-    </div>
-    <div class="flex justify-between">
-      <span class="text-2xl">Montrer les noms</span>
-      <input type="checkbox" class="accent-black w-6 h-6" />
     </div>
   </Options>
   <KeybindHint
@@ -249,7 +241,6 @@
     position="6"
     class="hidden ml-24 absolute top-3/4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
-  <MainOptions />
   <!-- RUNNINGGAME -->
   <CommandContainer
     name="COURIR"
@@ -768,7 +759,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import MainOptions from "./MainOptions.vue";
 import App from "../../src/models/App.ts";
 import Dialog from "@/components/gui/Dialog.vue";
 import ClassicButton from "@/components/landing/ClassicButton.vue";
