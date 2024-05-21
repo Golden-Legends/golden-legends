@@ -33,8 +33,6 @@ import { JavelotGameState } from "./games/JavelotGameState.ts";
 
 export class InGameState extends GameState {
   public assets;
-  private loadedGui: AdvancedDynamicTexture | undefined;
-  private background: Nullable<Control> = null;
   private _input: PlayerInput;
   private jumpGame!: JumpGame;
   private objectGame!: ObjectGame;
@@ -223,9 +221,11 @@ export class InGameState extends GameState {
 
   async exit() {
     // Nettoyer la scène lors de la sortie de cet état
+    document.getElementById("objects-keybind")!.classList.add("hidden");
+    document.getElementById("map-keybind")!.classList.add("hidden");
+    // document.getElementById("options-keybind")!.classList.add("hidden");
     console.log("exit in game state");
     this.cleanup();
-    this.loadedGui?.dispose();
   }
 
   update() { 
@@ -322,80 +322,46 @@ export class InGameState extends GameState {
   }
 
   public tpButtonListener(): void {
-    ///100m
-    document.getElementById("100mFacile")?.addEventListener("click", () => {
+    // 100m
+    this.addEventListenerById("100mFacile", "click", () => {
       this.game.changeState(new RunningGameState(this.game, this.canvas));
     });
-    document.getElementById("100mMoyen")?.addEventListener("click", () => {
+    this.addEventListenerById("100mMoyen", "click", () => {
       this.game.changeState(new RunningGameState(this.game, this.canvas, "intermediate"));
     });
-    document.getElementById("100mDifficile")?.addEventListener("click", () => {
+    this.addEventListenerById("100mDifficile", "click", () => {
       this.game.changeState(new RunningGameState(this.game, this.canvas, "hard"));
-
     });
-
-    //Natation
-    document.getElementById("natationFacile")?.addEventListener("click", () => {
+    // natation
+    this.addEventListenerById("natationFacile", "click", () => {
       this.game.changeState(new NatationGameState(this.game, this.canvas));
-
     });
-    document.getElementById("natationMoyen")?.addEventListener("click", () => {
+    this.addEventListenerById("natationMoyen", "click", () => {
       this.game.changeState(new NatationGameState(this.game, this.canvas, "intermediate"));
-
     });
-    document.getElementById("natationDifficile")?.addEventListener("click", () => {
+    this.addEventListenerById("natationDifficile", "click", () => {
       this.game.changeState(new NatationGameState(this.game, this.canvas, "hard"));
-
     });
-
-    //Plongeon
-    document.getElementById("plongeonFacile")?.addEventListener("click", () => {
-      this.game.changeState(new PlongeonGameState( this.game, this.canvas));
-
+    // plogeon
+    this.addEventListenerById("plongeonFacile", "click", () => {
+      this.game.changeState(new PlongeonGameState(this.game, this.canvas));
     });
-    document.getElementById("plongeonMoyen")?.addEventListener("click", () => {
+    this.addEventListenerById("plongeonMoyen", "click", () => {
       this.game.changeState(new PlongeonGameState(this.game, this.canvas, "intermediate"));
-
     });
-    document.getElementById("plongeonDifficile")?.addEventListener("click", () => {
+    this.addEventListenerById("plongeonDifficile", "click", () => {
       this.game.changeState(new PlongeonGameState(this.game, this.canvas, "hard"));
-
     });
-
-    //Boxe
-    document.getElementById("boxeDefense")?.addEventListener("click", () => {
+    // boxe
+    this.addEventListenerById("boxeDefense", "click", () => {
       this.game.changeState(new BoxeGameState(this.game, this.canvas));
-      // document.getElementById("options-keybind")!.style.display = "none";
-      document.getElementById("objects-keybind")!.classList.add("hidden");
-      document.getElementById("map-keybind")!.classList.add("hidden");
-      document.getElementById("boxetp")!.classList.add("hidden");
-
     });
-
-    //Tir à l'arc
-    document.getElementById("tirArcFacile")?.addEventListener("click", () => {
+    // tir a larc
+    this.addEventListenerById("tirArcFacile", "click", () => {
       this.game.changeState(new TirArcGameState(this.game, this.canvas));
-      // document.getElementById("options-keybind")!.style.display = "none";
-      document.getElementById("objects-keybind")!.classList.add("hidden");
-      document.getElementById("map-keybind")!.classList.add("hidden");
-      document.getElementById("tirArctp")!.classList.add("hidden");
-
     });
-    document.getElementById("tirArcMoyen")?.addEventListener("click", () => {
+    this.addEventListenerById("tirArcMoyen", "click", () => {
       this.game.changeState(new TirArcGameState(this.game, this.canvas, "intermediate"));
-      // document.getElementById("options-keybind")!.style.display = "none";
-      document.getElementById("objects-keybind")!.classList.add("hidden");
-      document.getElementById("map-keybind")!.classList.add("hidden");
-      document.getElementById("tirArctp")!.classList.add("hidden");
-
     });
-  }
-
-  public goToRunningGame() {
-    // this.game.changeState(new RunningGameState(this.soundManager, this.game, this.canvas));
-    // document.getElementById("options-keybind")!.style.display = "none";
-    document.getElementById("objects-keybind")!.classList.add("hidden");
-    document.getElementById("map-keybind")!.classList.add("hidden");
-  }
-  
+  }  
 }

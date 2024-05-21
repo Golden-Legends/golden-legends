@@ -12,7 +12,8 @@ export abstract class GameState {
   // pointer 
 	public alreadylocked: boolean;
   private boundOnPointerLockChange: () => void;
-
+  private eventListeners: { element: HTMLElement; event: string; handler: EventListenerOrEventListenerObject }[] = [];
+  
   constructor(game: Game, canvas: HTMLCanvasElement) {
     this.game = game;
     this.canvas = canvas;
@@ -44,6 +45,7 @@ export abstract class GameState {
     this.stopRenderLoop();
     this.clearScene();
     this.disposePointerLock();
+    this.cleanupEventListeners();
     console.log("Cleaned up the game state.");
   }
 
@@ -96,6 +98,29 @@ export abstract class GameState {
   removeHandlePointerLock(): void {
     document.exitPointerLock();
     this.alreadylocked = false;
+  }
+
+  addEventListenerById(elementId: string, event: string, handler: EventListenerOrEventListenerObject): void {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.addEventListener(event, handler);
+      this.eventListeners.push({ element, event, handler });
+    }
+  }
+
+  addEventListenerByQuerySelector(elementId: string, event: string, handler: EventListenerOrEventListenerObject): void {
+    const element = document.querySelector(elementId) as HTMLElement;;
+    if (element) {
+      element.addEventListener(event, handler);
+      this.eventListeners.push({ element, event, handler });
+    }
+  }
+
+  cleanupEventListeners(): void {
+    this.eventListeners.forEach(({ element, event, handler }) => {
+      element.removeEventListener(event, handler);
+    });
+    this.eventListeners = [];
   }
 
 }
