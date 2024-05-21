@@ -231,7 +231,6 @@ export class PlongeonGameState extends GameState {
             this.player.putLetters(suiteLetters);
             storePlongeon.commit("setLetters", suiteLetters);
             this.letterIsGenerated = true;
-            console.log("je génère mes première lettres ", suiteLetters)
             return;
         }
 
