@@ -230,6 +230,16 @@ export class InGameState extends GameState {
 
   update() { 
     this.jumpGame.update();
+
+    if (this._input.keyMap && document.getElementById("carte-dialog")!.classList.contains("hidden")
+      && !document.getElementById("map-keybind")!.classList.contains("hidden")){
+      this._environment?.carte.openCarte();
+    }
+    else if (this._input.keyMap && !document.getElementById("carte-dialog")!.classList.contains("hidden")
+              && !document.getElementById("map-keybind")!.classList.contains("hidden")){
+      this._environment?.carte.closeCarte();
+
+    } 
   }
 
   private async _loadCharacterAssets(scene: Scene) {

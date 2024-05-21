@@ -12,6 +12,7 @@ export class PlayerInput extends InputManager {
     public jumpKeyDown: boolean = false;
     public dashing: boolean = false;
     public collecting: boolean = false;
+    public keyMap: boolean = false;
 
     readonly keys = {
         KEY_UP: "KeyW",
@@ -21,6 +22,7 @@ export class PlayerInput extends InputManager {
 		KEY_DASH : "KeyQ",
 		KEY_JUMP : "Space",
         KEY_COLLECT: "KeyR",
+        KEY_MAP: "KeyM",
     };
 
 	constructor(scene: Scene) {
@@ -33,6 +35,7 @@ export class PlayerInput extends InputManager {
         this.updateJumpInput();
         this.updateDashInput();
         this.updateCollectInput();
+        this.updateKeyMapInput();
     };
 
     private updateMovementInput(): void {
@@ -68,6 +71,14 @@ export class PlayerInput extends InputManager {
             this.jumpKeyDown = true;
         } else {
             this.jumpKeyDown = false;
+        }
+    }
+
+    private updateKeyMapInput(): void {
+        if (this.inputMap[this.keys.KEY_MAP]) {
+            this.keyMap = true;
+        } else {
+            this.keyMap = false;
         }
     }
 
