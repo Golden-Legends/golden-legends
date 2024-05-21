@@ -220,7 +220,7 @@ export class RunningGameState extends GameState {
         store.commit('setTimer', 0.00);
         store.commit('setSpeedBar', 0);
         //this.buildScoreBoard(); WHY ??
-        this.clearScene();
+        this.cleanup();
     }
 
     buildScoreBoard() : void {
@@ -244,11 +244,9 @@ export class RunningGameState extends GameState {
             let continueButton = document.querySelector('#runningGame-results #continue-button');
             if (continueButton) {
                 continueButton.addEventListener('click', () => {
-                    this.exit();
                     this.game.changeState(new InGameState(this.game, this.game.canvas));
                 });
             }
-            this.scoreboardIsShow = true;
         }, 2000);   
         
     }   
@@ -352,7 +350,9 @@ export class RunningGameState extends GameState {
             this.player._updateGroundDetection();
             
             if (this.endGame && !this.scoreboardIsShow) {
+                this.scoreboardIsShow = true;
                 this.showScoreBoard();
+                console.log("Game over: All players have finished.")
                 return;
             }
 
