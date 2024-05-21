@@ -139,7 +139,6 @@ export class Environment {
 		this.createWater();
 		this.moveLogo();
 		this.options = new Options(this._scene, this.player!);
-		this.options.init();
 	}
 
 	//Load all necessary meshes for the environment
