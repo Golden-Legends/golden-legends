@@ -281,8 +281,7 @@ export class BoxeGameState extends GameState {
          
         document.getElementById("runningGame-timer")!.classList.add("hidden");
 
-        this.soundManager.stopTrack('100m');
-        this.clearScene();
+        this.cleanup();
     }
 
     update():void {

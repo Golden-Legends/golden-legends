@@ -297,7 +297,7 @@ export class TirArcGameState extends GameState {
 
         storeTirArc.commit('setScore', 0);
         storeTirArc.commit('setResults', []);
-        this.clearScene();
+        this.cleanup();
     }
 
     update():void {

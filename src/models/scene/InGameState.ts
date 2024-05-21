@@ -223,7 +223,8 @@ export class InGameState extends GameState {
 
   async exit() {
     // Nettoyer la scène lors de la sortie de cet état
-    this.clearScene();
+    console.log("exit in game state");
+    this.cleanup();
     this.loadedGui?.dispose();
   }
 

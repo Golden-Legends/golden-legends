@@ -61,20 +61,17 @@ export class JavelotGameState extends GameState {
 
     private env !: javelotGameEnv;
 
-    public soundManager!: SoundManager;
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
 
-    constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
+    constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputJavelotGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
         this.settings = JavelotGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        this.soundManager = soundManager;
-        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
-        this.soundManager.playTrack('100m');
+        this.game.playTrack('100m');
     }
 
     async setEnvironment(): Promise<void> {
@@ -303,8 +300,7 @@ export class JavelotGameState extends GameState {
         storeJavelot.commit('setScore', 0);
         storeJavelot.commit('setResults', []);
 
-        this.soundManager.stopTrack('100m');
-        this.clearScene();
+        this.cleanup();
     }
 
     update():void {

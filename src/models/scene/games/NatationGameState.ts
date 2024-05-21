@@ -9,7 +9,6 @@ import { InGameState } from "../InGameState";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { BotNatation } from "@/models/controller/BotNatation";
 import { PlayerInputNatationGame } from "@/models/inputsMangement/PlayerInputNatationGame";
-import { SoundManager } from "@/models/environments/sound";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
 
 
@@ -68,7 +67,6 @@ export class NatationGameState extends GameState {
     private continueButtonIsPressed: boolean = false;
     private rectangleReturn : Mesh;
 
-    public soundManager!: SoundManager;
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
 
@@ -169,9 +167,8 @@ export class NatationGameState extends GameState {
             storeNatation.commit('setTimer', 0.00);
             storeNatation.commit('setSpeedBar', 0);
             storeNatation.commit('setResults', []);
-
-            this.soundManager.stopTrack('100m');
-            this.clearScene();
+            
+            this.cleanup();
 
         } catch {
             throw new Error("Method not implemented.");
