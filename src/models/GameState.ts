@@ -10,8 +10,8 @@ export abstract class GameState {
 	protected _environment : Environment | null;
 
   // pointer 
-	public alreadylocked: boolean = false;
-
+	public alreadylocked: boolean;
+  private boundOnPointerLockChange: () => void;
 
   constructor(game: Game, canvas: HTMLCanvasElement) {
     this.game = game;
@@ -19,6 +19,8 @@ export abstract class GameState {
     this.scene = new Scene(this.game.engine);
     this._player = null;
     this._environment = null;
+    this.alreadylocked = false;
+    this.boundOnPointerLockChange = this.onPointerLockChange.bind(this);
   }
 
   abstract enter(): Promise<void>;
@@ -53,26 +55,34 @@ export abstract class GameState {
     });
   } 
   
-  handlePointerLockChange() : void {
+  // Initialiser la gestion du pointer lock
+  initializePointerLock(): void {
     this.scene.onPointerDown = () => {
       if (!this.alreadylocked) {
+        // this.alreadylocked = true;
         this.canvas.requestPointerLock();
       }
     };
-  
-    document.addEventListener("pointerlockchange", () => {
-      let element = document.pointerLockElement || null;
-      if (element) {
-        // lets create a custom attribute
-        this.alreadylocked = true;
-      } else {
-        this.alreadylocked = false;
-      }
-    });
+    // Conserver la référence à la fonction liée
+    this.boundOnPointerLockChange = this.onPointerLockChange.bind(this);
+    document.addEventListener("pointerlockchange", this.boundOnPointerLockChange);
   }
-  
-  // enlever le handlepointerlock
-  removeHandlePointerLock() : void {
+
+  // Nettoyer la gestion du pointer lock
+  disposePointerLock(): void {
+    document.removeEventListener("pointerlockchange", this.boundOnPointerLockChange);
+    this.scene.onPointerDown = undefined;
+  }
+
+  // Gestion du changement de l'état du pointer lock
+  private onPointerLockChange(): void {
+    this.alreadylocked = document.pointerLockElement === this.canvas;
+  }
+
+  // Enlever le pointer lock manuellement
+  removeHandlePointerLock(): void {
     document.exitPointerLock();
+    this.alreadylocked = false;
   }
+
 }

@@ -121,7 +121,7 @@ export class Pnj {
 	}
 
 	public async init() {
-		console.log("init pnj");
+		// console.log("init pnj");
         //load des pnj "sans discussions" à leurs positions
         // await this._loadCharacterAssets(this._scene, new Vector3(-163, 2.75, -10), "pnjStrong.glb");
 

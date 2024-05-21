@@ -1,15 +1,12 @@
 import { Track } from "@/utils/track";
-import { Scene } from "@babylonjs/core";
 
 // Gestionnaire de musique
 export class SoundManager {
-  private _scene: Scene;
   private tracks: Map<string, Track>;
   private etatMusic: boolean = true;
   private currentMusic: string = "inGame";
 
-  constructor(scene: Scene) {
-    this._scene = scene;
+  constructor() {
     this.tracks = new Map();
     this.soundButtonListener();
   }

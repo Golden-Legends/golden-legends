@@ -8,16 +8,23 @@ import { NatationGameState } from "./scene/games/NatationGameState.ts";
 import { PlongeonGameState } from "./scene/games/PlongeonGameState.ts";
 import { TirArcGameState } from "./scene/games/TirArcGameState.ts";
 import { JavelotGameState } from "./scene/games/JavelotGameState.ts";
+import { SoundManager } from "./environments/sound.ts";
 
 export class Game {
   public engine: Engine;
   private currentState: GameState | null = null;
   // public loadingScreen: CustomLoadingScreen;
   public canvas: HTMLCanvasElement;
+  private soundManager : SoundManager;
+  private currentTrackName : string;
 
   constructor(canvas: HTMLCanvasElement) {
     this.engine = new Engine(canvas, true);
     this.canvas = canvas;
+    // initialisation de la musique
+    this.soundManager = new SoundManager();
+    this.currentTrackName = '';
+    this.initTrack();
     this.changeState(new InGameState(this, canvas));
 
   }
@@ -32,5 +39,18 @@ export class Game {
     }
     this.currentState = newState;
     await this.currentState.enter();
+  }
+
+  private initTrack () { 
+    this.soundManager.addTrack('inGame', './sounds/musiqueJeu.m4a', 0.05);
+    this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
+  }
+
+  public playTrack(trackName : string)  {
+    if (this.currentTrackName && this.currentTrackName !== '') { 
+      this.soundManager.stopTrack(this.currentTrackName);
+    }
+    this.soundManager.playTrack(trackName);
+    this.currentTrackName = trackName;
   }
 }

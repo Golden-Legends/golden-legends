@@ -74,7 +74,7 @@ export class NatationGameState extends GameState {
 
     private posFinale : number = -1;
 
-    constructor(soundManager: SoundManager, game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
+    constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
@@ -82,10 +82,7 @@ export class NatationGameState extends GameState {
         this._input = new PlayerInputNatationGame(this.scene);
         this.playerName = localStorage.getItem("playerName") || "Playertest";
         this.rectangleReturn = MeshBuilder.CreateBox("rectangleReturn");
-
-        this.soundManager = soundManager;
-        this.soundManager.addTrack('100m', './sounds/100m.m4a', 0.1);
-		this.soundManager.playTrack('100m');
+        this.game.playTrack('100m');
     }
 
     async enter(): Promise<void> {

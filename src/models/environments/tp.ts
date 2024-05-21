@@ -6,6 +6,7 @@ import {
     Scene,
     Vector3,
   } from "@babylonjs/core";
+import { GameState } from "../GameState";
   
   export class TpGame {
     private _scene: Scene;
@@ -26,10 +27,13 @@ import {
   
     private cube: Mesh[] = [];
     private player: Mesh;
-  
-    constructor(scene: Scene, player: Mesh) {
+
+    private gameState : GameState;
+    
+    constructor(scene: Scene, player: Mesh, gameState: GameState ) {
       this._scene = scene;
       this.player = player;
+      this.gameState = gameState;
     }
   
     public async init() {
@@ -85,9 +89,10 @@ import {
                 break;
                 default:
                   document.getElementById("tpGame-dialog")!.classList.remove("hidden");
-                  console.log("no tp");
+                  // console.log("no tp");
                   break;
               }
+              this.gameState.removeHandlePointerLock();
             },
           ),
         );

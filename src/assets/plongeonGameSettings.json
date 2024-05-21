@@ -10,7 +10,7 @@
             ],
             "pointToSucceed" : 50,
             "numLetters" : 3,
-            "limitTime" : 4500,
+            "limitTime" : 15000,
             "timeAffichageSuite" : 4000
         },
         "intermediate" : {

@@ -96,16 +96,15 @@ export class JumpGame{
 
     const currentTime = performance.now();
     const elapsedTime = (currentTime - this.raceStartTime);
-    this.timer = parseFloat(elapsedTime.toFixed(1));  
+    this.timer = Math.round(elapsedTime);
     storeJump.commit('setTimer', this.timer);
-    console.log("Temps écoulé: ", this.timer, elapsedTime);
   }
 
   private miniGame() {
     // Initialiser le jeu et démarrer le comptage des plateformes sautées
     this.startCountdown()
 
-    // this.update();
+    this.update();
 
     this.resetGame();
     this.gameRunning = true;
@@ -235,15 +234,13 @@ export class JumpGame{
 
   update(): void {
     if (!this.countdownInProgress) return;
-      this.currentTime = performance.now();
-      let deltaTime = this.scene.getEngine().getDeltaTime();
-      deltaTime = deltaTime / 10;
-      this.currentTime = this.currentTime;
+    this.currentTime = performance.now();
+    let deltaTime = this.scene.getEngine().getDeltaTime();
+    deltaTime = deltaTime / 10;
+    this.currentTime = this.currentTime;
 
-
-    if(!this.gameRunning){
+    if(this.gameRunning){
       this.timer = Math.round((this.currentTime - this.raceStartTime));
-      console.log("Temps écoulé: ", this.timer);
       storeJump.commit('setTimer', this.timer);
     }
   }

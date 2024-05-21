@@ -176,16 +176,22 @@ export class PlayerPlongeonGame {
             }
         }
         else{
-            // console.log("endGame");
+            console.log("endGame");
+            this.descendrePerso();
         }
     }
 
     public processInput(){
+        // Check if the minimum delay between each alternation is respected
+        if (this.currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {
+            return;
+        }
+        
         if(this.currentLetters >= this.suiteLetters.length) {
             this.isEndGame = true;
             return;
         }
-        console.log(this._input.figuref, this._input.figureg, this._input.figureh, this._input.figurej);
+        
         if(this._input.figuref){
             this.runPose1Anim();
             this._input.figuref = false;
@@ -200,6 +206,7 @@ export class PlayerPlongeonGame {
                 document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
             }
             this.currentLetters++;
+            this.lastSwitchTime = this.currentTime;
         }
         else if(this._input.figureg){
             this.runPose2Anim();
@@ -215,6 +222,7 @@ export class PlayerPlongeonGame {
                 document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
             }
             this.currentLetters++;
+            this.lastSwitchTime = this.currentTime;
         }
         else if(this._input.figureh){
             this.runPose3Anim();
@@ -230,6 +238,8 @@ export class PlayerPlongeonGame {
                 document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
             }
             this.currentLetters++;
+            this.lastSwitchTime = this.currentTime;
+
         }
         else if(this._input.figurej){
             this.runPose4Anim();
@@ -245,6 +255,8 @@ export class PlayerPlongeonGame {
                 document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
             }
             this.currentLetters++;   
+            this.lastSwitchTime = this.currentTime;
+
         }
     }
 
@@ -320,6 +332,7 @@ export class PlayerPlongeonGame {
 
     public async descendrePerso(){
         //lancer l'animation de falling
+        this._isWin = true;
         this.runFallAnim();
         while(this.transform.position.y > 0.5){
             this.transform.position.y -= 0.01;
@@ -335,7 +348,6 @@ export class PlayerPlongeonGame {
             this.transform.position = new Vector3(-1.172302484512329,
                 0.5,
                 16.5);
-            this._isWin = true;
             // this.isEndGame = true;
         });
         // stop les autres anims

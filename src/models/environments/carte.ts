@@ -13,10 +13,12 @@ export class Carte {
     private player: Player;
     public positionCam!: Vector3;
     private fps: number = 30;
+    private camera : FollowCamera;
 
     constructor(scene: Scene, player: Player) {
         this._scene = scene;
         this.player = player;
+        this.camera = new FollowCamera("carteCamera", new Vector3(0, 0, 0), this._scene);
     }
 
     public init() {
@@ -31,13 +33,7 @@ export class Carte {
                 document.getElementById("carte-dialog")!.classList.remove("hidden");
                 document.getElementById("map-keybind")!.classList.add("hidden");              
                 //créer une caméra qui se déplace sur la carte
-                const camera = new FollowCamera("carteCamera", this.player.mesh.position, this._scene);
-                //camera.lockedTarget = this.player.mesh;
-                //camera.radius = 10;
-                //camera.heightOffset = 20;
-                //camera.rotationOffset = 180;
                 this.positionCam = this.player._camRoot.position.clone();
-                console.log(this.positionCam);
 
                 const animation = new Animation(
                     "cameraAnimation",
@@ -67,8 +63,7 @@ export class Carte {
                 animation.setEasingFunction(easingFunction);
                 
                 // Ajouter l'animation à la caméra
-                camera.animations.push(animation);
-
+                this.camera.animations.push(animation);
 
                 const rotationAnimation = new Animation(
                     "cameraRotationAnimation",
@@ -82,7 +77,7 @@ export class Carte {
                 const rotationKeys: { frame: number, value: Vector3 }[] = [];
                 rotationKeys.push({
                     frame: 0,
-                    value: camera.rotation.clone(), // Rotation actuelle de la caméra
+                    value: this.camera.rotation.clone(), // Rotation actuelle de la caméra
                 });
                 rotationKeys.push({
                     frame: 100, // Durée de l'animation (en frames)
@@ -90,16 +85,16 @@ export class Carte {
                 });
                 rotationAnimation.setKeys(rotationKeys);
                 rotationAnimation.setEasingFunction(easingFunction);
-                camera.animations.push(rotationAnimation);
+                this.camera.animations.push(rotationAnimation);
 
                 // Lancer l'animation
-                this._scene.beginAnimation(camera, 0, 100 * this.fps, false);
+                this._scene.beginAnimation(this.camera, 0, 100 * this.fps, false);
 
                 setTimeout(() => {
                     document.getElementById("map-keybind")!.classList.remove("hidden");
                 }, 100*this.fps);
 
-                this._scene.activeCamera = camera;  
+                this._scene.activeCamera = this.camera;  
 			}
 			else if (event.key === 'm' && !document.getElementById("carte-dialog")!.classList.contains("hidden")
                                         && !document.getElementById("map-keybind")!.classList.contains("hidden")){
@@ -107,7 +102,7 @@ export class Carte {
                 document.getElementById("map-keybind")!.classList.add("hidden");
                 //retourner à la caméra du joueur
                 if(this._scene.activeCameras){
-                    const camera = new FollowCamera("carteCamera", new Vector3(-140, 80, -260), this._scene);
+                    this.camera.position = new Vector3(-140, 80, -260);
 
                     const animation = new Animation(
                         "cameraAnimation",
@@ -136,10 +131,8 @@ export class Carte {
                     easingFunction.setEasingMode(EasingFunction.EASINGMODE_EASEINOUT);
                     animation.setEasingFunction(easingFunction);
                     
-
                     // Ajouter l'animation à la caméra
-                    camera.animations.push(animation);
-
+                    this.camera.animations.push(animation);
 
                     const rotationAnimation = new Animation(
                         "cameraRotationAnimation",
@@ -153,7 +146,7 @@ export class Carte {
                     const rotationKeys: { frame: number, value: Vector3 }[] = [];
                     rotationKeys.push({
                         frame: 0,
-                        value: camera.rotation.clone(), // Rotation actuelle de la caméra
+                        value: this.camera.rotation.clone(), // Rotation actuelle de la caméra
                     });
                     rotationKeys.push({
                         frame: 100, // Durée de l'animation (en frames)
@@ -161,15 +154,13 @@ export class Carte {
                     });
                     rotationAnimation.setKeys(rotationKeys);
                     rotationAnimation.setEasingFunction(easingFunction);
-                    camera.animations.push(rotationAnimation);
+                    this.camera.animations.push(rotationAnimation);
 
                     // Lancer l'animation
-                    this._scene.beginAnimation(camera, 0, 100 * this.fps, false);
-
-                    this._scene.activeCamera = camera;  
+                    this._scene.beginAnimation(this.camera, 0, 100 * this.fps, false);
 
                     setTimeout(() => {
-                        this._scene._activeCamera = this.player.activatePlayerCamera();
+                        this._scene._activeCamera = this._scene.cameras[0];
                         document.getElementById("map-keybind")!.classList.remove("hidden");
                     }, 100*this.fps);
                 }
