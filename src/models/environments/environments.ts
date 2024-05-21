@@ -159,12 +159,6 @@ export class Environment {
 			allMeshes: allMeshes, // all of the meshes that are in the environment
 		};
 	}
-
-	public exit() {
-		// supprimer le listener pour la carte l'option et l'object games
-		console.log("exit")
-		document.removeEventListener("keydown", () => {});
-	}
 	
 	public async loadSky() {
 		const result = await SceneLoader.ImportMeshAsync("", "./models/maps/skyV2.glb", "", this._scene);
