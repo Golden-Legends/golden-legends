@@ -237,6 +237,7 @@ export class PlongeonGameState extends GameState {
 
         if(this.player._isWin){ 
             if (!this.scoreboardIsShow) {
+                this.createFinaleScoreBoard();
                 this.showScoreBoard();
                 console.log("affiche le score board fin de jeu")
             }

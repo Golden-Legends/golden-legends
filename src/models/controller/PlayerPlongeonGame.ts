@@ -57,7 +57,7 @@ export class PlayerPlongeonGame {
     private readonly MIN_RUN_SPEED = 0.10;
     private baseSpeed: number = 0.04; // Vitesse de déplacement initiale
     private acceleration: number = 0.02; // Ajustez selon vos besoins
-    private minDelayBetweenSwitches: number = 40; // Délai minimal entre chaque alternance en millisecondes
+    private minDelayBetweenSwitches: number = 100; // Délai minimal entre chaque alternance en millisecondes
     private lastSwitchTime: number = 0;
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
     private leftPressed: boolean = false;
@@ -181,84 +181,50 @@ export class PlayerPlongeonGame {
         }
     }
 
-    public processInput(){
+    public processInput(): void {
         // Check if the minimum delay between each alternation is respected
         if (this.currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {
             return;
         }
-        
-        if(this.currentLetters >= this.suiteLetters.length) {
+        console.log(this._input['figuref']);
+    
+        if (this.currentLetters >= this.suiteLetters.length) {
             this.isEndGame = true;
             return;
         }
-        
-        if(this._input.figuref){
-            this.runPose1Anim();
-            this._input.figuref = false;
-            if(this.suiteLetters[this.currentLetters] === "f"){
-                //ok
-                document.getElementById("plongeonGame-correct")!.classList.remove("hidden");
-                this.score += 25;
-                storePlongeon.commit("setScore", this.score);
+    
+        const figures = [
+            { key: 'figuref', pose: this.runPose1Anim.bind(this), letter: 'f' },
+            { key: 'figureg', pose: this.runPose2Anim.bind(this), letter: 'g' },
+            { key: 'figureh', pose: this.runPose3Anim.bind(this), letter: 'h' },
+            { key: 'figurej', pose: this.runPose4Anim.bind(this), letter: 'j' }
+        ];
+    
+        for (const figure of figures) {
+            if (this._input[figure.key]) {
+                this.processFigureInput(figure);
+                this.lastSwitchTime = this.currentTime;
+                break;
             }
-            else{
-                //pas bon
-                document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
-            }
-            this.currentLetters++;
-            this.lastSwitchTime = this.currentTime;
-        }
-        else if(this._input.figureg){
-            this.runPose2Anim();
-            this._input.figureg = false;
-            if(this.suiteLetters[this.currentLetters] === "g"){
-                //ok
-                document.getElementById("plongeonGame-correct")!.classList.remove("hidden");
-                this.score += 25;
-                storePlongeon.commit("setScore", this.score);
-            }
-            else{
-                //pas bon
-                document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
-            }
-            this.currentLetters++;
-            this.lastSwitchTime = this.currentTime;
-        }
-        else if(this._input.figureh){
-            this.runPose3Anim();
-            this._input.figureh = false;
-            if(this.suiteLetters[this.currentLetters] === "h"){
-                //ok
-                document.getElementById("plongeonGame-correct")!.classList.remove("hidden");
-                this.score += 25;
-                storePlongeon.commit("setScore", this.score);
-            }
-            else{
-                //pas bon
-                document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
-            }
-            this.currentLetters++;
-            this.lastSwitchTime = this.currentTime;
-
-        }
-        else if(this._input.figurej){
-            this.runPose4Anim();
-            this._input.figurej = false;
-            if(this.suiteLetters[this.currentLetters] === "j"){
-                //ok
-                document.getElementById("plongeonGame-correct")!.classList.remove("hidden");
-                this.score += 25;
-                storePlongeon.commit("setScore", this.score);
-            }
-            else{
-                //pas bon
-                document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
-            }
-            this.currentLetters++;   
-            this.lastSwitchTime = this.currentTime;
-
         }
     }
+    
+    private processFigureInput(figure: { key: string, pose: () => void, letter: string }): void {
+        figure.pose();
+        this._input[figure.key] = false;
+    
+        if (this.suiteLetters[this.currentLetters] === figure.letter) {
+            document.getElementById("plongeonGame-correct")!.classList.remove("hidden");
+            this.score += 25;
+            storePlongeon.commit("setScore", this.score);
+        } else {
+            document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
+        }
+    
+        this.currentLetters++;
+    }
+    
+    
 
     // public processInput(): void {
     

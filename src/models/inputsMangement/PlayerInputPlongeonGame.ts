@@ -15,6 +15,14 @@ export class PlayerInputPlongeonGame extends InputManager {
     public figurej: boolean = false;
     public space: boolean = false;
 
+    private keyHandled = {
+        figuref: false,
+        figureg: false,
+        figureh: false,
+        figurej: false,
+        space: false
+    };
+
     constructor(scene) {
         super(scene);
         this.setupBeforeRenderObservable(this.updateFromKeyboard);
@@ -29,43 +37,53 @@ export class PlayerInputPlongeonGame extends InputManager {
     }
     
     private updateFigure1Keys(): void {
-        if (this.inputMap[this.keys.KEY_FIGUREF]) {
+        if (this.inputMap[this.keys.KEY_FIGUREF] && !this.keyHandled.figuref) {
+            console.log("figuref");
             this.figuref = true;
-        } else {
+            this.keyHandled.figuref = true;
+        } else if (!this.inputMap[this.keys.KEY_FIGUREF]) {
             this.figuref = false;
+            this.keyHandled.figuref = false;
         }
     }
 
     private updateFigure2Keys(): void {
-        if (this.inputMap[this.keys.KEY_FIGUREG]) {
+        if (this.inputMap[this.keys.KEY_FIGUREG] && !this.keyHandled.figureg) {
             this.figureg = true;
-        } else {
+            this.keyHandled.figureg = true;
+        } else if (!this.inputMap[this.keys.KEY_FIGUREG]) {
             this.figureg = false;
+            this.keyHandled.figureg = false;
         }
     }
 
     private updateFigure3Keys(): void {
-        if (this.inputMap[this.keys.KEY_FIGUREH]) {
+        if (this.inputMap[this.keys.KEY_FIGUREH] && !this.keyHandled.figureh) {
             this.figureh = true;
-        } else {
+            this.keyHandled.figureh = true;
+        } else if (!this.inputMap[this.keys.KEY_FIGUREH]) {
             this.figureh = false;
+            this.keyHandled.figureh = false;
         }
     }
 
     private updateFigure4Keys(): void {
-        if (this.inputMap[this.keys.KEY_FIGUREJ]) {
+        if (this.inputMap[this.keys.KEY_FIGUREJ] && !this.keyHandled.figurej) {
             this.figurej = true;
-        } else {
+            this.keyHandled.figurej = true;
+        } else if (!this.inputMap[this.keys.KEY_FIGUREJ]) {
             this.figurej = false;
+            this.keyHandled.figurej = false;
         }
     }
 
     private updateSpacekeys(): void {
-        if (this.inputMap[this.keys.KEY_SPACE]) {
+        if (this.inputMap[this.keys.KEY_SPACE] && !this.keyHandled.space) {
             this.space = true;
-        } else {
+            this.keyHandled.space = true;
+        } else if (!this.inputMap[this.keys.KEY_SPACE]) {
             this.space = false;
+            this.keyHandled.space = false;
         }
     }
-    
 }
