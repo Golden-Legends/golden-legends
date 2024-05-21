@@ -30,6 +30,7 @@ import { NatationGameState } from "./games/NatationGameState.ts";
 import { PlongeonGameState } from "./games/PlongeonGameState.ts";
 import { TirArcGameState } from "./games/TirArcGameState.ts";
 import { JavelotGameState } from "./games/JavelotGameState.ts";
+import { storeOnboard } from "@/components/gui/storeOnboard.ts";
 
 export class InGameState extends GameState {
   public assets;
@@ -46,13 +47,9 @@ export class InGameState extends GameState {
     document.getElementById("objects-keybind")!.classList.remove("hidden");
     document.getElementById("map-keybind")!.classList.remove("hidden");
 
-    document
-      .getElementById("close-onboarding")!
-      .addEventListener("click", () => {
-        document
-          .getElementById("onboarding-container")!
-          .classList.add("hidden");
-      });
+    this.addEventListenerById("close-onboarding", "click", () => {
+      document.getElementById("onboarding-container")!.classList.add("hidden");
+    });
   }
 
   async enter() {
@@ -88,6 +85,10 @@ export class InGameState extends GameState {
     //TO ACTIVATE WHEN THE LOADING SCREEN IS DONE
     // await this.animStartGame();
     // set environments
+    if(storeOnboard.state.debut === false){
+      document.getElementById("onboarding-container")!.classList.remove("hidden");
+      storeOnboard.commit("setDebut", true);
+    }
     await this.setEnvironment();
 
     // Inspector.Show(this.scene, {});
