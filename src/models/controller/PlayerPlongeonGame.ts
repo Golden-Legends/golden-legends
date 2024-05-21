@@ -57,7 +57,7 @@ export class PlayerPlongeonGame {
     private readonly MIN_RUN_SPEED = 0.10;
     private baseSpeed: number = 0.04; // Vitesse de déplacement initiale
     private acceleration: number = 0.02; // Ajustez selon vos besoins
-    private minDelayBetweenSwitches: number = 800; // Délai minimal entre chaque alternance en millisecondes
+    private minDelayBetweenSwitches: number = 40; // Délai minimal entre chaque alternance en millisecondes
     private lastSwitchTime: number = 0;
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
     private leftPressed: boolean = false;
