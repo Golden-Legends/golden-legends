@@ -35,7 +35,7 @@ export class Environment {
 	public voitures!: Voitures;
 	public stationScore!: StationScore;
 	public tpGame!: TpGame;
-	public carte!: Carte;
+	public carte: Carte;
 	public options!: Options;
 	public waterMaterial!: WaterMaterial;
 	private skyBox!: Mesh;
@@ -96,6 +96,7 @@ export class Environment {
 		this.player = player;
 		this.inGameState = inGameState;
 		// this.createRunningGates(scene);
+		this.carte = new Carte(this._scene, this.player!);
 	}
 
 	public async load() {
@@ -137,10 +138,7 @@ export class Environment {
 		this.createSkybox(this._scene);
 		this.createWater();
 		this.moveLogo();
-		this.carte = new Carte(this._scene, this.player!);
-		this.carte.init();
 		this.options = new Options(this._scene, this.player!);
-		this.options.init();
 	}
 
 	//Load all necessary meshes for the environment
@@ -160,7 +158,6 @@ export class Environment {
 			allMeshes: allMeshes, // all of the meshes that are in the environment
 		};
 	}
-
 	
 	public async loadSky() {
 		const result = await SceneLoader.ImportMeshAsync("", "./models/maps/skyV2.glb", "", this._scene);
@@ -169,71 +166,6 @@ export class Environment {
 			mesh.scaling = new Vector3(0.6, 0.6, 0.6);
 		});
 	}
-
-	// public createSkybox(scene: Scene): void {
-	// 	const skyMaterial = new SkyMaterial("skyMaterial", scene);
-	// 	skyMaterial.backFaceCulling = false;
-	// 	skyMaterial.turbidity = 10;
-	// 	skyMaterial.luminance = 1;
-	// 	skyMaterial.inclination = 0;
-	// 	const skyBox = MeshBuilder.CreateBox("skyBox", { size: 2500.0 }, scene);
-	// 	skyBox.material = skyMaterial;
-	// }
-
-	private createRunningGates (scene: Scene) {
-		const guiFromInGameState = this.inGameState.getBackground();
-		// retrieves gateInformations.length once
-		for (let i = 0, n = this.gateInformations.length ;i < n; i++) {
-			const gateInformation = this.gateInformations[i];
-			const gate = MeshBuilder.CreateBox(gateInformation.name, { size: 1 }, scene);
-			gate.position = gateInformation.position;
-			gate.rotation.y = gateInformation.rotation;
-			gate.checkCollisions = true;
-			gate.isVisible = false;
-
-			const logPickUpMessage = () => {
-				if (guiFromInGameState && !this.messageDisplayed) {
-					// ICI 
-					this.inGameState.removeHandlePointerLock();
-					this.inGameState.openGui(guiFromInGameState);
-					this.currentGate = gate;
-					this.messageDisplayed = true;
-				}
-			};
-
-			const removeMessage = () => {
-				if (guiFromInGameState) {
-					this.messageDisplayed = false;
-					this.currentGate = null;
-					// REMOVE LE PANEL
-					this.inGameState.closeGui(guiFromInGameState)	;
-				}
-			};
-
-			const enterAction = new ExecuteCodeAction(
-				{
-					trigger: ActionManager.OnIntersectionEnterTrigger,
-					parameter: gate,
-				},
-				logPickUpMessage,
-			);
-
-			const exitAction = new ExecuteCodeAction(
-				{
-					trigger: ActionManager.OnIntersectionExitTrigger,
-					parameter: gate,
-				},
-				removeMessage, // Ajoutez la fonction pour enlever le message ici
-			);
-
-			if (this.player && this.player.mesh.actionManager) { 
-				this.player.mesh.actionManager.registerAction(enterAction);
-				this.player.mesh.actionManager.registerAction(exitAction);
-			}
-		}
-
-	}
-
 
 	public disableBuild(startNumber: number, endNumber: number) {
 		for (let i = startNumber; i <= endNumber; i++) {

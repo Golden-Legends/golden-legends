@@ -12,6 +12,9 @@ export class PlayerInput extends InputManager {
     public jumpKeyDown: boolean = false;
     public dashing: boolean = false;
     public collecting: boolean = false;
+    public keyMap: boolean = false;
+    public keyOptions: boolean = false;
+    public keyGameObjects: boolean = false;
 
     readonly keys = {
         KEY_UP: "KeyW",
@@ -21,6 +24,9 @@ export class PlayerInput extends InputManager {
 		KEY_DASH : "KeyQ",
 		KEY_JUMP : "Space",
         KEY_COLLECT: "KeyR",
+        KEY_MAP: "KeyM",
+        KEY_OPTIONS: "KeyO",
+        KEY_GAMEOBJECTS: "KeyN",
     };
 
 	constructor(scene: Scene) {
@@ -33,6 +39,9 @@ export class PlayerInput extends InputManager {
         this.updateJumpInput();
         this.updateDashInput();
         this.updateCollectInput();
+        this.updateKeyMapInput();
+        this.updateKeyOptionsInput();
+        this.updateKeyGameObjectsInput();
     };
 
     private updateMovementInput(): void {
@@ -71,6 +80,14 @@ export class PlayerInput extends InputManager {
         }
     }
 
+    private updateKeyMapInput(): void {
+        if (this.inputMap[this.keys.KEY_MAP]) {
+            this.keyMap = true;
+        } else {
+            this.keyMap = false;
+        }
+    }
+
     private updateDashInput(): void {
         if (this.inputMap[this.keys.KEY_DASH]) {
             this.dashing = true;
@@ -86,5 +103,22 @@ export class PlayerInput extends InputManager {
             this.collecting = false;
         }
     }
+
+    public updateKeyOptionsInput(): void {
+        if (this.inputMap[this.keys.KEY_OPTIONS]) {
+            this.keyOptions = true;
+        } else {
+            this.keyOptions = false;
+        }
+    }
+
+    public updateKeyGameObjectsInput(): void {
+        if (this.inputMap[this.keys.KEY_GAMEOBJECTS]) {
+            this.keyGameObjects = true;
+        } else {
+            this.keyGameObjects = false;
+        }
+    }
+    
 }
 

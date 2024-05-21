@@ -171,7 +171,7 @@ export class BoxeGameState extends GameState {
             // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
             document.getElementById("boxeGame-skip-button")!.classList.remove("hidden");
-            document.getElementById("boxeGame-skip-button")!.addEventListener("click", () => {
+            this.addEventListenerById("boxeGame-skip-button", "click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
@@ -183,8 +183,7 @@ export class BoxeGameState extends GameState {
             this.CreateCameraMouv().then(() => {
                 document.getElementById("boxeGame-ready-button")!.classList.remove("hidden");
                 document.getElementById("boxeGame-skip-button")!.classList.add("hidden");
-
-                document.getElementById("boxeGame-ready-button")!.addEventListener("click", () => {
+                this.addEventListenerById("boxeGame-ready-button", "click", () => {
                     this.startCountdown(["boxeGame-text-1", "boxeGame-text-2", "boxeGame-text-3", "boxeGame-text-4"]); 
                     this.AfterCamAnim(); 
                     this.initGui(); 
@@ -281,8 +280,7 @@ export class BoxeGameState extends GameState {
          
         document.getElementById("runningGame-timer")!.classList.add("hidden");
 
-        this.soundManager.stopTrack('100m');
-        this.clearScene();
+        this.cleanup();
     }
 
     update():void {

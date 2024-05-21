@@ -59,7 +59,6 @@ export class ObjectGame {
         });
         
         this.createParticleSystems(this.objects);
-        this.interactObjectFound();
     }
 
     private createParticleSystems(objets: TBF_OBJECT[]) {
@@ -258,19 +257,6 @@ export class ObjectGame {
         this.cube[pos].checkCollisions = false; // Empêcher les collisions avec le cube
         this.name[pos] = name;
     }
-
-    public interactObjectFound() {
-		document.addEventListener("keydown", function(event) {
-			if (event.key === 'n' && !document.getElementById("objectsFound")!.classList.contains("hidden")
-                                    && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
-                document.getElementById("objectsFound")!.classList.add("hidden");
-			}
-			else if (event.key === 'n' && document.getElementById("objectsFound")!.classList.contains("hidden")
-                                        && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
-                document.getElementById("objectsFound")!.classList.remove("hidden");
-			}
-		});
-	}
 
     public modifierValeurFound(nomObjet: string) {
         // Recherche de l'objet dans la variable objects

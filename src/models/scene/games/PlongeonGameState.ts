@@ -180,7 +180,7 @@ export class PlongeonGameState extends GameState {
             document.getElementById("plongeonGame-skip-button")!.classList.remove("hidden");
             document.getElementById("plongeonGame-command-container")!.classList.remove("hidden");
             document.getElementById("plongeonGame-action-container")!.classList.remove("hidden");
-            document.getElementById("plongeonGame-skip-button")!.addEventListener("click", () => {
+            this.addEventListenerById("plongeonGame-skip-button", "click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
@@ -192,8 +192,7 @@ export class PlongeonGameState extends GameState {
             this.CreateCameraMouv().then(() => {
                 document.getElementById("plongeonGame-ready-button")!.classList.remove("hidden");
                 document.getElementById("plongeonGame-skip-button")!.classList.add("hidden");
-
-                document.getElementById("plongeonGame-ready-button")!.addEventListener("click", () => {
+                this.addEventListenerById("plongeonGame-ready-button", "click", () => {
                     this.AfterCamAnim(); 
                     this.initGui(); 
                     document.getElementById("plongeonGame-ready-button")!.classList.add("hidden");
@@ -220,7 +219,7 @@ export class PlongeonGameState extends GameState {
         storePlongeon.commit('setLetters', []);
         storePlongeon.commit('setResults', []);
 
-        this.clearScene();
+        this.cleanup();
     }
 
     update():void {
@@ -231,12 +230,12 @@ export class PlongeonGameState extends GameState {
             this.player.putLetters(suiteLetters);
             storePlongeon.commit("setLetters", suiteLetters);
             this.letterIsGenerated = true;
-            console.log("je génère mes première lettres ", suiteLetters)
             return;
         }
 
         if(this.player._isWin){ 
             if (!this.scoreboardIsShow) {
+                this.createFinaleScoreBoard();
                 this.showScoreBoard();
                 console.log("affiche le score board fin de jeu")
             }
@@ -271,16 +270,15 @@ export class PlongeonGameState extends GameState {
         this.createFinaleScoreBoard();
     }
 
+    private continueButtonHandler = () => {
+        this.continueButtonIsPressed = true;
+        this.game.changeState(new InGameState(this.game, this.game.canvas));
+    }
+
     showScoreBoard(): void {
         this.scoreboardIsShow = true;
         document.getElementById("plongeonGame-text-finish")!.classList.remove("hidden");
-        let continueButton = document.querySelector('#plongeonGame-results #continue-button');
-        if (continueButton) {
-            continueButton.addEventListener('click', () => {
-                if (this.continueButtonIsPressed) return;
-                this.game.changeState(new InGameState(this.game, this.game.canvas));
-            });
-        }
+        this.addEventListenerByQuerySelector('#plongeonGame-results #continue-button', 'click', this.continueButtonHandler);
         // attendre 2 secondes avant d'afficher le tableau des scores
         setTimeout(() => {
             document.getElementById("plongeonGame-text-finish")!.classList.add("hidden");

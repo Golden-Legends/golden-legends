@@ -119,7 +119,7 @@ export class RunningGameState extends GameState {
             document.getElementById("100mtp")!.classList.add("hidden");
             document.getElementById("runningGame-skip-button")!.classList.remove("hidden");
             document.getElementById("runningGame-command-container")!.classList.remove("hidden");
-            document.getElementById("runningGame-skip-button")!.addEventListener("click", () => {
+            this.addEventListenerById("runningGame-skip-button", "click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
@@ -130,8 +130,7 @@ export class RunningGameState extends GameState {
             
             this.CreateCameraMouv().then(() => {
                 document.getElementById("runningGame-ready-button")!.classList.remove("hidden");
-
-                document.getElementById("runningGame-ready-button")!.addEventListener("click", () => {
+                this.addEventListenerById("runningGame-ready-button", "click", () => {
                     this.startCountdown(["runningGame-text-1", "runningGame-text-2", "runningGame-text-3"]);
                     this.AfterCamAnim(); 
                     this.initGui(); 
@@ -220,7 +219,7 @@ export class RunningGameState extends GameState {
         store.commit('setTimer', 0.00);
         store.commit('setSpeedBar', 0);
         //this.buildScoreBoard(); WHY ??
-        this.clearScene();
+        this.cleanup();
     }
 
     buildScoreBoard() : void {
@@ -241,14 +240,9 @@ export class RunningGameState extends GameState {
             document.getElementById("runningGame-keyPressed")!.classList.add("hidden");
             document.getElementById("runningGame-text-speedbar")!.classList.add("hidden");
             document.getElementById("runningGame-results")!.classList.remove("hidden");
-            let continueButton = document.querySelector('#runningGame-results #continue-button');
-            if (continueButton) {
-                continueButton.addEventListener('click', () => {
-                    this.exit();
-                    this.game.changeState(new InGameState(this.game, this.game.canvas));
-                });
-            }
-            this.scoreboardIsShow = true;
+            this.addEventListenerByQuerySelector("#runningGame-results #continue-button", "click", () => {
+                this.game.changeState(new InGameState(this.game, this.game.canvas));
+            });
         }, 2000);   
         
     }   
@@ -352,7 +346,9 @@ export class RunningGameState extends GameState {
             this.player._updateGroundDetection();
             
             if (this.endGame && !this.scoreboardIsShow) {
+                this.scoreboardIsShow = true;
                 this.showScoreBoard();
+                console.log("Game over: All players have finished.")
                 return;
             }
 

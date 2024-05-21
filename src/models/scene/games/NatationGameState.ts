@@ -9,7 +9,6 @@ import { InGameState } from "../InGameState";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { BotNatation } from "@/models/controller/BotNatation";
 import { PlayerInputNatationGame } from "@/models/inputsMangement/PlayerInputNatationGame";
-import { SoundManager } from "@/models/environments/sound";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
 
 
@@ -68,7 +67,6 @@ export class NatationGameState extends GameState {
     private continueButtonIsPressed: boolean = false;
     private rectangleReturn : Mesh;
 
-    public soundManager!: SoundManager;
     public waterMaterial!: WaterMaterial;
     private skyBox!: Mesh;
 
@@ -127,7 +125,7 @@ export class NatationGameState extends GameState {
             document.getElementById("natationGame-skip-button")!.classList.remove("hidden");
             document.getElementById("natationGame-command-container")!.classList.remove("hidden");
             document.getElementById("natationGame-action-container")!.classList.remove("hidden");
-            document.getElementById("natationGame-skip-button")!.addEventListener("click", () => {
+            this.addEventListenerById("natationGame-skip-button", "click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
@@ -139,8 +137,7 @@ export class NatationGameState extends GameState {
             this.CreateCameraMouv().then(() => {
                 document.getElementById("natationGame-ready-button")!.classList.remove("hidden");
                 document.getElementById("natationGame-skip-button")!.classList.add("hidden");
-
-                document.getElementById("natationGame-ready-button")!.addEventListener("click", () => {
+                this.addEventListenerById("natationGame-ready-button", "click", () => {
                     this.startCountdown(["natationGame-text-1", "natationGame-text-2", "natationGame-text-3"]);
                     this.AfterCamAnim(); 
                     this.initGui(); 
@@ -169,9 +166,8 @@ export class NatationGameState extends GameState {
             storeNatation.commit('setTimer', 0.00);
             storeNatation.commit('setSpeedBar', 0);
             storeNatation.commit('setResults', []);
-
-            this.soundManager.stopTrack('100m');
-            this.clearScene();
+            
+            this.cleanup();
 
         } catch {
             throw new Error("Method not implemented.");
@@ -342,13 +338,10 @@ export class NatationGameState extends GameState {
 
     showScoreBoard(): void {
         document.getElementById("natationGame-text-finish")!.classList.remove("hidden");
-        let continueButton = document.querySelector('#natationGame-results #continue-button');
-        if (continueButton) {
-            continueButton.addEventListener('click', () => {
-                if (this.continueButtonIsPressed) return;
-                this.game.changeState(new InGameState(this.game, this.game.canvas));
-            });
-        }
+        this.addEventListenerByQuerySelector('#natationGame-results #continue-button', 'click', () => {
+            if (this.continueButtonIsPressed) return;
+            this.game.changeState(new InGameState(this.game, this.game.canvas));
+        });
         // attendre 2 secondes avant d'afficher le tableau des scores
         setTimeout(() => {
             this.createFinaleScoreBoard();

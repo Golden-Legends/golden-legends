@@ -48,7 +48,7 @@ export class Player extends TransformNode {
 	private _yTilt: TransformNode;
 
 	//const values
-	private static readonly PLAYER_SPEED: number = 0.3;
+	private static readonly PLAYER_SPEED: number = 0.2;
 	private static readonly JUMP_FORCE: number = 0.2;
 	private static readonly GRAVITY: number = -0.8;
 	private static readonly DASH_FACTOR: number = 2.5;
@@ -113,7 +113,7 @@ export class Player extends TransformNode {
 
 		this._idle = assets.animationGroups.find(ag => ag.name === "Anim|idle");
 		this._jump = assets.animationGroups.find(ag => ag.name === "Anim|jump");
-		this._run = assets.animationGroups.find(ag => ag.name === "Anim|walk");
+		this._run = assets.animationGroups.find(ag => ag.name === "Anim|running");
 		this._land = assets.animationGroups.find(ag => ag.name === "Anim|fall");
 		this._dance = assets.animationGroups.find(ag => ag.name === "Anim|dance");
 
