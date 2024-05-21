@@ -4,6 +4,7 @@ import VerticalColorBar from "@/components/gui/archery/VerticalColorBar.vue";
 import HorizontalMovingArrow from "@/components/gui/archery/HorizontalMovingArrow.vue";
 import VerticalMovingArrow from "@/components/gui/archery/VerticalMovingArrow.vue";
 import { computed, ref, watch } from "vue";
+import { storeTirArc } from "@/components/gui/storeTirArc.ts";
 
 const props = defineProps({
   orientation: {
@@ -17,11 +18,11 @@ const props = defineProps({
 });
 
 // GOES TO -4 TO 24
-const positionH = ref(-4);
-const positionV = ref(-1);
-const increasing = ref(true);
-const horizontalPlaying = ref(true);
-const verticalPlaying = ref(false);
+const positionH = ref(storeTirArc.state.initialState.positionH);
+const positionV = ref(storeTirArc.state.initialState.positionV);
+const increasing = ref(storeTirArc.state.initialState.increasing);
+const horizontalPlaying = ref(storeTirArc.state.initialState.horizontalPlaying);
+const verticalPlaying = ref(storeTirArc.state.initialState.verticalPlaying);
 
 const arrowMarginLeft = computed(() => {
   if (horizontalPlaying.value) {
@@ -87,11 +88,26 @@ window.addEventListener("keydown", (e) => {
 
 const interval = setInterval(updatePosition, props.ms);
 //when prop.ms update, clear interval and set new interval
-watch(() => props.ms, () => {
-  clearInterval(interval);
-  setInterval(updatePosition, props.ms);
-});
+watch(
+  () => props.ms,
+  () => {
+    clearInterval(interval);
+    setInterval(updatePosition, props.ms);
+  },
+);
 
+// Watch for the initial state to update the position
+watch(
+  () => storeTirArc.state.initialState,
+  () => {
+    positionH.value = storeTirArc.state.initialState.positionH;
+    positionV.value = storeTirArc.state.initialState.positionV;
+    increasing.value = storeTirArc.state.initialState.increasing;
+    horizontalPlaying.value = storeTirArc.state.initialState.horizontalPlaying;
+    verticalPlaying.value = storeTirArc.state.initialState.verticalPlaying;
+  },
+  { deep: true },
+);
 </script>
 
 <template>
