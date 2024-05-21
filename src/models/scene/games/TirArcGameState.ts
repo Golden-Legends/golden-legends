@@ -176,7 +176,7 @@ export class TirArcGameState extends GameState {
             document.getElementById("tirArcGame-action-container")!.classList.remove("hidden");
             document.getElementById("tirArcGame-vertical-container")!.classList.remove("hidden");
             document.getElementById("tirArcGame-horizontal-container")!.classList.remove("hidden");
-            document.getElementById("tirArcGame-skip-button")!.addEventListener("click", () => {
+            this.addEventListenerById("tirArcGame-skip-button", "click", () => {
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
@@ -188,8 +188,7 @@ export class TirArcGameState extends GameState {
             this.CreateCameraMouv().then(() => {
                 document.getElementById("tirArcGame-ready-button")!.classList.remove("hidden");
                 document.getElementById("tirArcGame-skip-button")!.classList.add("hidden");
-
-                document.getElementById("tirArcGame-ready-button")!.addEventListener("click", () => {
+                this.addEventListenerById("tirArcGame-ready-button", "click", () => {
                     this.startCountdown(["tirArcGame-text-1", "tirArcGame-text-2", "tirArcGame-text-3", "tirArcGame-text-4"]); 
                     this.AfterCamAnim(); 
                     this.initGui(); 
@@ -490,13 +489,10 @@ export class TirArcGameState extends GameState {
     showScoreBoard(): void {
         this.scoreboardIsShow = true;
         document.getElementById("tirArcGame-text-finish")!.classList.remove("hidden");
-        let continueButton = document.querySelector('#tirArcGame-results #continue-button');
-        if (continueButton) {
-            continueButton.addEventListener('click', () => {
-                if (this.continueButtonIsPressed) return;
-                this.game.changeState(new InGameState(this.game, this.game.canvas));
-            });
-        }
+        this.addEventListenerByQuerySelector("#tirArcGame-results #continue-button", "click", () => {
+            this.continueButtonIsPressed = true;
+            this.game.changeState(new InGameState(this.game, this.game.canvas));
+        });
         // attendre 2 secondes avant d'afficher le tableau des scores
         setTimeout(() => {
             document.getElementById("tirArcGame-text-finish")!.classList.add("hidden");
