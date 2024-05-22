@@ -459,6 +459,27 @@ export class InGameState extends GameState {
     this.addEventListenerById("close-tips", "click", () => {
       document.getElementById("tips-container")!.classList.add("hidden");
     });
+    this.addEventListenerById("back-options", "click", () => {
+      document.getElementById("aide-container")!.classList.add("hidden");
+      document.getElementById("options")!.classList.remove("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = true;
+      },250);
+    });
+    this.addEventListenerById("back-options2", "click", () => {
+      document.getElementById("tips-container")!.classList.add("hidden");
+      document.getElementById("options")!.classList.remove("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = true;
+      },250);
+    });
+    this.addEventListenerById("close-options", "click", () => {
+      document.getElementById("options")!.classList.add("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = false;
+      },250);
+    });
+
     this.addEventListenerById("back-menu", "click", () => {
       // new Game(this.canvas);
       console.log("back to menu");

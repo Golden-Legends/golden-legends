@@ -15,6 +15,12 @@
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   > 
     <div class="flex justify-between">
+      <button
+        id="close-options"
+        class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+        >
+        <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+      </button>
       <span class="text-2xl">Musique</span>
       <input id="son" type="range" min="0" max="100" :value="storeSound.state.sound" class="accent-black" />
     </div>

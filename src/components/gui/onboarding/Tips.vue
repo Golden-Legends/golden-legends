@@ -18,6 +18,12 @@ const carousel = ref(0);
     >
       <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
+    <button
+      id="back-options2"
+      class="absolute -left-3 -top-3 w-10 h-10 border-2 rounded border-black bg-green-700 hover:bg-green-800 transition-all"
+    >
+      <img src="@/assets/back.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
     <div class="text-4xl font-bold text-center mt-2 mb-4">
       Easter eggs du jeu Golden Legends !
     </div>
