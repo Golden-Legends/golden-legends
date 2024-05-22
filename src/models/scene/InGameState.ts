@@ -31,6 +31,7 @@ import { PlongeonGameState } from "./games/PlongeonGameState.ts";
 import { TirArcGameState } from "./games/TirArcGameState.ts";
 import { JavelotGameState } from "./games/JavelotGameState.ts";
 import { storeOnboard } from "@/components/gui/storeOnboard.ts";
+import { storeSound } from "@/components/gui/storeSound.ts";
 import { doc } from "prettier";
 
 export class InGameState extends GameState {
@@ -48,43 +49,7 @@ export class InGameState extends GameState {
     document.getElementById("objects-keybind")!.classList.remove("hidden");
     document.getElementById("map-keybind")!.classList.remove("hidden");
 
-    this.addEventListenerById("close-onboarding", "click", () => {
-      document.getElementById("onboarding-container")!.classList.add("hidden");
-    });
-    this.addEventListenerById("close-objects", "click", () => {
-      document.getElementById("objectsFound")!.classList.add("hidden");
-      setTimeout(() => {
-        this.isGameObjectInterfacedPressed = false;
-      },250);
-    });
-    this.addEventListenerById("open-objects-menu", "click", () => {
-      document.getElementById("options")!.classList.add("hidden");
-      document.getElementById("objectsFound")!.classList.remove("hidden");
-      setTimeout(() => {
-        this.isOptionsInterfacedPressed = false;
-        this.isGameObjectInterfacedPressed = true;
-      },250);
-    });
-    this.addEventListenerById("open-aide-menu", "click", () => {
-      document.getElementById("aide-container")!.classList.remove("hidden");
-      document.getElementById("options")!.classList.add("hidden");
-      setTimeout(() => {
-        this.isOptionsInterfacedPressed = false;
-      },250);
-    });
-    this.addEventListenerById("close-aide", "click", () => {
-      document.getElementById("aide-container")!.classList.add("hidden");
-    });
-    this.addEventListenerById("open-tips-menu", "click", () => {
-      document.getElementById("tips-container")!.classList.remove("hidden");
-      document.getElementById("options")!.classList.add("hidden");
-      setTimeout(() => {
-        this.isOptionsInterfacedPressed = false;
-      },250);
-    });
-    this.addEventListenerById("close-tips", "click", () => {
-      document.getElementById("tips-container")!.classList.add("hidden");
-    });
+    this.listenerGui();
   }
 
   async enter() {
@@ -455,4 +420,114 @@ export class InGameState extends GameState {
       this.game.changeState(new JavelotGameState(this.game, this.canvas, "intermediate"));
     });
   }  
+
+  public listenerGui(): void {
+    // GUI démarrage du jeu
+    this.addEventListenerById("close-onboarding", "click", () => {
+      document.getElementById("onboarding-container")!.classList.add("hidden");
+    });
+    this.addEventListenerById("close-objects", "click", () => {
+      document.getElementById("objectsFound")!.classList.add("hidden");
+      setTimeout(() => {
+        this.isGameObjectInterfacedPressed = false;
+      },250);
+    });
+
+    // GUI options
+    this.addEventListenerById("open-objects-menu", "click", () => {
+      document.getElementById("options")!.classList.add("hidden");
+      document.getElementById("objectsFound")!.classList.remove("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = false;
+        this.isGameObjectInterfacedPressed = true;
+      },250);
+    });
+    this.addEventListenerById("open-aide-menu", "click", () => {
+      document.getElementById("aide-container")!.classList.remove("hidden");
+      document.getElementById("options")!.classList.add("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = false;
+      },250);
+    });
+    this.addEventListenerById("close-aide", "click", () => {
+      document.getElementById("aide-container")!.classList.add("hidden");
+    });
+    this.addEventListenerById("open-tips-menu", "click", () => {
+      document.getElementById("tips-container")!.classList.remove("hidden");
+      document.getElementById("options")!.classList.add("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = false;
+      },250);
+    });
+    this.addEventListenerById("close-tips", "click", () => {
+      document.getElementById("tips-container")!.classList.add("hidden");
+    });
+    this.addEventListenerById("back-options", "click", () => {
+      document.getElementById("aide-container")!.classList.add("hidden");
+      document.getElementById("options")!.classList.remove("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = true;
+      },250);
+    });
+    this.addEventListenerById("back-options2", "click", () => {
+      document.getElementById("tips-container")!.classList.add("hidden");
+      document.getElementById("options")!.classList.remove("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = true;
+      },250);
+    });
+    this.addEventListenerById("close-options", "click", () => {
+      document.getElementById("options")!.classList.add("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = false;
+      },250);
+    });
+    this.addEventListenerById("back-menu", "click", () => {
+      // new Game(this.canvas);
+      window.location.href = '/';
+      console.log("back to menu");
+    });
+
+    // GUI minimap
+    this.addEventListenerById("tp-button", "click", () => {
+      const pos = new Vector3(-185, 7, -90);
+      this._player!.mesh.position = pos;
+      this._environment?.carte.closeCarte(pos);
+    });
+    this.addEventListenerById("jump-button", "click", () => {
+      const pos = new Vector3(-71, 7, -128.67);
+      this._player!.mesh.position = pos;
+      this._environment?.carte.closeCarte(pos);
+    });
+    this.addEventListenerById("foret-button", "click", () => {
+      const pos = new Vector3(-64.1, 7, 14);
+      this._player!.mesh.position = pos;
+      this._environment?.carte.closeCarte(pos);
+    });
+    this.addEventListenerById("pnj-button", "click", () => {
+      const pos = new Vector3(-184.75, 7, -11.2);
+      this._player!.mesh.position = pos;
+      this._environment?.carte.closeCarte(pos);
+    });
+
+    // GUI sound
+    this.addEventListenerById("son", "input", (event) => {
+      const newValue = (event.target as HTMLInputElement)?.value;
+      storeSound.commit('setSound', newValue);
+      if(storeSound.state.sound > storeSound.state.oldSound){
+        const newVolume = 1+(storeSound.state.sound - storeSound.state.oldSound)/100;
+        this.game.getSoundManager().setVolumeAllTracks(newVolume);
+        // console.log(1+(storeSound.state.sound - storeSound.state.oldSound)/100)
+      }
+      else if(storeSound.state.sound < storeSound.state.oldSound){
+        const newVolume = 1-(storeSound.state.oldSound - storeSound.state.sound)/100;
+        this.game.getSoundManager().setVolumeAllTracks(newVolume);
+        // console.log(1-(storeSound.state.oldSound - storeSound.state.sound)/100)
+      }
+      else{
+        this.game.getSoundManager().setVolumeAllTracks(1);
+        // console.log(1)
+      }
+    });
+  }
 }

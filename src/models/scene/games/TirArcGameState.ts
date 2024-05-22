@@ -1,6 +1,5 @@
 import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
-import { SoundManager } from "@/models/environments/sound";
 import TirArcGameSettings from "../../../assets/tirArcGameSettings.json";
 import {
   Animation,

@@ -1,6 +1,5 @@
 import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
-import { SoundManager } from "@/models/environments/sound";
 import { PlayerInputBoxeGame } from "@/models/inputsMangement/PlayerInputBoxeGame";
 import BoxeGameSettings from "../../../assets/boxeGameSettings.json";
 import { boxeGameEnv } from "@/models/environments/boxeGameEnv";

@@ -1,6 +1,5 @@
 import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
-import { SoundManager } from "@/models/environments/sound";
 import JavelotGameSettings from "../../../assets/javelotGameSettings.json";
 import { Animation, FreeCamera, HemisphericLight, Mesh, Vector3 } from "@babylonjs/core";
 import { WaterMaterial } from "@babylonjs/materials";

@@ -18,6 +18,12 @@ const carousel = ref(0);
     >
       <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
+    <button
+      id="back-options"
+      class="absolute -left-3 -top-3 w-10 h-10 border-2 rounded border-black bg-green-700 hover:bg-green-800 transition-all"
+    >
+      <img src="@/assets/back.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
     <div class="text-4xl font-bold text-center mt-2 mb-4">
       Aides du jeu Golden Legends !
     </div>
@@ -44,9 +50,9 @@ const carousel = ref(0);
             <span>La vision dans le lobby :</span>
             <CustomKBD :keybind="'souris'" class="w-fit my-4" />
 
-            <span>Ouvrir les options :</span>
+            <span>Ouvrir le menu :</span>
             <CustomKBD :keybind="'o'" class="w-fit my-4" />
-            <span>Ouvrir objets trouvés :</span>
+            <span>Ouvrir les objets trouvés :</span>
             <CustomKBD :keybind="'n'" class="w-fit my-4" />
             <span>Ouvrir la minimap :</span>
             <CustomKBD :keybind="'c'" class="w-fit my-4" />

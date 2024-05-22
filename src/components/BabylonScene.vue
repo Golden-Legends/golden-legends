@@ -15,10 +15,36 @@
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   > 
     <div class="flex justify-between">
+      <button
+        id="close-options"
+        class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+        >
+        <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+      </button>
       <span class="text-2xl">Musique</span>
-      <input type="range" min="0" max="100" class="accent-black" />
+      <input id="son" type="range" min="0" max="100" :value="storeSound.state.sound" class="accent-black" />
     </div>
   </Options>
+  <MapButton 
+    text="TPs"
+    id="tp-button"
+    class="hidden absolute top-1/3 left-80"
+  />
+  <MapButton 
+    text="Jump"
+    id="jump-button"
+    class="hidden absolute mt-8 top-1/2 left-3/4"
+  />
+  <MapButton 
+    text="Forêt"
+    id="foret-button"
+    class="hidden absolute -mt-32 top-1/4 left-3/4 -ml-12"
+  />
+  <MapButton 
+    text="PNJ"
+    id="pnj-button"
+    class="hidden absolute -mt-32 top-1/4 left-1/4 ml-4"
+  />
   <KeybindHint
     class="absolute top-20 left-4"
     keybind="N"
@@ -788,12 +814,14 @@ import GateButton from "./gui/tp/GateButton.vue";
 import Score from "@/components/gui/Score.vue";
 import CommandContainer from "./gui/commands/CommandContainer.vue";
 import Position from "./gui/Position.vue";
+import MapButton from "./gui/MapButton.vue";
 import { storeObjects } from "./gui/storeObjects";
 import { store } from "@/components/gui/store.ts";
 import { storeNatation } from "@/components/gui/storeNatation.ts";
 import { storeJump } from "@/components/gui/storeJump.ts";
 import { storePlongeon } from "@/components/gui/storePlongeon.ts";
 import { storeTirArc } from "@/components/gui/storeTirArc.ts";
+import { storeSound } from "@/components/gui/storeSound.ts";
 
 import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
@@ -844,6 +872,25 @@ const positionV = (position: number) => {
   // console.log(position);
   storeTirArc.commit('setPosV', position);
 };
+
+
+// const updateSound = (event) => {
+//   const newValue = event.target.value;
+//   storeSound.commit('setSound', newValue);
+//   setSoundVolume();
+// }
+
+// const setSoundVolume = () => {
+//   if(storeSound.state.sound > storeSound.state.oldSound){
+//     console.log(1+(storeSound.state.sound - storeSound.state.oldSound)/100)
+//   }
+//   else if(storeSound.state.sound < storeSound.state.oldSound){
+//     console.log(1-(storeSound.state.oldSound - storeSound.state.sound)/100)
+//   }
+//   else{
+//     console.log(1)
+//   }
+// }
 
 
 onMounted(() => {

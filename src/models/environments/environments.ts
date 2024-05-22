@@ -299,12 +299,40 @@ export class Environment {
 	public moveLogo() {
 		const animation = this._scene.getAnimationGroupByName("CubeAction.005");
 		const animation2 = this._scene.getAnimationGroupByName("CubeAction.004");
+		const raquette = this._scene.getAnimationGroupByName("CubeAction.010");
+		const javelot = this._scene.getAnimationGroupByName("CubeAction.011");
+		const arc = this._scene.getAnimationGroupByName("CubeAction.012");
+		const gant = this._scene.getAnimationGroupByName("CubeAction.013");
+		const run = this._scene.getAnimationGroupByName("CubeAction.014");
+		const plongeon = this._scene.getAnimationGroupByName("CubeAction.015");
+		const natation = this._scene.getAnimationGroupByName("CubeAction.016");
 		if (animation) {
 			// Lancer l'animation
 			animation.start(true); // Le paramètre true indique de rejouer l'animation même si elle est déjà en cours
 		} 
 		if(animation2){
 			animation2.start(true);
+		}
+		if(raquette){
+			raquette.start(true);
+		}
+		if(javelot){
+			javelot.start(true);
+		}
+		if(arc){
+			arc.start(true);
+		}
+		if(gant){
+			gant.start(true);
+		}
+		if(run){
+			run.start(true);
+		}
+		if(plongeon){
+			plongeon.start(true);
+		}
+		if(natation){
+			natation.start(true);
 		}
 		for(let i = 1; i <= 7; i++){
 			const animation3 = this._scene.getAnimationGroupByName("station" + i);

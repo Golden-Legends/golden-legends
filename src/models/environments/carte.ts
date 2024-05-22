@@ -84,14 +84,23 @@ export class Carte {
 
         setTimeout(() => {
             document.getElementById("map-keybind")!.classList.remove("hidden");
+            document.getElementById("tp-button")!.classList.remove("hidden");
+            document.getElementById("jump-button")!.classList.remove("hidden");
+            document.getElementById("foret-button")!.classList.remove("hidden");
+            document.getElementById("pnj-button")!.classList.remove("hidden");
         }, 100*this.fps);
 
         this._scene.activeCamera = this.camera; 
     }
 
-    public closeCarte() {
+    public closeCarte(posMinimap?: Vector3) {
         document.getElementById("carte-dialog")!.classList.add("hidden");   
         document.getElementById("map-keybind")!.classList.add("hidden");
+
+        if(posMinimap){
+            this.positionCam = posMinimap;
+        }
+
         //retourner à la caméra du joueur
         if(this._scene.activeCameras){
             this.camera.position = new Vector3(-140, 80, -260);
@@ -148,6 +157,10 @@ export class Carte {
             rotationAnimation.setEasingFunction(easingFunction);
             this.camera.animations.push(rotationAnimation);
 
+            document.getElementById("tp-button")!.classList.add("hidden");
+            document.getElementById("jump-button")!.classList.add("hidden");
+            document.getElementById("foret-button")!.classList.add("hidden");
+            document.getElementById("pnj-button")!.classList.add("hidden");
             // Lancer l'animation
             this._scene.beginAnimation(this.camera, 0, 100 * this.fps, false);
 

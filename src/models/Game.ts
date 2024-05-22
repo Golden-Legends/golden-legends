@@ -53,4 +53,8 @@ export class Game {
     this.soundManager.playTrack(trackName);
     this.currentTrackName = trackName;
   }
+
+  public getSoundManager() {
+    return this.soundManager;
+  }
 }
