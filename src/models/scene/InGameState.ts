@@ -484,6 +484,7 @@ export class InGameState extends GameState {
     });
     this.addEventListenerById("back-menu", "click", () => {
       // new Game(this.canvas);
+      window.location.href = '/';
       console.log("back to menu");
     });
 
