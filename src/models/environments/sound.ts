@@ -67,6 +67,18 @@ export class SoundManager {
       track.setVolume(track.getVolume() * volume);
     });
   }
+
+  getEtatMusic(): boolean {
+    return this.etatMusic;
+  }
+  
+  setEtatMusic(etat: boolean): void {
+    this.etatMusic = etat;
+  }
+
+  getCurrentMusic(): string {
+    return this.currentMusic;
+  } 
 }
 
 

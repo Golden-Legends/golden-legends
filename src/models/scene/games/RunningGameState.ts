@@ -8,7 +8,6 @@ import RunningGameSettings from "../../../assets/runningGame.json";
 import { store } from "@/components/gui/store.ts";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { InGameState } from "../InGameState";
-import { SoundManager } from "@/models/environments/sound";
 
 interface line {
     start : string;

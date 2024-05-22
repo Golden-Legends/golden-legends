@@ -1,6 +1,5 @@
 import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
-import { SoundManager } from "@/models/environments/sound";
 import PlongeonGameSettings from "../../../assets/plongeonGameSettings.json";
 import { Animation, Color3, FreeCamera, HemisphericLight, Mesh, MeshBuilder, Texture, Vector3 } from "@babylonjs/core";
 import { PlayerInputPlongeonGame } from "@/models/inputsMangement/PlayerInputPlongeonGame";
