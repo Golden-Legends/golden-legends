@@ -16,7 +16,7 @@
   > 
     <div class="flex justify-between">
       <span class="text-2xl">Musique</span>
-      <input type="range" min="0" max="100" class="accent-black" />
+      <input id="son" type="range" min="0" max="100" :value="storeSound.state.sound" @input="updateSound" class="accent-black" />
     </div>
   </Options>
   <KeybindHint
@@ -794,6 +794,7 @@ import { storeNatation } from "@/components/gui/storeNatation.ts";
 import { storeJump } from "@/components/gui/storeJump.ts";
 import { storePlongeon } from "@/components/gui/storePlongeon.ts";
 import { storeTirArc } from "@/components/gui/storeTirArc.ts";
+import { storeSound } from "@/components/gui/storeSound.ts";
 
 import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
@@ -844,6 +845,25 @@ const positionV = (position: number) => {
   // console.log(position);
   storeTirArc.commit('setPosV', position);
 };
+
+
+const updateSound = (event) => {
+  const newValue = event.target.value;
+  storeSound.commit('setSound', newValue);
+  setSoundVolume();
+}
+
+const setSoundVolume = () => {
+  if(storeSound.state.sound > storeSound.state.oldSound){
+    console.log(1+(storeSound.state.sound - storeSound.state.oldSound)/100)
+  }
+  else if(storeSound.state.sound < storeSound.state.oldSound){
+    console.log(1-(storeSound.state.oldSound - storeSound.state.sound)/100)
+  }
+  else{
+    console.log(1)
+  }
+}
 
 
 onMounted(() => {
