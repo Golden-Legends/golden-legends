@@ -44,9 +44,9 @@ const carousel = ref(0);
             <span>La vision dans le lobby :</span>
             <CustomKBD :keybind="'souris'" class="w-fit my-4" />
 
-            <span>Ouvrir les options :</span>
+            <span>Ouvrir le menu :</span>
             <CustomKBD :keybind="'o'" class="w-fit my-4" />
-            <span>Ouvrir objets trouvés :</span>
+            <span>Ouvrir les objets trouvés :</span>
             <CustomKBD :keybind="'n'" class="w-fit my-4" />
             <span>Ouvrir la minimap :</span>
             <CustomKBD :keybind="'c'" class="w-fit my-4" />

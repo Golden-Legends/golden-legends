@@ -85,6 +85,10 @@ export class InGameState extends GameState {
     this.addEventListenerById("close-tips", "click", () => {
       document.getElementById("tips-container")!.classList.add("hidden");
     });
+    this.addEventListenerById("back-menu", "click", () => {
+      // new Game(this.canvas);
+      console.log("back to menu");
+    });
   }
 
   async enter() {
