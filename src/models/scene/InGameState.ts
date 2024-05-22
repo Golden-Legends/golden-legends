@@ -422,6 +422,7 @@ export class InGameState extends GameState {
   }  
 
   public listenerGui(): void {
+    // GUI démarrage du jeu
     this.addEventListenerById("close-onboarding", "click", () => {
       document.getElementById("onboarding-container")!.classList.add("hidden");
     });
@@ -431,6 +432,8 @@ export class InGameState extends GameState {
         this.isGameObjectInterfacedPressed = false;
       },250);
     });
+
+    // GUI options
     this.addEventListenerById("open-objects-menu", "click", () => {
       document.getElementById("options")!.classList.add("hidden");
       document.getElementById("objectsFound")!.classList.remove("hidden");
@@ -479,12 +482,34 @@ export class InGameState extends GameState {
         this.isOptionsInterfacedPressed = false;
       },250);
     });
-
     this.addEventListenerById("back-menu", "click", () => {
       // new Game(this.canvas);
       console.log("back to menu");
     });
 
+    // GUI minimap
+    this.addEventListenerById("tp-button", "click", () => {
+      const pos = new Vector3(-185, 7, -90);
+      this._player!.mesh.position = pos;
+      this._environment?.carte.closeCarte(pos);
+    });
+    this.addEventListenerById("jump-button", "click", () => {
+      const pos = new Vector3(-71, 7, -128.67);
+      this._player!.mesh.position = pos;
+      this._environment?.carte.closeCarte(pos);
+    });
+    this.addEventListenerById("foret-button", "click", () => {
+      const pos = new Vector3(-64.1, 7, 14);
+      this._player!.mesh.position = pos;
+      this._environment?.carte.closeCarte(pos);
+    });
+    this.addEventListenerById("pnj-button", "click", () => {
+      const pos = new Vector3(-184.75, 7, -11.2);
+      this._player!.mesh.position = pos;
+      this._environment?.carte.closeCarte(pos);
+    });
+
+    // GUI sound
     this.addEventListenerById("son", "input", (event) => {
       const newValue = (event.target as HTMLInputElement)?.value;
       storeSound.commit('setSound', newValue);
