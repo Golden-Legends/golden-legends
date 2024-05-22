@@ -16,7 +16,7 @@
   > 
     <div class="flex justify-between">
       <span class="text-2xl">Musique</span>
-      <input id="son" type="range" min="0" max="100" :value="storeSound.state.sound" @input="updateSound" class="accent-black" />
+      <input id="son" type="range" min="0" max="100" :value="storeSound.state.sound" class="accent-black" />
     </div>
   </Options>
   <KeybindHint
@@ -847,23 +847,23 @@ const positionV = (position: number) => {
 };
 
 
-const updateSound = (event) => {
-  const newValue = event.target.value;
-  storeSound.commit('setSound', newValue);
-  setSoundVolume();
-}
+// const updateSound = (event) => {
+//   const newValue = event.target.value;
+//   storeSound.commit('setSound', newValue);
+//   setSoundVolume();
+// }
 
-const setSoundVolume = () => {
-  if(storeSound.state.sound > storeSound.state.oldSound){
-    console.log(1+(storeSound.state.sound - storeSound.state.oldSound)/100)
-  }
-  else if(storeSound.state.sound < storeSound.state.oldSound){
-    console.log(1-(storeSound.state.oldSound - storeSound.state.sound)/100)
-  }
-  else{
-    console.log(1)
-  }
-}
+// const setSoundVolume = () => {
+//   if(storeSound.state.sound > storeSound.state.oldSound){
+//     console.log(1+(storeSound.state.sound - storeSound.state.oldSound)/100)
+//   }
+//   else if(storeSound.state.sound < storeSound.state.oldSound){
+//     console.log(1-(storeSound.state.oldSound - storeSound.state.sound)/100)
+//   }
+//   else{
+//     console.log(1)
+//   }
+// }
 
 
 onMounted(() => {

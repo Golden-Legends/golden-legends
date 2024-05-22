@@ -31,6 +31,7 @@ import { PlongeonGameState } from "./games/PlongeonGameState.ts";
 import { TirArcGameState } from "./games/TirArcGameState.ts";
 import { JavelotGameState } from "./games/JavelotGameState.ts";
 import { storeOnboard } from "@/components/gui/storeOnboard.ts";
+import { storeSound } from "@/components/gui/storeSound.ts";
 import { doc } from "prettier";
 
 export class InGameState extends GameState {
@@ -88,6 +89,25 @@ export class InGameState extends GameState {
     this.addEventListenerById("back-menu", "click", () => {
       // new Game(this.canvas);
       console.log("back to menu");
+    });
+
+    this.addEventListenerById("son", "input", (event) => {
+      const newValue = (event.target as HTMLInputElement)?.value;
+      storeSound.commit('setSound', newValue);
+      if(storeSound.state.sound > storeSound.state.oldSound){
+        const newVolume = 1+(storeSound.state.sound - storeSound.state.oldSound)/100;
+        this.game.getSoundManager().setVolumeAllTracks(newVolume);
+        // console.log(1+(storeSound.state.sound - storeSound.state.oldSound)/100)
+      }
+      else if(storeSound.state.sound < storeSound.state.oldSound){
+        const newVolume = 1-(storeSound.state.oldSound - storeSound.state.sound)/100;
+        this.game.getSoundManager().setVolumeAllTracks(newVolume);
+        // console.log(1-(storeSound.state.oldSound - storeSound.state.sound)/100)
+      }
+      else{
+        this.game.getSoundManager().setVolumeAllTracks(1);
+        // console.log(1)
+      }
     });
   }
 

@@ -61,6 +61,12 @@ export class SoundManager {
       track.setVolume(volume);
     }
   }
+
+  setVolumeAllTracks(volume: number): void {
+    this.tracks.forEach((track) => {
+      track.setVolume(track.getVolume() * volume);
+    });
+  }
 }
 
 

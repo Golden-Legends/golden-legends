@@ -39,4 +39,8 @@ export class Track {
   setVolume(volume: number): void {
     this.howl.volume(volume);
   }
+
+  getVolume(): number {
+    return this.howl.volume();
+  }
 }
