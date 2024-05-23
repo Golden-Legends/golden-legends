@@ -518,7 +518,7 @@
     id="plongeonGame-command-container"
     class="hidden absolute -top-3/4 left-36 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
-  <GameHelpContainer id="plongeongame-help" title="Plongeon" class="-mt-28 -top-3/4 left-1/2 transform -translate-x-1/2">
+  <GameHelpContainer id="plongeongame-help" title="Plongeon" class="hidden -mt-28 -top-3/4 left-1/2 transform -translate-x-1/2">
     <button
       id="close-help-plongeon"
       class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
@@ -704,6 +704,41 @@
     id="tirArcGame-horizontal-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+  <GameHelpContainer id="tirArcgame-help" title="Plongeon" class="hidden -mt-56 -top-3/4 left-1/2 transform -translate-x-1/2">
+    <button
+      id="close-help-tirArc"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer
+        name="ACTION"
+        :keys="['ESPACE']"
+        class="w-fit my-4"
+      />
+      <CommandContainer
+        name="VISÉE↕️"
+        :keys="['V']"
+        class="w-fit my-4"
+      />
+      <CommandContainer
+        name="VISÉE↔️"
+        :keys="['H']"
+        class="w-fit my-4"
+      />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Appuyer sur ESPACE pour démarrer.',
+            'Vous disposez de 2 jauges qui vous permettent de viser et de tirer le plus possible au centre de la cible. Pour cela, vous appuyerez sur H pour régler la visée horizontale puis sur V pour régler la visée verticale.'
+          ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4">
+    </div>
+  </GameHelpContainer>
   <RDSText
     text="Tirez !"
     subText="Appuyez sur Espace"

@@ -197,19 +197,16 @@ export class TirArcGameState extends GameState {
       document.getElementById("objects-keybind")!.classList.add("hidden");
       document.getElementById("map-keybind")!.classList.add("hidden");
       document.getElementById("tirArctp")!.classList.add("hidden");
-      document
-        .getElementById("tirArcGame-skip-button")!
-        .classList.remove("hidden");
-      document
-        .getElementById("tirArcGame-action-container")!
-        .classList.remove("hidden");
-      document
-        .getElementById("tirArcGame-vertical-container")!
-        .classList.remove("hidden");
-      document
-        .getElementById("tirArcGame-horizontal-container")!
-        .classList.remove("hidden");
+      document.getElementById("tirArcGame-skip-button")!.classList.remove("hidden");
+      document.getElementById("tirArcgame-help")!.classList.remove("hidden");
+      this.addEventListenerById("close-help-tirArc", "click", () => {
+          document.getElementById("tirArcgame-help")!.classList.add("hidden");
+      });
+      document.getElementById("tirArcGame-action-container")!.classList.remove("hidden");
+      document.getElementById("tirArcGame-vertical-container")!.classList.remove("hidden");
+      document.getElementById("tirArcGame-horizontal-container")!.classList.remove("hidden");
       this.addEventListenerById("tirArcGame-skip-button", "click", () => {
+        document.getElementById("tirArcgame-help")!.classList.add("hidden");
         this.scene.stopAnimation(this._camera);
         this.AfterCamAnim();
       });
@@ -219,12 +216,9 @@ export class TirArcGameState extends GameState {
       this.game.engine.hideLoadingUI();
 
       this.CreateCameraMouv().then(() => {
-        document
-          .getElementById("tirArcGame-ready-button")!
-          .classList.remove("hidden");
-        document
-          .getElementById("tirArcGame-skip-button")!
-          .classList.add("hidden");
+        document.getElementById("tirArcGame-ready-button")!.classList.remove("hidden");
+        document.getElementById("tirArcGame-skip-button")!.classList.add("hidden");
+        document.getElementById("tirArcgame-help")!.classList.add("hidden");
         this.addEventListenerById("tirArcGame-ready-button", "click", () => {
           this.startCountdown([
             "tirArcGame-text-1",
