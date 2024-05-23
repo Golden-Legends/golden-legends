@@ -78,7 +78,7 @@ export class NatationGameState extends GameState {
         this.isMultiplayer = multi ? multi : false;
         this.settings = NatationGameSettings;
         this._input = new PlayerInputNatationGame(this.scene);
-        this.playerName = localStorage.getItem("playerName") || "Playertest";
+        this.playerName = localStorage.getItem("username") || "Playertest";
         this.rectangleReturn = MeshBuilder.CreateBox("rectangleReturn");
         this.game.playTrack('100m');
     }
@@ -89,7 +89,6 @@ export class NatationGameState extends GameState {
             this.game.engine.displayLoadingUI();
             this.scene.detachControl();
         
-            document.getElementById("objects-keybind")!.classList.add("hidden");
             document.getElementById("map-keybind")!.classList.add("hidden");
 
             // Inspector.Show(this.scene, {});
@@ -119,13 +118,17 @@ export class NatationGameState extends GameState {
             // console.log(this._camera.rotation);
             // console.log(this._camera.position);
 
-            document.getElementById("objects-keybind")!.classList.add("hidden");
             document.getElementById("map-keybind")!.classList.add("hidden");
             document.getElementById("natationtp")!.classList.add("hidden");
             document.getElementById("natationGame-skip-button")!.classList.remove("hidden");
+            document.getElementById("natationgame-help")!.classList.remove("hidden");
+            this.addEventListenerById("close-help-natation", "click", () => {
+                document.getElementById("natationgame-help")!.classList.add("hidden");
+            });
             document.getElementById("natationGame-command-container")!.classList.remove("hidden");
             document.getElementById("natationGame-action-container")!.classList.remove("hidden");
             this.addEventListenerById("natationGame-skip-button", "click", () => {
+                document.getElementById("natationgame-help")!.classList.add("hidden");
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
@@ -137,6 +140,7 @@ export class NatationGameState extends GameState {
             this.CreateCameraMouv().then(() => {
                 document.getElementById("natationGame-ready-button")!.classList.remove("hidden");
                 document.getElementById("natationGame-skip-button")!.classList.add("hidden");
+                document.getElementById("natationgame-help")!.classList.add("hidden");
                 this.addEventListenerById("natationGame-ready-button", "click", () => {
                     this.startCountdown(["natationGame-text-1", "natationGame-text-2", "natationGame-text-3"]);
                     this.AfterCamAnim(); 

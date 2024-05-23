@@ -66,7 +66,7 @@ export class JavelotGameState extends GameState {
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputJavelotGame(this.scene);
-        this.playerName = localStorage.getItem("playerName") || "Playertest";
+        this.playerName = localStorage.getItem("username") || "Playertest";
         this.settings = JavelotGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
@@ -167,7 +167,6 @@ export class JavelotGameState extends GameState {
             // Vector3(4.78, 3.27, 6.38)
             // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
-            document.getElementById("objects-keybind")!.classList.add("hidden");
             document.getElementById("map-keybind")!.classList.add("hidden");
             document.getElementById("javelottp")!.classList.add("hidden");
             document.getElementById("javelotGame-skip-button")!.classList.remove("hidden");

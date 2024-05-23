@@ -5,6 +5,7 @@ import CarouselContent from "@/components/gui/onboarding/CarouselContent.vue";
 import CommandContainer from "@/components/gui/commands/CommandContainer.vue";
 import CustomKBD from "@/components/gui/commands/CustomKBD.vue";
 import Title from "@/components/gui/onboarding/Title.vue";
+import Info from "@/components/gui/games/Tips.vue";
 const carousel = ref(0);
 </script>
 
@@ -38,23 +39,52 @@ const carousel = ref(0);
       <div class="rounded-xl backdrop-brightness-75 px-4 py-4 w-3/4">
         <CarouselContent v-if="carousel === 0">
           <div>
-            <Title text="Dans le lobby"></Title>
-            <span>Les déplacements dans le lobby :</span>
-            <div class="flex gap-2">
-              <CustomKBD :keybind="'z'" class="w-fit my-4" />
-              <CustomKBD :keybind="'q'" class="w-fit my-4" />
-              <CustomKBD :keybind="'s'" class="w-fit my-4" />
-              <CustomKBD :keybind="'d'" class="w-fit my-4" />
+            <Title text="Dans le lobby :"></Title>
+            <Title text="Les déplacements" class="mt-4 -mb-2"></Title>
+            <div class="flex gap-12 items-center">
+              <div class="flex flex-col w-fit my-4">
+                <div class="flex justify-center">
+                  <CustomKBD :keybind="'z'" class="w-fit" />
+                </div>
+                <div class="flex justify-between">
+                  <CustomKBD :keybind="'q'" class="w-fit" />
+                  <CustomKBD :keybind="'s'" class="w-fit" />
+                  <CustomKBD :keybind="'d'" class="w-fit" />
+                </div> 
+              </div>
+              <Title text="OU"></Title>
+              <div class="flex flex-col w-fit my-4">
+                <div class="flex justify-center">
+                  <CustomKBD :keybind="'w'" class="w-fit" />
+                </div>
+                <div class="flex justify-between">
+                  <CustomKBD :keybind="'a'" class="w-fit" />
+                  <CustomKBD :keybind="'s'" class="w-fit" />
+                  <CustomKBD :keybind="'d'" class="w-fit" />
+                </div> 
+              </div>
             </div>
             
-            <span>La vision dans le lobby :</span>
+            <Title text="La vision" class="-mb-2"></Title>
             <CustomKBD :keybind="'souris'" class="w-fit my-4" />
+            <Title text="Dash - Appuyez sur A/Q en sautant" class="mt-8 -mb-2"></Title>
+            <div class="flex gap-12 items-center">
+              <div class="flex flex-col w-fit my-4">
+                <div class="flex justify-center">
+                  <CustomKBD :keybind="'a'" class="w-fit" />
+                </div>
+              </div>
+              <Title text="OU"></Title>
+              <div class="flex flex-col w-fit my-4">
+                <div class="flex justify-center">
+                  <CustomKBD :keybind="'q'" class="w-fit" />
+                </div>  
+              </div>
+            </div>
 
-            <span>Ouvrir le menu :</span>
+            <Title text="Ouvrir le menu" class="mt-8 -mb-2"></Title>
             <CustomKBD :keybind="'o'" class="w-fit my-4" />
-            <span>Ouvrir les objets trouvés :</span>
-            <CustomKBD :keybind="'n'" class="w-fit my-4" />
-            <span>Ouvrir la minimap :</span>
+            <Title text="Ouvrir la minimap" class="mt-4 -mb-2"></Title>
             <CustomKBD :keybind="'c'" class="w-fit my-4" />
             
           </div>
@@ -62,65 +92,81 @@ const carousel = ref(0);
 
         <CarouselContent v-if="carousel === 1">
           <div>
-            <Title text="100m"></Title>
-            <span>Spam alterné des touches S et D, une mauvaise technique peut vous ralentir...</span>
+            <Title text="100m - Comment jouer ?" class=""></Title>
             <CommandContainer
               name="COURIR"
               :keys="['s', 'd']"
               class="w-fit my-4"
+            />
+            <Title text="Astuces" class="mb-3"></Title>
+            <Info
+              :content="[
+                'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...',
+              ]"
             />
           </div>
         </CarouselContent>
 
         <CarouselContent v-if="carousel === 2">
           <div>
-            <Title text="100m Brasse"></Title>
-            <span>Appuyer sur ESPACE pour plonger et vous retourner.</span><br>
-            <span>Spam alterné des touches S et D, une mauvaise technique peut vous ralentir...</span>
-            <CommandContainer
-              name="ACTION"
-              :keys="['ESPACE']"
-              class="w-fit my-4"
-            />
-            <CommandContainer
-              name="NAGER"
-              :keys="['s', 'd']"
-              class="w-fit my-4"
+            <Title text="100m Brasse - Comment jouer ?"></Title>
+            <div class="flex gap-5">
+              <CommandContainer
+                name="ACTION"
+                :keys="['ESPACE']"
+                class="w-fit my-4"
+              />
+              <CommandContainer
+                name="NAGER"
+                :keys="['s', 'd']"
+                class="w-fit my-4"
+              />
+            </div>
+            <Title text="Astuces" class="mb-3"></Title>
+            <Info
+              :content="[
+                'Appuyer sur ESPACE pour plonger et vous retourner.',
+                'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...'
+              ]"
             />
           </div>
         </CarouselContent>
 
         <CarouselContent v-if="carousel === 3">
           <div>
-            <Title text="Plongeon"></Title>
-            <span>Appuyer sur ESPACE pour plonger.</span><br>
-            <span>Vous devez retenir une suite de lettres qui sera toujours différente et la restituer ensuite dans un temps imparti (chaque lettre correspondant à une figure).</span>
-            <CommandContainer
-              name="ACTION"
-              :keys="['ESPACE']"
-              class="w-fit my-4"
-            />
-            <CommandContainer
-              name="FIGURES"
-              width="260"
-              :keys="['F', 'G', 'H', 'J']"
-              class="w-fit my-4"
+            <Title text="Plongeon - Comment jouer ?"></Title>
+            <div class="flex gap-5">
+              <CommandContainer
+                name="ACTION"
+                :keys="['ESPACE']"
+                class="w-fit my-4"
+              />
+              <CommandContainer
+                name="FIGURES"
+                width="260"
+                :keys="['F', 'G', 'H', 'J']"
+                class="w-fit my-4"
+              />
+            </div>
+            <Title text="Astuces" class="mb-3"></Title>
+            <Info
+              :content="[
+                'Appuyer sur ESPACE pour plonger.',
+                'Vous devez retenir une suite de lettres qui sera toujours différente et la restituer ensuite dans un temps imparti (chaque lettre correspondant à une figure).'
+              ]"
             />
           </div>
         </CarouselContent>
 
         <CarouselContent v-if="carousel === 4">
           <div>
-            <Title text="Tir à l'arc"></Title>
-            <span>Appuyer sur ESPACE pour démarrer.</span><br>
-            <span>Vous disposez de 2 jauges qui vous permettent de viser et de tirer le plus possible au centre de la cible.
-              Pour cela, vous appuyerez sur H pour régler la visée horizontale puis sur V pour régler la visée verticale.</span>
-            <CommandContainer
-              name="ACTION"
-              :keys="['ESPACE']"
-              class="w-fit my-4"
-            />
-            <div class="flex gap-2">
+            <Title text="Tir à l'arc - Comment jouer ?"></Title>
+            <div class="flex gap-5">
+              <CommandContainer
+                name="ACTION"
+                :keys="['ESPACE']"
+                class="w-fit my-4"
+              />
               <CommandContainer
                 name="VISÉE↕️"
                 :keys="['V']"
@@ -132,6 +178,13 @@ const carousel = ref(0);
                 class="w-fit my-4"
               />
             </div>  
+            <Title text="Astuces" class="mb-3"></Title>
+            <Info
+              :content="[
+                'Appuyer sur ESPACE pour démarrer.',
+                'Vous disposez de 2 jauges qui vous permettent de viser et de tirer le plus possible au centre de la cible. Pour cela, vous appuyerez sur H pour régler la visée horizontale puis sur V pour régler la visée verticale.'
+              ]"
+            />
           </div>
         </CarouselContent>
       </div>

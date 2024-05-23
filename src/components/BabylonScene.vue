@@ -45,15 +45,15 @@
     id="pnj-button"
     class="hidden absolute -mt-32 top-1/4 left-1/4 ml-4"
   />
-  <KeybindHint
+  <!-- <KeybindHint
     class="absolute top-20 left-4"
     keybind="N"
     name="Objets trouvés"
     eventKey="n"
     id="objects-keybind"
-  />
+  /> -->
   <KeybindHint
-    class="absolute top-36 left-4"
+    class="absolute top-20 left-4"
     keybind="C"
     name="Carte"
     eventKey="c"
@@ -204,7 +204,7 @@
     <GateButton id="100mDifficile" name="Difficile" difficulty="hard" />
   </GameGate>
   <GameGate
-    title="Natation"
+    title="100m Brasse"
     name="natationtp"
     id="natationtp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -282,6 +282,26 @@
     id="runningGame-command-container"
     class="hidden -mt-20 absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+  <GameHelpContainer id="runningGame-help" title="100m" class="hidden -top-3/4 left-1/2 transform -translate-x-1/2">
+    <button
+      id="close-help-100m"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="COURIR" :keys="['s', 'd']" />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Pour aller le plus vite possible, alternez les touches sans vous tromper !',
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4">
+    </div>
+  </GameHelpContainer>
   <ClassicButton
     text="Passer"
     name="runningGame-skip-button"
@@ -367,6 +387,31 @@
     id="natationGame-action-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+  <GameHelpContainer id="natationgame-help" title="100m Brasse" class="hidden -mt-28 -top-3/4 left-1/2 transform -translate-x-1/2">
+    <button
+      id="close-help-natation"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="NAGER" :keys="['s', 'd']" />
+      <CommandContainer
+        name="ACTION"
+        :keys="['espace']"
+      />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Appuyer sur ESPACE pour plonger et vous retourner.',
+          'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...'
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4">
+    </div>
+  </GameHelpContainer>
   <ClassicButton
     text="Passer"
     name="natationGame-skip-button"
@@ -473,6 +518,32 @@
     id="plongeonGame-command-container"
     class="hidden absolute -top-3/4 left-36 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+  <GameHelpContainer id="plongeongame-help" title="Plongeon" class="hidden -mt-28 -top-3/4 left-1/2 transform -translate-x-1/2">
+    <button
+      id="close-help-plongeon"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="ACTION" :keys="['espace']" />
+      <CommandContainer
+        name="FIGURES"
+        width="260"
+        :keys="['f', 'g', 'h', 'j']"
+      />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Appuyer sur ESPACE pour plonger.',
+          'Vous devez retenir une suite de lettres qui sera toujours différente et la restituer ensuite dans un temps imparti (chaque lettre correspondant à une figure).'
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4">
+    </div>
+  </GameHelpContainer>
   <ClassicButton
     text="Passer"
     name="plongeonGame-skip-button"
@@ -633,6 +704,41 @@
     id="tirArcGame-horizontal-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+  <GameHelpContainer id="tirArcgame-help" title="Plongeon" class="hidden -mt-56 -top-3/4 left-1/2 transform -translate-x-1/2">
+    <button
+      id="close-help-tirArc"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer
+        name="ACTION"
+        :keys="['ESPACE']"
+        class="w-fit my-4"
+      />
+      <CommandContainer
+        name="VISÉE↕️"
+        :keys="['V']"
+        class="w-fit my-4"
+      />
+      <CommandContainer
+        name="VISÉE↔️"
+        :keys="['H']"
+        class="w-fit my-4"
+      />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Appuyer sur ESPACE pour démarrer.',
+            'Vous disposez de 2 jauges qui vous permettent de viser et de tirer le plus possible au centre de la cible. Pour cela, vous appuyerez sur H pour régler la visée horizontale puis sur V pour régler la visée verticale.'
+          ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4">
+    </div>
+  </GameHelpContainer>
   <RDSText
     text="Tirez !"
     subText="Appuyez sur Espace"
@@ -825,10 +931,12 @@ import { storeSound } from "@/components/gui/storeSound.ts";
 
 import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
+import GameHelpContainer from "@/components/gui/games/GameHelpContainer.vue";
 import { storeJavelot } from "./gui/storeJavelot";
 import ArcheryContainer from "./gui/archery/ArcheryContainer.vue";
 import Aide from "@/components/gui/onboarding/Aide.vue";
 import Tips from "@/components/gui/onboarding/Tips.vue";
+import Info from "@/components/gui/games/Tips.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
@@ -854,7 +962,7 @@ const objetRecupText = "Objet récupéré avec succès !";
 const allObjetRecupText = "Tous les objets olympiques ont été ramassés !";
 //jump message
 const victoryJumpText =
-  "Vous avez réussi à dompter les plateformes mouvantes. Voici une trainée en récompense !";
+  "Vous avez réussi à dompter les plateformes mouvantes. Vous avez débloqué 2 nouveaux personnages, rendez vous à l'accueil !";
 const loseJumpText = "Pas pour cette fois... Retente ta chance !";
 //scoreboard station
 const stationScoreboard = "GUI Scoreboard TODO...";

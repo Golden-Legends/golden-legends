@@ -65,6 +65,7 @@ export class RunningGameState extends GameState {
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputRunningGame(this.scene);
+        this.playerName = localStorage.getItem("username") || "Playertest";
         this.settings = RunningGameSettings;
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
@@ -113,12 +114,17 @@ export class RunningGameState extends GameState {
             this._camera.setTarget(startMesh.getAbsolutePosition());  
     
 
-            document.getElementById("objects-keybind")!.classList.add("hidden");
+            
             document.getElementById("map-keybind")!.classList.add("hidden");
             document.getElementById("100mtp")!.classList.add("hidden");
             document.getElementById("runningGame-skip-button")!.classList.remove("hidden");
+            document.getElementById("runningGame-help")!.classList.remove("hidden");
+            this.addEventListenerById("close-help-100m", "click", () => {
+                document.getElementById("runningGame-help")!.classList.add("hidden");
+            });
             document.getElementById("runningGame-command-container")!.classList.remove("hidden");
             this.addEventListenerById("runningGame-skip-button", "click", () => {
+                document.getElementById("runningGame-help")!.classList.add("hidden");
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
@@ -129,6 +135,7 @@ export class RunningGameState extends GameState {
             
             this.CreateCameraMouv().then(() => {
                 document.getElementById("runningGame-ready-button")!.classList.remove("hidden");
+                document.getElementById("runningGame-help")!.classList.add("hidden");
                 this.addEventListenerById("runningGame-ready-button", "click", () => {
                     this.startCountdown(["runningGame-text-1", "runningGame-text-2", "runningGame-text-3"]);
                     this.AfterCamAnim(); 

@@ -46,7 +46,6 @@ export class InGameState extends GameState {
   constructor(game, canvas) {
     super(game, canvas);
     this._input = new PlayerInput(this.scene);
-    document.getElementById("objects-keybind")!.classList.remove("hidden");
     document.getElementById("map-keybind")!.classList.remove("hidden");
 
     this.listenerGui();
@@ -221,7 +220,6 @@ export class InGameState extends GameState {
 
   async exit() {
     // Nettoyer la scène lors de la sortie de cet état
-    document.getElementById("objects-keybind")!.classList.add("hidden");
     document.getElementById("map-keybind")!.classList.add("hidden");
     // document.getElementById("options-keybind")!.classList.add("hidden");
     console.log("exit in game state");
@@ -241,22 +239,22 @@ export class InGameState extends GameState {
       this._environment?.carte.closeCarte();
     } 
 
-    if (!this.isGameObjectInterfacedPressed && this._input.keyGameObjects && document.getElementById("objectsFound")!.classList.contains("hidden")
-      && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
-      document.getElementById("objectsFound")!.classList.remove("hidden");
-      document.getElementById("options")!.classList.add("hidden");
-      setTimeout(() => {
-        this.isGameObjectInterfacedPressed = true;
-        this.isOptionsInterfacedPressed = false;
-      },250);
+    // if (!this.isGameObjectInterfacedPressed && this._input.keyGameObjects && document.getElementById("objectsFound")!.classList.contains("hidden")
+    //   && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
+    //   document.getElementById("objectsFound")!.classList.remove("hidden");
+    //   document.getElementById("options")!.classList.add("hidden");
+    //   setTimeout(() => {
+    //     this.isGameObjectInterfacedPressed = true;
+    //     this.isOptionsInterfacedPressed = false;
+    //   },250);
       
-    } else if (this.isGameObjectInterfacedPressed && this._input.keyGameObjects && !document.getElementById("objectsFound")!.classList.contains("hidden")
-      && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
-      document.getElementById("objectsFound")!.classList.add("hidden");
-      setTimeout(() => {
-        this.isGameObjectInterfacedPressed = false;
-      },250);
-    } 
+    // } else if (this.isGameObjectInterfacedPressed && this._input.keyGameObjects && !document.getElementById("objectsFound")!.classList.contains("hidden")
+    //   && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
+    //   document.getElementById("objectsFound")!.classList.add("hidden");
+    //   setTimeout(() => {
+    //     this.isGameObjectInterfacedPressed = false;
+    //   },250);
+    // } 
 
     if (this.isOptionsInterfacedPressed && this._input.keyOptions && !document.getElementById("options")!.classList.contains("hidden")){
       document.getElementById("options")!.classList.add("hidden");
@@ -471,6 +469,13 @@ export class InGameState extends GameState {
     });
     this.addEventListenerById("back-options2", "click", () => {
       document.getElementById("tips-container")!.classList.add("hidden");
+      document.getElementById("options")!.classList.remove("hidden");
+      setTimeout(() => {
+        this.isOptionsInterfacedPressed = true;
+      },250);
+    });
+    this.addEventListenerById("back-options3", "click", () => {
+      document.getElementById("objectsFound")!.classList.add("hidden");
       document.getElementById("options")!.classList.remove("hidden");
       setTimeout(() => {
         this.isOptionsInterfacedPressed = true;
