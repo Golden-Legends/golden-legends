@@ -962,7 +962,7 @@ const objetRecupText = "Objet récupéré avec succès !";
 const allObjetRecupText = "Tous les objets olympiques ont été ramassés !";
 //jump message
 const victoryJumpText =
-  "Vous avez réussi à dompter les plateformes mouvantes. Voici une trainée en récompense !";
+  "Vous avez réussi à dompter les plateformes mouvantes. Vous avez débloqué 2 nouveaux personnages, rendez vous à l'accueil !";
 const loseJumpText = "Pas pour cette fois... Retente ta chance !";
 //scoreboard station
 const stationScoreboard = "GUI Scoreboard TODO...";

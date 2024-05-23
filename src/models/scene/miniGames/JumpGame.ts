@@ -26,7 +26,7 @@ export class JumpGame{
   private playerInput: PlayerInput;
   private platformsJumped: number = 0;
   private platformsAlreadyJump: string[] = [];
-  private readonly TOTAL_PLATFORMS: number = 20;
+  private readonly TOTAL_PLATFORMS: number = 13;
   private defeatMessage?: TextBlock;
   private victoryMessage?: TextBlock;
   private gameRunning: boolean = false;
@@ -48,7 +48,7 @@ export class JumpGame{
     localStorage.setItem('jeuSaut', "false");
     //invisible platform
     // console.log(this.player.position);
-    this.invisiblePlatform(1, 20);
+    this.invisiblePlatform(1, this.TOTAL_PLATFORMS);
 
     //apparition message pour afficher les plateformes
     this.initCube();
@@ -135,7 +135,7 @@ export class JumpGame{
           localStorage.setItem('jeuSaut', "true");
           this.showVictoryMessage();
           this.resetGame();
-          this.invisiblePlatform(1, 20);
+          this.invisiblePlatform(1, this.TOTAL_PLATFORMS);
           this.gameRunning = false;
           this.stopMiniGame();
           this.playFireworksAnimation(this.scene, this.player.position);
@@ -155,7 +155,7 @@ export class JumpGame{
         this.showDefeatMessage();
         console.log("endgame");
         this.resetGame();
-        this.invisiblePlatform(1, 20);
+        this.invisiblePlatform(1, this.TOTAL_PLATFORMS);
         this.gameRunning = false;
         this.stopMiniGame();
         this.endCountdown();
@@ -202,7 +202,7 @@ export class JumpGame{
     }
     // Le jeu n'est plus en cours
     this.gameRunning = false;
-    this.invisiblePlatform(1, 20);
+    this.invisiblePlatform(1, this.TOTAL_PLATFORMS);
   }
 
   playFireworksAnimation(scene: Scene, position: Vector3) {
@@ -331,6 +331,7 @@ export class JumpGame{
       let mesh = this.scene.getMeshByName("platform" + i);
       if (mesh) {
         mesh.isVisible = false;
+        mesh.checkCollisions = false;
       }
     }
   }
@@ -340,9 +341,11 @@ export class JumpGame{
       let mesh = this.scene.getMeshByName("platform" + i);
       if (mesh) {
         mesh.isVisible = true;
+        mesh.checkCollisions = true;
         mesh.position.y -= 0.25;
         this.createAnimation(mesh);
       }
     }
   }
+  
 }

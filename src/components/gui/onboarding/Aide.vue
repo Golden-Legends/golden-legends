@@ -67,6 +67,20 @@ const carousel = ref(0);
             
             <Title text="La vision" class="-mb-2"></Title>
             <CustomKBD :keybind="'souris'" class="w-fit my-4" />
+            <Title text="Dash - Appuyez sur A/Q en sautant" class="mt-8 -mb-2"></Title>
+            <div class="flex gap-12 items-center">
+              <div class="flex flex-col w-fit my-4">
+                <div class="flex justify-center">
+                  <CustomKBD :keybind="'a'" class="w-fit" />
+                </div>
+              </div>
+              <Title text="OU"></Title>
+              <div class="flex flex-col w-fit my-4">
+                <div class="flex justify-center">
+                  <CustomKBD :keybind="'q'" class="w-fit" />
+                </div>  
+              </div>
+            </div>
 
             <Title text="Ouvrir le menu" class="mt-8 -mb-2"></Title>
             <CustomKBD :keybind="'o'" class="w-fit my-4" />
