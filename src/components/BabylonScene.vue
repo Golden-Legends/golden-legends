@@ -282,6 +282,26 @@
     id="runningGame-command-container"
     class="hidden -mt-20 absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+  <GameHelpContainer id="runningGame-help" title="100m" class="hidden -top-3/4 left-1/2 transform -translate-x-1/2">
+    <button
+      id="close-help-100m"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="COURIR" :keys="['s', 'd']" />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Pour aller le plus vite possible, alternez les touches sans vous tromper !',
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4">
+    </div>
+  </GameHelpContainer>
   <ClassicButton
     text="Passer"
     name="runningGame-skip-button"
@@ -825,10 +845,12 @@ import { storeSound } from "@/components/gui/storeSound.ts";
 
 import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
+import GameHelpContainer from "@/components/gui/games/GameHelpContainer.vue";
 import { storeJavelot } from "./gui/storeJavelot";
 import ArcheryContainer from "./gui/archery/ArcheryContainer.vue";
 import Aide from "@/components/gui/onboarding/Aide.vue";
 import Tips from "@/components/gui/onboarding/Tips.vue";
+import Info from "@/components/gui/games/Tips.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
