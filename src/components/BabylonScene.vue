@@ -518,6 +518,32 @@
     id="plongeonGame-command-container"
     class="hidden absolute -top-3/4 left-36 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+  <GameHelpContainer id="plongeongame-help" title="Plongeon" class="-mt-28 -top-3/4 left-1/2 transform -translate-x-1/2">
+    <button
+      id="close-help-plongeon"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="ACTION" :keys="['espace']" />
+      <CommandContainer
+        name="FIGURES"
+        width="260"
+        :keys="['f', 'g', 'h', 'j']"
+      />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Appuyer sur ESPACE pour plonger.',
+          'Vous devez retenir une suite de lettres qui sera toujours différente et la restituer ensuite dans un temps imparti (chaque lettre correspondant à une figure).'
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4">
+    </div>
+  </GameHelpContainer>
   <ClassicButton
     text="Passer"
     name="plongeonGame-skip-button"

@@ -177,9 +177,14 @@ export class PlongeonGameState extends GameState {
             document.getElementById("map-keybind")!.classList.add("hidden");
             document.getElementById("plongeontp")!.classList.add("hidden");
             document.getElementById("plongeonGame-skip-button")!.classList.remove("hidden");
+            document.getElementById("plongeongame-help")!.classList.remove("hidden");
+            this.addEventListenerById("close-help-plongeon", "click", () => {
+                document.getElementById("plongeongame-help")!.classList.add("hidden");
+            });
             document.getElementById("plongeonGame-command-container")!.classList.remove("hidden");
             document.getElementById("plongeonGame-action-container")!.classList.remove("hidden");
             this.addEventListenerById("plongeonGame-skip-button", "click", () => {
+                document.getElementById("plongeongame-help")!.classList.add("hidden");
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
@@ -191,6 +196,7 @@ export class PlongeonGameState extends GameState {
             this.CreateCameraMouv().then(() => {
                 document.getElementById("plongeonGame-ready-button")!.classList.remove("hidden");
                 document.getElementById("plongeonGame-skip-button")!.classList.add("hidden");
+                document.getElementById("plongeongame-help")!.classList.add("hidden");
                 this.addEventListenerById("plongeonGame-ready-button", "click", () => {
                     this.AfterCamAnim(); 
                     this.initGui(); 
