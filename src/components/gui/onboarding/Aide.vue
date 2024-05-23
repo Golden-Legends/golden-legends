@@ -70,8 +70,6 @@ const carousel = ref(0);
 
             <Title text="Ouvrir le menu" class="mt-8 -mb-2"></Title>
             <CustomKBD :keybind="'o'" class="w-fit my-4" />
-            <Title text="Ouvrir les objets trouvés" class="mt-4 -mb-2"></Title>
-            <CustomKBD :keybind="'n'" class="w-fit my-4" />
             <Title text="Ouvrir la minimap" class="mt-4 -mb-2"></Title>
             <CustomKBD :keybind="'c'" class="w-fit my-4" />
             
