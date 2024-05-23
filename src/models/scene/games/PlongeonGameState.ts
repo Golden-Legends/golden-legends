@@ -66,7 +66,7 @@ export class PlongeonGameState extends GameState {
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputPlongeonGame(this.scene);
-        this.playerName = localStorage.getItem("playerName") || "Playertest";
+        this.playerName = localStorage.getItem("username") || "Playertest";
         this.settings = PlongeonGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
@@ -146,7 +146,6 @@ export class PlongeonGameState extends GameState {
             this.game.engine.displayLoadingUI();
             this.scene.detachControl();
         
-            document.getElementById("objects-keybind")!.classList.add("hidden");
             document.getElementById("map-keybind")!.classList.add("hidden");
 
             // Inspector.Show(this.scene, {});
@@ -173,7 +172,7 @@ export class PlongeonGameState extends GameState {
             // Vector3(4.78, 3.27, 6.38)
             // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
-            document.getElementById("objects-keybind")!.classList.add("hidden");
+           
             document.getElementById("map-keybind")!.classList.add("hidden");
             document.getElementById("plongeontp")!.classList.add("hidden");
             document.getElementById("plongeonGame-skip-button")!.classList.remove("hidden");

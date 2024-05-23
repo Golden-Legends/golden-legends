@@ -65,6 +65,7 @@ export class RunningGameState extends GameState {
     constructor(game: Game, canvas: HTMLCanvasElement, difficulty ?: "easy" | "intermediate" | "hard", multi ?: boolean) {
         super(game, canvas);
         this._input = new PlayerInputRunningGame(this.scene);
+        this.playerName = localStorage.getItem("username") || "Playertest";
         this.settings = RunningGameSettings;
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
@@ -113,7 +114,7 @@ export class RunningGameState extends GameState {
             this._camera.setTarget(startMesh.getAbsolutePosition());  
     
 
-            document.getElementById("objects-keybind")!.classList.add("hidden");
+            
             document.getElementById("map-keybind")!.classList.add("hidden");
             document.getElementById("100mtp")!.classList.add("hidden");
             document.getElementById("runningGame-skip-button")!.classList.remove("hidden");

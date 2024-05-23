@@ -41,11 +41,28 @@ const carousel = ref(0);
           <div>
             <Title text="Dans le lobby :"></Title>
             <Title text="Les déplacements" class="mt-4 -mb-2"></Title>
-            <div class="flex gap-2">
-              <CustomKBD :keybind="'z'" class="w-fit my-4" />
-              <CustomKBD :keybind="'q'" class="w-fit my-4" />
-              <CustomKBD :keybind="'s'" class="w-fit my-4" />
-              <CustomKBD :keybind="'d'" class="w-fit my-4" />
+            <div class="flex gap-12 items-center">
+              <div class="flex flex-col w-fit my-4">
+                <div class="flex justify-center">
+                  <CustomKBD :keybind="'z'" class="w-fit" />
+                </div>
+                <div class="flex justify-between">
+                  <CustomKBD :keybind="'q'" class="w-fit" />
+                  <CustomKBD :keybind="'s'" class="w-fit" />
+                  <CustomKBD :keybind="'d'" class="w-fit" />
+                </div> 
+              </div>
+              <Title text="OU"></Title>
+              <div class="flex flex-col w-fit my-4">
+                <div class="flex justify-center">
+                  <CustomKBD :keybind="'w'" class="w-fit" />
+                </div>
+                <div class="flex justify-between">
+                  <CustomKBD :keybind="'a'" class="w-fit" />
+                  <CustomKBD :keybind="'s'" class="w-fit" />
+                  <CustomKBD :keybind="'d'" class="w-fit" />
+                </div> 
+              </div>
             </div>
             
             <Title text="La vision" class="-mb-2"></Title>

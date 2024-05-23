@@ -24,6 +24,12 @@ const props = defineProps({
     >
       <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
+    <button
+      id="back-options3"
+      class="absolute -left-3 -top-3 w-10 h-10 border-2 rounded border-black bg-green-700 hover:bg-green-800 transition-all"
+    >
+      <img src="@/assets/back.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
     <div class="flex flex-col gap-4 mt-4 mb-4">
       <FoundObject v-for="object in props.objects" :object="object" />
     </div>

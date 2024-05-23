@@ -78,7 +78,7 @@ export class NatationGameState extends GameState {
         this.isMultiplayer = multi ? multi : false;
         this.settings = NatationGameSettings;
         this._input = new PlayerInputNatationGame(this.scene);
-        this.playerName = localStorage.getItem("playerName") || "Playertest";
+        this.playerName = localStorage.getItem("username") || "Playertest";
         this.rectangleReturn = MeshBuilder.CreateBox("rectangleReturn");
         this.game.playTrack('100m');
     }
@@ -89,7 +89,6 @@ export class NatationGameState extends GameState {
             this.game.engine.displayLoadingUI();
             this.scene.detachControl();
         
-            document.getElementById("objects-keybind")!.classList.add("hidden");
             document.getElementById("map-keybind")!.classList.add("hidden");
 
             // Inspector.Show(this.scene, {});
@@ -119,7 +118,6 @@ export class NatationGameState extends GameState {
             // console.log(this._camera.rotation);
             // console.log(this._camera.position);
 
-            document.getElementById("objects-keybind")!.classList.add("hidden");
             document.getElementById("map-keybind")!.classList.add("hidden");
             document.getElementById("natationtp")!.classList.add("hidden");
             document.getElementById("natationGame-skip-button")!.classList.remove("hidden");

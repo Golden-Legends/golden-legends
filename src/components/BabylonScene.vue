@@ -45,15 +45,15 @@
     id="pnj-button"
     class="hidden absolute -mt-32 top-1/4 left-1/4 ml-4"
   />
-  <KeybindHint
+  <!-- <KeybindHint
     class="absolute top-20 left-4"
     keybind="N"
     name="Objets trouvés"
     eventKey="n"
     id="objects-keybind"
-  />
+  /> -->
   <KeybindHint
-    class="absolute top-36 left-4"
+    class="absolute top-20 left-4"
     keybind="C"
     name="Carte"
     eventKey="c"

@@ -76,7 +76,7 @@ export class TirArcGameState extends GameState {
   ) {
     super(game, canvas);
     this._input = new PlayerInputTirArcGame(this.scene);
-    this.playerName = localStorage.getItem("playerName") || "Playertest";
+    this.playerName = localStorage.getItem("username") || "Playertest";
     this.settings = TirArcGameSettings; //settings running to do later
     this.difficulty = difficulty ? difficulty : "easy";
     storeTirArc.commit(
@@ -194,7 +194,7 @@ export class TirArcGameState extends GameState {
       // Vector3(4.78, 3.27, 6.38)
       // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
-      document.getElementById("objects-keybind")!.classList.add("hidden");
+      
       document.getElementById("map-keybind")!.classList.add("hidden");
       document.getElementById("tirArctp")!.classList.add("hidden");
       document.getElementById("tirArcGame-skip-button")!.classList.remove("hidden");

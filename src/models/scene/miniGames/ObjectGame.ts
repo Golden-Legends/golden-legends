@@ -34,6 +34,7 @@ export class ObjectGame {
 
   
     public init(){
+        localStorage.setItem('jeuObjets', "false");
         //création d'une box près de chaque objet olympique
         this.initCube(-256, 2.5, -56.5, 0, "Haies");
         this.initCube(-259, 3, 43, 1, "Gants de boxe");
@@ -131,6 +132,7 @@ export class ObjectGame {
 
         // Affichez le message de collecte
         if (this.objectsCollectedSet.size === this.totalObjects) {
+            localStorage.setItem('jeuObjets', "true");
             // Si tous les objets ont été collectés, affichez un message de victoire
             document.getElementById("recup-allObject-dialog")!.classList.remove("hidden");
             setTimeout(() => {

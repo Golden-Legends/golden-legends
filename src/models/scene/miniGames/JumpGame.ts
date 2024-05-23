@@ -45,6 +45,7 @@ export class JumpGame{
   }
 
   public init() {
+    localStorage.setItem('jeuSaut', "false");
     //invisible platform
     // console.log(this.player.position);
     this.invisiblePlatform(1, 20);
@@ -131,6 +132,7 @@ export class JumpGame{
         // Vérifier si toutes les plateformes ont été sautées
         if (this.platformsJumped === this.TOTAL_PLATFORMS) {
           // Afficher un message de victoire et réinitialiser le jeu
+          localStorage.setItem('jeuSaut', "true");
           this.showVictoryMessage();
           this.resetGame();
           this.invisiblePlatform(1, 20);
