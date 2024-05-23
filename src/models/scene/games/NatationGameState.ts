@@ -123,9 +123,14 @@ export class NatationGameState extends GameState {
             document.getElementById("map-keybind")!.classList.add("hidden");
             document.getElementById("natationtp")!.classList.add("hidden");
             document.getElementById("natationGame-skip-button")!.classList.remove("hidden");
+            document.getElementById("natationgame-help")!.classList.remove("hidden");
+            this.addEventListenerById("close-help-natation", "click", () => {
+                document.getElementById("natationgame-help")!.classList.add("hidden");
+            });
             document.getElementById("natationGame-command-container")!.classList.remove("hidden");
             document.getElementById("natationGame-action-container")!.classList.remove("hidden");
             this.addEventListenerById("natationGame-skip-button", "click", () => {
+                document.getElementById("natationgame-help")!.classList.add("hidden");
                 this.scene.stopAnimation(this._camera);
                 this.AfterCamAnim();
             });
@@ -137,6 +142,7 @@ export class NatationGameState extends GameState {
             this.CreateCameraMouv().then(() => {
                 document.getElementById("natationGame-ready-button")!.classList.remove("hidden");
                 document.getElementById("natationGame-skip-button")!.classList.add("hidden");
+                document.getElementById("natationgame-help")!.classList.add("hidden");
                 this.addEventListenerById("natationGame-ready-button", "click", () => {
                     this.startCountdown(["natationGame-text-1", "natationGame-text-2", "natationGame-text-3"]);
                     this.AfterCamAnim(); 

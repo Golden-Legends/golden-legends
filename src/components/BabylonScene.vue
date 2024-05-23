@@ -204,7 +204,7 @@
     <GateButton id="100mDifficile" name="Difficile" difficulty="hard" />
   </GameGate>
   <GameGate
-    title="Natation"
+    title="100m Brasse"
     name="natationtp"
     id="natationtp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -387,6 +387,31 @@
     id="natationGame-action-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+  <GameHelpContainer id="natationgame-help" title="100m Brasse" class="hidden -mt-28 -top-3/4 left-1/2 transform -translate-x-1/2">
+    <button
+      id="close-help-natation"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="NAGER" :keys="['s', 'd']" />
+      <CommandContainer
+        name="ACTION"
+        :keys="['espace']"
+      />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Appuyer sur ESPACE pour plonger et vous retourner.',
+          'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...'
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4">
+    </div>
+  </GameHelpContainer>
   <ClassicButton
     text="Passer"
     name="natationGame-skip-button"
