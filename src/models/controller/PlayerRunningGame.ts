@@ -1,4 +1,4 @@
-import { ActionManager, AnimationGroup, Camera, ExecuteCodeAction, FreeCamera, Mesh, MeshBuilder, Ray, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
+import { ActionManager, Animation, AnimationGroup, Camera, Color3, ExecuteCodeAction, FreeCamera, Mesh, MeshBuilder, Ray, Scene, SceneLoader, StandardMaterial, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
 import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGame";
 import { store } from "@/components/gui/store.ts";
@@ -64,6 +64,9 @@ export class PlayerRunningGame {
 
     private currentTime : number = 0;
 
+    private cubePersonnage : Mesh;
+    private dep: boolean = false;
+
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputRunningGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
@@ -75,6 +78,33 @@ export class PlayerRunningGame {
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
         this.transform.position = new Vector3(this._x, this._y + 0.9, this._z);
         this.transform.isVisible = false; // mettre à faux par la suites
+
+        this.cubePersonnage = MeshBuilder.CreatePolyhedron("cubePersonnage", {type: 0, size: 0.2}, this.scene);
+        this.cubePersonnage.rotation = new Vector3(20.2, 20.1, 40);
+        this.cubePersonnage.position = new Vector3(this._x, this._y + 2.4, this._z + 0.8);
+        const material = new StandardMaterial("materialCube", scene);
+        material.emissiveColor = new Color3(0, 0, 1);  // Couleur bleu
+        // material.diffuseColor = new Color3(255/255, 54/255, 64/255);  // Couleur rouge
+        this.cubePersonnage.material = material;
+
+        // Créer l'animation
+        const animation = new Animation("pyramidAnimation", "position.y", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CYCLE);
+
+        // Cadres d'animation
+        const keys: { frame: number, value: number }[] = [];
+        keys.push({ frame: 0, value: this._y + 2.8 });
+        keys.push({ frame: 30, value: this._y + 3.2 });
+        keys.push({ frame: 60, value: this._y + 2.8 });
+
+        animation.setKeys(keys);
+
+        // Appliquer l'animation à la pyramide inversée
+        this.cubePersonnage.animations = [];
+        this.cubePersonnage.animations.push(animation);
+
+        // Démarrer l'animation
+        scene.beginAnimation(this.cubePersonnage, 0, 60, true);
+
         if (activeCamera) {
             this._camera = this.createCameraPlayer(this.transform);
         }
@@ -124,6 +154,11 @@ export class PlayerRunningGame {
         this._deltaTime = delta / 10;
         this.currentTime = currentTime;
         if (!this.isEndGame) {
+            if(!this.dep){
+                this.dep = true;
+                this.cubePersonnage.position.z -= 0.6;
+                this.cubePersonnage.position.y += 0.7;
+            }
             this.processInput();
             this.movePlayer();
             this.animationPlayer();
@@ -152,7 +187,8 @@ export class PlayerRunningGame {
             this.runAnim.stop();
             this.crouchAnim.stop();
             this.idleAnim.start();
-            this._isIdle = true;            
+            this._isIdle = true;    
+            this.cubePersonnage.position.z -= 0.3;        
         } catch (error) {
             throw new Error("Method not implemented.");
         }
@@ -235,6 +271,7 @@ export class PlayerRunningGame {
         const direction = this.baseSpeed * this._deltaTime; 
         store.commit('setSpeedBar', this.baseSpeed * 10);  
         this.transform.position.z += this.direction * direction;
+        this.cubePersonnage.position.z += this.direction * direction;
         if (this._camera) {
             this._camera.position.z += this.direction * direction;
         }
