@@ -517,6 +517,14 @@ export class JavelotGameState extends GameState {
         this.results = [];
         this.results.push({place: 1, name: this.playerName, result: ""+this.score});
         storeJavelot.commit('setResults', this.results);
+        if(this.score >= this.settings.level[this.difficulty].pointToSucceed){
+            if(this.difficulty === "easy") {
+                localStorage.setItem("levelJavelot", "intermediate");
+            }
+            if(this.difficulty === "intermediate") {
+                localStorage.setItem("levelJavelot", "hard");
+            }
+        }
     }
 
     public invisiblePlatform(): void {

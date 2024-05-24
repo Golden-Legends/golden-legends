@@ -199,9 +199,9 @@
     id="100mtp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <GateButton id="100mFacile" name="Facile" difficulty="easy" />
-    <GateButton id="100mMoyen" name="Moyen" difficulty="medium" />
-    <GateButton id="100mDifficile" name="Difficile" difficulty="hard" />
+    <GateButton id="100mFacile" name="Facile" difficulty="easy" game="level100m"/>
+    <GateButton id="100mMoyen" name="Moyen" difficulty="intermediate" game="level100m"/>
+    <GateButton id="100mDifficile" name="Difficile" difficulty="hard" game="level100m"/>
   </GameGate>
   <GameGate
     title="100m Brasse"
@@ -209,9 +209,9 @@
     id="natationtp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <GateButton id="natationFacile" name="Facile" difficulty="easy" />
-    <GateButton id="natationMoyen" name="Moyen" difficulty="medium" />
-    <GateButton id="natationDifficile" name="Difficile" difficulty="hard" />
+    <GateButton id="natationFacile" name="Facile" difficulty="easy" game="levelNatation"/>
+    <GateButton id="natationMoyen" name="Moyen" difficulty="intermediate" game="levelNatation"/>
+    <GateButton id="natationDifficile" name="Difficile" difficulty="hard" game="levelNatation"/>
   </GameGate>
   <GameGate
     title="Plongeon"
@@ -219,9 +219,9 @@
     id="plongeontp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <GateButton id="plongeonFacile" name="Facile" difficulty="easy" />
-    <GateButton id="plongeonMoyen" name="Moyen" difficulty="medium" />
-    <GateButton id="plongeonDifficile" name="Difficile" difficulty="hard" />
+    <GateButton id="plongeonFacile" name="Facile" difficulty="easy" game="levelPlongeon"/>
+    <GateButton id="plongeonMoyen" name="Moyen" difficulty="intermediate" game="levelPlongeon"/>
+    <GateButton id="plongeonDifficile" name="Difficile" difficulty="hard" game="levelPlongeon"/>
   </GameGate>
   <GameGate
     title="Boxe"
@@ -229,7 +229,7 @@
     id="boxetp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <GateButton id="boxeDefense" name="Défense" difficulty="easy" />
+    <GateButton id="boxeDefense" name="Défense" difficulty="easy" game="levelBoxe"/>
   </GameGate>
   <GameGate
     title="Tir à l'arc"
@@ -237,13 +237,14 @@
     id="tirArctp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <GateButton id="tirArcFacile" name="Facile" difficulty="easy" />
-    <GateButton id="tirArcMoyen" name="Moyen" difficulty="medium" />
-    <GateButton id="tirArcDifficile" name="Difficile" difficulty="hard" />
+    <GateButton id="tirArcFacile" name="Facile" difficulty="easy" game="levelTirArc"/>
+    <GateButton id="tirArcMoyen" name="Moyen" difficulty="intermediate" game="levelTirArc"/>
+    <GateButton id="tirArcDifficile" name="Difficile" difficulty="hard" game="levelTirArc"/>
   </GameGate>
   <GameGate title="Javelot" name="javelottp" id="javelottp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-    <GateButton id="javelotFacile" name="Facile" difficulty="easy" />
-    <GateButton id="javelotMoyen" name="Moyen" difficulty="medium" />
+    <GateButton id="javelotFacile" name="Facile" difficulty="easy" game="levelJavelot"/>
+    <GateButton id="javelotMoyen" name="Moyen" difficulty="intermediate" game="levelJavelot"/>
+    <GateButton id="javelotDifficile" name="Difficile" difficulty="hard" game="levelJavelot"/>
   </GameGate>
   <Position
     id="position-1"

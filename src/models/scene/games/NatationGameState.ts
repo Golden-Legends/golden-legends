@@ -380,6 +380,15 @@ export class NatationGameState extends GameState {
     
         this.posFinale = this.results.findIndex((result) => result.name === this.playerName) + 1;
 
+        if(this.posFinale === 1 || this.posFinale === 2 || this.posFinale === 3) {
+            if(this.difficulty === "easy") {
+                localStorage.setItem("levelNatation", "intermediate");
+            }
+            if(this.difficulty === "intermediate") {
+                localStorage.setItem("levelNatation", "hard");
+            }
+        }
+
         // Enregistrement des résultats dans le store
         storeNatation.commit('setResults', this.results);
     }

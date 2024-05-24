@@ -90,6 +90,8 @@ export class InGameState extends GameState {
     }
     await this.setEnvironment();
 
+    this.disableTpDifficulty();
+
     // Inspector.Show(this.scene, {});
 
     // lancer la boucle de rendu
@@ -534,5 +536,72 @@ export class InGameState extends GameState {
         // console.log(1)
       }
     });
+  }
+
+  public disableTpDifficulty(): void {
+    //100m
+    const level100m = localStorage.getItem("level100m");
+    if (level100m === null) {
+      localStorage.setItem("level100m", "easy");
+    }
+    else if (level100m === "intermediate") {
+      document.getElementById("100mMoyen")!.removeAttribute("disabled");
+    }
+    else if (level100m === "hard") {
+      document.getElementById("100mMoyen")!.removeAttribute("disabled");
+      document.getElementById("100mDifficile")!.removeAttribute("disabled");
+    }
+
+    //natation
+    const levelNatation = localStorage.getItem("levelNatation");
+    if (levelNatation === null) {
+      localStorage.setItem("levelNatation", "easy");
+    }
+    else if (levelNatation === "intermediate") {
+      document.getElementById("natationMoyen")!.removeAttribute("disabled");
+    }
+    else if (levelNatation === "hard") {
+      document.getElementById("natationMoyen")!.removeAttribute("disabled");
+      document.getElementById("natationDifficile")!.removeAttribute("disabled");
+    }
+
+    //plongeon
+    const levelPlongeon = localStorage.getItem("levelPlongeon");
+    if (levelPlongeon === null) {
+      localStorage.setItem("levelPlongeon", "easy");
+    }
+    else if (levelPlongeon === "intermediate") {
+      document.getElementById("plongeonMoyen")!.removeAttribute("disabled");
+    }
+    else if (levelPlongeon === "hard") {
+      document.getElementById("plongeonMoyen")!.removeAttribute("disabled");
+      document.getElementById("plongeonDifficile")!.removeAttribute("disabled");
+    }
+
+    //tir a larc
+    const levelTirArc = localStorage.getItem("levelTirArc");
+    if (levelTirArc === null) {
+      localStorage.setItem("levelTirArc", "easy");
+    }
+    else if (levelTirArc === "intermediate") {
+      document.getElementById("tirArcMoyen")!.removeAttribute("disabled");
+    }
+    else if (levelTirArc === "hard") {
+      document.getElementById("tirArcMoyen")!.removeAttribute("disabled");
+      document.getElementById("tirArcDifficile")!.removeAttribute("disabled");
+    }
+
+    //javelot
+    const levelJavelot = localStorage.getItem("levelJavelot");
+    if (levelJavelot === null) {
+      localStorage.setItem("levelJavelot", "easy");
+    }
+    else if (levelJavelot === "intermediate") {
+      document.getElementById("javelotMoyen")!.removeAttribute("disabled");
+    }
+    else if (levelJavelot === "hard") {
+      document.getElementById("javelotMoyen")!.removeAttribute("disabled");
+      document.getElementById("javelotDifficile")!.removeAttribute("disabled");
+    }
   }
 }

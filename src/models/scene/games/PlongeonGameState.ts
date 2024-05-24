@@ -239,6 +239,15 @@ export class PlongeonGameState extends GameState {
 
         if(this.player._isWin){ 
             if (!this.scoreboardIsShow) {
+                // console.log(this.player.score, this.settings.level[this.difficulty].pointToSucceed)
+                if(this.player.score >= this.settings.level[this.difficulty].pointToSucceed){
+                    if(this.difficulty === "easy") {
+                        localStorage.setItem("levelPlongeon", "intermediate");
+                    }
+                    if(this.difficulty === "intermediate") {
+                        localStorage.setItem("levelPlongeon", "hard");
+                    }
+                }
                 this.createFinaleScoreBoard();
                 this.showScoreBoard();
                 console.log("affiche le score board fin de jeu")
