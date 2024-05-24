@@ -34,7 +34,10 @@ export class ObjectGame {
 
   
     public init(){
-        localStorage.setItem('jeuObjets', "false");
+        const res = localStorage.getItem('jeuObjets');
+        if(res === null){
+            localStorage.setItem('jeuObjets', "false");
+        }
         //création d'une box près de chaque objet olympique
         this.initCube(-256, 2.5, -56.5, 0, "Haies");
         this.initCube(-259, 3, 43, 1, "Gants de boxe");

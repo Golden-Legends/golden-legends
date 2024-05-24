@@ -5,7 +5,7 @@ const props = defineProps<{
   disabled: boolean;
 }>();
 
-const music = Music.getInstance("./sounds/musiqueAccueilShort.m4a", 0.1);
+const music = Music.getInstance("./sounds/newAccueil.mp3", 0.1);
 
 const stopMusic = () => {
   music.stop();

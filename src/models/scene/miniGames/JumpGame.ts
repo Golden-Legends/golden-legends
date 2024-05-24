@@ -45,7 +45,10 @@ export class JumpGame{
   }
 
   public init() {
-    localStorage.setItem('jeuSaut', "false");
+    const res = localStorage.getItem('jeuSaut');
+    if(res === null){
+      localStorage.setItem('jeuSaut', "false");
+    }
     //invisible platform
     // console.log(this.player.position);
     this.invisiblePlatform(1, this.TOTAL_PLATFORMS);

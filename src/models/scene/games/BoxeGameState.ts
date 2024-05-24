@@ -58,7 +58,7 @@ export class BoxeGameState extends GameState {
         this.settings = BoxeGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        this.game.playTrack('100m');
+        this.game.playTrack('boxeTennis');
     }
 
     async setEnvironment(): Promise<void> {

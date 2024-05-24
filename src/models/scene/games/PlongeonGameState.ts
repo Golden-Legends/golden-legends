@@ -70,7 +70,7 @@ export class PlongeonGameState extends GameState {
         this.settings = PlongeonGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        this.game.playTrack('100m');
+        this.game.playTrack('plongeon');
     }
 
     async setEnvironment(): Promise<void> {

@@ -70,7 +70,7 @@ export class JavelotGameState extends GameState {
         this.settings = JavelotGameSettings; //settings running to do later
         this.difficulty = difficulty ? difficulty : "easy";
         this.isMultiplayer = multi ? multi : false;
-        this.game.playTrack('100m');
+        this.game.playTrack('arcJavelot');
     }
 
     async setEnvironment(): Promise<void> {

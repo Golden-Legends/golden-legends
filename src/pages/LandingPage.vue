@@ -16,7 +16,7 @@ import { toast } from "vue-sonner";
 //   volume: 0.1, // Volume par défaut
 // });
 
-const music = Music.getInstance("./sounds/musiqueAccueilShort.m4a", 0.1);
+const music = Music.getInstance("./sounds/newAccueil.mp3", 0.1);
 
 
 const error = ref(false);
