@@ -114,6 +114,7 @@ export class Environment {
 		
 		this.pnj = new Pnj(this._scene);
 		this.pnjTalk = new PnjTalk(this._scene, this.player?.mesh as Mesh);
+		this.pnjMobile = new PnjMobile(this._scene);
 
         const parentMesh = this.pnj.initParentMesh();
 		const assetContainerTabPnj = await this.pnj.initInstance(tabOfNamePnj);
@@ -121,10 +122,9 @@ export class Environment {
 
 		this.pnj.createPnjIdle(assetContainerTabPnj, parentMesh);
 		this.pnjTalk.createPnjTalk(assetContainerTabPnjTalk, parentMesh);
-
+		this.pnjMobile.createPnjMobile(assetContainerTabPnj, parentMesh);
 
 		// await this.pnjTalk.init();
-		this.pnjMobile = new PnjMobile(this._scene);
 		// await this.pnjMobile.init();
 
     this.voitures = new Voitures(this._scene);

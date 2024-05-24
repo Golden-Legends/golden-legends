@@ -140,6 +140,7 @@ export class Pnj {
 
         root.position = Vector3.Zero();
     
+        entries.animationGroups[0].stop();
         // Play the idle animation if available
         const idle = entries.animationGroups.find(ag => ag.name.includes("idle"));
         idle?.play(true);
