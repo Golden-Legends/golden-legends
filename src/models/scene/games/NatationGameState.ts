@@ -382,10 +382,10 @@ export class NatationGameState extends GameState {
 
         if(this.posFinale === 1 || this.posFinale === 2 || this.posFinale === 3) {
             if(this.difficulty === "easy") {
-                localStorage.setItem("level100m", "intermediate");
+                localStorage.setItem("levelNatation", "intermediate");
             }
             if(this.difficulty === "intermediate") {
-                localStorage.setItem("level100m", "hard");
+                localStorage.setItem("levelNatation", "hard");
             }
         }
 

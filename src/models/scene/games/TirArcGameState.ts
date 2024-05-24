@@ -645,6 +645,14 @@ export class TirArcGameState extends GameState {
       result: "" + this.score + "/100",
     });
     storeTirArc.commit("setResults", this.results);
+    if(this.score >= this.settings.level[this.difficulty].pointToSucceed){
+      if(this.difficulty === "easy") {
+          localStorage.setItem("levelTirArc", "intermediate");
+      }
+      if(this.difficulty === "intermediate") {
+          localStorage.setItem("levelTirArc", "hard");
+      }
+    }
   }
 
   public invisiblePlatform(): void {

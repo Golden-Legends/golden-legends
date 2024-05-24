@@ -564,5 +564,44 @@ export class InGameState extends GameState {
       document.getElementById("natationMoyen")!.removeAttribute("disabled");
       document.getElementById("natationDifficile")!.removeAttribute("disabled");
     }
+
+    //plongeon
+    const levelPlongeon = localStorage.getItem("levelPlongeon");
+    if (levelPlongeon === null) {
+      localStorage.setItem("levelPlongeon", "easy");
+    }
+    else if (levelPlongeon === "intermediate") {
+      document.getElementById("plongeonMoyen")!.removeAttribute("disabled");
+    }
+    else if (levelPlongeon === "hard") {
+      document.getElementById("plongeonMoyen")!.removeAttribute("disabled");
+      document.getElementById("plongeonDifficile")!.removeAttribute("disabled");
+    }
+
+    //tir a larc
+    const levelTirArc = localStorage.getItem("levelTirArc");
+    if (levelTirArc === null) {
+      localStorage.setItem("levelTirArc", "easy");
+    }
+    else if (levelTirArc === "intermediate") {
+      document.getElementById("tirArcMoyen")!.removeAttribute("disabled");
+    }
+    else if (levelTirArc === "hard") {
+      document.getElementById("tirArcMoyen")!.removeAttribute("disabled");
+      document.getElementById("tirArcDifficile")!.removeAttribute("disabled");
+    }
+
+    //javelot
+    const levelJavelot = localStorage.getItem("levelJavelot");
+    if (levelJavelot === null) {
+      localStorage.setItem("levelJavelot", "easy");
+    }
+    else if (levelJavelot === "intermediate") {
+      document.getElementById("javelotMoyen")!.removeAttribute("disabled");
+    }
+    else if (levelJavelot === "hard") {
+      document.getElementById("javelotMoyen")!.removeAttribute("disabled");
+      document.getElementById("javelotDifficile")!.removeAttribute("disabled");
+    }
   }
 }

@@ -1,24 +1,45 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { computed, defineProps, ref } from "vue";
 
 const props = defineProps({
   name: {
     type: String,
     required: true,
   },
-  disabled: {
-    type: Boolean,
-    default: false,
+  game: {
+    type: String,
+    required: true,
   },
   difficulty: {
     type: String,
     required: true,
   },
 });
+// add a ref 
+const difficulty = ref(localStorage.getItem(props.game));
+
+const disabled = computed(() => {
+  if (difficulty === null) {
+    return true;
+  }
+  else if (difficulty.value === props.difficulty) {
+    return false;
+  }
+  else if(difficulty.value === "easy" && props.difficulty === "intermediate") {
+    return true;
+  }
+  else if(difficulty.value === "easy" && props.difficulty === "hard") {
+    return true;
+  }
+  else if(difficulty.value === "intermediate" && props.difficulty === "hard") {
+    return true;
+  }
+  return false;
+});
 
 const colors = {
   easy: "enabled:hover:bg-green-600",
-  medium: "enabled:hover:bg-yellow-600",
+  intermediate: "enabled:hover:bg-yellow-600",
   hard: "enabled:hover:bg-red-700",
 };
 </script>
@@ -26,10 +47,10 @@ const colors = {
 <template>
   <button
     class="bg-white w-full h-fit text-blue-darker enabled:hover:text-white border-2 font-bold py-2 px-4 rounded disabled:opacity-50 uppercase text-lg transition-all"
-    :disabled="props.disabled"
+    :disabled="disabled"
     :class="[
       colors[props.difficulty],
-      { 'cursor-not-allowed': props.disabled },
+      { 'cursor-pointer': !disabled}
     ]"
   >
     {{ props.name }}
