@@ -1,13 +1,13 @@
 import {
-  Animation,
-  AnimationGroup,
-  Matrix,
-  Mesh,
-  MeshBuilder,
-  Quaternion,
-  Scene,
-  SceneLoader,
-  Vector3,
+    Animation,
+	AnimationGroup,
+	AssetContainer,
+	InstancedMesh,
+	Matrix,
+	Mesh,
+	MeshBuilder,
+	Quaternion,
+	Scene, SceneLoader, Vector3,
 } from "@babylonjs/core";
 import { Scaling } from "@/utils/Scaling";
 
@@ -85,9 +85,46 @@ export class PnjMobile {
     new Vector3(-10, 0, 0),
   ];
 
-  constructor(scene: Scene) {
-    this._scene = scene;
-  }
+
+	constructor(scene: Scene) {
+		this._scene = scene;
+	}
+
+    private duplicatePnjIdle(container: AssetContainer, position: Vector3, rotation: Vector3, parent : InstancedMesh): void {
+        let entries = container.instantiateModelsToScene();
+        const root = entries.rootNodes[0] as Mesh;
+        const body = root;
+
+        body.parent = parent;
+        body.isPickable = false;
+        body.getChildMeshes().forEach(m => {
+            m.isPickable = false;
+        });
+        body.scaling = new Scaling(2);
+    
+        // Set the position and rotation of the ellipsoid
+        parent.position = position;
+        parent.rotation = rotation;
+
+        root.position = Vector3.Zero();
+    
+        // Play the idle animation if available
+        const idle = entries.animationGroups.find(ag => ag.name.includes("idle"));
+        idle?.play(true);
+    }
+
+    public createPnjIdle (assetContainers : AssetContainer[], parentMesh : Mesh) { 
+        // pnj Talk
+        for (let i = 0; i < this.pnjPositions.length; i++) {
+            const position = this.pnjPositions[i];
+            const rotation = this.pnjRotation[i];
+            const parent = parentMesh.createInstance("pnj" + i);
+            parent.checkCollisions = true;
+            parent.isVisible = false;
+            const randomNumber = Math.floor(Math.random() * 5);
+            this.duplicatePnjIdle(assetContainers[randomNumber], position, rotation, parent);
+        }
+    }
 
   public async init() {
     const characters = [];

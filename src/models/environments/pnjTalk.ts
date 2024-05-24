@@ -1,6 +1,8 @@
 import {
   ActionManager,
+  AssetContainer,
   ExecuteCodeAction,
+  InstancedMesh,
   Matrix,
   Mesh,
   MeshBuilder,
@@ -47,6 +49,55 @@ export class PnjTalk {
     this.player = player;
   }
 
+  private duplicatePnjTalk(container: AssetContainer, position: Vector3, rotation: Vector3, parent : InstancedMesh): void {
+    let entries = container.instantiateModelsToScene();
+    const root = entries.rootNodes[0] as Mesh;
+    const body = root;
+
+    body.parent = parent;
+    body.isPickable = false;
+    body.getChildMeshes().forEach(m => {
+        m.isPickable = false;
+    });
+    body.scaling = new Scaling(2);
+
+    // Set the position and rotation of the ellipsoid
+    parent.position = position;
+    parent.rotation = rotation;
+
+    root.position = Vector3.Zero();
+
+    // enlever l'animation à l'indice 0 de animationsGroups
+    entries.animationGroups[0].stop();
+    const idle = entries.animationGroups.find((ag) => ag.name.includes("idle"));
+    if (idle) {
+      idle.loopAnimation = true;
+      idle.play(true);
+    }
+    const iTourne = entries.animationGroups.find((ag) => ag.name.includes("CubeAction.026"));
+
+    if (iTourne) {
+      iTourne.loopAnimation = true;
+      iTourne.play(true);
+    }
+}
+
+  public createPnjTalk (assetContainers : AssetContainer[], parentMesh : Mesh) { 
+    // pnj Talk
+    for (let i = 0; i < this.pnjPositions.length; i++) {
+      const position = this.pnjPositions[i];
+      const rotation = this.pnjRotation[i];
+
+      const parent = parentMesh.createInstance("pnjTalk" + i);
+      parent.checkCollisions = true;
+      parent.isVisible = false;
+
+      this.duplicatePnjTalk(assetContainers[0], position, rotation, parent);
+      this.initCube(position, i);
+    }
+    this.registerPickUpActions();
+  }
+
   public async init() {
     for (let i = 0; i < this.pnjPositions.length; i++) {
       const position = this.pnjPositions[i];
@@ -61,6 +112,8 @@ export class PnjTalk {
         "pnj" + i,
         rotation,
       );
+
+
       this.initCube(position, i);
     }
     //faire bouger le "i"

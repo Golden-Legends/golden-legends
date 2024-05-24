@@ -1,6 +1,8 @@
 import {
     Animation,
 	AnimationGroup,
+	AssetContainer,
+	InstancedMesh,
 	Matrix,
 	Mesh,
 	MeshBuilder,
@@ -119,51 +121,92 @@ export class Pnj {
 	constructor(scene: Scene) {
 		this._scene = scene;
 	}
+    
+    private duplicatePnjIdle(container: AssetContainer, position: Vector3, rotation: Vector3, parent : InstancedMesh): void {
+        let entries = container.instantiateModelsToScene();
+        const root = entries.rootNodes[0] as Mesh;
+        const body = root;
 
-	public async init() {
-		// console.log("init pnj");
-        //load des pnj "sans discussions" à leurs positions
-        // await this._loadCharacterAssets(this._scene, new Vector3(-163, 2.75, -10), "pnjStrong.glb");
+        body.parent = parent;
+        body.isPickable = false;
+        body.getChildMeshes().forEach(m => {
+            m.isPickable = false;
+        });
+        body.scaling = new Scaling(2);
+    
+        // Set the position and rotation of the ellipsoid
+        parent.position = position;
+        parent.rotation = rotation;
 
+        root.position = Vector3.Zero();
+    
+        // Play the idle animation if available
+        const idle = entries.animationGroups.find(ag => ag.name.includes("idle"));
+        idle?.play(true);
+    }
+    
+    // Initialize character with instances
+    public async initInstance(tabOfName : string[]) {
+        const assetContainerTabPromise: Promise<AssetContainer>[] = [];
+            // Load the asset containers
+        for (let i = 0; i < tabOfName.length; i++) {
+            assetContainerTabPromise.push(SceneLoader.LoadAssetContainerAsync("./models/characters/pnj/",
+                tabOfName[i],
+                this._scene
+            ));
+        }    
+        const assetContainers = await Promise.all(assetContainerTabPromise);
+
+        // init nos personnages de base
+        for (let i = 0; i < assetContainers.length; i++) {
+            this.initAssetsContainerWithDefaultValues(assetContainers[i])
+        }
+    
+        return assetContainers;        
+    }
+
+    public initParentMesh () : Mesh {
+        // Create the collision ellipsoid
+        const outer = MeshBuilder.CreateBox(
+            "masterPnj",
+            { width: 1, depth: 1, height: 4 },
+            this._scene,
+        );
+        outer.isVisible = false;
+        outer.isPickable = false;
+        outer.checkCollisions = true;
+        //move origin of box collider to the bottom of the mesh (to match player mesh)
+        outer.bakeTransformIntoVertices(Matrix.Translation(0, 2, 0));
+        //for collisions
+        outer.ellipsoid = new Vector3(1, 1.5, 1);
+        outer.ellipsoidOffset = new Vector3(0, 1.5, 0);
+        return outer;
+    }
+
+    public initAssetsContainerWithDefaultValues (assetContainer : AssetContainer) { 
+        assetContainer.meshes[0].position = new Vector3(-183, 6, -95);
+        assetContainer.meshes[0].scaling = new Vector3(2, 2, 2);
+        assetContainer.meshes[0].getChildMeshes().forEach((m) => {
+            m.isPickable = false;
+        });
+        assetContainer.meshes[0].isPickable = false;
+        assetContainer.meshes[0].isVisible = false;
+        assetContainer.meshes[0].setParent(null);
+    }
+
+    public createPnjIdle (assetContainers : AssetContainer[], parentMesh : Mesh) { 
+        // pnj Talk
         for (let i = 0; i < this.pnjPositions.length; i++) {
             const position = this.pnjPositions[i];
             const rotation = this.pnjRotation[i];
-            
-            const randomNumber = Math.floor(Math.random() * 5) + 1;
-            let fileName = "";
-            switch (randomNumber) {
-                case 1:
-                    fileName = "pnjStrong.glb";
-                    break;
-                case 2:
-                    fileName = "pnjMan.glb";
-                    break;
-                case 3:
-                    fileName = "pnjWoman.glb";
-                    break;
-                case 4:
-                    fileName = "pnjKid.glb";
-                    break;
-                case 5:
-                    fileName = "pnjGirl.glb";
-                    break;
-                default:
-                    console.log("Invalid random number.");
-                    continue; // Skip to the next iteration
-            }
-        
-            await this._loadCharacterAssets(this._scene, position, fileName, "pnj" + i, rotation);
+            const parent = parentMesh.createInstance("pnj" + i);
+            parent.checkCollisions = true;
+            parent.isVisible = false;
+            const randomNumber = Math.floor(Math.random() * 5);
+            this.duplicatePnjIdle(assetContainers[randomNumber], position, rotation, parent);
         }
-       
-
-        // this.createAnimation(this.assets.mesh);
-        // for (let i = 0; i < 10; i++) {
-        //     await this.moveCharacter();
-        // }
-
-	}
-
-
+    }
+    
     public async moveCharacter() {
         const characterMesh = this._scene.getMeshByName("pnj1") as Mesh; // Supposons que le personnage principal est nommé "outer"
 
@@ -219,66 +262,4 @@ export class Pnj {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-
-    
-    private async _loadCharacterAssets(scene: Scene, position: Vector3, path: string, name: string, rotation: Vector3){
-
-		async function loadCharacter(){
-			//collision mesh
-			const outer = MeshBuilder.CreateBox(
-				name,
-				{ width: 1, depth: 1, height: 15 },
-				scene,
-			);
-			// pour afficher la box qui sert de collision
-			outer.isVisible = false;
-			outer.isPickable = false;
-			outer.checkCollisions = true;
-			//move origin of box collider to the bottom of the mesh (to match player mesh)
-			outer.bakeTransformIntoVertices(Matrix.Translation(0, 7, 0));
-			//for collisions
-			outer.ellipsoid = new Vector3(1, 1.5, 1);
-			outer.ellipsoidOffset = new Vector3(0, 1.5, 0);
-
-			//--IMPORTING MESH--
-			return SceneLoader.ImportMeshAsync(
-				null,
-				"./models/characters/pnj/",
-				path,
-				scene,
-			).then(result => {
-				const root = result.meshes[0];
-				//body is our actual player mesh
-				const body = root;
-				body.parent = outer;
-				body.isPickable = false;
-				body.getChildMeshes().forEach(m => {
-					m.isPickable = false;
-				});
-				body.scaling = new Scaling(2);
-				body.showBoundingBox = true;
-
-                outer.position = position;
-                outer.rotation = rotation;
-
-				// enlever l'animation à l'indice 0 de animationsGroups
-				result.animationGroups[0].stop();
-				const idle = result.animationGroups.find(ag => ag.name === "idle");
-				if(idle){
-                    idle.loopAnimation = true;
-                    idle.play(true);
-                }
-				//return the mesh and animations
-				return {
-					mesh: outer as Mesh,
-					animationGroups: result.animationGroups,
-				};
-			});
-		}	
-
-		return loadCharacter().then(assets=> {
-			this.assets = assets;
-		})
-
-	}
 }

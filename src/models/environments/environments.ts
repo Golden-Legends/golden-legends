@@ -1,13 +1,11 @@
 import {
-  Scene,
-  SceneLoader,
-  MeshBuilder,
-  Vector3,
-  ExecuteCodeAction,
-  ActionManager,
-  Mesh,
-  Color3,
-  Texture,
+	Scene,
+	SceneLoader,
+	MeshBuilder,
+	Vector3,
+	Mesh,
+	Color3,
+	Texture,
 } from "@babylonjs/core";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
 import { gateInformation } from "../intefaces/EnvironmentsInterfaces";
@@ -105,21 +103,29 @@ export class Environment {
     });
     // this.createSkybox(this._scene);
 
-    this.disableBuild(1, 173);
-    this.invisibleBox(1, 172);
-    this.disableCar(1, 63);
-    this.invisibleBoxCar(1, 21);
-    this.loadSky();
-    this.pnj = new Pnj(this._scene);
-    this.pnj.init();
-    this.pnjTalk = new PnjTalk(this._scene, this.player?.mesh as Mesh);
-    this.pnjTalk.init();
-    this.pnjMobile = new PnjMobile(this._scene);
-    this.pnjMobile.init();
+		this.disableBuild(1,173);
+		this.invisibleBox(1,172);
+		this.disableCar(1,63);
+		this.invisibleBoxCar(1,21);
+		this.loadSky();
 
-    // const soundManager = new SoundManager(this._scene);
-    // soundManager.addTrack('inGame', './sounds/musiqueJeu.m4a', 0.05);
-    // soundManager.playTrack('inGame');
+        const tabOfNamePnj = ["pnjStrong.glb", "pnjMan.glb", "pnjWoman.glb", "pnjKid.glb", "pnjGirl.glb"];
+        const tabOfNamePnjTalk = ["pnjTalkV2.glb"];
+		
+		this.pnj = new Pnj(this._scene);
+		this.pnjTalk = new PnjTalk(this._scene, this.player?.mesh as Mesh);
+
+        const parentMesh = this.pnj.initParentMesh();
+		const assetContainerTabPnj = await this.pnj.initInstance(tabOfNamePnj);
+		const assetContainerTabPnjTalk = await this.pnj.initInstance(tabOfNamePnjTalk);
+
+		this.pnj.createPnjIdle(assetContainerTabPnj, parentMesh);
+		this.pnjTalk.createPnjTalk(assetContainerTabPnjTalk, parentMesh);
+
+
+		// await this.pnjTalk.init();
+		this.pnjMobile = new PnjMobile(this._scene);
+		// await this.pnjMobile.init();
 
     this.voitures = new Voitures(this._scene);
     this.voitures.init();
