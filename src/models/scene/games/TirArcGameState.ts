@@ -84,7 +84,7 @@ export class TirArcGameState extends GameState {
       this.settings.level[this.difficulty].speedCurseur,
     );
     this.isMultiplayer = multi ? multi : false;
-    this.game.playTrack("100m");
+    this.game.playTrack("arcJavelot");
   }
 
   async setEnvironment(): Promise<void> {

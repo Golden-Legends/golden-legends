@@ -100,7 +100,7 @@ export class Environment {
 	}
 
 	public async load() {
-		const music = Music.getInstance("./sounds/musiqueAccueilShort.m4a", 0.1);
+		const music = Music.getInstance("./sounds/newAccueil.mp3", 0.1);
 		music.stop();
 		// var ground = Mesh.CreateBox("ground", 24, this._scene);
 		// ground.scaling = new Vector3(1,.02,1);

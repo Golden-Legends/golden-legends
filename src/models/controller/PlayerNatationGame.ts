@@ -1,4 +1,4 @@
-import { ActionManager, AnimationGroup, Camera, Color3, ExecuteCodeAction, FreeCamera, Mesh, MeshBuilder, Ray, RayHelper, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
+import { ActionManager, Animation, AnimationGroup, Camera, Color3, ExecuteCodeAction, FreeCamera, Mesh, MeshBuilder, Ray, RayHelper, Scene, SceneLoader, StandardMaterial, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
 import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGame";
 import { store } from "@/components/gui/store.ts";
@@ -76,6 +76,9 @@ export class PlayerNatationGame {
     private isSequentialAnimation : boolean = false;
     private isEndFirtMesh : boolean = false;
 
+    private cubePersonnage : Mesh;
+    private dep: boolean = false;
+
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endFirstMesh : Mesh, secondEndMesh : Mesh, returnMesh : Mesh,  input : PlayerInputNatationGame, activeCamera: boolean) {
         this._x = x;
         this._y = y;
@@ -94,6 +97,32 @@ export class PlayerNatationGame {
         this.secondfirstEndMesh = secondEndMesh;
         this.returnMesh = returnMesh;
         this.setActionManager();
+
+        this.cubePersonnage = MeshBuilder.CreatePolyhedron("cubePersonnage", {type: 0, size: 0.05}, this.scene);
+        this.cubePersonnage.rotation = new Vector3(20.2, 20.1, 40);
+        this.cubePersonnage.position = new Vector3(this._x, this._y + 0.5, this._z+0.1);
+        const material = new StandardMaterial("materialCube", scene);
+        material.emissiveColor = new Color3(1, 0, 0);  // Couleur bleu
+        // material.diffuseColor = new Color3(255/255, 54/255, 64/255);  // Couleur rouge
+        this.cubePersonnage.material = material;
+
+        // Créer l'animation
+        const animation = new Animation("pyramidAnimation", "position.y", 30, Animation.ANIMATIONTYPE_FLOAT, Animation.ANIMATIONLOOPMODE_CYCLE);
+
+        // Cadres d'animation
+        const keys: { frame: number, value: number }[] = [];
+        keys.push({ frame: 0, value: this.cubePersonnage.position.y + 0.1 });
+        keys.push({ frame: 30, value: this.cubePersonnage.position.y - 0.1 });
+        keys.push({ frame: 60, value: this.cubePersonnage.position.y + 0.1 });
+
+        animation.setKeys(keys);
+
+        // Appliquer l'animation à la pyramide inversée
+        this.cubePersonnage.animations = [];
+        this.cubePersonnage.animations.push(animation);
+
+        // Démarrer l'animation
+        scene.beginAnimation(this.cubePersonnage, 0, 60, true);
     }
 
     public async init () {
@@ -140,12 +169,18 @@ export class PlayerNatationGame {
                     this.playSequentialAnimation();
                 }
             } else {
+                if(!this.dep){
+                    this.dep = true;
+                    this.cubePersonnage.position.z += 0.6;
+                    this.cubePersonnage.position.y -= 0.4;
+                }
                 if (this._isInReturnMesh) { // si je peux me retourner
                     if (!this.isTextDemitourShow) {
                         this.isTextDemitourShow = true;
                         document.getElementById("natationGame-text-demitour")!.classList.remove("hidden");
                     }
                     if (this._input.space) { // et que j'appuie sur espace
+                        this.cubePersonnage.position.z -= 0.3;
                         document.getElementById("natationGame-text-demitour")!.classList.add("hidden");
                         this._isInReturnMesh = false; // je me retourne
                         this.transform.rotation.y = Math.PI;
@@ -226,6 +261,7 @@ export class PlayerNatationGame {
             this.crouchAnim.stop();
             const winAnim = this.animationsGroup.find(ag => ag.name === "Anim|win"); 
             winAnim?.start(true, 1.0, winAnim.from, winAnim.to, false);
+            this.cubePersonnage.position.z += 0.2;     
         } catch (error) {
             throw new Error("Method not implemented.");
         }
@@ -267,6 +303,7 @@ export class PlayerNatationGame {
         const speed = this.baseSpeed * 10;
         store.commit('setSpeedBar', speed);
         this.transform.position.z += this.direction * direction;
+        this.cubePersonnage.position.z += this.direction * direction;
         if (this._camera) {
             this._camera.position.z += this.direction * direction;
         }
