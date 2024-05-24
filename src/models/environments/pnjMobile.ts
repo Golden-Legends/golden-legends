@@ -11,7 +11,7 @@ import {
 } from "@babylonjs/core";
 import { Scaling } from "@/utils/Scaling";
 
-interface CharacterAssets {
+export interface CharacterAssets {
     mesh: InstancedMesh;
     animationGroups: AnimationGroup[];
 }

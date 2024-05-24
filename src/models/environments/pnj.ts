@@ -147,13 +147,13 @@ export class Pnj {
     }
     
     // Initialize character with instances
-    public async initInstance(tabOfName : string[]) {
+    public static async initInstance(tabOfName : string[], scene : Scene, folderUrl : string) {
         const assetContainerTabPromise: Promise<AssetContainer>[] = [];
             // Load the asset containers
         for (let i = 0; i < tabOfName.length; i++) {
-            assetContainerTabPromise.push(SceneLoader.LoadAssetContainerAsync("./models/characters/pnj/",
+            assetContainerTabPromise.push(SceneLoader.LoadAssetContainerAsync(folderUrl,
                 tabOfName[i],
-                this._scene
+                scene
             ));
         }    
         const assetContainers = await Promise.all(assetContainerTabPromise);
@@ -184,7 +184,7 @@ export class Pnj {
         return outer;
     }
 
-    public initAssetsContainerWithDefaultValues (assetContainer : AssetContainer) { 
+    public static initAssetsContainerWithDefaultValues (assetContainer : AssetContainer) { 
         assetContainer.meshes[0].position = new Vector3(-183, 6, -95);
         assetContainer.meshes[0].scaling = new Vector3(2, 2, 2);
         assetContainer.meshes[0].getChildMeshes().forEach((m) => {

@@ -111,40 +111,34 @@ export class Environment {
 
         const tabOfNamePnj = ["pnjStrong.glb", "pnjMan.glb", "pnjWoman.glb", "pnjKid.glb", "pnjGirl.glb"];
         const tabOfNamePnjTalk = ["pnjTalkV2.glb"];
+        const tabOfNameCar = ["voitures.glb", "voitures2.glb", "voitures3.glb", "voitures4.glb"];
 		
 		this.pnj = new Pnj(this._scene);
 		this.pnjTalk = new PnjTalk(this._scene, this.player?.mesh as Mesh);
 		this.pnjMobile = new PnjMobile(this._scene);
+		this.voitures = new Voitures(this._scene);
 
         const parentMesh = this.pnj.initParentMesh();
-		const assetContainerTabPnj = await this.pnj.initInstance(tabOfNamePnj);
-		const assetContainerTabPnjTalk = await this.pnj.initInstance(tabOfNamePnjTalk);
+		const assetContainerTabPnj = await Pnj.initInstance(tabOfNamePnj, this._scene, "./models/characters/pnj/");
+		const assetContainerTabPnjTalk = await Pnj.initInstance(tabOfNamePnjTalk, this._scene, "./models/characters/pnj/");
+		const assetContainerTabCar = await Pnj.initInstance(tabOfNameCar, this._scene, "./models/voitures/");
 
 		this.pnj.createPnjIdle(assetContainerTabPnj, parentMesh);
 		this.pnjTalk.createPnjTalk(assetContainerTabPnjTalk, parentMesh);
 		this.pnjMobile.createPnjMobile(assetContainerTabPnj, parentMesh);
+		this.voitures.createCar(assetContainerTabCar, parentMesh);
 
 		// await this.pnjTalk.init();
 		// await this.pnjMobile.init();
-
-    this.voitures = new Voitures(this._scene);
-    this.voitures.init();
-    this.stationScore = new StationScore(
-      this._scene,
-      this.player?.mesh as Mesh,
-    );
-    this.stationScore.init();
-    this.tpGame = new TpGame(
-      this._scene,
-      this.player?.mesh as Mesh,
-      this.inGameState,
-    );
-    this.tpGame.init();
-    this.createSkybox(this._scene);
-    this.createWater();
-    this.moveLogo();
-    this.options = new Options(this._scene, this.player!);
-  }
+		this.stationScore = new StationScore(this._scene, this.player?.mesh as Mesh);
+		this.stationScore.init();		
+		this.tpGame = new TpGame(this._scene, this.player?.mesh as Mesh, this.inGameState);
+		this.tpGame.init();
+		this.createSkybox(this._scene);
+		this.createWater();
+		this.moveLogo();
+		this.options = new Options(this._scene, this.player!);
+	}
 
   //Load all necessary meshes for the environment
   public async _loadAsset() {
