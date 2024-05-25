@@ -214,7 +214,10 @@ export class PlayerTirArcGame {
     private setAnimation () : {idle: AnimationGroup, priseArc: AnimationGroup, tir: AnimationGroup, win: AnimationGroup} {
         const idle = this.animationsGroup.find(ag => ag.name === "Anim|idle");
         const priseArc = this.animationsGroup.find(ag => ag.name === "Anim|bow2");
-        const tir = this.animationsGroup.find(ag => ag.name === "Anim|bow1");
+        let tir = this.animationsGroup.find(ag => ag.name === "Anim|bow1");
+        if(tir === undefined){
+            tir = this.animationsGroup.find(ag => ag.name === "Anim|bow"); 
+        }
         const win = this.animationsGroup.find(ag => ag.name === "Anim|win");
         return {idle: idle!, priseArc: priseArc!, tir: tir!, win: win!};
     }
