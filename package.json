@@ -15,6 +15,7 @@
     "@babylonjs/havok": "^1.3.0",
     "@babylonjs/loaders": "^6.40.0",
     "@babylonjs/materials": "^6.40.0",
+    "firebase": "^10.12.1",
     "howler": "^2.2.4",
     "ky": "^1.2.0",
     "prettier": "^3.1.1",
