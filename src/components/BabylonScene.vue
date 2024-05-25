@@ -951,6 +951,10 @@
   >
     <ResultsContent :results="storeJavelot.state.results" />
   </Results>
+  <JavelinAngle 
+    id="javelotGame-angle"
+    class="absolute -ml-24 top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
 
   <!-- BOXE -->
   <ClassicButton
@@ -1031,6 +1035,7 @@ import ArcheryContainer from "./gui/archery/ArcheryContainer.vue";
 import Aide from "@/components/gui/onboarding/Aide.vue";
 import Tips from "@/components/gui/onboarding/Tips.vue";
 import Info from "@/components/gui/games/Tips.vue";
+import JavelinAngle from "@/components/gui/javelin/JavelinAngle.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
