@@ -84,6 +84,7 @@ export class InGameState extends GameState {
     //TO ACTIVATE WHEN THE LOADING SCREEN IS DONE
     // await this.animStartGame();
     // set environments
+    document.getElementById("options-keybind")!.classList.remove("hidden");
     if(storeOnboard.state.debut === false){
       document.getElementById("onboarding-container")!.classList.remove("hidden");
       storeOnboard.commit("setDebut", true);
@@ -223,7 +224,7 @@ export class InGameState extends GameState {
   async exit() {
     // Nettoyer la scène lors de la sortie de cet état
     document.getElementById("map-keybind")!.classList.add("hidden");
-    // document.getElementById("options-keybind")!.classList.add("hidden");
+    document.getElementById("options-keybind")!.classList.add("hidden");
     console.log("exit in game state");
     this.cleanup();
   }

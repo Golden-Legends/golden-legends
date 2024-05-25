@@ -288,30 +288,27 @@ export class PlongeonGameState extends GameState {
       return;
     }
 
-    if (this.player._isWin) {
-      if (!this.scoreboardIsShow) {
-        // console.log(this.player.score, this.settings.level[this.difficulty].pointToSucceed)
-        if (
-          this.player.score >=
-          this.settings.level[this.difficulty].pointToSucceed
-        ) {
-          if (this.difficulty === "easy") {
-            localStorage.setItem("levelPlongeon", "intermediate");
-          }
-          if (this.difficulty === "intermediate") {
-            localStorage.setItem("levelPlongeon", "hard");
-          }
-        }
-        this.createFinaleScoreBoard();
-        this.showScoreBoard();
-        console.log("affiche le score board fin de jeu");
-      }
-      console.log("FIN DE JEU");
-      return;
-    } else if (!this.player._isWin) {
-      const deltaTime = this.scene.getEngine().getDeltaTime();
-      const timeNow = performance.now();
-      this.player.play(deltaTime, timeNow);
+        if(this.player._isWin){ 
+            if (!this.scoreboardIsShow) {
+                // console.log(this.player.score, this.settings.level[this.difficulty].pointToSucceed)
+                if(this.player.score >= this.settings.level[this.difficulty].pointToSucceed){
+                    if(this.difficulty === "easy" && localStorage.getItem("levelPlongeon") === "easy") {
+                        localStorage.setItem("levelPlongeon", "intermediate");
+                    }
+                    if(this.difficulty === "intermediate" && localStorage.getItem("levelPlongeon") === "intermediate"){
+                        localStorage.setItem("levelPlongeon", "hard");
+                    }
+                }
+                this.createFinaleScoreBoard();
+                this.showScoreBoard();
+                console.log("affiche le score board fin de jeu")
+            }
+            console.log("FIN DE JEU");
+            return;
+        } else if(!this.player._isWin){
+            const deltaTime = this.scene.getEngine().getDeltaTime();
+            const timeNow = performance.now();
+            this.player.play(deltaTime, timeNow);
 
       if (this.letterIsGenerated && !this.suiteLettersAffiche) {
         if (this.player.isSpacedPressedForAnim) {
