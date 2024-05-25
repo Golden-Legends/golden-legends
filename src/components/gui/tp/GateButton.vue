@@ -15,23 +15,25 @@ const props = defineProps({
     required: true,
   },
 });
-// add a ref 
+// add a ref
 const difficulty = ref(localStorage.getItem(props.game));
 
 const disabled = computed(() => {
-  if (difficulty === null) {
+  if (!difficulty.value) {
     return true;
-  }
-  else if (difficulty.value === props.difficulty) {
+  } else if (difficulty.value === props.difficulty) {
     return false;
-  }
-  else if(difficulty.value === "easy" && props.difficulty === "intermediate") {
+  } else if (
+    difficulty.value === "easy" &&
+    props.difficulty === "intermediate"
+  ) {
     return true;
-  }
-  else if(difficulty.value === "easy" && props.difficulty === "hard") {
+  } else if (difficulty.value === "easy" && props.difficulty === "hard") {
     return true;
-  }
-  else if(difficulty.value === "intermediate" && props.difficulty === "hard") {
+  } else if (
+    difficulty.value === "intermediate" &&
+    props.difficulty === "hard"
+  ) {
     return true;
   }
   return false;
@@ -48,10 +50,7 @@ const colors = {
   <button
     class="bg-white w-full h-fit text-blue-darker enabled:hover:text-white border-2 font-bold py-2 px-4 rounded disabled:opacity-50 uppercase text-lg transition-all"
     :disabled="disabled"
-    :class="[
-      colors[props.difficulty],
-      { 'cursor-pointer': !disabled}
-    ]"
+    :class="[colors[props.difficulty], { 'cursor-pointer': !disabled }]"
   >
     {{ props.name }}
   </button>
