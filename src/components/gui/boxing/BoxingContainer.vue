@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import AimTarget from "@/components/gui/boxing/AimTarget.vue";
 
-const TIMER = 3;
+const TIMER = 30;
 const GAME_SIZE = 5;
 const TIMEOUT = 1000;
 
@@ -94,7 +94,7 @@ onUnmounted(() => {
     </div>
 
     <div
-      class="h-[500px] w-[500px] border-2 border-black flex flex-col justify-center hover:cursor-pointer"
+      class="h-[500px] w-[500px] flex flex-col backdrop-brightness-75 rounded-2xl justify-center hover:cursor-pointer"
     >
       <div
         class="flex flex-row justify-center"
