@@ -133,8 +133,12 @@ export class ObjectGame {
         document.getElementById("chaussure-object-dialog")!.classList.add("hidden");
         document.getElementById("velo-object-dialog")!.classList.add("hidden");
 
+        let taille = storeObjects.state.objects;
+        //console log the number of objects where found is true
+        taille = taille.filter(objet => objet.found === true).length;
+
         // Affichez le message de collecte
-        if (this.objectsCollectedSet.size === this.totalObjects) {
+        if (taille === this.totalObjects) {
             localStorage.setItem('jeuObjets', "true");
             // Si tous les objets ont été collectés, affichez un message de victoire
             document.getElementById("recup-allObject-dialog")!.classList.remove("hidden");
