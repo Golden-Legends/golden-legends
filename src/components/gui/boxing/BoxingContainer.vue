@@ -73,7 +73,7 @@ const startTimer = () => {
 
 onMounted(() => {
   resetInterval();
-  startTimer();
+  // startTimer();
 });
 
 onUnmounted(() => {

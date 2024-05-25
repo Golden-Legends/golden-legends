@@ -57,6 +57,8 @@ export class BoxeGameState extends GameState {
   private countdownInProgress: boolean = false;
   private fightStartTime: number = 0;
 
+  private gameStart : boolean = false;
+
   constructor(
     game: Game,
     canvas: HTMLCanvasElement,
@@ -159,7 +161,7 @@ export class BoxeGameState extends GameState {
   }
 
   initGui() {
-    document.getElementById("runningGame-timer")!.classList.remove("hidden");
+    document.getElementById("boxeGame-score")!.classList.remove("hidden");
   }
 
   // Implement abstract members of GameState
@@ -210,24 +212,13 @@ export class BoxeGameState extends GameState {
       this.game.engine.hideLoadingUI();
 
       this.CreateCameraMouv().then(() => {
-        document
-          .getElementById("boxeGame-ready-button")!
-          .classList.remove("hidden");
-        document
-          .getElementById("boxeGame-skip-button")!
-          .classList.add("hidden");
+        document.getElementById("boxeGame-ready-button")!.classList.remove("hidden");
+        document.getElementById("boxeGame-skip-button")!.classList.add("hidden");
         this.addEventListenerById("boxeGame-ready-button", "click", () => {
-          this.startCountdown([
-            "boxeGame-text-1",
-            "boxeGame-text-2",
-            "boxeGame-text-3",
-            "boxeGame-text-4",
-          ]);
+          this.startCountdown(["boxeGame-text-1","boxeGame-text-2","boxeGame-text-3","boxeGame-text-4",]);
           this.AfterCamAnim();
           this.initGui();
-          document
-            .getElementById("boxeGame-ready-button")!
-            .classList.add("hidden");
+          document.getElementById("boxeGame-ready-button")!.classList.add("hidden");
           this.game.canvas.focus();
         });
       });
@@ -263,36 +254,25 @@ export class BoxeGameState extends GameState {
         this.fightStartTime = performance.now();
       }
     }, 1000);
+    setTimeout(() => {
+      this.gameStart = true;
+    }, 4500);
   }
 
   AfterCamAnim(): void {
     // this._camera.dispose();
     // this._camera = this.player.createCameraPlayer(this.player.transform);
-    this._camera.position = new Vector3(-4, 2.5, 14.45);
-    this._camera.rotation._y = Math.PI / 2;
-    this._camera.rotation._x = Math.PI / 5;
+    this._camera.position = new Vector3(-0.74, 0.4, 13.4);
+    this._camera.rotation._y = -2 * Math.PI;
+    this._camera.rotation._x = 0;
     this.player.setCamera(this._camera);
   }
 
   async CreateCameraMouv(): Promise<void> {
     const fps = 60;
-    const camAnim = new Animation(
-      "camAnim",
-      "position",
-      fps,
-      Animation.ANIMATIONTYPE_VECTOR3,
-      Animation.ANIMATIONLOOPMODE_CONSTANT,
-      true,
-    );
+    const camAnim = new Animation("camAnim","position",fps,Animation.ANIMATIONTYPE_VECTOR3,Animation.ANIMATIONLOOPMODE_CONSTANT,true);
 
-    const rotationAnim = new Animation(
-      "rotationAnim",
-      "rotation",
-      fps,
-      Animation.ANIMATIONTYPE_VECTOR3,
-      Animation.ANIMATIONLOOPMODE_CONSTANT,
-      true,
-    );
+    const rotationAnim = new Animation("rotationAnim","rotation",fps,Animation.ANIMATIONTYPE_VECTOR3,Animation.ANIMATIONLOOPMODE_CONSTANT,true);
 
     const camKeys: { frame: number; value: Vector3 }[] = [];
     const rotationKeys: { frame: number; value: Vector3 }[] = [];
@@ -302,27 +282,14 @@ export class BoxeGameState extends GameState {
     camKeys.push({ frame: 4 * fps, value: new Vector3(4, 3.6, 14.45) });
     camKeys.push({ frame: 6 * fps, value: new Vector3(0, 3.6, 17.9) });
     camKeys.push({ frame: 9 * fps, value: new Vector3(-4, 2.5, 14.45) });
+    camKeys.push({ frame: 11 * fps, value: new Vector3(-0.74, 0.4, 13.4) });
 
-    rotationKeys.push({
-      frame: 0,
-      value: new Vector3(Math.PI / 4, Math.PI / 2, 0),
-    });
-    rotationKeys.push({
-      frame: 2 * fps,
-      value: new Vector3(Math.PI / 4, 0, 0),
-    });
-    rotationKeys.push({
-      frame: 4 * fps,
-      value: new Vector3(Math.PI / 4, -Math.PI / 2, 0),
-    });
-    rotationKeys.push({
-      frame: 6 * fps,
-      value: new Vector3(Math.PI / 4, -Math.PI, 0),
-    });
-    rotationKeys.push({
-      frame: 9 * fps,
-      value: new Vector3(Math.PI / 5, (-3 * Math.PI) / 2, 0),
-    });
+    rotationKeys.push({frame: 0, value: new Vector3(Math.PI / 4, Math.PI / 2, 0)});
+    rotationKeys.push({frame: 2 * fps, value: new Vector3(Math.PI / 4, 0, 0)});
+    rotationKeys.push({frame: 4 * fps, value: new Vector3(Math.PI / 4, -Math.PI / 2, 0)});
+    rotationKeys.push({frame: 6 * fps, value: new Vector3(Math.PI / 4, -Math.PI, 0)});
+    rotationKeys.push({frame: 9 * fps, value: new Vector3(Math.PI / 5, (-3 * Math.PI) / 2, 0)});
+    rotationKeys.push({frame: 11 * fps, value: new Vector3(0, -2 * Math.PI, 0)});
 
     camAnim.setKeys(camKeys);
     rotationAnim.setKeys(rotationKeys);
@@ -330,20 +297,24 @@ export class BoxeGameState extends GameState {
     this._camera.animations.push(camAnim);
     this._camera.animations.push(rotationAnim);
 
-    await this.scene.beginAnimation(this._camera, 0, 9 * fps).waitAsync();
+    await this.scene.beginAnimation(this._camera, 0, 11 * fps).waitAsync();
     document.getElementById("boxeGame-skip-button")!.classList.add("hidden");
   }
 
   async exit(): Promise<void> {
     console.log("exit boxe game");
 
-    document.getElementById("runningGame-timer")!.classList.add("hidden");
+    document.getElementById("boxeGame-score")!.classList.add("hidden");
 
     this.cleanup();
   }
 
   update(): void {
-    console.log("update");
+    // console.log("update");
+    if(this.gameStart){
+      document.getElementById("boxeGame-container")!.classList.remove("hidden");
+      
+    }
   }
 
   //timer à revoir avec à la place un compteur de points (affichage différents juste)

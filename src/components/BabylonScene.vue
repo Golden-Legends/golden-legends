@@ -953,7 +953,7 @@
   </Results>
   <JavelinAngle 
     id="javelotGame-angle"
-    class="absolute -ml-24 top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute -ml-24 top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
 
   <!-- BOXE -->
@@ -993,6 +993,16 @@
     id="boxeGame-text-4"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+  <BoxingContainer 
+    id="boxeGame-container"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Score
+    name="boxeGame-score"
+    id="boxeGame-score"
+    class="hidden absolute bottom-12 right-12"
+    :score="storeBoxe.state.score"
+  />
 </template>
 
 <script setup lang="ts">
@@ -1026,6 +1036,7 @@ import { storeJump } from "@/components/gui/storeJump.ts";
 import { storePlongeon } from "@/components/gui/storePlongeon.ts";
 import { storeTirArc } from "@/components/gui/storeTirArc.ts";
 import { storeSound } from "@/components/gui/storeSound.ts";
+import { storeBoxe } from "@/components/gui/storeBoxe.ts";
 
 import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
@@ -1036,6 +1047,7 @@ import Aide from "@/components/gui/onboarding/Aide.vue";
 import Tips from "@/components/gui/onboarding/Tips.vue";
 import Info from "@/components/gui/games/Tips.vue";
 import JavelinAngle from "@/components/gui/javelin/JavelinAngle.vue";
+import BoxingContainer from "@/components/gui/boxing/BoxingContainer.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
