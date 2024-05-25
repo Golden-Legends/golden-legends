@@ -20,10 +20,8 @@ const music = Music.getInstance("./sounds/newAccueil.mp3", 0.1);
 
 const error = ref(false);
 
-const stopMusicAndRedirect = async () => {
+const play = async () => {
   try {
-    await UserService.isUsernameValid(username.value);
-    // musiqueAccueil.stop();
     localStorage.setItem("username", username.value);
     await router.push({ name: "Character" });
   } catch (e) {
@@ -43,20 +41,12 @@ const router = useRouter();
       <div class="flex flex-col items-center justify-center">
         <img class="mt-24" src="@/../public/landing_logo.svg" alt="Vue logo" />
         <div class="flex flex-col items-center gap-4 mt-16">
-          <ClassicButton
-            text="SE CONNECTER"
-            @click="router.push({ name: 'Login' })"
-          />
-          <span class="text-2xl font-bold">OU</span>
           <ClassicInput
             :class="{ 'border-red-500 border-2': error }"
-            placeholder="Ex : XxGamerdu12xX"
+            placeholder="XxGamerdu12xX"
             @update-username="username = $event"
           />
-          <PlayButton
-            :disabled="username.length <= 0"
-            @click="stopMusicAndRedirect"
-          />
+          <PlayButton :disabled="username.length <= 0" @click="play" />
         </div>
       </div>
     </div>
