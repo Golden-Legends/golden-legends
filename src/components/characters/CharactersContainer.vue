@@ -7,9 +7,7 @@ import { CHARACTERS } from "@/utils/constants.ts";
 CHARACTERS.forEach((character) => {
   if (typeof character.enabled === "string") {
     const enabled = localStorage.getItem(character.enabled);
-    if (enabled === "false") {
-      character.enabled = false;
-    }
+    character.enabled = enabled === "true";
   }
 });
 </script>
