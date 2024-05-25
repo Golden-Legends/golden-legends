@@ -23,6 +23,7 @@ const positionV = ref(storeTirArc.state.initialState.positionV);
 const increasing = ref(storeTirArc.state.initialState.increasing);
 const horizontalPlaying = ref(storeTirArc.state.initialState.horizontalPlaying);
 const verticalPlaying = ref(storeTirArc.state.initialState.verticalPlaying);
+const isGameActive = ref(storeTirArc.state.initialState.isGameActive);
 
 const arrowMarginLeft = computed(() => {
   if (horizontalPlaying.value) {
@@ -71,7 +72,7 @@ const updatePosition = () => {
 
 // Listen to H key to stop the horizontal arrow
 window.addEventListener("keydown", (e) => {
-  if (e.key === "h") {
+  if (e.key === "h" && !verticalPlaying.value && isGameActive.value) {
     horizontalPlaying.value = !horizontalPlaying.value;
     emit("update-position", positionH.value);
     verticalPlaying.value = !verticalPlaying.value;
@@ -80,7 +81,7 @@ window.addEventListener("keydown", (e) => {
 
 // Listen to V key to stop the vertical arrow
 window.addEventListener("keydown", (e) => {
-  if (e.key === "v") {
+  if (e.key === "v" && !horizontalPlaying.value && isGameActive.value) {
     verticalPlaying.value = !verticalPlaying.value;
     emit("update-position", positionV.value);
   }
@@ -96,7 +97,7 @@ watch(
   },
 );
 
-// Watch for the initial state to update the position
+// Watch for the initial state + isGameActive to update the position
 watch(
   () => storeTirArc.state.initialState,
   () => {
@@ -105,6 +106,7 @@ watch(
     increasing.value = storeTirArc.state.initialState.increasing;
     horizontalPlaying.value = storeTirArc.state.initialState.horizontalPlaying;
     verticalPlaying.value = storeTirArc.state.initialState.verticalPlaying;
+    isGameActive.value = storeTirArc.state.initialState.isGameActive;
   },
   { deep: true },
 );
