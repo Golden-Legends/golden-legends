@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 const getAsset = (name: string) => {
-  return `/src/assets/tbf_objects/${name}.png`;
+  return `@/../tbf_objects/${name}.png`;
 };
 </script>
 

@@ -1,9 +1,9 @@
-import { Howl, Howler } from 'howler';
+import { Howl } from "howler";
 
 // Classe pour représenter une piste audio individuelle
 export class Track {
   private howl: Howl;
-  private pausedAt: number | null;
+  private _pausedAt: number | null;
 
   constructor(path: string, volume: number) {
     this.howl = new Howl({
@@ -12,7 +12,7 @@ export class Track {
       loop: true,
       volume: volume,
     });
-    this.pausedAt = null;
+    this._pausedAt = null;
   }
 
   play(): void {
@@ -26,14 +26,14 @@ export class Track {
   }
 
   pause(): void {
-    this.pausedAt = this.howl.seek();
+    this._pausedAt = this.howl.seek();
     // console.log(this.pausedAt);
     this.howl.pause();
   }
 
   stop(): void {
     this.howl.stop();
-    this.pausedAt = null;
+    this._pausedAt = null;
   }
 
   setVolume(volume: number): void {

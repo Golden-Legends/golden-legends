@@ -1,6 +1,6 @@
 import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
-import TirArcGameSettings from "../../../assets/tirArcGameSettings.json";
+import TirArcGameSettings from "@/../public/tirArcGameSettings.json";
 import {
   Animation,
   FreeCamera,
@@ -136,7 +136,7 @@ export class TirArcGameState extends GameState {
       startMesh.getAbsolutePosition().y || 0,
       startMesh.getAbsolutePosition().z || 0,
       this.scene,
-      `./models/characters/${getFileName}`,
+      `@/../models/characters/${getFileName}`,
       this.endPlacement[indexForPlayerPlacement],
       this._input,
       false,

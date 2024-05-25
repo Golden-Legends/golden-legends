@@ -18,7 +18,6 @@ import { toast } from "vue-sonner";
 
 const music = Music.getInstance("./sounds/newAccueil.mp3", 0.1);
 
-
 const error = ref(false);
 
 const stopMusicAndRedirect = async () => {
@@ -42,7 +41,7 @@ const router = useRouter();
   <div class="w-screen h-screen relative overflow-clip">
     <div class="w-full lg:w-1/2">
       <div class="flex flex-col items-center justify-center">
-        <img class="mt-24" src="@/assets/landing_logo.svg" alt="Vue logo" />
+        <img class="mt-24" src="@/../public/landing_logo.svg" alt="Vue logo" />
         <div class="flex flex-col items-center gap-4 mt-16">
           <ClassicButton
             text="SE CONNECTER"
@@ -67,7 +66,7 @@ const router = useRouter();
 
     <div class="hidden lg:block lg:w-1/2 bg-white">
       <div class="absolute -right-24 top-40">
-        <img src="@/assets/landing.svg" alt="Vue logo" />
+        <img src="../../public/landing.svg" alt="Vue logo" />
       </div>
     </div>
   </div>

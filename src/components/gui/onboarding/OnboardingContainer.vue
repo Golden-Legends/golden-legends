@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import arrow from "@/assets/arrow.svg";
+import arrow from "/arrow.svg";
 import CarouselContent from "@/components/gui/onboarding/CarouselContent.vue";
 import CommandContainer from "@/components/gui/commands/CommandContainer.vue";
 import Title from "@/components/gui/onboarding/Title.vue";
-import map_overview from "@/assets/map_overview.png";
-import lobby from "@/assets/lobby.png";
+import map_overview from "/map_overview.png";
+import lobby from "/lobby.png";
 const carousel = ref(0);
 </script>
 
@@ -17,7 +17,11 @@ const carousel = ref(0);
       id="close-onboarding"
       class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
     >
-      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+      <img
+        src="../../../../public/close.svg"
+        alt="close"
+        class="w-6 h-6 ml-1.5"
+      />
     </button>
     <div class="text-4xl font-bold text-center mt-2 mb-4">
       Bienvenue sur Golden Legends !
@@ -82,7 +86,8 @@ const carousel = ref(0);
             <Title text="Mais qu'est-ce que je peux bien faire ?"></Title>
             <span
               >Tu peux visiter la carte, découvrir des lieux emblématiques,
-              trouver d'autres mini-jeux ou des objets cachés...pour débloquer de nouveaux personnages.</span
+              trouver d'autres mini-jeux ou des objets cachés...pour débloquer
+              de nouveaux personnages.</span
             >
           </div>
         </CarouselContent>

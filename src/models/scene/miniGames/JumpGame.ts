@@ -12,11 +12,11 @@ import {
   Vector3,
 } from "@babylonjs/core";
 import { AdvancedDynamicTexture, TextBlock } from "@babylonjs/gui";
-import { PlayerInput } from "../../inputsMangement/PlayerInput";
 import { storeJump } from "@/components/gui/storeJump.ts";
 import { GameState } from "@/models/GameState";
+import { PlayerInput } from "@/models/inputsMangement/PlayerInput.ts";
 
-export class JumpGame{
+export class JumpGame {
   progress: number;
   public scene: Scene;
   private player: Mesh;
@@ -35,7 +35,7 @@ export class JumpGame{
   private countdownInProgress: boolean = false;
   private raceStartTime: number = 0;
   private timer: number = 0;
-  private currentTime : number = 0;
+  private currentTime: number = 0;
 
   constructor(scene: Scene, player: Mesh, input: PlayerInput) {
     this.scene = scene;
@@ -45,9 +45,9 @@ export class JumpGame{
   }
 
   public init() {
-    const res = localStorage.getItem('jeuSaut');
-    if(res === null){
-      localStorage.setItem('jeuSaut', "false");
+    const res = localStorage.getItem("jeuSaut");
+    if (res === null) {
+      localStorage.setItem("jeuSaut", "false");
     }
     //invisible platform
     // console.log(this.player.position);
@@ -57,7 +57,6 @@ export class JumpGame{
     this.initCube();
     this.registerBoxPickUpActions();
 
-    
     //apparition des plateformes
     // this.scene.registerBeforeRender(() => {
     //     if (this.isPlayerInsideTrigger && this.playerInput.inputMap["Space"]) {
@@ -79,7 +78,7 @@ export class JumpGame{
         this.timer = 0;
         this.raceStartTime = 0;
         this.currentTime = 0;
-        storeJump.commit('setTimer', 0.00);
+        storeJump.commit("setTimer", 0.0);
         document.getElementById("jumpGame-timer")!.classList.remove("hidden");
         this.miniGame();
       }
@@ -99,14 +98,14 @@ export class JumpGame{
     if (!this.countdownInProgress) return; // Évite de terminer le compte à rebours si ce n'est pas déjà en cours
 
     const currentTime = performance.now();
-    const elapsedTime = (currentTime - this.raceStartTime);
+    const elapsedTime = currentTime - this.raceStartTime;
     this.timer = Math.round(elapsedTime);
-    storeJump.commit('setTimer', this.timer);
+    storeJump.commit("setTimer", this.timer);
   }
 
   private miniGame() {
     // Initialiser le jeu et démarrer le comptage des plateformes sautées
-    this.startCountdown()
+    this.startCountdown();
 
     this.update();
 
@@ -135,7 +134,7 @@ export class JumpGame{
         // Vérifier si toutes les plateformes ont été sautées
         if (this.platformsJumped === this.TOTAL_PLATFORMS) {
           // Afficher un message de victoire et réinitialiser le jeu
-          localStorage.setItem('jeuSaut', "true");
+          localStorage.setItem("jeuSaut", "true");
           this.showVictoryMessage();
           this.resetGame();
           this.invisiblePlatform(1, this.TOTAL_PLATFORMS);
@@ -244,17 +243,17 @@ export class JumpGame{
     deltaTime = deltaTime / 10;
     this.currentTime = this.currentTime;
 
-    if(this.gameRunning){
-      this.timer = Math.round((this.currentTime - this.raceStartTime));
-      storeJump.commit('setTimer', this.timer);
+    if (this.gameRunning) {
+      this.timer = Math.round(this.currentTime - this.raceStartTime);
+      storeJump.commit("setTimer", this.timer);
     }
   }
 
   showVictoryMessage() {
-    // Créer un message de victoire à afficher à l'écran    
+    // Créer un message de victoire à afficher à l'écran
     document.getElementById("victory-jump-dialog")!.classList.remove("hidden");
     setTimeout(() => {
-      storeJump.commit('setTimer', 0.00);
+      storeJump.commit("setTimer", 0.0);
       document.getElementById("victory-jump-dialog")!.classList.add("hidden");
       document.getElementById("jumpGame-timer")!.classList.add("hidden");
     }, 3000);
@@ -264,7 +263,7 @@ export class JumpGame{
     // Créer un message de défaite à afficher à l'écran
     document.getElementById("lose-jump-dialog")!.classList.remove("hidden");
     setTimeout(() => {
-      storeJump.commit('setTimer', 0.00);
+      storeJump.commit("setTimer", 0.0);
       document.getElementById("jumpGame-timer")!.classList.add("hidden");
       document.getElementById("lose-jump-dialog")!.classList.add("hidden");
     }, 3000);
@@ -350,5 +349,4 @@ export class JumpGame{
       }
     }
   }
-  
 }

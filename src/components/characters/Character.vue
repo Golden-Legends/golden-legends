@@ -8,7 +8,7 @@ const props = defineProps<{
 }>();
 
 const getAsset = (name: string) => {
-  return `/src/assets/characters/${name}.png`;
+  return `@/../characters/${name}.png`;
 };
 </script>
 

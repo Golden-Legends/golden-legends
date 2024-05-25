@@ -13,34 +13,41 @@
     name="options"
     id="options"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  > 
+  >
     <div class="flex justify-between">
       <button
         id="close-options"
         class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
-        >
-        <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+      >
+        <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
       </button>
       <span class="text-2xl">Musique</span>
-      <input id="son" type="range" min="0" max="100" :value="storeSound.state.sound" class="accent-black" />
+      <input
+        id="son"
+        type="range"
+        min="0"
+        max="100"
+        :value="storeSound.state.sound"
+        class="accent-black"
+      />
     </div>
   </Options>
-  <MapButton 
+  <MapButton
     text="TPs"
     id="tp-button"
     class="hidden absolute top-1/3 left-80"
   />
-  <MapButton 
+  <MapButton
     text="Jump"
     id="jump-button"
     class="hidden absolute mt-8 top-1/2 left-3/4"
   />
-  <MapButton 
+  <MapButton
     text="Forêt"
     id="foret-button"
     class="hidden absolute -mt-32 top-1/4 left-3/4 -ml-12"
   />
-  <MapButton 
+  <MapButton
     text="PNJ"
     id="pnj-button"
     class="hidden absolute -mt-32 top-1/4 left-1/4 ml-4"
@@ -199,9 +206,24 @@
     id="100mtp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <GateButton id="100mFacile" name="Facile" difficulty="easy" game="level100m"/>
-    <GateButton id="100mMoyen" name="Moyen" difficulty="intermediate" game="level100m"/>
-    <GateButton id="100mDifficile" name="Difficile" difficulty="hard" game="level100m"/>
+    <GateButton
+      id="100mFacile"
+      name="Facile"
+      difficulty="easy"
+      game="level100m"
+    />
+    <GateButton
+      id="100mMoyen"
+      name="Moyen"
+      difficulty="intermediate"
+      game="level100m"
+    />
+    <GateButton
+      id="100mDifficile"
+      name="Difficile"
+      difficulty="hard"
+      game="level100m"
+    />
   </GameGate>
   <GameGate
     title="100m Brasse"
@@ -209,9 +231,24 @@
     id="natationtp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <GateButton id="natationFacile" name="Facile" difficulty="easy" game="levelNatation"/>
-    <GateButton id="natationMoyen" name="Moyen" difficulty="intermediate" game="levelNatation"/>
-    <GateButton id="natationDifficile" name="Difficile" difficulty="hard" game="levelNatation"/>
+    <GateButton
+      id="natationFacile"
+      name="Facile"
+      difficulty="easy"
+      game="levelNatation"
+    />
+    <GateButton
+      id="natationMoyen"
+      name="Moyen"
+      difficulty="intermediate"
+      game="levelNatation"
+    />
+    <GateButton
+      id="natationDifficile"
+      name="Difficile"
+      difficulty="hard"
+      game="levelNatation"
+    />
   </GameGate>
   <GameGate
     title="Plongeon"
@@ -219,9 +256,24 @@
     id="plongeontp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <GateButton id="plongeonFacile" name="Facile" difficulty="easy" game="levelPlongeon"/>
-    <GateButton id="plongeonMoyen" name="Moyen" difficulty="intermediate" game="levelPlongeon"/>
-    <GateButton id="plongeonDifficile" name="Difficile" difficulty="hard" game="levelPlongeon"/>
+    <GateButton
+      id="plongeonFacile"
+      name="Facile"
+      difficulty="easy"
+      game="levelPlongeon"
+    />
+    <GateButton
+      id="plongeonMoyen"
+      name="Moyen"
+      difficulty="intermediate"
+      game="levelPlongeon"
+    />
+    <GateButton
+      id="plongeonDifficile"
+      name="Difficile"
+      difficulty="hard"
+      game="levelPlongeon"
+    />
   </GameGate>
   <GameGate
     title="Boxe"
@@ -229,7 +281,12 @@
     id="boxetp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <GateButton id="boxeDefense" name="Défense" difficulty="easy" game="levelBoxe"/>
+    <GateButton
+      id="boxeDefense"
+      name="Défense"
+      difficulty="easy"
+      game="levelBoxe"
+    />
   </GameGate>
   <GameGate
     title="Tir à l'arc"
@@ -237,14 +294,49 @@
     id="tirArctp"
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-    <GateButton id="tirArcFacile" name="Facile" difficulty="easy" game="levelTirArc"/>
-    <GateButton id="tirArcMoyen" name="Moyen" difficulty="intermediate" game="levelTirArc"/>
-    <GateButton id="tirArcDifficile" name="Difficile" difficulty="hard" game="levelTirArc"/>
+    <GateButton
+      id="tirArcFacile"
+      name="Facile"
+      difficulty="easy"
+      game="levelTirArc"
+    />
+    <GateButton
+      id="tirArcMoyen"
+      name="Moyen"
+      difficulty="intermediate"
+      game="levelTirArc"
+    />
+    <GateButton
+      id="tirArcDifficile"
+      name="Difficile"
+      difficulty="hard"
+      game="levelTirArc"
+    />
   </GameGate>
-  <GameGate title="Javelot" name="javelottp" id="javelottp" class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-    <GateButton id="javelotFacile" name="Facile" difficulty="easy" game="levelJavelot"/>
-    <GateButton id="javelotMoyen" name="Moyen" difficulty="intermediate" game="levelJavelot"/>
-    <GateButton id="javelotDifficile" name="Difficile" difficulty="hard" game="levelJavelot"/>
+  <GameGate
+    title="Javelot"
+    name="javelottp"
+    id="javelottp"
+    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+    <GateButton
+      id="javelotFacile"
+      name="Facile"
+      difficulty="easy"
+      game="levelJavelot"
+    />
+    <GateButton
+      id="javelotMoyen"
+      name="Moyen"
+      difficulty="intermediate"
+      game="levelJavelot"
+    />
+    <GateButton
+      id="javelotDifficile"
+      name="Difficile"
+      difficulty="hard"
+      game="levelJavelot"
+    />
   </GameGate>
   <Position
     id="position-1"
@@ -283,12 +375,16 @@
     id="runningGame-command-container"
     class="hidden -mt-20 absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
-  <GameHelpContainer id="runningGame-help" title="100m" class="hidden -top-3/4 left-1/2 transform -translate-x-1/2">
+  <GameHelpContainer
+    id="runningGame-help"
+    title="100m"
+    class="hidden -top-3/4 left-1/2 transform -translate-x-1/2"
+  >
     <button
       id="close-help-100m"
       class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
     >
-      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+      <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
       <CommandContainer class="w-fit" name="COURIR" :keys="['s', 'd']" />
@@ -300,8 +396,7 @@
         ]"
       />
     </template>
-    <div class="flex justify-center mt-4">
-    </div>
+    <div class="flex justify-center mt-4"></div>
   </GameHelpContainer>
   <ClassicButton
     text="Passer"
@@ -388,30 +483,30 @@
     id="natationGame-action-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
-  <GameHelpContainer id="natationgame-help" title="100m Brasse" class="hidden -mt-28 -top-3/4 left-1/2 transform -translate-x-1/2">
+  <GameHelpContainer
+    id="natationgame-help"
+    title="100m Brasse"
+    class="hidden -mt-28 -top-3/4 left-1/2 transform -translate-x-1/2"
+  >
     <button
       id="close-help-natation"
       class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
     >
-      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+      <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
       <CommandContainer class="w-fit" name="NAGER" :keys="['s', 'd']" />
-      <CommandContainer
-        name="ACTION"
-        :keys="['espace']"
-      />
+      <CommandContainer name="ACTION" :keys="['espace']" />
     </template>
     <template #tips>
       <Info
         :content="[
           'Appuyer sur ESPACE pour plonger et vous retourner.',
-          'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...'
+          'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...',
         ]"
       />
     </template>
-    <div class="flex justify-center mt-4">
-    </div>
+    <div class="flex justify-center mt-4"></div>
   </GameHelpContainer>
   <ClassicButton
     text="Passer"
@@ -519,12 +614,16 @@
     id="plongeonGame-command-container"
     class="hidden absolute -top-3/4 left-36 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
-  <GameHelpContainer id="plongeongame-help" title="Plongeon" class="hidden -mt-28 -top-3/4 left-1/2 transform -translate-x-1/2">
+  <GameHelpContainer
+    id="plongeongame-help"
+    title="Plongeon"
+    class="hidden -mt-28 -top-3/4 left-1/2 transform -translate-x-1/2"
+  >
     <button
       id="close-help-plongeon"
       class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
     >
-      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+      <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
       <CommandContainer class="w-fit" name="ACTION" :keys="['espace']" />
@@ -538,12 +637,11 @@
       <Info
         :content="[
           'Appuyer sur ESPACE pour plonger.',
-          'Vous devez retenir une suite de lettres qui sera toujours différente et la restituer ensuite dans un temps imparti (chaque lettre correspondant à une figure).'
+          'Vous devez retenir une suite de lettres qui sera toujours différente et la restituer ensuite dans un temps imparti (chaque lettre correspondant à une figure).',
         ]"
       />
     </template>
-    <div class="flex justify-center mt-4">
-    </div>
+    <div class="flex justify-center mt-4"></div>
   </GameHelpContainer>
   <ClassicButton
     text="Passer"
@@ -692,7 +790,7 @@
     :keys="['espace']"
     id="tirArcGame-action-container"
     class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  /> 
+  />
   <CommandContainer
     name="VISÉE↕️"
     :keys="['V']"
@@ -705,40 +803,31 @@
     id="tirArcGame-horizontal-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
-  <GameHelpContainer id="tirArcgame-help" title="Plongeon" class="hidden -mt-56 -top-3/4 left-1/2 transform -translate-x-1/2">
+  <GameHelpContainer
+    id="tirArcgame-help"
+    title="Plongeon"
+    class="hidden -mt-56 -top-3/4 left-1/2 transform -translate-x-1/2"
+  >
     <button
       id="close-help-tirArc"
       class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
     >
-      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+      <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer
-        name="ACTION"
-        :keys="['ESPACE']"
-        class="w-fit my-4"
-      />
-      <CommandContainer
-        name="VISÉE↕️"
-        :keys="['V']"
-        class="w-fit my-4"
-      />
-      <CommandContainer
-        name="VISÉE↔️"
-        :keys="['H']"
-        class="w-fit my-4"
-      />
+      <CommandContainer name="ACTION" :keys="['ESPACE']" class="w-fit my-4" />
+      <CommandContainer name="VISÉE↕️" :keys="['V']" class="w-fit my-4" />
+      <CommandContainer name="VISÉE↔️" :keys="['H']" class="w-fit my-4" />
     </template>
     <template #tips>
       <Info
         :content="[
           'Appuyer sur ESPACE pour démarrer.',
-            'Vous disposez de 2 jauges qui vous permettent de viser et de tirer le plus possible au centre de la cible. Pour cela, vous appuyerez sur H pour régler la visée horizontale puis sur V pour régler la visée verticale.'
-          ]"
+          'Vous disposez de 2 jauges qui vous permettent de viser et de tirer le plus possible au centre de la cible. Pour cela, vous appuyerez sur H pour régler la visée horizontale puis sur V pour régler la visée verticale.',
+        ]"
       />
     </template>
-    <div class="flex justify-center mt-4">
-    </div>
+    <div class="flex justify-center mt-4"></div>
   </GameHelpContainer>
   <RDSText
     text="Tirez !"
@@ -758,16 +847,22 @@
     id="tirArcGame-results"
     class="hidden -mt-48 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-  <ResultsContent :results="storeTirArc.state.results" />
+    <ResultsContent :results="storeTirArc.state.results" />
   </Results>
-  <div id="tirArcGame-verticalgui" class="hidden absolute top-1/3 left-2/3 transform -translate-x-1/2 -ml-24">
+  <div
+    id="tirArcGame-verticalgui"
+    class="hidden absolute top-1/3 left-2/3 transform -translate-x-1/2 -ml-24"
+  >
     <ArcheryContainer
       orientation="vertical"
       :ms="storeTirArc.state.speed"
       @update-position="positionV"
     />
   </div>
-  <div id="tirArcGame-horizontalgui" class="hidden absolute top-2/3 left-1/2 transform -translate-x-1/2 mt-12">
+  <div
+    id="tirArcGame-horizontalgui"
+    class="hidden absolute top-2/3 left-1/2 transform -translate-x-1/2 mt-12"
+  >
     <ArcheryContainer
       orientation="horizontal"
       :ms="storeTirArc.state.speed"
@@ -823,7 +918,7 @@
     :keys="['espace']"
     id="javelotGame-action-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  /> 
+  />
   <CommandContainer
     name="VISÉE↕️"
     :keys="['V']"
@@ -854,7 +949,7 @@
     id="javelotGame-results"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
-  <ResultsContent :results="storeJavelot.state.results" />
+    <ResultsContent :results="storeJavelot.state.results" />
   </Results>
 
   <!-- BOXE -->
@@ -894,8 +989,6 @@
     id="boxeGame-text-4"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-
-  
 </template>
 
 <script setup lang="ts">
@@ -973,15 +1066,14 @@ const tpGame = "Comeback later...";
 const positionH = (position: number) => {
   // You can get the position in params from the child
   // console.log(position);
-  storeTirArc.commit('setPosH', position);
+  storeTirArc.commit("setPosH", position);
 };
 
 const positionV = (position: number) => {
   // You can get the position in params from the child
   // console.log(position);
-  storeTirArc.commit('setPosV', position);
+  storeTirArc.commit("setPosV", position);
 };
-
 
 // const updateSound = (event) => {
 //   const newValue = event.target.value;
@@ -1000,7 +1092,6 @@ const positionV = (position: number) => {
 //     console.log(1)
 //   }
 // }
-
 
 onMounted(() => {
   if (bjsCanvas.value) {

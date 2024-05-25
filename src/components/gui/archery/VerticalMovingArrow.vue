@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import moving_arrow from "@/assets/moving_arrow.svg";
+import moving_arrow from "/moving_arrow.svg";
 </script>
 
 <template>

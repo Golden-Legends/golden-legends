@@ -97,11 +97,11 @@ setInterval(() => {
   }
 }, 75);
 
-// GET THE POSITION
+/*// GET THE POSITION
 const position = (position: number) => {
   // You can get the position in params from the child
   // console.log(position);
-};
+};*/
 </script>
 
 <template>

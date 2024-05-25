@@ -15,7 +15,7 @@ interface Character {
 const defaultCharacter = {
   name: "default",
   path: "1",
-  pathGlb: "perso.glb",
+  pathGlb: "perso1.glb",
   description: "default character",
 };
 
@@ -55,7 +55,10 @@ const setPathCharacterLocalStorage = (path: Character | null) => {
       <PlayButton
         :disabled="!character"
         @click="
-          router.push({ name: 'Game', params: { characterPath: character?.path } }); 
+          router.push({
+            name: 'Game',
+            params: { characterPath: character?.path },
+          });
           setPathCharacterLocalStorage(character);
         "
       />
@@ -71,7 +74,7 @@ const setPathCharacterLocalStorage = (path: Character | null) => {
         >{{ character?.description }}
       </span>
       <div class="flex items-center gap-4">
-        <video autoplay :src="`/src/assets/characters/${character?.path}.mp4`" />
+        <video autoplay :src="`@/../characters/${character?.path}.mp4`" />
       </div>
     </div>
   </div>

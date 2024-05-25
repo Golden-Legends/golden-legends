@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import arrow from "@/assets/arrow.svg";
+import arrow from "/arrow.svg";
 import CarouselContent from "@/components/gui/onboarding/CarouselContent.vue";
 import CommandContainer from "@/components/gui/commands/CommandContainer.vue";
 import CustomKBD from "@/components/gui/commands/CustomKBD.vue";
@@ -17,13 +17,21 @@ const carousel = ref(0);
       id="close-aide"
       class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
     >
-      <img src="@/assets/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+      <img
+        src="../../../../public/close.svg"
+        alt="close"
+        class="w-6 h-6 ml-1.5"
+      />
     </button>
     <button
       id="back-options"
       class="absolute -left-3 -top-3 w-10 h-10 border-2 rounded border-black bg-green-700 hover:bg-green-800 transition-all"
     >
-      <img src="@/assets/back.svg" alt="close" class="w-6 h-6 ml-1.5" />
+      <img
+        src="../../../../public/back.svg"
+        alt="close"
+        class="w-6 h-6 ml-1.5"
+      />
     </button>
     <div class="text-4xl font-bold text-center mt-2 mb-4">
       Aides du jeu Golden Legends !
@@ -50,7 +58,7 @@ const carousel = ref(0);
                   <CustomKBD :keybind="'q'" class="w-fit" />
                   <CustomKBD :keybind="'s'" class="w-fit" />
                   <CustomKBD :keybind="'d'" class="w-fit" />
-                </div> 
+                </div>
               </div>
               <Title text="OU"></Title>
               <div class="flex flex-col w-fit my-4">
@@ -61,13 +69,16 @@ const carousel = ref(0);
                   <CustomKBD :keybind="'a'" class="w-fit" />
                   <CustomKBD :keybind="'s'" class="w-fit" />
                   <CustomKBD :keybind="'d'" class="w-fit" />
-                </div> 
+                </div>
               </div>
             </div>
-            
+
             <Title text="La vision" class="-mb-2"></Title>
             <CustomKBD :keybind="'souris'" class="w-fit my-4" />
-            <Title text="Dash - Appuyez sur A/Q en sautant" class="mt-8 -mb-2"></Title>
+            <Title
+              text="Dash - Appuyez sur A/Q en sautant"
+              class="mt-8 -mb-2"
+            ></Title>
             <div class="flex gap-12 items-center">
               <div class="flex flex-col w-fit my-4">
                 <div class="flex justify-center">
@@ -78,7 +89,7 @@ const carousel = ref(0);
               <div class="flex flex-col w-fit my-4">
                 <div class="flex justify-center">
                   <CustomKBD :keybind="'q'" class="w-fit" />
-                </div>  
+                </div>
               </div>
             </div>
 
@@ -86,7 +97,6 @@ const carousel = ref(0);
             <CustomKBD :keybind="'o'" class="w-fit my-4" />
             <Title text="Ouvrir la minimap" class="mt-4 -mb-2"></Title>
             <CustomKBD :keybind="'c'" class="w-fit my-4" />
-            
           </div>
         </CarouselContent>
 
@@ -126,7 +136,7 @@ const carousel = ref(0);
             <Info
               :content="[
                 'Appuyer sur ESPACE pour plonger et vous retourner.',
-                'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...'
+                'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...',
               ]"
             />
           </div>
@@ -152,7 +162,7 @@ const carousel = ref(0);
             <Info
               :content="[
                 'Appuyer sur ESPACE pour plonger.',
-                'Vous devez retenir une suite de lettres qui sera toujours différente et la restituer ensuite dans un temps imparti (chaque lettre correspondant à une figure).'
+                'Vous devez retenir une suite de lettres qui sera toujours différente et la restituer ensuite dans un temps imparti (chaque lettre correspondant à une figure).',
               ]"
             />
           </div>
@@ -177,12 +187,12 @@ const carousel = ref(0);
                 :keys="['H']"
                 class="w-fit my-4"
               />
-            </div>  
+            </div>
             <Title text="Astuces" class="mb-3"></Title>
             <Info
               :content="[
                 'Appuyer sur ESPACE pour démarrer.',
-                'Vous disposez de 2 jauges qui vous permettent de viser et de tirer le plus possible au centre de la cible. Pour cela, vous appuyerez sur H pour régler la visée horizontale puis sur V pour régler la visée verticale.'
+                'Vous disposez de 2 jauges qui vous permettent de viser et de tirer le plus possible au centre de la cible. Pour cela, vous appuyerez sur H pour régler la visée horizontale puis sur V pour régler la visée verticale.',
               ]"
             />
           </div>

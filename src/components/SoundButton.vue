@@ -10,10 +10,10 @@ const changeSound = () => {
 
 <template>
   <button v-if="soundON" @click="changeSound()" class="h-14 w-14 opacity-70">
-    <img src="@/assets/sound_off.png" alt="Sound icon" />
+    <img src="@/../public/sound_off.png" alt="Sound icon" />
   </button>
   <button v-else @click="changeSound()" class="h-14 w-14">
-    <img src="@/assets/sound_on.png" alt="Sound icon" />
+    <img src="@/../public/sound_on.png" alt="Sound icon" />
   </button>
 </template>
 
