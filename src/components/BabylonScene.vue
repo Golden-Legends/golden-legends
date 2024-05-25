@@ -282,9 +282,21 @@
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
     <GateButton
-      id="boxeDefense"
-      name="Défense"
+      id="boxeFacile"
+      name="Facile"
       difficulty="easy"
+      game="levelBoxe"
+    />
+    <GateButton
+      id="boxeMoyen"
+      name="Moyen"
+      difficulty="intermediate"
+      game="levelBoxe"
+    />
+    <GateButton
+      id="boxeDifficile"
+      name="Difficile"
+      difficulty="hard"
       game="levelBoxe"
     />
   </GameGate>
@@ -951,7 +963,7 @@
   >
     <ResultsContent :results="storeJavelot.state.results" />
   </Results>
-  <JavelinAngle 
+  <JavelinAngle
     id="javelotGame-angle"
     class="hidden absolute -ml-24 top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
@@ -993,7 +1005,7 @@
     id="boxeGame-text-4"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <BoxingContainer 
+  <BoxingContainer
     id="boxeGame-container"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
@@ -1003,6 +1015,19 @@
     class="hidden absolute bottom-12 right-12"
     :score="storeBoxe.state.score"
   />
+  <Tir
+    name="boxeGame-text-finish"
+    id="boxeGame-text-finish"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Results
+    title="Boxe"
+    name="boxeGame-results"
+    id="boxeGame-results"
+    class="hidden -mt-48 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+    <ResultsContent :results="storeBoxe.state.results" />
+  </Results>
 </template>
 
 <script setup lang="ts">
