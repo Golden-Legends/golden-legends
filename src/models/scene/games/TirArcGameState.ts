@@ -658,10 +658,10 @@ export class TirArcGameState extends GameState {
     });
     storeTirArc.commit("setResults", this.results);
     if (this.score >= this.settings.level[this.difficulty].pointToSucceed) {
-      if (this.difficulty === "easy") {
+      if (this.difficulty === "easy" && localStorage.getItem("levelTirArc") === "easy") {
         localStorage.setItem("levelTirArc", "intermediate");
       }
-      if (this.difficulty === "intermediate") {
+      if (this.difficulty === "intermediate" && localStorage.getItem("levelTirArc") === "intermediate"){
         localStorage.setItem("levelTirArc", "hard");
       }
     }
