@@ -194,17 +194,24 @@ export class TirArcGameState extends GameState {
       // Vector3(4.78, 3.27, 6.38)
       // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
-      
       document.getElementById("map-keybind")!.classList.add("hidden");
       document.getElementById("tirArctp")!.classList.add("hidden");
-      document.getElementById("tirArcGame-skip-button")!.classList.remove("hidden");
+      document
+        .getElementById("tirArcGame-skip-button")!
+        .classList.remove("hidden");
       document.getElementById("tirArcgame-help")!.classList.remove("hidden");
       this.addEventListenerById("close-help-tirArc", "click", () => {
-          document.getElementById("tirArcgame-help")!.classList.add("hidden");
+        document.getElementById("tirArcgame-help")!.classList.add("hidden");
       });
-      document.getElementById("tirArcGame-action-container")!.classList.remove("hidden");
-      document.getElementById("tirArcGame-vertical-container")!.classList.remove("hidden");
-      document.getElementById("tirArcGame-horizontal-container")!.classList.remove("hidden");
+      document
+        .getElementById("tirArcGame-action-container")!
+        .classList.remove("hidden");
+      document
+        .getElementById("tirArcGame-vertical-container")!
+        .classList.remove("hidden");
+      document
+        .getElementById("tirArcGame-horizontal-container")!
+        .classList.remove("hidden");
       this.addEventListenerById("tirArcGame-skip-button", "click", () => {
         document.getElementById("tirArcgame-help")!.classList.add("hidden");
         this.scene.stopAnimation(this._camera);
@@ -216,8 +223,12 @@ export class TirArcGameState extends GameState {
       this.game.engine.hideLoadingUI();
 
       this.CreateCameraMouv().then(() => {
-        document.getElementById("tirArcGame-ready-button")!.classList.remove("hidden");
-        document.getElementById("tirArcGame-skip-button")!.classList.add("hidden");
+        document
+          .getElementById("tirArcGame-ready-button")!
+          .classList.remove("hidden");
+        document
+          .getElementById("tirArcGame-skip-button")!
+          .classList.add("hidden");
         document.getElementById("tirArcgame-help")!.classList.add("hidden");
         this.addEventListenerById("tirArcGame-ready-button", "click", () => {
           this.startCountdown([
@@ -372,6 +383,7 @@ export class TirArcGameState extends GameState {
         console.log("afficher gui game");
         this.playActive = true;
         // this.player.setAfficherGui();
+        storeTirArc.commit("setGameActive", true);
       }
     }
 
@@ -645,12 +657,12 @@ export class TirArcGameState extends GameState {
       result: "" + this.score + "/100",
     });
     storeTirArc.commit("setResults", this.results);
-    if(this.score >= this.settings.level[this.difficulty].pointToSucceed){
-      if(this.difficulty === "easy") {
-          localStorage.setItem("levelTirArc", "intermediate");
+    if (this.score >= this.settings.level[this.difficulty].pointToSucceed) {
+      if (this.difficulty === "easy") {
+        localStorage.setItem("levelTirArc", "intermediate");
       }
-      if(this.difficulty === "intermediate") {
-          localStorage.setItem("levelTirArc", "hard");
+      if (this.difficulty === "intermediate") {
+        localStorage.setItem("levelTirArc", "hard");
       }
     }
   }
@@ -681,6 +693,7 @@ export class TirArcGameState extends GameState {
       increasing: true,
       horizontalPlaying: true,
       verticalPlaying: false,
+      isGameActive: false,
     });
   }
 }

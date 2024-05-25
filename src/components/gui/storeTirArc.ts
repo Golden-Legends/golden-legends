@@ -18,6 +18,7 @@ export const storeTirArc = createStore({
         increasing: true,
         horizontalPlaying: true,
         verticalPlaying: false,
+        isGameActive: false,
       },
     };
   },
@@ -39,6 +40,9 @@ export const storeTirArc = createStore({
     },
     setInitialState(state, value) {
       state.initialState = value;
+    },
+    setGameActive(state, value) {
+      state.initialState.isGameActive = value;
     },
   },
 });
