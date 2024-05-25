@@ -19,6 +19,8 @@ import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { BotNatation } from "@/models/controller/BotNatation";
 import { PlayerInputNatationGame } from "@/models/inputsMangement/PlayerInputNatationGame";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebase.ts";
 import { storeSound } from "@/components/gui/storeSound";
 
 interface line {
@@ -235,10 +237,9 @@ export class NatationGameState extends GameState {
       ) {
         this.endGame = true;
       }
-      if (this.endGame) {
-        if (!this.scoreboardIsShow) {
-          this.showScoreBoard();
-        }
+      if (this.endGame && !this.scoreboardIsShow) {
+        this.scoreboardIsShow = true;
+        this.showScoreBoard();
       } else {
         if (this.countdownInProgress) {
           this.currentTime = performance.now();
@@ -410,7 +411,18 @@ export class NatationGameState extends GameState {
     storeNatation.commit("setResults", this.results);
   }
 
-  showScoreBoard(): void {
+  async handleResult(): Promise<void> {
+    const results = await getDocs(collection(db, "swimming"));
+    results.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+    });
+    await addDoc(collection(db, "swimming"), {
+      username: this.playerName,
+      time: this.timer,
+    });
+  }
+
+  async showScoreBoard(): Promise<void> {
     document
       .getElementById("natationGame-text-finish")!
       .classList.remove("hidden");
@@ -422,6 +434,7 @@ export class NatationGameState extends GameState {
         this.game.changeState(new InGameState(this.game, this.game.canvas));
       },
     );
+    await this.handleResult();
     // attendre 2 secondes avant d'afficher le tableau des scores
     setTimeout(() => {
       this.createFinaleScoreBoard();

@@ -15,6 +15,8 @@ import { store } from "@/components/gui/store.ts";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { InGameState } from "../InGameState";
 import { GameState } from "@/models/GameState.ts";
+import { db } from "@/firebase.ts";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 import { storeSound } from "@/components/gui/storeSound.ts";
 
 interface line {
@@ -296,10 +298,24 @@ export class RunningGameState extends GameState {
     store.commit("setResults", this.results);
   }
 
-  showScoreBoard(): void {
+  async handleResult(): Promise<void> {
+    const results = await getDocs(collection(db, "running"));
+    results.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+    });
+    await addDoc(collection(db, "running"), {
+      username: this.playerName,
+      time: this.timer,
+    });
+  }
+
+  async showScoreBoard(): Promise<void> {
     document
       .getElementById("runningGame-text-finish")!
       .classList.remove("hidden");
+
+    await this.handleResult();
+
     // attendre 2 secondes avant d'afficher le tableau des scores
     setTimeout(() => {
       this.createFinaleScoreBoard();
