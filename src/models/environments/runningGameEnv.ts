@@ -70,22 +70,24 @@ export class runningGameEnv {
 					const res = InstanceManager.duplicateInstance(this.assetContainerTab[randomNumbers[j % 3]], pos, new Vector3(0, offsets[j % offsets.length], 0), child, 0.09);
 					const idle = res.animationGroups.find(ag => ag.name.includes("idle"));
 					const applause = res.animationGroups.find(ag => ag.name.includes("applause"));
-					idle?.play(false);
 
 					let randomNumber = Math.floor(Math.random() * 2) + 1;
+					applause?.play(true);
 
 					// Générer un délai aléatoire entre 10 et 20 secondes, puis le multiplier par 1000 pour obtenir des millisecondes
-					const delay = (Math.random() * 50 + 150) * 100;
+					const delay = (Math.random() * 20 + 100) * 100;
 					// Démarrer les animations après le délai
 					setTimeout(() => {
 						if(randomNumber == 1){
 							if(applause){
 								idle?.stop();
+								applause.stop();
 								applause.play(true);
 							}
 						} else {
 							if(idle){
 								idle.stop();
+								applause?.stop();
 								idle.play(true);
 							}
 						}
@@ -109,18 +111,31 @@ export class runningGameEnv {
 		const res = InstanceManager.duplicateInstance(this.assetContainerTab[randomNumber1], position, new Vector3(0, 160, 0), child, 0.09);
 		const idle = res.animationGroups.find(ag => ag.name.includes("idle"));
 		const applause = res.animationGroups.find(ag => ag.name.includes("applause"));
-		idle?.play(false);
 
 		let randomNumber = Math.floor(Math.random() * 2) + 1;
+		if(randomNumber == 1){
+			if(applause){
+				idle?.stop();
+				applause.play(true);
+				console.log("applause")
+			}
+		} else {
+			if(idle){
+				idle.stop();
+				idle.play(true);
+			}
+		}
 		setTimeout(() => {
 			if(randomNumber == 1){
 				if(applause){
 					idle?.stop();
+					applause.stop();
 					applause.play(true);
 				}
 			} else {
 				if(idle){
 					idle.stop();
+					applause?.stop();
 					idle.play(true);
 				}
 			}
