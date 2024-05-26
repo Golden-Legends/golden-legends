@@ -282,9 +282,21 @@
     class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
     <GateButton
-      id="boxeDefense"
-      name="Défense"
+      id="boxeFacile"
+      name="Facile"
       difficulty="easy"
+      game="levelBoxe"
+    />
+    <GateButton
+      id="boxeMoyen"
+      name="Moyen"
+      difficulty="intermediate"
+      game="levelBoxe"
+    />
+    <GateButton
+      id="boxeDifficile"
+      name="Difficile"
+      difficulty="hard"
       game="levelBoxe"
     />
   </GameGate>
@@ -951,8 +963,41 @@
   >
     <ResultsContent :results="storeJavelot.state.results" />
   </Results>
+  <JavelinAngle
+    id="javelotGame-angle"
+    class="hidden absolute -ml-24 top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
 
   <!-- BOXE -->
+  <CommandContainer
+    name="ACTION"
+    :keys="['souris']"
+    id="boxeGame-action-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <GameHelpContainer
+    id="boxeGame-help"
+    title="Boxe"
+    class="hidden -mt-16 -top-3/4 left-1/2 transform -translate-x-1/2"
+  >
+    <button
+      id="close-help-boxe"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="ACTION" :keys="['souris']" />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Pour frapper, cliquez sur la souris dans les cibles qui apparaitront à l\'écran.',
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4"></div>
+  </GameHelpContainer>
   <ClassicButton
     text="Passer"
     name="boxeGame-skip-button"
@@ -989,6 +1034,29 @@
     id="boxeGame-text-4"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
+  <BoxingContainer
+    id="boxeGame-container"
+    class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Score
+    name="boxeGame-score"
+    id="boxeGame-score"
+    class="hidden absolute bottom-12 right-12"
+    :score="storeBoxe.state.score"
+  />
+  <Combat
+    name="boxeGame-text-finish"
+    id="boxeGame-text-finish"
+    class="hidden absolute bottom-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <Results
+    title="Boxe"
+    name="boxeGame-results"
+    id="boxeGame-results"
+    class="hidden -mt-28 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+    <ResultsContent :results="storeBoxe.state.results" />
+  </Results>
 </template>
 
 <script setup lang="ts">
@@ -1004,6 +1072,7 @@ import RDSText from "@/components/gui/running/RDSText.vue";
 import Finish from "@/components/gui/running/Finish.vue";
 import Saut from "@/components/gui/finish/Saut.vue";
 import Tir from "@/components/gui/finish/Tir.vue";
+import Combat from "@/components/gui/finish/Combat.vue";
 import Lancer from "@/components/gui/finish/Lancer.vue";
 import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
@@ -1022,6 +1091,7 @@ import { storeJump } from "@/components/gui/storeJump.ts";
 import { storePlongeon } from "@/components/gui/storePlongeon.ts";
 import { storeTirArc } from "@/components/gui/storeTirArc.ts";
 import { storeSound } from "@/components/gui/storeSound.ts";
+import { storeBoxe } from "@/components/gui/storeBoxe.ts";
 
 import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
@@ -1031,6 +1101,8 @@ import ArcheryContainer from "./gui/archery/ArcheryContainer.vue";
 import Aide from "@/components/gui/onboarding/Aide.vue";
 import Tips from "@/components/gui/onboarding/Tips.vue";
 import Info from "@/components/gui/games/Tips.vue";
+import JavelinAngle from "@/components/gui/javelin/JavelinAngle.vue";
+import BoxingContainer from "@/components/gui/boxing/BoxingContainer.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs

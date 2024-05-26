@@ -85,8 +85,10 @@ export class InGameState extends GameState {
     // await this.animStartGame();
     // set environments
     document.getElementById("options-keybind")!.classList.remove("hidden");
-    if(storeOnboard.state.debut === false){
-      document.getElementById("onboarding-container")!.classList.remove("hidden");
+    if (storeOnboard.state.debut === false) {
+      document
+        .getElementById("onboarding-container")!
+        .classList.remove("hidden");
       storeOnboard.commit("setDebut", true);
     }
     await this.setEnvironment();
@@ -111,7 +113,6 @@ export class InGameState extends GameState {
     await this.scene.whenReadyAsync();
     this.scene.attachControl();
     this.game.engine.hideLoadingUI();
-
   }
 
   public animStartGame() {
@@ -229,18 +230,23 @@ export class InGameState extends GameState {
     this.cleanup();
   }
 
-  update() { 
+  update() {
     this.jumpGame.update();
 
     // ouvre/ferme la carte
-    if (this._input.keyMap && document.getElementById("carte-dialog")!.classList.contains("hidden")
-      && !document.getElementById("map-keybind")!.classList.contains("hidden")){
+    if (
+      this._input.keyMap &&
+      document.getElementById("carte-dialog")!.classList.contains("hidden") &&
+      !document.getElementById("map-keybind")!.classList.contains("hidden")
+    ) {
       this._environment?.carte.openCarte();
-    }
-    else if (this._input.keyMap && !document.getElementById("carte-dialog")!.classList.contains("hidden")
-              && !document.getElementById("map-keybind")!.classList.contains("hidden")){
+    } else if (
+      this._input.keyMap &&
+      !document.getElementById("carte-dialog")!.classList.contains("hidden") &&
+      !document.getElementById("map-keybind")!.classList.contains("hidden")
+    ) {
       this._environment?.carte.closeCarte();
-    } 
+    }
 
     // if (!this.isGameObjectInterfacedPressed && this._input.keyGameObjects && document.getElementById("objectsFound")!.classList.contains("hidden")
     //   && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
@@ -250,33 +256,38 @@ export class InGameState extends GameState {
     //     this.isGameObjectInterfacedPressed = true;
     //     this.isOptionsInterfacedPressed = false;
     //   },250);
-      
+
     // } else if (this.isGameObjectInterfacedPressed && this._input.keyGameObjects && !document.getElementById("objectsFound")!.classList.contains("hidden")
     //   && !document.getElementById("objects-keybind")!.classList.contains("hidden")){
     //   document.getElementById("objectsFound")!.classList.add("hidden");
     //   setTimeout(() => {
     //     this.isGameObjectInterfacedPressed = false;
     //   },250);
-    // } 
+    // }
 
-    if (this.isOptionsInterfacedPressed && this._input.keyOptions && !document.getElementById("options")!.classList.contains("hidden")){
+    if (
+      this.isOptionsInterfacedPressed &&
+      this._input.keyOptions &&
+      !document.getElementById("options")!.classList.contains("hidden")
+    ) {
       document.getElementById("options")!.classList.add("hidden");
       setTimeout(() => {
         this.isOptionsInterfacedPressed = false;
-      },250);
-    }
-    else if (!this.isOptionsInterfacedPressed && this._input.keyOptions && document.getElementById("options")!.classList.contains("hidden")){
-      // Jouvre les options    
+      }, 250);
+    } else if (
+      !this.isOptionsInterfacedPressed &&
+      this._input.keyOptions &&
+      document.getElementById("options")!.classList.contains("hidden")
+    ) {
+      // Jouvre les options
       document.getElementById("options")!.classList.remove("hidden");
       document.getElementById("objectsFound")!.classList.add("hidden");
       this.removeHandlePointerLock();
       setTimeout(() => {
         this.isOptionsInterfacedPressed = true;
         this.isGameObjectInterfacedPressed = false;
-      },250);
+      }, 250);
     }
-
-    
   }
 
   private async _loadCharacterAssets(scene: Scene) {
@@ -354,7 +365,13 @@ export class InGameState extends GameState {
     shadowGenerator.darkness = 0.4;
 
     //Create the player
-    this._player = new Player(this.assets, scene, shadowGenerator, this, this._input);
+    this._player = new Player(
+      this.assets,
+      scene,
+      shadowGenerator,
+      this,
+      this._input,
+    );
     this._player.mesh.position = new Vector3(-185, 7, -90);
   }
 
@@ -363,7 +380,7 @@ export class InGameState extends GameState {
     this._environment = new Environment(this.scene, this._player, this);
     this.tpButtonListener();
 
-    this.game.playTrack('inGame');
+    this.game.playTrack("inGame");
 
     await this._environment.load();
   }
@@ -374,53 +391,79 @@ export class InGameState extends GameState {
       this.game.changeState(new RunningGameState(this.game, this.canvas));
     });
     this.addEventListenerById("100mMoyen", "click", () => {
-      this.game.changeState(new RunningGameState(this.game, this.canvas, "intermediate"));
+      this.game.changeState(
+        new RunningGameState(this.game, this.canvas, "intermediate"),
+      );
     });
     this.addEventListenerById("100mDifficile", "click", () => {
-      this.game.changeState(new RunningGameState(this.game, this.canvas, "hard"));
+      this.game.changeState(
+        new RunningGameState(this.game, this.canvas, "hard"),
+      );
     });
     // natation
     this.addEventListenerById("natationFacile", "click", () => {
       this.game.changeState(new NatationGameState(this.game, this.canvas));
     });
     this.addEventListenerById("natationMoyen", "click", () => {
-      this.game.changeState(new NatationGameState(this.game, this.canvas, "intermediate"));
+      this.game.changeState(
+        new NatationGameState(this.game, this.canvas, "intermediate"),
+      );
     });
     this.addEventListenerById("natationDifficile", "click", () => {
-      this.game.changeState(new NatationGameState(this.game, this.canvas, "hard"));
+      this.game.changeState(
+        new NatationGameState(this.game, this.canvas, "hard"),
+      );
     });
     // plogeon
     this.addEventListenerById("plongeonFacile", "click", () => {
       this.game.changeState(new PlongeonGameState(this.game, this.canvas));
     });
     this.addEventListenerById("plongeonMoyen", "click", () => {
-      this.game.changeState(new PlongeonGameState(this.game, this.canvas, "intermediate"));
+      this.game.changeState(
+        new PlongeonGameState(this.game, this.canvas, "intermediate"),
+      );
     });
     this.addEventListenerById("plongeonDifficile", "click", () => {
-      this.game.changeState(new PlongeonGameState(this.game, this.canvas, "hard"));
+      this.game.changeState(
+        new PlongeonGameState(this.game, this.canvas, "hard"),
+      );
     });
     // boxe
-    this.addEventListenerById("boxeDefense", "click", () => {
+    this.addEventListenerById("boxeFacile", "click", () => {
       this.game.changeState(new BoxeGameState(this.game, this.canvas));
+    });
+    this.addEventListenerById("boxeMoyen", "click", () => {
+      this.game.changeState(
+        new BoxeGameState(this.game, this.canvas, "intermediate"),
+      );
+    });
+    this.addEventListenerById("boxeDifficile", "click", () => {
+      this.game.changeState(new BoxeGameState(this.game, this.canvas, "hard"));
     });
     // tir a larc
     this.addEventListenerById("tirArcFacile", "click", () => {
       this.game.changeState(new TirArcGameState(this.game, this.canvas));
     });
     this.addEventListenerById("tirArcMoyen", "click", () => {
-      this.game.changeState(new TirArcGameState(this.game, this.canvas, "intermediate"));
+      this.game.changeState(
+        new TirArcGameState(this.game, this.canvas, "intermediate"),
+      );
     });
     this.addEventListenerById("tirArcDifficile", "click", () => {
-      this.game.changeState(new TirArcGameState(this.game, this.canvas, "hard"));
+      this.game.changeState(
+        new TirArcGameState(this.game, this.canvas, "hard"),
+      );
     });
     // javelot
     this.addEventListenerById("javelotFacile", "click", () => {
       this.game.changeState(new JavelotGameState(this.game, this.canvas));
     });
     this.addEventListenerById("javelotMoyen", "click", () => {
-      this.game.changeState(new JavelotGameState(this.game, this.canvas, "intermediate"));
+      this.game.changeState(
+        new JavelotGameState(this.game, this.canvas, "intermediate"),
+      );
     });
-  }  
+  }
 
   public listenerGui(): void {
     // GUI démarrage du jeu
@@ -431,7 +474,7 @@ export class InGameState extends GameState {
       document.getElementById("objectsFound")!.classList.add("hidden");
       setTimeout(() => {
         this.isGameObjectInterfacedPressed = false;
-      },250);
+      }, 250);
     });
 
     // GUI options
@@ -441,14 +484,14 @@ export class InGameState extends GameState {
       setTimeout(() => {
         this.isOptionsInterfacedPressed = false;
         this.isGameObjectInterfacedPressed = true;
-      },250);
+      }, 250);
     });
     this.addEventListenerById("open-aide-menu", "click", () => {
       document.getElementById("aide-container")!.classList.remove("hidden");
       document.getElementById("options")!.classList.add("hidden");
       setTimeout(() => {
         this.isOptionsInterfacedPressed = false;
-      },250);
+      }, 250);
     });
     this.addEventListenerById("close-aide", "click", () => {
       document.getElementById("aide-container")!.classList.add("hidden");
@@ -458,7 +501,7 @@ export class InGameState extends GameState {
       document.getElementById("options")!.classList.add("hidden");
       setTimeout(() => {
         this.isOptionsInterfacedPressed = false;
-      },250);
+      }, 250);
     });
     this.addEventListenerById("close-tips", "click", () => {
       document.getElementById("tips-container")!.classList.add("hidden");
@@ -468,31 +511,31 @@ export class InGameState extends GameState {
       document.getElementById("options")!.classList.remove("hidden");
       setTimeout(() => {
         this.isOptionsInterfacedPressed = true;
-      },250);
+      }, 250);
     });
     this.addEventListenerById("back-options2", "click", () => {
       document.getElementById("tips-container")!.classList.add("hidden");
       document.getElementById("options")!.classList.remove("hidden");
       setTimeout(() => {
         this.isOptionsInterfacedPressed = true;
-      },250);
+      }, 250);
     });
     this.addEventListenerById("back-options3", "click", () => {
       document.getElementById("objectsFound")!.classList.add("hidden");
       document.getElementById("options")!.classList.remove("hidden");
       setTimeout(() => {
         this.isOptionsInterfacedPressed = true;
-      },250);
+      }, 250);
     });
     this.addEventListenerById("close-options", "click", () => {
       document.getElementById("options")!.classList.add("hidden");
       setTimeout(() => {
         this.isOptionsInterfacedPressed = false;
-      },250);
+      }, 250);
     });
     this.addEventListenerById("back-menu", "click", () => {
       // new Game(this.canvas);
-      window.location.href = '/';
+      window.location.href = "/";
       console.log("back to menu");
     });
 
@@ -521,18 +564,18 @@ export class InGameState extends GameState {
     // GUI sound
     this.addEventListenerById("son", "input", (event) => {
       const newValue = (event.target as HTMLInputElement)?.value;
-      storeSound.commit('setSound', newValue);
-      if(storeSound.state.sound > storeSound.state.oldSound){
-        const newVolume = 1+(storeSound.state.sound - storeSound.state.oldSound)/100;
+      storeSound.commit("setSound", newValue);
+      if (storeSound.state.sound > storeSound.state.oldSound) {
+        const newVolume =
+          1 + (storeSound.state.sound - storeSound.state.oldSound) / 100;
         this.game.getSoundManager().setVolumeAllTracks(newVolume);
         // console.log(1+(storeSound.state.sound - storeSound.state.oldSound)/100)
-      }
-      else if(storeSound.state.sound < storeSound.state.oldSound){
-        const newVolume = 1-(storeSound.state.oldSound - storeSound.state.sound)/100;
+      } else if (storeSound.state.sound < storeSound.state.oldSound) {
+        const newVolume =
+          1 - (storeSound.state.oldSound - storeSound.state.sound) / 100;
         this.game.getSoundManager().setVolumeAllTracks(newVolume);
         // console.log(1-(storeSound.state.oldSound - storeSound.state.sound)/100)
-      }
-      else{
+      } else {
         this.game.getSoundManager().setVolumeAllTracks(1);
         // console.log(1)
       }
@@ -544,11 +587,9 @@ export class InGameState extends GameState {
     const level100m = localStorage.getItem("level100m");
     if (level100m === null) {
       localStorage.setItem("level100m", "easy");
-    }
-    else if (level100m === "intermediate") {
+    } else if (level100m === "intermediate") {
       document.getElementById("100mMoyen")!.removeAttribute("disabled");
-    }
-    else if (level100m === "hard") {
+    } else if (level100m === "hard") {
       document.getElementById("100mMoyen")!.removeAttribute("disabled");
       document.getElementById("100mDifficile")!.removeAttribute("disabled");
     }
@@ -557,11 +598,9 @@ export class InGameState extends GameState {
     const levelNatation = localStorage.getItem("levelNatation");
     if (levelNatation === null) {
       localStorage.setItem("levelNatation", "easy");
-    }
-    else if (levelNatation === "intermediate") {
+    } else if (levelNatation === "intermediate") {
       document.getElementById("natationMoyen")!.removeAttribute("disabled");
-    }
-    else if (levelNatation === "hard") {
+    } else if (levelNatation === "hard") {
       document.getElementById("natationMoyen")!.removeAttribute("disabled");
       document.getElementById("natationDifficile")!.removeAttribute("disabled");
     }
@@ -570,11 +609,9 @@ export class InGameState extends GameState {
     const levelPlongeon = localStorage.getItem("levelPlongeon");
     if (levelPlongeon === null) {
       localStorage.setItem("levelPlongeon", "easy");
-    }
-    else if (levelPlongeon === "intermediate") {
+    } else if (levelPlongeon === "intermediate") {
       document.getElementById("plongeonMoyen")!.removeAttribute("disabled");
-    }
-    else if (levelPlongeon === "hard") {
+    } else if (levelPlongeon === "hard") {
       document.getElementById("plongeonMoyen")!.removeAttribute("disabled");
       document.getElementById("plongeonDifficile")!.removeAttribute("disabled");
     }
@@ -583,11 +620,9 @@ export class InGameState extends GameState {
     const levelTirArc = localStorage.getItem("levelTirArc");
     if (levelTirArc === null) {
       localStorage.setItem("levelTirArc", "easy");
-    }
-    else if (levelTirArc === "intermediate") {
+    } else if (levelTirArc === "intermediate") {
       document.getElementById("tirArcMoyen")!.removeAttribute("disabled");
-    }
-    else if (levelTirArc === "hard") {
+    } else if (levelTirArc === "hard") {
       document.getElementById("tirArcMoyen")!.removeAttribute("disabled");
       document.getElementById("tirArcDifficile")!.removeAttribute("disabled");
     }
@@ -596,13 +631,22 @@ export class InGameState extends GameState {
     const levelJavelot = localStorage.getItem("levelJavelot");
     if (levelJavelot === null) {
       localStorage.setItem("levelJavelot", "easy");
-    }
-    else if (levelJavelot === "intermediate") {
+    } else if (levelJavelot === "intermediate") {
       document.getElementById("javelotMoyen")!.removeAttribute("disabled");
-    }
-    else if (levelJavelot === "hard") {
+    } else if (levelJavelot === "hard") {
       document.getElementById("javelotMoyen")!.removeAttribute("disabled");
       document.getElementById("javelotDifficile")!.removeAttribute("disabled");
+    }
+
+    //boxe
+    const levelBoxe = localStorage.getItem("levelBoxe");
+    if (levelBoxe === null) {
+      localStorage.setItem("levelBoxe", "easy");
+    } else if (levelBoxe === "intermediate") {
+      document.getElementById("boxeMoyen")!.removeAttribute("disabled");
+    } else if (levelBoxe === "hard") {
+      document.getElementById("boxeMoyen")!.removeAttribute("disabled");
+      document.getElementById("boxeDifficile")!.removeAttribute("disabled");
     }
   }
 }

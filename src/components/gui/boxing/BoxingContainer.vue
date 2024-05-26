@@ -1,10 +1,32 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 import AimTarget from "@/components/gui/boxing/AimTarget.vue";
+import { storeBoxe } from "@/components/gui/storeBoxe.ts";
 
-const TIMER = 30;
 const GAME_SIZE = 5;
-const TIMEOUT = 1000;
+const TIMER = 30;
+const TIMEOUT = ref(storeBoxe.state.timeout);
+
+watch(
+  () => storeBoxe.state.playable,
+  (newVal) => {
+    if (!newVal) {
+      clearInterval(intervalId);
+      clearInterval(timerId);
+    } else {
+      resetInterval();
+      timer.value = TIMER;
+      startTimer();
+    }
+  },
+);
+
+watch(
+  () => storeBoxe.state.timeout,
+  (newVal) => {
+    TIMEOUT.value = newVal;
+  },
+);
 
 const lastPosition = ref<{ row: number; col: number } | null>(null);
 
@@ -49,14 +71,13 @@ const resetInterval = () => {
   if (intervalId) {
     clearInterval(intervalId);
   }
-  intervalId = setInterval(updateGameState, TIMEOUT);
+  intervalId = setInterval(updateGameState, TIMEOUT.value);
 };
 
-const counter = ref(0);
 const timer = ref(TIMER);
 
 const handleClick = () => {
-  counter.value += 1;
+  storeBoxe.state.score++;
   updateGameState();
 };
 
@@ -66,14 +87,15 @@ const startTimer = () => {
     timer.value -= 1;
     if (timer.value === 0) {
       clearInterval(timerId);
-      clearInterval(intervalId); // Stop game when timer ends
+      clearInterval(intervalId);
+      storeBoxe.state.playable = false;
     }
   }, 1000);
 };
 
 onMounted(() => {
-  resetInterval();
-  startTimer();
+  // resetInterval();
+  // startTimer();
 });
 
 onUnmounted(() => {
@@ -88,8 +110,8 @@ onUnmounted(() => {
 
 <template>
   <div>
-    <div class="flex justify-between">
-      <div>Score: {{ counter }}</div>
+    <div class="flex justify-between text-2xl text-white">
+      <div>Score: {{ storeBoxe.state.score }}</div>
       <div>Temps: {{ timer }}</div>
     </div>
 

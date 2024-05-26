@@ -12,6 +12,10 @@ import {
 } from "@babylonjs/core";
 import { PlayerBoxeGame } from "@/models/controller/PlayerBoxeGame";
 import { BotBoxe } from "@/models/controller/BotBoxe";
+import { storeBoxe } from "@/components/gui/storeBoxe.ts";
+import { InGameState } from "@/models/scene/InGameState.ts";
+import { storeTirArc } from "@/components/gui/storeTirArc.ts";
+import { Result } from "@/components/gui/results/ResultsContent.vue";
 
 interface line {
   start: string;
@@ -20,13 +24,13 @@ interface line {
 
 interface botInfo {
   name: string;
-  speed: number;
   pathFile: string;
 }
 
 interface level {
-  maxSpeed: number;
   botInfo: botInfo[];
+  pointToSucceed: number;
+  timeout: number;
 }
 
 interface IBoxeGameState {
@@ -57,6 +61,14 @@ export class BoxeGameState extends GameState {
   private countdownInProgress: boolean = false;
   private fightStartTime: number = 0;
 
+  private gameStart: boolean = false;
+  private display: boolean = false;
+  private scoreboardIsShow: boolean = false;
+  private continueButtonIsPressed: boolean = false;
+  private results: Result[] = [];
+  private score: string = "0";
+  private endGame: boolean = false;
+
   constructor(
     game: Game,
     canvas: HTMLCanvasElement,
@@ -68,8 +80,13 @@ export class BoxeGameState extends GameState {
     this.playerName = localStorage.getItem("username") || "Playertest";
     this.settings = BoxeGameSettings; //settings running to do later
     this.difficulty = difficulty ? difficulty : "easy";
+    storeBoxe.commit(
+      "setTimeout",
+      this.settings.level[this.difficulty].timeout,
+    );
     this.isMultiplayer = multi ? multi : false;
     this.game.playTrack("boxeTennis");
+    document.getElementById("boxetp")!.classList.add("hidden");
   }
 
   async setEnvironment(): Promise<void> {
@@ -136,7 +153,7 @@ export class BoxeGameState extends GameState {
 
   private async runSoloGame() {
     await this.initSoloWithBot(this.difficulty);
-    // this.buildScoreBoard();
+    this.buildScoreBoard();
   }
 
   private async initSoloWithBot(difficulty: string) {
@@ -159,7 +176,7 @@ export class BoxeGameState extends GameState {
   }
 
   initGui() {
-    document.getElementById("runningGame-timer")!.classList.remove("hidden");
+    document.getElementById("boxeGame-score")!.classList.remove("hidden");
   }
 
   // Implement abstract members of GameState
@@ -197,10 +214,14 @@ export class BoxeGameState extends GameState {
       // Vector3(4.78, 3.27, 6.38)
       // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
-      document
-        .getElementById("boxeGame-skip-button")!
-        .classList.remove("hidden");
+      document.getElementById("boxeGame-help")!.classList.remove("hidden");
+      document.getElementById("boxeGame-action-container")!.classList.remove("hidden");
+      this.addEventListenerById("close-help-boxe", "click", () => {
+        document.getElementById("boxeGame-help")!.classList.add("hidden");
+      });
+      document.getElementById("boxeGame-skip-button")!.classList.remove("hidden");
       this.addEventListenerById("boxeGame-skip-button", "click", () => {
+        document.getElementById("boxeGame-help")!.classList.add("hidden");
         this.scene.stopAnimation(this._camera);
         this.AfterCamAnim();
       });
@@ -210,6 +231,7 @@ export class BoxeGameState extends GameState {
       this.game.engine.hideLoadingUI();
 
       this.CreateCameraMouv().then(() => {
+        document.getElementById("boxeGame-help")!.classList.add("hidden");
         document
           .getElementById("boxeGame-ready-button")!
           .classList.remove("hidden");
@@ -263,14 +285,17 @@ export class BoxeGameState extends GameState {
         this.fightStartTime = performance.now();
       }
     }, 1000);
+    setTimeout(() => {
+      this.gameStart = true;
+    }, 4500);
   }
 
   AfterCamAnim(): void {
     // this._camera.dispose();
     // this._camera = this.player.createCameraPlayer(this.player.transform);
-    this._camera.position = new Vector3(-4, 2.5, 14.45);
-    this._camera.rotation._y = Math.PI / 2;
-    this._camera.rotation._x = Math.PI / 5;
+    this._camera.position = new Vector3(-0.74, 0.4, 13.4);
+    this._camera.rotation._y = -2 * Math.PI;
+    this._camera.rotation._x = 0;
     this.player.setCamera(this._camera);
   }
 
@@ -302,6 +327,7 @@ export class BoxeGameState extends GameState {
     camKeys.push({ frame: 4 * fps, value: new Vector3(4, 3.6, 14.45) });
     camKeys.push({ frame: 6 * fps, value: new Vector3(0, 3.6, 17.9) });
     camKeys.push({ frame: 9 * fps, value: new Vector3(-4, 2.5, 14.45) });
+    camKeys.push({ frame: 11 * fps, value: new Vector3(-0.74, 0.4, 13.4) });
 
     rotationKeys.push({
       frame: 0,
@@ -323,6 +349,10 @@ export class BoxeGameState extends GameState {
       frame: 9 * fps,
       value: new Vector3(Math.PI / 5, (-3 * Math.PI) / 2, 0),
     });
+    rotationKeys.push({
+      frame: 11 * fps,
+      value: new Vector3(0, -2 * Math.PI, 0),
+    });
 
     camAnim.setKeys(camKeys);
     rotationAnim.setKeys(rotationKeys);
@@ -330,21 +360,95 @@ export class BoxeGameState extends GameState {
     this._camera.animations.push(camAnim);
     this._camera.animations.push(rotationAnim);
 
-    await this.scene.beginAnimation(this._camera, 0, 9 * fps).waitAsync();
+    await this.scene.beginAnimation(this._camera, 0, 11 * fps).waitAsync();
     document.getElementById("boxeGame-skip-button")!.classList.add("hidden");
   }
 
   async exit(): Promise<void> {
-    console.log("exit boxe game");
+    document.getElementById("boxeGame-score")!.classList.add("hidden");
+    document.getElementById("boxeGame-results")!.classList.add("hidden");
+    document.getElementById("boxeGame-action-container")!.classList.add("hidden");
 
-    document.getElementById("runningGame-timer")!.classList.add("hidden");
+    storeBoxe.commit("setScore", 0);
+    storeBoxe.commit("resetTimer");
+    storeBoxe.commit("setPlayable", false);
+    storeBoxe.commit("setResults", []);
 
     this.cleanup();
   }
 
   update(): void {
-    console.log("update");
+    // console.log("update");
+    if (this.gameStart && !this.display) {
+      this.display = true;
+      document.getElementById("boxeGame-container")!.classList.remove("hidden");
+      storeBoxe.commit("setPlayable", true);
+    }
+
+    if (!storeBoxe.state.playable && this.gameStart && !this.endGame) {
+      this.endGame = true;
+      this.createFinaleScoreBoard();
+      setTimeout(() => {
+        document.getElementById("boxeGame-container")!.classList.add("hidden");
+        this.showScoreBoard();
+      }, 1000);
+    }
   }
 
-  //timer à revoir avec à la place un compteur de points (affichage différents juste)
+  showScoreBoard(): void {
+    this.scoreboardIsShow = true;
+    document.getElementById("boxeGame-text-finish")!.classList.remove("hidden");
+    this.addEventListenerByQuerySelector(
+      "#boxeGame-results #continue-button",
+      "click",
+      () => {
+        this.continueButtonIsPressed = true;
+        this.game.changeState(new InGameState(this.game, this.game.canvas));
+      },
+    );
+    // attendre 2 secondes avant d'afficher le tableau des scores
+    setTimeout(() => {
+      document.getElementById("boxeGame-text-finish")!.classList.add("hidden");
+      document.getElementById("boxeGame-results")!.classList.remove("hidden");
+    }, 2000);
+  }
+
+  buildScoreBoard(): void {
+    this.results.push({ place: 1, name: this.playerName, result: "0" });
+    storeBoxe.commit("setResults", this.results);
+  }
+
+  createFinaleScoreBoard(): void {
+    this.results = [];
+    this.score = storeBoxe.state.score.toString();
+    this.results.push({
+      place: 1,
+      name: this.playerName,
+      result: this.score,
+    });
+    storeBoxe.commit("setResults", this.results);
+    console.log(
+      Number(this.score),
+      this.settings.level[this.difficulty].pointToSucceed,
+    );
+    console.log(
+      Number(this.score) >= this.settings.level[this.difficulty].pointToSucceed,
+    );
+    if (
+      Number(this.score) >= this.settings.level[this.difficulty].pointToSucceed
+    ) {
+      if (
+        this.difficulty === "easy" &&
+        localStorage.getItem("levelBoxe") === "easy"
+      ) {
+        localStorage.setItem("levelBoxe", "intermediate");
+      }
+      if (
+        this.difficulty === "intermediate" &&
+        localStorage.getItem("levelBoxe") === "intermediate"
+      ) {
+        localStorage.setItem("levelBoxe", "hard");
+      }
+    }
+  }
 }
