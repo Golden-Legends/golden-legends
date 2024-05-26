@@ -22,6 +22,8 @@ import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
 import { addDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebase.ts";
 import { storeSound } from "@/components/gui/storeSound";
+import { timerToSMS } from "@/utils/utils.ts";
+import { handleNewRecord } from "@/services/result-service.ts";
 
 interface line {
   start: string;
@@ -97,10 +99,9 @@ export class NatationGameState extends GameState {
     this.playerName = localStorage.getItem("username") || "Playertest";
     this.rectangleReturn = MeshBuilder.CreateBox("rectangleReturn");
     const soundActive = storeSound.state.etat;
-    if(!soundActive) {
+    if (!soundActive) {
       this.game.playTrack("100m");
-    }
-    else{
+    } else {
       this.game.changeActive("100m");
     }
   }
@@ -389,12 +390,6 @@ export class NatationGameState extends GameState {
     }
   }
 
-  timerToSMS(time: number): string {
-    const seconds = Math.floor(time / 1000);
-    const milliseconds = time % 100;
-    return `${seconds}.${milliseconds < 10 ? "0" : ""}${milliseconds}`;
-  }
-
   buildScoreBoard(): void {
     this.results.push({
       place: 1,
@@ -412,14 +407,11 @@ export class NatationGameState extends GameState {
   }
 
   async handleResult(): Promise<void> {
-    const results = await getDocs(collection(db, "swimming"));
-    results.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-    });
-    await addDoc(collection(db, "swimming"), {
-      username: this.playerName,
-      time: this.timer,
-    });
+    await handleNewRecord(
+      "swimming",
+      Number(this.computeScore()),
+      this.playerName,
+    );
   }
 
   async showScoreBoard(): Promise<void> {
@@ -455,21 +447,23 @@ export class NatationGameState extends GameState {
     }, 2000);
   }
 
+  computeScore(): string {
+    return this.player.getEndTime()
+      ? timerToSMS(Math.round(this.player.getEndTime() - this.raceStartTime))
+      : "no score";
+  }
+
   createFinaleScoreBoard() {
     const resultsTemp: Result[] = [];
 
     // Résultat du joueur
-    const playerResult = this.player.getEndTime()
-      ? this.timerToSMS(
-          Math.round(this.player.getEndTime() - this.raceStartTime),
-        )
-      : "no score";
+    const playerResult = this.computeScore();
     resultsTemp.push({ place: 0, name: this.playerName, result: playerResult });
 
     // Résultats des bots
     this.botArray.forEach((bot, index) => {
       const botResult = bot.getEndTime()
-        ? this.timerToSMS(Math.round(bot.getEndTime() - this.raceStartTime))
+        ? timerToSMS(Math.round(bot.getEndTime() - this.raceStartTime))
         : "no score";
       resultsTemp.push({
         place: index + 1,
@@ -489,14 +483,20 @@ export class NatationGameState extends GameState {
     this.posFinale =
       this.results.findIndex((result) => result.name === this.playerName) + 1;
 
-        if(this.posFinale === 1 || this.posFinale === 2 || this.posFinale === 3) {
-            if(this.difficulty === "easy" && localStorage.getItem("levelNatation") === "easy") {
-                localStorage.setItem("levelNatation", "intermediate");
-            }
-            if(this.difficulty === "intermediate" && localStorage.getItem("levelNatation") === "intermediate") {
-                localStorage.setItem("levelNatation", "hard");
-            }
-        }
+    if (this.posFinale === 1 || this.posFinale === 2 || this.posFinale === 3) {
+      if (
+        this.difficulty === "easy" &&
+        localStorage.getItem("levelNatation") === "easy"
+      ) {
+        localStorage.setItem("levelNatation", "intermediate");
+      }
+      if (
+        this.difficulty === "intermediate" &&
+        localStorage.getItem("levelNatation") === "intermediate"
+      ) {
+        localStorage.setItem("levelNatation", "hard");
+      }
+    }
 
     // Enregistrement des résultats dans le store
     storeNatation.commit("setResults", this.results);
