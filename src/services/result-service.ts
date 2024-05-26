@@ -8,49 +8,49 @@ import {
 import { db } from "@/firebase.ts";
 
 // Define interfaces for each collection type
-interface Archery {
+export interface Archery {
   id: string;
   username: string;
   score: number;
 }
 
-interface Boxing {
+export interface Boxing {
   id: string;
   username: string;
   score: number;
 }
 
-interface Diving {
+export interface Diving {
   id: string;
   username: string;
   score: number;
 }
 
-interface Javelin {
+export interface Javelin {
   id: string;
   username: string;
   score: number;
 }
 
-interface Jump {
+export interface Jump {
   id: string;
   username: string;
   time: number;
 }
 
-interface Running {
+export interface Running {
   id: string;
   username: string;
   time: number;
 }
 
-interface Swimming {
+export interface Swimming {
   id: string;
   username: string;
   time: number;
 }
 
-type Collection =
+export type Collection =
   | "archery"
   | "boxing"
   | "diving"
@@ -59,10 +59,10 @@ type Collection =
   | "running"
   | "swimming";
 
-type TimeBasedCollection = "jump" | "running" | "swimming";
-type ScoreBasedCollection = "archery" | "boxing" | "diving" | "javelin";
+export type TimeBasedCollection = "jump" | "running" | "swimming";
+export type ScoreBasedCollection = "archery" | "boxing" | "diving" | "javelin";
 
-type CollectionDataMap = {
+export type CollectionDataMap = {
   archery: Archery;
   boxing: Boxing;
   diving: Diving;
@@ -72,13 +72,13 @@ type CollectionDataMap = {
   swimming: Swimming;
 };
 
-const isTimeBasedCollection = (
+export const isTimeBasedCollection = (
   collectionName: Collection,
 ): collectionName is TimeBasedCollection => {
   return ["jump", "running", "swimming"].includes(collectionName);
 };
 
-const isScoreBasedCollection = (
+export const isScoreBasedCollection = (
   collectionName: Collection,
 ): collectionName is ScoreBasedCollection => {
   return ["archery", "boxing", "diving", "javelin"].includes(collectionName);
@@ -152,4 +152,46 @@ export const handleNewRecord = async <T extends Collection>(
   } else {
     throw new Error("Invalid collection name");
   }
+};
+
+// It should return an object such as :
+// {
+//   archery: [
+//     { id: "1", username: "John", score: 100 },
+//     { id: "2", username: "Jane", score: 90 },
+// ...],
+//   boxing: [
+//     { id: "1", username: "John", score: 100 },
+//     { id: "2", username: "Jane", score: 90 },
+// ...],
+//}
+export const fetchAllResults = async (): Promise<{
+  archery: Archery[];
+  boxing: Boxing[];
+  diving: Diving[];
+  javelin: Javelin[];
+  jump: Jump[];
+  running: Running[];
+  swimming: Swimming[];
+}> => {
+  const [archery, boxing, diving, javelin, jump, running, swimming] =
+    await Promise.all([
+      fetchResults("archery"),
+      fetchResults("boxing"),
+      fetchResults("diving"),
+      fetchResults("javelin"),
+      fetchResults("jump"),
+      fetchResults("running"),
+      fetchResults("swimming"),
+    ]);
+
+  return {
+    archery,
+    boxing,
+    diving,
+    javelin,
+    jump,
+    running,
+    swimming,
+  };
 };
