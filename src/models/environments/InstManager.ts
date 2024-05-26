@@ -84,4 +84,22 @@ export class InstanceManager {
         newMesh.isVisible = false;
         return newMesh
     }
+
+    public static initParentPublicMesh (scene : Scene) : Mesh {
+        const outer = MeshBuilder.CreateBox(
+			"masterOuter",
+			{ width: 1, depth: 1, height: 15 },
+			scene,
+		);
+		// pour afficher la box qui sert de collision
+		outer.isVisible = false;
+		outer.isPickable = false;
+		outer.checkCollisions = true;
+		//move origin of box collider to the bottom of the mesh (to match player mesh)
+		outer.bakeTransformIntoVertices(Matrix.Translation(0, 7, 0));
+		//for collisions
+		outer.ellipsoid = new Vector3(1, 1.5, 1);
+		outer.ellipsoidOffset = new Vector3(0, 1.5, 0);
+		return outer;
+    }
 }

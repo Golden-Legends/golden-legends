@@ -41,7 +41,7 @@ export class natationGameEnv {
 		this.parentMesh = outer;
 
 		this.assetContainerTab = await InstanceManager.initInstance(this.filename, this._scene, "./models/characters/");
-		await this.loadPublic();
+		this.loadPublic();
 	}
 
 	
@@ -81,7 +81,7 @@ export class natationGameEnv {
 		}, randomNumber);
 	}
 	
-	public async loadPublic() {
+	public loadPublic() {
 		let randomNumber1 = Math.floor(Math.random() * 6) + 1;
 		let compteur = 0;
 		let tour = 0;
@@ -180,7 +180,8 @@ export class natationGameEnv {
 			if(pos){
 				let position = new Vector3(-pos.position.x, pos.position.y, pos.position.z);
 				// await this._loadCharacterAssets(this._scene, position, this.filename[Math.floor(Math.random() * 6) + 1], "public" + i, rotation);
-				this.loadInstance(i-tour*6, position, rotation)
+				this.loadInstance(i-tour*6, position, rotation);
+				pos.isVisible = false;
 			}
 		}
 
