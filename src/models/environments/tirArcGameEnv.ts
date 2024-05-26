@@ -27,7 +27,6 @@ export class tirArcGameEnv {
 			m.checkCollisions = true;
 		});
 		this.createSkybox(this._scene);
-		//TODO remettre le loadPublic
 		this.assetContainerTab = await InstanceManager.initInstance(this.filename, this._scene, "./models/characters/");
 		this.loadPublic();
 	}
