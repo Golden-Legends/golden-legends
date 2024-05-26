@@ -1,13 +1,11 @@
 import {
-  Scene,
-  SceneLoader,
-  MeshBuilder,
-  Vector3,
-  ExecuteCodeAction,
-  ActionManager,
-  Mesh,
-  Color3,
-  Texture,
+	Scene,
+	SceneLoader,
+	MeshBuilder,
+	Vector3,
+	Mesh,
+	Color3,
+	Texture,
 } from "@babylonjs/core";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
 import { gateInformation } from "../intefaces/EnvironmentsInterfaces";
@@ -105,40 +103,42 @@ export class Environment {
     });
     // this.createSkybox(this._scene);
 
-    this.disableBuild(1, 173);
-    this.invisibleBox(1, 172);
-    this.disableCar(1, 63);
-    this.invisibleBoxCar(1, 21);
-    this.loadSky();
-    this.pnj = new Pnj(this._scene);
-    this.pnj.init();
-    this.pnjTalk = new PnjTalk(this._scene, this.player?.mesh as Mesh);
-    this.pnjTalk.init();
-    this.pnjMobile = new PnjMobile(this._scene);
-    this.pnjMobile.init();
+		this.disableBuild(1,173);
+		this.invisibleBox(1,172);
+		this.disableCar(1,63);
+		this.invisibleBoxCar(1,21);
+		this.loadSky();
 
-    // const soundManager = new SoundManager(this._scene);
-    // soundManager.addTrack('inGame', './sounds/musiqueJeu.m4a', 0.05);
-    // soundManager.playTrack('inGame');
+        const tabOfNamePnj = ["pnjStrong.glb", "pnjMan.glb", "pnjWoman.glb", "pnjKid.glb", "pnjGirl.glb"];
+        const tabOfNamePnjTalk = ["pnjTalkV2.glb"];
+        const tabOfNameCar = ["voitures.glb", "voitures2.glb", "voitures3.glb", "voitures4.glb"];
+		
+		this.pnj = new Pnj(this._scene);
+		this.pnjTalk = new PnjTalk(this._scene, this.player?.mesh as Mesh);
+		this.pnjMobile = new PnjMobile(this._scene);
+		this.voitures = new Voitures(this._scene);
 
-    this.voitures = new Voitures(this._scene);
-    this.voitures.init();
-    this.stationScore = new StationScore(
-      this._scene,
-      this.player?.mesh as Mesh,
-    );
-    this.stationScore.init();
-    this.tpGame = new TpGame(
-      this._scene,
-      this.player?.mesh as Mesh,
-      this.inGameState,
-    );
-    this.tpGame.init();
-    this.createSkybox(this._scene);
-    this.createWater();
-    this.moveLogo();
-    this.options = new Options(this._scene, this.player!);
-  }
+        const parentMesh = this.pnj.initParentMesh();
+		const assetContainerTabPnj = await Pnj.initInstance(tabOfNamePnj, this._scene, "./models/characters/pnj/");
+		const assetContainerTabPnjTalk = await Pnj.initInstance(tabOfNamePnjTalk, this._scene, "./models/characters/pnj/");
+		const assetContainerTabCar = await Pnj.initInstance(tabOfNameCar, this._scene, "./models/voitures/");
+
+		this.pnj.createPnjIdle(assetContainerTabPnj, parentMesh);
+		this.pnjTalk.createPnjTalk(assetContainerTabPnjTalk, parentMesh);
+		this.pnjMobile.createPnjMobile(assetContainerTabPnj, parentMesh);
+		this.voitures.createCar(assetContainerTabCar, parentMesh);
+
+		// await this.pnjTalk.init();
+		// await this.pnjMobile.init();
+		this.stationScore = new StationScore(this._scene, this.player?.mesh as Mesh);
+		this.stationScore.init();		
+		this.tpGame = new TpGame(this._scene, this.player?.mesh as Mesh, this.inGameState);
+		this.tpGame.init();
+		this.createSkybox(this._scene);
+		this.createWater();
+		this.moveLogo();
+		this.options = new Options(this._scene, this.player!);
+	}
 
   //Load all necessary meshes for the environment
   public async _loadAsset() {
