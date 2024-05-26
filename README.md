@@ -4,7 +4,6 @@
 This is the frontend part of Golden Legends: a video game built with BabylonJS for the Games On Web 2024 contest.
 
 ## 🧬 Features
-
 ### 🎮 Mini games
 Golden Legends allows you to play multiple olympic games through our mini-games. 
 
