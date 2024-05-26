@@ -20,12 +20,10 @@ const difficulty = ref(localStorage.getItem(props.game));
 
 const disabled = computed(() => {
   if (!difficulty.value) {
-    // Wait 2sec and try again until localStorage is ready
-    while (!difficulty.value) {
-      setTimeout(() => {
-        difficulty.value = localStorage.getItem(props.game);
-      }, 2000);
-    }
+    // Wait 10sec and try again until localStorage is ready
+    setTimeout(() => {
+      difficulty.value = localStorage.getItem(props.game);
+    }, 10000);
     return true;
   } else if (difficulty.value === props.difficulty) {
     return false;
