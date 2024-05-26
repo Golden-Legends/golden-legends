@@ -373,8 +373,7 @@ export class PlongeonGameState extends GameState {
   createFinaleScoreBoard(): void {
     this.results = [];
 
-    const score = Math.round(this.player.score * (25 - ((this.plongeonStartTime - this.currentTime) / 1000)));
-
+    const score = Math.round(this.player.score * (this.settings.level[this.difficulty].limitTime - (this.currentTime - this.plongeonStartTime) / 1000));
     this.results.push({
       place: 1,
       name: this.playerName,
