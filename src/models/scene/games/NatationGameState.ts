@@ -409,7 +409,7 @@ export class NatationGameState extends GameState {
   async handleResult(): Promise<void> {
     await handleNewRecord(
       "swimming",
-      Number(this.computeScore()),
+      Math.round(this.player.getEndTime() - this.raceStartTime),
       this.playerName,
     );
   }
