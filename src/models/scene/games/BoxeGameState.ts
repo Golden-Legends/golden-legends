@@ -17,6 +17,7 @@ import { InGameState } from "@/models/scene/InGameState.ts";
 import { storeTirArc } from "@/components/gui/storeTirArc.ts";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { storeSound } from "@/components/gui/storeSound.ts";
+import { handleNewRecord } from "@/services/result-service.ts";
 
 interface line {
   start: string;
@@ -87,10 +88,9 @@ export class BoxeGameState extends GameState {
     );
     this.isMultiplayer = multi ? multi : false;
     const soundActive = storeSound.state.etat;
-    if(!soundActive) {
+    if (!soundActive) {
       this.game.playTrack("boxeTennis");
-    }
-    else{
+    } else {
       this.game.changeActive("boxeTennis");
     }
     document.getElementById("boxetp")!.classList.add("hidden");
@@ -222,11 +222,15 @@ export class BoxeGameState extends GameState {
       // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
       document.getElementById("boxeGame-help")!.classList.remove("hidden");
-      document.getElementById("boxeGame-action-container")!.classList.remove("hidden");
+      document
+        .getElementById("boxeGame-action-container")!
+        .classList.remove("hidden");
       this.addEventListenerById("close-help-boxe", "click", () => {
         document.getElementById("boxeGame-help")!.classList.add("hidden");
       });
-      document.getElementById("boxeGame-skip-button")!.classList.remove("hidden");
+      document
+        .getElementById("boxeGame-skip-button")!
+        .classList.remove("hidden");
       this.addEventListenerById("boxeGame-skip-button", "click", () => {
         document.getElementById("boxeGame-help")!.classList.add("hidden");
         this.scene.stopAnimation(this._camera);
@@ -374,7 +378,9 @@ export class BoxeGameState extends GameState {
   async exit(): Promise<void> {
     document.getElementById("boxeGame-score")!.classList.add("hidden");
     document.getElementById("boxeGame-results")!.classList.add("hidden");
-    document.getElementById("boxeGame-action-container")!.classList.add("hidden");
+    document
+      .getElementById("boxeGame-action-container")!
+      .classList.add("hidden");
 
     storeBoxe.commit("setScore", 0);
     storeBoxe.commit("resetTimer");
@@ -402,9 +408,11 @@ export class BoxeGameState extends GameState {
     }
   }
 
-  showScoreBoard(): void {
+  async showScoreBoard(): Promise<void> {
     this.scoreboardIsShow = true;
     document.getElementById("boxeGame-text-finish")!.classList.remove("hidden");
+    await handleNewRecord("boxing", Number(this.score), this.playerName);
+
     this.addEventListenerByQuerySelector(
       "#boxeGame-results #continue-button",
       "click",

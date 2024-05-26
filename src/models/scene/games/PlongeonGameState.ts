@@ -21,6 +21,7 @@ import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { store } from "@/components/gui/store";
 import { InGameState } from "../InGameState";
 import { storeSound } from "@/components/gui/storeSound";
+import { handleNewRecord } from "@/services/result-service.ts";
 
 interface line {
   start: string;
@@ -87,10 +88,9 @@ export class PlongeonGameState extends GameState {
     this.difficulty = difficulty ? difficulty : "easy";
     this.isMultiplayer = multi ? multi : false;
     const soundActive = storeSound.state.etat;
-    if(!soundActive) {
+    if (!soundActive) {
       this.game.playTrack("plongeon");
-    }
-    else{
+    } else {
       this.game.changeActive("plongeon");
     }
   }
@@ -296,27 +296,36 @@ export class PlongeonGameState extends GameState {
       return;
     }
 
-        if(this.player._isWin){ 
-            if (!this.scoreboardIsShow) {
-                // console.log(this.player.score, this.settings.level[this.difficulty].pointToSucceed)
-                if(this.player.score >= this.settings.level[this.difficulty].pointToSucceed){
-                    if(this.difficulty === "easy" && localStorage.getItem("levelPlongeon") === "easy") {
-                        localStorage.setItem("levelPlongeon", "intermediate");
-                    }
-                    if(this.difficulty === "intermediate" && localStorage.getItem("levelPlongeon") === "intermediate"){
-                        localStorage.setItem("levelPlongeon", "hard");
-                    }
-                }
-                this.createFinaleScoreBoard();
-                this.showScoreBoard();
-                console.log("affiche le score board fin de jeu")
-            }
-            console.log("FIN DE JEU");
-            return;
-        } else if(!this.player._isWin){
-            const deltaTime = this.scene.getEngine().getDeltaTime();
-            this.currentTime = performance.now();
-            this.player.play(deltaTime, this.currentTime);
+    if (this.player._isWin) {
+      if (!this.scoreboardIsShow) {
+        // console.log(this.player.score, this.settings.level[this.difficulty].pointToSucceed)
+        if (
+          this.player.score >=
+          this.settings.level[this.difficulty].pointToSucceed
+        ) {
+          if (
+            this.difficulty === "easy" &&
+            localStorage.getItem("levelPlongeon") === "easy"
+          ) {
+            localStorage.setItem("levelPlongeon", "intermediate");
+          }
+          if (
+            this.difficulty === "intermediate" &&
+            localStorage.getItem("levelPlongeon") === "intermediate"
+          ) {
+            localStorage.setItem("levelPlongeon", "hard");
+          }
+        }
+        this.createFinaleScoreBoard();
+        this.showScoreBoard();
+        console.log("affiche le score board fin de jeu");
+      }
+      console.log("FIN DE JEU");
+      return;
+    } else if (!this.player._isWin) {
+      const deltaTime = this.scene.getEngine().getDeltaTime();
+      this.currentTime = performance.now();
+      this.player.play(deltaTime, this.currentTime);
 
       if (this.letterIsGenerated && !this.suiteLettersAffiche) {
         if (this.player.isSpacedPressedForAnim) {
@@ -331,7 +340,7 @@ export class PlongeonGameState extends GameState {
       if (
         this.playActive &&
         this.settings.level[this.difficulty].limitTime <
-        this.currentTime - this.plongeonStartTime
+          this.currentTime - this.plongeonStartTime
       ) {
         this.playActive = false;
         this.endGame();
@@ -351,8 +360,19 @@ export class PlongeonGameState extends GameState {
     this.game.changeState(new InGameState(this.game, this.game.canvas));
   };
 
-  showScoreBoard(): void {
+  private computeScore() {
+    return Math.round(
+      this.player.score *
+        (this.settings.level[this.difficulty].limitTime / 1000 -
+          (this.currentTime - this.plongeonStartTime) / 1000),
+    );
+  }
+
+  async showScoreBoard(): Promise<void> {
     this.scoreboardIsShow = true;
+    const score = this.computeScore();
+    await handleNewRecord("diving", Number(score), this.playerName);
+
     document
       .getElementById("plongeonGame-text-finish")!
       .classList.remove("hidden");
@@ -380,7 +400,8 @@ export class PlongeonGameState extends GameState {
   createFinaleScoreBoard(): void {
     this.results = [];
 
-    const score = Math.round(this.player.score * (this.settings.level[this.difficulty].limitTime - (this.currentTime - this.plongeonStartTime) / 1000));
+    const score = this.computeScore();
+    storePlongeon.commit("setScore", score);
     this.results.push({
       place: 1,
       name: this.playerName,
