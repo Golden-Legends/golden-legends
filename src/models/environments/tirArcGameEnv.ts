@@ -32,7 +32,6 @@ export class tirArcGameEnv {
 		this.loadPublic();
 	}
 
-
 	private loadInstance(fileNameId: number, i : number, position : Vector3, rotation : Vector3) {
 		// position, i, "public" + i, rotation
 		const child = InstanceManager.duplicateParentMesh(this.parentMesh, `publicTirArc${i}`);
