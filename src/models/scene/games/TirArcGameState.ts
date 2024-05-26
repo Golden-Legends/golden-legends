@@ -15,6 +15,7 @@ import { tirArcGameEnv } from "@/models/environments/tirArcGameEnv";
 import { storeTirArc } from "@/components/gui/storeTirArc";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { InGameState } from "../InGameState";
+import { storeSound } from "@/components/gui/storeSound.ts";
 
 interface line {
   start: string;
@@ -84,7 +85,13 @@ export class TirArcGameState extends GameState {
       this.settings.level[this.difficulty].speedCurseur,
     );
     this.isMultiplayer = multi ? multi : false;
-    this.game.playTrack("arcJavelot");
+    const soundActive = storeSound.state.etat;
+    if(!soundActive) {
+      this.game.playTrack("arcJavelot");
+    }
+    else{
+      this.game.changeActive("arcJavelot");
+    }
   }
 
   async setEnvironment(): Promise<void> {

@@ -19,6 +19,7 @@ import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { BotNatation } from "@/models/controller/BotNatation";
 import { PlayerInputNatationGame } from "@/models/inputsMangement/PlayerInputNatationGame";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
+import { storeSound } from "@/components/gui/storeSound";
 
 interface line {
   start: string;
@@ -93,7 +94,13 @@ export class NatationGameState extends GameState {
     this._input = new PlayerInputNatationGame(this.scene);
     this.playerName = localStorage.getItem("username") || "Playertest";
     this.rectangleReturn = MeshBuilder.CreateBox("rectangleReturn");
-    this.game.playTrack("100m");
+    const soundActive = storeSound.state.etat;
+    if(!soundActive) {
+      this.game.playTrack("100m");
+    }
+    else{
+      this.game.changeActive("100m");
+    }
   }
 
   async enter(): Promise<void> {

@@ -41,6 +41,10 @@ export class SoundManager {
     this.currentMusic = name;
   }
 
+  changeActive(trackName: string): void {
+    this.currentMusic = trackName;
+  }
+
   pauseTrack(name: string): void {
     const track = this.tracks.get(name);
     if (track) {

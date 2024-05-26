@@ -5,7 +5,8 @@ export const storeSound = createStore({
   state () {
     return {
       sound: 50,
-      oldSound: 50
+      oldSound: 50,
+      etat: false
     }
   },
   mutations: {

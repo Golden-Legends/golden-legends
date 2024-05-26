@@ -380,7 +380,13 @@ export class InGameState extends GameState {
     this._environment = new Environment(this.scene, this._player, this);
     this.tpButtonListener();
 
-    this.game.playTrack("inGame");
+    const soundActive = storeSound.state.etat;
+    if(!soundActive) {
+      this.game.playTrack("inGame");
+    }
+    else{
+      this.game.changeActive("inGame");
+    }
 
     await this._environment.load();
   }

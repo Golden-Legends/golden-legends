@@ -15,6 +15,7 @@ import { store } from "@/components/gui/store.ts";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { InGameState } from "../InGameState";
 import { GameState } from "@/models/GameState.ts";
+import { storeSound } from "@/components/gui/storeSound.ts";
 
 interface line {
   start: string;
@@ -81,7 +82,13 @@ export class RunningGameState extends GameState {
     this.settings = RunningGameSettings;
     this.difficulty = difficulty ? difficulty : "easy";
     this.isMultiplayer = multi ? multi : false;
-    this.game.playTrack("100m");
+    const soundActive = storeSound.state.etat;
+    if(!soundActive) {
+      this.game.playTrack("100m");
+    }
+    else{
+      this.game.changeActive("100m");
+    }
   }
 
   async enter(): Promise<void> {
