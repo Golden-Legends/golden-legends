@@ -36,7 +36,7 @@ export class boxeGameEnv {
 			randomNumber3 = Math.floor(Math.random() * 6) + 1;
 		} while (randomNumber1 === randomNumber2 || randomNumber1 === randomNumber3 || randomNumber2 === randomNumber3);
 
-		for(let i=1 ; i<=144 ; i++){
+		for(let i=1 ; i<=120 ; i++){
 			let pos;
 			if(i<10){
 				pos = this._scene.getMeshByName("perso1.00" + i);
@@ -52,16 +52,16 @@ export class boxeGameEnv {
 				if(i-tour*6 === randomNumber1 || i-tour*6 === randomNumber2 || i-tour*6 === randomNumber3){
 					let rotation;
 					if(i<=36){
-						rotation = new Vector3(0, -80, 0)
+						rotation = new Vector3(0, 80, 0)
 					}
 					else if(i>=37 && i<=60){
 						rotation = new Vector3(0, 0, 0);
 					}
 					else if(i>=61 && i<=84){
-						rotation = new Vector3(0, -120, 0);
+						rotation = new Vector3(0, -160, 0);
 					}
 					else if(i>=85 && i<=120){
-						rotation = new Vector3(0, 120, 0);
+						rotation = new Vector3(0, -80, 0);
 					}
 					let position = new Vector3(-pos.position.x, pos.position.y, pos.position.z);
 					// await this._loadCharacterAssets(this._scene, position, this.filename[i-tour*6], "public" + i, rotation);
@@ -84,6 +84,9 @@ export class boxeGameEnv {
 		for(let i=121 ; i<=125 ; i++){
 			let rotation = new Vector3(0, -80, 0);
 			let pos = this._scene.getMeshByName("perso1." + i);
+			if(i === 125){
+				rotation = new Vector3(0, -80, 0);
+			}
 			if(pos){
 				let position = new Vector3(-pos.position.x, pos.position.y, pos.position.z);
 				// await this._loadCharacterAssets(this._scene, position, this.filename[Math.floor(Math.random() * 6) + 1], "public" + i, rotation);
