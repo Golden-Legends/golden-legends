@@ -20,6 +20,7 @@ import { doc } from "prettier";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { store } from "@/components/gui/store";
 import { InGameState } from "../InGameState";
+import { storeSound } from "@/components/gui/storeSound";
 
 interface line {
   start: string;
@@ -84,7 +85,13 @@ export class PlongeonGameState extends GameState {
     this.settings = PlongeonGameSettings; //settings running to do later
     this.difficulty = difficulty ? difficulty : "easy";
     this.isMultiplayer = multi ? multi : false;
-    this.game.playTrack("plongeon");
+    const soundActive = storeSound.state.etat;
+    if(!soundActive) {
+      this.game.playTrack("plongeon");
+    }
+    else{
+      this.game.changeActive("plongeon");
+    }
   }
 
   async setEnvironment(): Promise<void> {

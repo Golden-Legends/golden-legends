@@ -16,6 +16,7 @@ import { PlayerJavelotGame } from "@/models/controller/PlayerJavelotGame";
 import { PlayerInputJavelotGame } from "@/models/inputsMangement/PlayerInputJavelotGame";
 import { javelotGameEnv } from "@/models/environments/javelotGameEnv";
 import { storeJavelot } from "@/components/gui/storeJavelot";
+import { storeSound } from "@/components/gui/storeSound";
 
 interface line {
   start: string;
@@ -80,7 +81,13 @@ export class JavelotGameState extends GameState {
     this.settings = JavelotGameSettings; //settings running to do later
     this.difficulty = difficulty ? difficulty : "easy";
     this.isMultiplayer = multi ? multi : false;
-    this.game.playTrack("arcJavelot");
+    const soundActive = storeSound.state.etat;
+    if(!soundActive) {
+      this.game.playTrack("arcJavelot");
+    }
+    else{
+      this.game.changeActive("arcJavelot");
+    }
   }
 
   async setEnvironment(): Promise<void> {

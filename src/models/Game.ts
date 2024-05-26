@@ -57,6 +57,14 @@ export class Game {
     this.currentTrackName = trackName;
   }
 
+  public changeActive(trackName: string) {
+    if (this.currentTrackName && this.currentTrackName !== "") {
+      this.soundManager.stopTrack(this.currentTrackName);
+    }
+    this.soundManager.changeActive(trackName);
+    this.currentTrackName = trackName;
+  }
+
   public getSoundManager() {
     return this.soundManager;
   }

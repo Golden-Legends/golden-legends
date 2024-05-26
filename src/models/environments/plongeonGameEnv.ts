@@ -27,7 +27,7 @@ export class plongeonGameEnv {
 		this.loadPublic();
 	}
 
-	public async loadPublic() {
+	public loadPublic() {
 		let compteur = 0;
 		let tour = 0;
 

@@ -1,4 +1,3 @@
-import { Scaling } from "@/utils/Scaling";
 import { AssetContainer, Matrix, Mesh, MeshBuilder, Scene, SceneLoader, Vector3 } from "@babylonjs/core";
 import { SkyMaterial } from "@babylonjs/materials";
 import { InstanceManager } from "./InstManager";
@@ -12,7 +11,7 @@ export class natationGameEnv {
 	
     constructor(scene: Scene) {
 		this._scene = scene;
-		this.parentMesh = new Mesh("parentPublic", this._scene);
+		this.parentMesh = InstanceManager.initParentPublicMesh(this._scene);
 	}
 
     public async load() {
@@ -23,23 +22,6 @@ export class natationGameEnv {
 			m.checkCollisions = true;
 		});
 		this.createSkybox(this._scene);
-
-		const outer = MeshBuilder.CreateBox(
-			"masterOuter",
-			{ width: 1, depth: 1, height: 15 },
-			this._scene,
-		);
-		// pour afficher la box qui sert de collision
-		outer.isVisible = false;
-		outer.isPickable = false;
-		outer.checkCollisions = true;
-		//move origin of box collider to the bottom of the mesh (to match player mesh)
-		outer.bakeTransformIntoVertices(Matrix.Translation(0, 7, 0));
-		//for collisions
-		outer.ellipsoid = new Vector3(1, 1.5, 1);
-		outer.ellipsoidOffset = new Vector3(0, 1.5, 0);
-		this.parentMesh = outer;
-
 		this.assetContainerTab = await InstanceManager.initInstance(this.filename, this._scene, "./models/characters/");
 		this.loadPublic();
 	}

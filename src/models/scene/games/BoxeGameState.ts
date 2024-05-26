@@ -16,6 +16,7 @@ import { storeBoxe } from "@/components/gui/storeBoxe.ts";
 import { InGameState } from "@/models/scene/InGameState.ts";
 import { storeTirArc } from "@/components/gui/storeTirArc.ts";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
+import { storeSound } from "@/components/gui/storeSound.ts";
 
 interface line {
   start: string;
@@ -85,7 +86,13 @@ export class BoxeGameState extends GameState {
       this.settings.level[this.difficulty].timeout,
     );
     this.isMultiplayer = multi ? multi : false;
-    this.game.playTrack("boxeTennis");
+    const soundActive = storeSound.state.etat;
+    if(!soundActive) {
+      this.game.playTrack("boxeTennis");
+    }
+    else{
+      this.game.changeActive("boxeTennis");
+    }
     document.getElementById("boxetp")!.classList.add("hidden");
   }
 
