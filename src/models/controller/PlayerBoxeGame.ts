@@ -122,7 +122,10 @@ export class PlayerBoxeGame {
     }
     
     private setAnimation () : {idle: AnimationGroup} {
-        const idle = this.animationsGroup.find(ag => ag.name === "Anim|idleBoxe");
+        let idle = this.animationsGroup.find(ag => ag.name === "Anim|idleBoxe");
+        if(idle === undefined) {
+            idle = this.animationsGroup.find(ag => ag.name === "Anim|boxIdle");
+        }
         return {idle: idle!};
     }
 
