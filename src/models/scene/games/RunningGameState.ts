@@ -15,6 +15,10 @@ import { store } from "@/components/gui/store.ts";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { InGameState } from "../InGameState";
 import { GameState } from "@/models/GameState.ts";
+import { db } from "@/firebase.ts";
+import { collection, getDocs, addDoc } from "firebase/firestore";
+import { handleNewRecord } from "@/services/result-service.ts";
+import { timerToSMS } from "@/utils/utils.ts";
 import { storeSound } from "@/components/gui/storeSound.ts";
 
 interface line {
@@ -296,10 +300,21 @@ export class RunningGameState extends GameState {
     store.commit("setResults", this.results);
   }
 
-  showScoreBoard(): void {
+  async handleResult(): Promise<void> {
+    const playerScore = Math.round(
+      this.player.getEndTime() - this.raceStartTime,
+    );
+
+    await handleNewRecord("running", Number(playerScore), this.playerName);
+  }
+
+  async showScoreBoard(): Promise<void> {
     document
       .getElementById("runningGame-text-finish")!
       .classList.remove("hidden");
+
+    await this.handleResult();
+
     // attendre 2 secondes avant d'afficher le tableau des scores
     setTimeout(() => {
       this.createFinaleScoreBoard();
@@ -378,27 +393,19 @@ export class RunningGameState extends GameState {
     }
   }
 
-  timerToSMS(time: number): string {
-    const seconds = Math.floor(time / 1000);
-    const milliseconds = time % 100;
-    return `${seconds}.${milliseconds < 10 ? "0" : ""}${milliseconds}`;
-  }
-
   createFinaleScoreBoard() {
     const resultsTemp: Result[] = [];
 
     // Résultat du joueur
     const playerResult = this.player.getEndTime()
-      ? this.timerToSMS(
-          Math.round(this.player.getEndTime() - this.raceStartTime),
-        )
+      ? timerToSMS(Math.round(this.player.getEndTime() - this.raceStartTime))
       : "no score";
     resultsTemp.push({ place: 0, name: this.playerName, result: playerResult });
 
     // Résultats des bots
     this.botArray.forEach((bot, index) => {
       const botResult = bot.getEndTime()
-        ? this.timerToSMS(Math.round(bot.getEndTime() - this.raceStartTime))
+        ? timerToSMS(Math.round(bot.getEndTime() - this.raceStartTime))
         : "no score";
       resultsTemp.push({
         place: index + 1,
@@ -418,18 +425,24 @@ export class RunningGameState extends GameState {
     this.posFinale =
       this.results.findIndex((result) => result.name === this.playerName) + 1;
 
-        if(this.posFinale === 1 || this.posFinale === 2 || this.posFinale === 3) {
-            if(this.difficulty === "easy" && localStorage.getItem("level100m") === "easy") {
-                localStorage.setItem("level100m", "intermediate");
-            }
-            if(this.difficulty === "intermediate" && localStorage.getItem("level100m") === "intermediate") {
-                localStorage.setItem("level100m", "hard");
-            }
-        }
-    
-        // Enregistrement des résultats dans le store
-        store.commit('setResults', this.results);
+    if (this.posFinale === 1 || this.posFinale === 2 || this.posFinale === 3) {
+      if (
+        this.difficulty === "easy" &&
+        localStorage.getItem("level100m") === "easy"
+      ) {
+        localStorage.setItem("level100m", "intermediate");
+      }
+      if (
+        this.difficulty === "intermediate" &&
+        localStorage.getItem("level100m") === "intermediate"
+      ) {
+        localStorage.setItem("level100m", "hard");
+      }
     }
+
+    // Enregistrement des résultats dans le store
+    store.commit("setResults", this.results);
+  }
 
   /**
    *

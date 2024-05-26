@@ -33,6 +33,7 @@ import { JavelotGameState } from "./games/JavelotGameState.ts";
 import { storeOnboard } from "@/components/gui/storeOnboard.ts";
 import { storeSound } from "@/components/gui/storeSound.ts";
 import { doc } from "prettier";
+import router from "@/router/routes.ts";
 
 export class InGameState extends GameState {
   public assets;
@@ -381,10 +382,9 @@ export class InGameState extends GameState {
     this.tpButtonListener();
 
     const soundActive = storeSound.state.etat;
-    if(!soundActive) {
+    if (!soundActive) {
       this.game.playTrack("inGame");
-    }
-    else{
+    } else {
       this.game.changeActive("inGame");
     }
 
@@ -541,8 +541,7 @@ export class InGameState extends GameState {
     });
     this.addEventListenerById("back-menu", "click", () => {
       // new Game(this.canvas);
-      window.location.href = "/";
-      console.log("back to menu");
+      router.push({ name: "Landing" });
     });
 
     // GUI minimap

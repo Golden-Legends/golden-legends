@@ -23,7 +23,7 @@
             ],
             "pointToSucceed" : 75,
             "numLetters" : 5,
-            "limitTime" : 7500,
+            "limitTime" : 12500,
             "timeAffichageSuite" : 6000
         },
         "hard" : {
