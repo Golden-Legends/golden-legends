@@ -17,6 +17,7 @@ import { PlayerInputJavelotGame } from "@/models/inputsMangement/PlayerInputJave
 import { javelotGameEnv } from "@/models/environments/javelotGameEnv";
 import { storeJavelot } from "@/components/gui/storeJavelot";
 import { storeSound } from "@/components/gui/storeSound";
+import { handleNewRecord } from "@/services/result-service.ts";
 
 interface line {
   start: string;
@@ -82,10 +83,9 @@ export class JavelotGameState extends GameState {
     this.difficulty = difficulty ? difficulty : "easy";
     this.isMultiplayer = multi ? multi : false;
     const soundActive = storeSound.state.etat;
-    if(!soundActive) {
+    if (!soundActive) {
       this.game.playTrack("arcJavelot");
-    }
-    else{
+    } else {
       this.game.changeActive("arcJavelot");
     }
   }
@@ -583,7 +583,7 @@ export class JavelotGameState extends GameState {
     }, 2500);
   }
 
-  showScoreBoard(): void {
+  async showScoreBoard(): Promise<void> {
     this.scoreboardIsShow = true;
     document
       .getElementById("javelotGame-text-finish")!
@@ -591,6 +591,8 @@ export class JavelotGameState extends GameState {
     let continueButton = document.querySelector(
       "#javelotGame-results #continue-button",
     );
+    await handleNewRecord("javelin", Number(this.score), this.playerName);
+
     if (continueButton) {
       continueButton.addEventListener("click", () => {
         if (this.continueButtonIsPressed) return;
