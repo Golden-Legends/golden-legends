@@ -197,10 +197,28 @@ const carousel = ref(0);
             />
           </div>
         </CarouselContent>
+        <CarouselContent v-if="carousel === 5">
+          <div>
+            <Title text="Boxe - Comment jouer ?"></Title>
+            <div class="flex gap-5">
+              <CommandContainer
+                name="ACTION"
+                :keys="['SOURIS']"
+                class="w-fit my-4"
+              />
+            </div>
+            <Title text="Astuces" class="mb-3"></Title>
+            <Info
+              :content="[
+                'Pour frapper, cliquez sur la souris dans les cibles qui apparaitront à l\'écran.',
+              ]"
+            />
+          </div>
+        </CarouselContent>
       </div>
 
       <button
-        :disabled="carousel === 4"
+        :disabled="carousel === 5"
         @click="carousel++"
         class="disabled:opacity-30 ml-8 p-4 rounded-full backdrop-brightness-50 w-20"
       >

@@ -214,10 +214,14 @@ export class BoxeGameState extends GameState {
       // Vector3(4.78, 3.27, 6.38)
       // this._camera.setTarget(this.player.transform.position); // pas besoin de target le player pour ce jeu
 
-      document
-        .getElementById("boxeGame-skip-button")!
-        .classList.remove("hidden");
+      document.getElementById("boxeGame-help")!.classList.remove("hidden");
+      document.getElementById("boxeGame-action-container")!.classList.remove("hidden");
+      this.addEventListenerById("close-help-boxe", "click", () => {
+        document.getElementById("boxeGame-help")!.classList.add("hidden");
+      });
+      document.getElementById("boxeGame-skip-button")!.classList.remove("hidden");
       this.addEventListenerById("boxeGame-skip-button", "click", () => {
+        document.getElementById("boxeGame-help")!.classList.add("hidden");
         this.scene.stopAnimation(this._camera);
         this.AfterCamAnim();
       });
@@ -227,6 +231,7 @@ export class BoxeGameState extends GameState {
       this.game.engine.hideLoadingUI();
 
       this.CreateCameraMouv().then(() => {
+        document.getElementById("boxeGame-help")!.classList.add("hidden");
         document
           .getElementById("boxeGame-ready-button")!
           .classList.remove("hidden");
@@ -362,6 +367,7 @@ export class BoxeGameState extends GameState {
   async exit(): Promise<void> {
     document.getElementById("boxeGame-score")!.classList.add("hidden");
     document.getElementById("boxeGame-results")!.classList.add("hidden");
+    document.getElementById("boxeGame-action-container")!.classList.add("hidden");
 
     storeBoxe.commit("setScore", 0);
     storeBoxe.commit("resetTimer");

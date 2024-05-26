@@ -969,6 +969,35 @@
   />
 
   <!-- BOXE -->
+  <CommandContainer
+    name="ACTION"
+    :keys="['souris']"
+    id="boxeGame-action-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <GameHelpContainer
+    id="boxeGame-help"
+    title="Boxe"
+    class="hidden -mt-16 -top-3/4 left-1/2 transform -translate-x-1/2"
+  >
+    <button
+      id="close-help-boxe"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="ACTION" :keys="['souris']" />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Pour frapper, cliquez sur la souris dans les cibles qui apparaitront à l\'écran.',
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4"></div>
+  </GameHelpContainer>
   <ClassicButton
     text="Passer"
     name="boxeGame-skip-button"
@@ -1015,16 +1044,16 @@
     class="hidden absolute bottom-12 right-12"
     :score="storeBoxe.state.score"
   />
-  <Tir
+  <Combat
     name="boxeGame-text-finish"
     id="boxeGame-text-finish"
-    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute bottom-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Results
     title="Boxe"
     name="boxeGame-results"
     id="boxeGame-results"
-    class="hidden -mt-48 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden -mt-28 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   >
     <ResultsContent :results="storeBoxe.state.results" />
   </Results>
@@ -1043,6 +1072,7 @@ import RDSText from "@/components/gui/running/RDSText.vue";
 import Finish from "@/components/gui/running/Finish.vue";
 import Saut from "@/components/gui/finish/Saut.vue";
 import Tir from "@/components/gui/finish/Tir.vue";
+import Combat from "@/components/gui/finish/Combat.vue";
 import Lancer from "@/components/gui/finish/Lancer.vue";
 import SpeedBar from "./gui/running/SpeedBar.vue";
 import KeybindHint from "./gui/KeybindHint.vue";
