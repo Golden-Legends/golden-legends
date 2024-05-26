@@ -338,6 +338,13 @@ export class RunningGameState extends GameState {
           this.game.changeState(new InGameState(this.game, this.game.canvas));
         },
       );
+      this.addEventListenerByQuerySelector(
+        "#runningGame-results #replay-button",
+        "click",
+        () => {
+          this.game.changeState(new RunningGameState(this.game, this.game.canvas));
+        },
+      );
     }, 2000);
   }
 
@@ -640,8 +647,9 @@ export class RunningGameState extends GameState {
     this._camera.animations.push(rotationAnim);
 
     await this.scene.beginAnimation(this._camera, 0, 21 * fps).waitAsync();
-    document.getElementById("runningGame-skip-button")!.style.display = "none";
-    // this.AfterCamAnim();
+    document
+            .getElementById("runningGame-skip-button")!
+            .classList.add("hidden");
   }
 
   AfterCamAnim(): void {

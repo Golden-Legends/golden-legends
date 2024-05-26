@@ -1,6 +1,5 @@
 import { ActionManager, Animation, AnimationGroup, Camera, Color3, ExecuteCodeAction, FreeCamera, Mesh, MeshBuilder, Ray, RayHelper, Scene, SceneLoader, StandardMaterial, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
-import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGame";
 import { storeNatation } from "@/components/gui/storeNatation";
 import { PlayerInputNatationGame } from "../inputsMangement/PlayerInputNatationGame";
 
