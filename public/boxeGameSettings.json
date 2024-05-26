@@ -1,0 +1,45 @@
+{
+    "placement" : 
+    [ 
+        {  
+            "start" : "Cylinder",
+            "end" : "Cylinder"   
+        },
+        {
+            "start" : "Cylinder.001",
+            "end" : "Cylinder.001"   
+        }
+    ],
+    "level" : { 
+        "easy" : {
+            "botInfo" : [
+                {
+                    "name": "bot1",
+                    "pathFile": "./models/characters/perso1.glb"
+                }
+            ],
+            "pointToSucceed" : 20,
+            "timeout": 1500
+        },
+        "intermediate" : {
+            "botInfo" : [
+                {
+                    "name": "bot1",
+                    "pathFile": "./models/characters/perso1.glb"
+                }
+            ],
+            "pointToSucceed" : 30,
+            "timeout": 1000
+        },
+        "hard" : {
+            "botInfo" : [
+                {
+                    "name": "bot1",
+                    "pathFile": "./models/characters/perso3.glb"
+                }
+            ],
+            "pointToSucceed" : 50,
+            "timeout": 500
+        }
+    }
+}

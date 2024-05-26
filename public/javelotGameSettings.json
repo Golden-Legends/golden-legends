@@ -1,0 +1,34 @@
+{
+    "level" : { 
+        "easy" : {
+            "placement" : 
+            [ 
+                {  
+                    "start" : "CylinderTirFacileAtt",
+                    "end" : "CylinderTirFacile"   
+                }
+            ],
+            "pointToSucceed" : 25
+        },
+        "intermediate" : {
+            "placement" : 
+            [ 
+                {  
+                    "start" : "CylinderTirFacileAtt",
+                    "end" : "CylinderTirFacile"   
+                }
+            ],
+            "pointToSucceed" : 25
+        },
+        "hard" : {
+            "placement" : 
+            [ 
+                {  
+                    "start" : "CylinderTirFacileAtt",
+                    "end" : "CylinderTirFacile"   
+                }
+            ],
+            "pointToSucceed" : 25
+        }
+    }
+}
