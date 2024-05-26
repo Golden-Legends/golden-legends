@@ -229,10 +229,7 @@ export class NatationGameState extends GameState {
   // LOGIQUE DE JEU
   update(): void {
     try {
-      if (
-        this.player.getIsEndGame() &&
-        this.botArray.every((bot) => bot.getIsEndGame())
-      ) {
+      if (this.player.getIsEndGame() && this.botArray.every((bot) => bot.getIsEndGame())) {
         this.endGame = true;
       }
       if (this.endGame) {
@@ -411,6 +408,7 @@ export class NatationGameState extends GameState {
   }
 
   showScoreBoard(): void {
+    this.scoreboardIsShow = true;
     document
       .getElementById("natationGame-text-finish")!
       .classList.remove("hidden");
@@ -438,7 +436,6 @@ export class NatationGameState extends GameState {
       document
         .getElementById("natationGame-results")!
         .classList.remove("hidden");
-      this.scoreboardIsShow = true;
     }, 2000);
   }
 

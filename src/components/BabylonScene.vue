@@ -587,7 +587,7 @@
     name="natationGame-text-speedbar"
     id="natationGame-text-speedbar"
     class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
-    :speed="store.state.setSpeedBar"
+    :speed="storeNatation.state.setSpeedBar"
     :min="0"
     :max="0.3"
   />
