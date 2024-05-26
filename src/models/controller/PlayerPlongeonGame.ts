@@ -186,7 +186,6 @@ export class PlayerPlongeonGame {
         if (this.currentTime - this.lastSwitchTime < this.minDelayBetweenSwitches) {
             return;
         }
-        console.log(this._input['figuref']);
     
         if (this.currentLetters >= this.suiteLetters.length) {
             this.isEndGame = true;

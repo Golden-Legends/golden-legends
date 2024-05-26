@@ -72,6 +72,7 @@ export class PlongeonGameState extends GameState {
   private results: Result[] = [];
   private continueButtonIsPressed: boolean = false;
   private scoreboardIsShow: boolean = false;
+  private currentTime = 0;
 
   constructor(
     game: Game,
@@ -314,8 +315,8 @@ export class PlongeonGameState extends GameState {
             return;
         } else if(!this.player._isWin){
             const deltaTime = this.scene.getEngine().getDeltaTime();
-            const timeNow = performance.now();
-            this.player.play(deltaTime, timeNow);
+            this.currentTime = performance.now();
+            this.player.play(deltaTime, this.currentTime);
 
       if (this.letterIsGenerated && !this.suiteLettersAffiche) {
         if (this.player.isSpacedPressedForAnim) {
@@ -330,7 +331,7 @@ export class PlongeonGameState extends GameState {
       if (
         this.playActive &&
         this.settings.level[this.difficulty].limitTime <
-          timeNow - this.plongeonStartTime
+        this.currentTime - this.plongeonStartTime
       ) {
         this.playActive = false;
         this.endGame();
@@ -378,10 +379,12 @@ export class PlongeonGameState extends GameState {
 
   createFinaleScoreBoard(): void {
     this.results = [];
+
+    const score = Math.round(this.player.score * (this.settings.level[this.difficulty].limitTime - (this.currentTime - this.plongeonStartTime) / 1000));
     this.results.push({
       place: 1,
       name: this.playerName,
-      result: "" + this.player.score,
+      result: "" + score,
     });
     storePlongeon.commit("setResults", this.results);
   }
