@@ -1,16 +1,9 @@
 <script setup lang="ts">
+import { timerToSMS } from "../../utils/utils.ts";
+
 const props = defineProps({
   timer: Number,
 });
-
-const timerToSMS = (time: number | undefined): string => {
-  if (time === undefined) {
-    return "0.00";
-  }
-  const seconds = Math.floor(time / 1000);
-  const milliseconds = time % 100;
-  return `${seconds}.${milliseconds < 10 ? "0" : ""}${milliseconds}`;
-};
 </script>
 
 <template>

@@ -15,6 +15,7 @@ import { tirArcGameEnv } from "@/models/environments/tirArcGameEnv";
 import { storeTirArc } from "@/components/gui/storeTirArc";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { InGameState } from "../InGameState";
+import { handleNewRecord } from "@/services/result-service.ts";
 import { storeSound } from "@/components/gui/storeSound.ts";
 
 interface line {
@@ -629,11 +630,13 @@ export class TirArcGameState extends GameState {
     // this.env.flecheAssets.mesh.position.z = -1.13807;
   }
 
-  showScoreBoard(): void {
+  async showScoreBoard(): Promise<void> {
     this.scoreboardIsShow = true;
     document
       .getElementById("tirArcGame-text-finish")!
       .classList.remove("hidden");
+    await handleNewRecord("archery", Number(this.score), this.playerName);
+
     this.addEventListenerByQuerySelector(
       "#tirArcGame-results #continue-button",
       "click",
@@ -665,10 +668,16 @@ export class TirArcGameState extends GameState {
     });
     storeTirArc.commit("setResults", this.results);
     if (this.score >= this.settings.level[this.difficulty].pointToSucceed) {
-      if (this.difficulty === "easy" && localStorage.getItem("levelTirArc") === "easy") {
+      if (
+        this.difficulty === "easy" &&
+        localStorage.getItem("levelTirArc") === "easy"
+      ) {
         localStorage.setItem("levelTirArc", "intermediate");
       }
-      if (this.difficulty === "intermediate" && localStorage.getItem("levelTirArc") === "intermediate"){
+      if (
+        this.difficulty === "intermediate" &&
+        localStorage.getItem("levelTirArc") === "intermediate"
+      ) {
         localStorage.setItem("levelTirArc", "hard");
       }
     }
