@@ -367,7 +367,7 @@ export class PlongeonGameState extends GameState {
 
   private computeScore() {
     return Math.round(
-      this.player.score *
+      this.player.score +
         (this.settings.level[this.difficulty].limitTime / 1000 -
           (this.currentTime - this.plongeonStartTime) / 1000),
     );
