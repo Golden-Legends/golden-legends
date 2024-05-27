@@ -83,6 +83,7 @@ export class PlayerPlongeonGame {
     private currentLetters: number = 0;
     public score: number = 0;
     private isSequentialAnimation: boolean = false;
+    private booleanArray : boolean[] = [];
 
     constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputPlongeonGame, activeCamera: boolean) {
         this._x = x;
@@ -170,8 +171,6 @@ export class PlayerPlongeonGame {
             else{
                 //todo récuperer ici les touches qu'enfonce le player
                 // console.log("gameActive");
-                document.getElementById("plongeonGame-incorrect")!.classList.add("hidden");
-                document.getElementById("plongeonGame-correct")!.classList.add("hidden");
                 this.processInput();
             }
         }
@@ -213,17 +212,21 @@ export class PlayerPlongeonGame {
         this._input[figure.key] = false;
     
         if (this.suiteLetters[this.currentLetters] === figure.letter) {
-            document.getElementById("plongeonGame-correct")!.classList.remove("hidden");
             this.score += 25;
             storePlongeon.commit("setScore", this.score);
+            this.booleanArray.push(true);
         } else {
-            document.getElementById("plongeonGame-incorrect")!.classList.remove("hidden");
+            this.booleanArray.push(false);
         }
     
         this.currentLetters++;
+        this.setValueInStore(this.booleanArray, this.currentLetters);
     }
     
-    
+    private setValueInStore (booleanArray : boolean[], index : number) {
+        storePlongeon.commit("setLettersBolleanArray", booleanArray);
+        storePlongeon.commit("setIndex", index);
+    }   
 
     // public processInput(): void {
     
