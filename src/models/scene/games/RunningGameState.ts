@@ -342,7 +342,7 @@ export class RunningGameState extends GameState {
         "#runningGame-results #replay-button",
         "click",
         () => {
-          this.game.changeState(new RunningGameState(this.game, this.game.canvas));
+          this.game.changeState(new RunningGameState(this.game, this.game.canvas, this.difficulty, this.isMultiplayer));
         },
       );
     }, 2000);

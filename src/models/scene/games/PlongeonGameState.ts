@@ -390,7 +390,7 @@ export class PlongeonGameState extends GameState {
       "#plongeonGame-results #replay-button",
       "click",
       () => {
-        this.game.changeState(new PlongeonGameState(this.game, this.game.canvas));
+        this.game.changeState(new PlongeonGameState(this.game, this.game.canvas, this.difficulty, this.isMultiplayer));
       },
     );
     // attendre 2 secondes avant d'afficher le tableau des scores

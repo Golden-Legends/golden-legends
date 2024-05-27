@@ -427,7 +427,7 @@ export class NatationGameState extends GameState {
       "#natationGame-results #replay-button",
       "click",
       () => {
-        this.game.changeState(new NatationGameState(this.game, this.game.canvas));
+        this.game.changeState(new NatationGameState(this.game, this.game.canvas, this.difficulty, this.isMultiplayer));
       },
     );
     await this.handleResult();
