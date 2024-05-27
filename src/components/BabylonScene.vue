@@ -35,22 +35,22 @@
   <MapButton
     text="TPs"
     id="tp-button"
-    class="hidden absolute top-1/3 left-80"
+    class="hidden absolute -mt-20 top-1/4 left-1/4 ml-20"
   />
   <MapButton
     text="Jump"
     id="jump-button"
-    class="hidden absolute mt-8 top-1/2 left-3/4"
+    class="hidden absolute mt-16 top-1/2 left-1/4 -ml-24"
   />
   <MapButton
     text="Forêt"
     id="foret-button"
-    class="hidden absolute -mt-32 top-1/4 left-3/4 -ml-12"
+    class="hidden absolute mt-16 top-1/2 left-3/4"
   />
   <MapButton
     text="PNJ"
     id="pnj-button"
-    class="hidden absolute -mt-32 top-1/4 left-1/4 ml-4"
+    class="hidden absolute -mt-16 top-1/4 left-2/4 ml-20"
   />
   <!-- <KeybindHint
     class="absolute top-20 left-4"
