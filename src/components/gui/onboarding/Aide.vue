@@ -75,6 +75,12 @@ const carousel = ref(0);
 
             <Title text="La vision" class="-mb-2"></Title>
             <CustomKBD :keybind="'souris'" class="w-fit my-4" />
+            <Info
+              :content="[
+                'N\'oubliez pas de verrouiller la souris en cliquant sur l\'écran pour que les mouvements de la souris soient pris en compte !',
+                'Inversement, pour récupérer la souris, appuyez sur la touche Echap.'
+              ]"
+            />
             <Title
               text="Dash - Appuyez sur A/Q en sautant"
               class="mt-8 -mb-2"
@@ -97,6 +103,8 @@ const carousel = ref(0);
             <CustomKBD :keybind="'o'" class="w-fit my-4" />
             <Title text="Ouvrir la minimap" class="mt-4 -mb-2"></Title>
             <CustomKBD :keybind="'c'" class="w-fit my-4" />
+            <Title text="Une petite danse de la victoire ?" class="mt-4 -mb-2"></Title>
+            <CustomKBD :keybind="'f'" class="w-fit my-4" />
           </div>
         </CarouselContent>
 

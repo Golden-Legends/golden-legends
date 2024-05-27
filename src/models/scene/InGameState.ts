@@ -283,6 +283,8 @@ export class InGameState extends GameState {
       // Jouvre les options
       document.getElementById("options")!.classList.remove("hidden");
       document.getElementById("objectsFound")!.classList.add("hidden");
+      document.getElementById("aide-container")!.classList.add("hidden");
+      document.getElementById("tips-container")!.classList.add("hidden");
       this.removeHandlePointerLock();
       setTimeout(() => {
         this.isOptionsInterfacedPressed = true;

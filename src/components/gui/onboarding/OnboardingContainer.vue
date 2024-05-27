@@ -6,6 +6,8 @@ import CommandContainer from "@/components/gui/commands/CommandContainer.vue";
 import Title from "@/components/gui/onboarding/Title.vue";
 import map_overview from "/map_overview.png";
 import lobby from "/lobby.png";
+import scoreboard from "/scoreboard.png";
+
 const carousel = ref(0);
 </script>
 
@@ -91,10 +93,23 @@ const carousel = ref(0);
             >
           </div>
         </CarouselContent>
+        <CarouselContent v-if="carousel === 3">
+          <div>
+            <Title text="Des records ?"></Title>
+            <span>Approchez vous près des stations rouges avec un i bleu tournant au dessus pour voir les 10 meilleurs scores de chaque jeu.</span><br>
+            <span>Plus la difficulté du jeu sera élévée, plus vous pourrez obtenir un score élevé.</span>
+            <img :src="scoreboard" alt="lobby" class="w-1/2 h-1/2 rounded-lg my-2" />
+          </div>
+
+          <div>
+            <Title text="Comment faire partie des Golden Legends ?"></Title>
+            <span>Spammer nos mini-jeux pour atteindre les sommets des scoreboards !</span>
+          </div>
+        </CarouselContent>
       </div>
 
       <button
-        :disabled="carousel === 2"
+        :disabled="carousel === 3"
         @click="carousel++"
         class="disabled:opacity-30 ml-8 p-4 rounded-full backdrop-brightness-50 w-20"
       >
