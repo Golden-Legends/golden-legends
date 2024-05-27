@@ -295,7 +295,9 @@ const position = (position: number) => {
         <JavelinAngle />
       </SandboxContainer>
       <SandboxContainer name="Scoreboard">
+        <!--
         <ScoreboardContainer />
+-->
       </SandboxContainer>
     </div>
   </div>
