@@ -130,7 +130,7 @@ export class Environment {
 
 		// await this.pnjTalk.init();
 		// await this.pnjMobile.init();
-		this.stationScore = new StationScore(this._scene, this.player?.mesh as Mesh);
+		this.stationScore = new StationScore(this._scene, this.player?.mesh as Mesh, this.inGameState);
 		this.stationScore.init();		
 		this.tpGame = new TpGame(this._scene, this.player?.mesh as Mesh, this.inGameState);
 		this.tpGame.init();

@@ -22,6 +22,7 @@ import { store } from "@/components/gui/store";
 import { InGameState } from "../InGameState";
 import { storeSound } from "@/components/gui/storeSound";
 import { handleNewRecord } from "@/services/result-service.ts";
+import { set } from "firebase/database";
 
 interface line {
   start: string;
@@ -307,25 +308,19 @@ export class PlongeonGameState extends GameState {
     if (this.player._isWin) {
       if (!this.scoreboardIsShow) {
         // console.log(this.player.score, this.settings.level[this.difficulty].pointToSucceed)
-        if (
-          this.player.score >=
-          this.settings.level[this.difficulty].pointToSucceed
-        ) {
-          if (
-            this.difficulty === "easy" &&
-            localStorage.getItem("levelPlongeon") === "easy"
-          ) {
+        if (this.player.score >= this.settings.level[this.difficulty].pointToSucceed) {
+          if (this.difficulty === "easy" && localStorage.getItem("levelPlongeon") === "easy") {
             localStorage.setItem("levelPlongeon", "intermediate");
           }
-          if (
-            this.difficulty === "intermediate" &&
-            localStorage.getItem("levelPlongeon") === "intermediate"
-          ) {
+          if (this.difficulty === "intermediate" && localStorage.getItem("levelPlongeon") === "intermediate") {
             localStorage.setItem("levelPlongeon", "hard");
           }
         }
         this.createFinaleScoreBoard();
-        this.showScoreBoard();
+        this.scoreboardIsShow = true;
+        setTimeout(() => {
+          this.showScoreBoard();
+        }, 2000);
       }
       console.log("FIN DE JEU");
       return;
@@ -374,7 +369,6 @@ export class PlongeonGameState extends GameState {
   }
 
   async showScoreBoard(): Promise<void> {
-    this.scoreboardIsShow = true;
     const score = this.computeScore();
     await handleNewRecord("diving", Number(score), this.playerName);
 

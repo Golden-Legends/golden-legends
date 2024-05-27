@@ -6,6 +6,7 @@ import {
     Scene,
     Vector3,
   } from "@babylonjs/core";
+import { GameState } from "../GameState";
   
   export class StationScore {
     private _scene: Scene;
@@ -30,10 +31,13 @@ import {
   
     private cube: Mesh[] = [];
     private player: Mesh;
+
+    private gameState : GameState;
   
-    constructor(scene: Scene, player: Mesh) {
+    constructor(scene: Scene, player: Mesh, gameState: GameState ) {
       this._scene = scene;
       this.player = player;
+      this.gameState = gameState;
     }
   
     public async init() {
@@ -70,6 +74,7 @@ import {
             },
             () => {
                 document.getElementById("scoreboard-station-dialog")!.classList.remove("hidden");
+                this.gameState.removeHandlePointerLock();
             },
           ),
         );
