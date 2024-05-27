@@ -188,11 +188,9 @@
     id="lose-jump-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <Dialog
-    name="Scoreboard"
-    :text="stationScoreboard"
+  <ScoreboardContainer
     id="scoreboard-station-dialog"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute -top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Dialog
     name="Game"
@@ -1096,6 +1094,7 @@ import Info from "@/components/gui/games/Tips.vue";
 import JavelinAngle from "@/components/gui/javelin/JavelinAngle.vue";
 import BoxingContainer from "@/components/gui/boxing/BoxingContainer.vue";
 import DiveCommands from "@/components/gui/dive/DiveCommands.vue";
+import ScoreboardContainer from "@/components/gui/scoreboard/ScoreboardContainer.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
