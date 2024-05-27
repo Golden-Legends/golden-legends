@@ -47,7 +47,7 @@ export class Carte {
     });
     camKeys.push({
       frame: 100, // Durée de l'animation (en frames)
-      value: new Vector3(39.6, 80, -54.1), // Nouvelle position de la caméra
+      value: new Vector3(15, 120, -54.1), // Nouvelle position de la caméra
     });
 
     // Ajouter les keys à l'animation
@@ -77,7 +77,7 @@ export class Carte {
     });
     rotationKeys.push({
       frame: 100, // Durée de l'animation (en frames)
-      value: new Vector3(Math.PI/6, -Math.PI/2, 0), // Rotation vers le bas de 20 degrés
+      value: new Vector3(Math.PI/4, -Math.PI/2, 0), // Rotation vers le bas de 20 degrés
     });
     rotationAnimation.setKeys(rotationKeys);
     rotationAnimation.setEasingFunction(easingFunction);
@@ -107,7 +107,7 @@ export class Carte {
 
     //retourner à la caméra du joueur
     if (this._scene.activeCameras) {
-      this.camera.position = new Vector3(39.6, 80, -54.1);
+      this.camera.position = new Vector3(15, 120, -54.1);
 
       const animation = new Animation(
         "cameraAnimation",
@@ -121,7 +121,7 @@ export class Carte {
       const camKeys: { frame: number; value: Vector3 }[] = [];
       camKeys.push({
         frame: 0,
-        value: new Vector3(39.6, 80, -54.1), // Position actuelle de la caméra
+        value: new Vector3(15, 120, -54.1), // Position actuelle de la caméra
       });
       camKeys.push({
         frame: 100, // Durée de l'animation (en frames)
@@ -155,7 +155,7 @@ export class Carte {
       });
       rotationKeys.push({
         frame: 100, // Durée de l'animation (en frames)
-        value: new Vector3(Math.PI/6, -Math.PI/2, 0), // Rotation vers le bas de 20 degrés
+        value: new Vector3(Math.PI/4, -Math.PI/2, 0), // Rotation vers le bas de 20 degrés
       });
       rotationAnimation.setKeys(rotationKeys);
       rotationAnimation.setEasingFunction(easingFunction);
