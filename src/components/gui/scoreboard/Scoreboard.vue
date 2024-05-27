@@ -18,12 +18,40 @@ const props = defineProps<{
 const sortedResults = computed(() => {
   if (isTimeBasedCollection(props.title)) {
     // Sort by time in ascending order
-    return [...props.result].sort((a, b) => (a as any).time - (b as any).time);
+    return [...props.result].sort((a, b) => {
+      const aTime = (
+        a as
+          | CollectionDataMap["jump"]
+          | CollectionDataMap["running"]
+          | CollectionDataMap["swimming"]
+      ).time;
+      const bTime = (
+        b as
+          | CollectionDataMap["jump"]
+          | CollectionDataMap["running"]
+          | CollectionDataMap["swimming"]
+      ).time;
+      return aTime - bTime;
+    });
   } else if (isScoreBasedCollection(props.title)) {
     // Sort by score in descending order
-    return [...props.result].sort(
-      (a, b) => (b as any).score - (a as any).score,
-    );
+    return [...props.result].sort((a, b) => {
+      const aScore = (
+        a as
+          | CollectionDataMap["archery"]
+          | CollectionDataMap["boxing"]
+          | CollectionDataMap["diving"]
+          | CollectionDataMap["javelin"]
+      ).score;
+      const bScore = (
+        b as
+          | CollectionDataMap["archery"]
+          | CollectionDataMap["boxing"]
+          | CollectionDataMap["diving"]
+          | CollectionDataMap["javelin"]
+      ).score;
+      return bScore - aScore;
+    });
   } else {
     // Return unsorted if title is not recognized
     return props.result;
@@ -70,7 +98,20 @@ const collectionToFrenchName = (collection: Collection) => {
           </div>
           <div>
             {{
-              isTimeBasedCollection(props.title) ? result.time : result.score
+              isTimeBasedCollection(props.title)
+                ? (
+                    result as
+                      | CollectionDataMap["jump"]
+                      | CollectionDataMap["running"]
+                      | CollectionDataMap["swimming"]
+                  ).time
+                : (
+                    result as
+                      | CollectionDataMap["archery"]
+                      | CollectionDataMap["boxing"]
+                      | CollectionDataMap["diving"]
+                      | CollectionDataMap["javelin"]
+                  ).score
             }}
           </div>
         </div>
