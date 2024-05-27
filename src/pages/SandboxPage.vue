@@ -278,8 +278,8 @@ const position = (position: number) => {
       <SandboxContainer name="Plongeon Tips">
         <DiveCommands
           :keybinds="['s', 'd', 'g', 'h']"
-          :index="4"
-          :result-state="[true, false, true, true]"
+          :index="2"
+          :result-state="[true, false]"
         />
       </SandboxContainer>
       <SandboxContainer name="Map buttons">

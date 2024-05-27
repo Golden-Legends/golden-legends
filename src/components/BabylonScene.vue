@@ -707,12 +707,12 @@
     class="hidden absolute left-1/2 bottom-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <DiveCommands
-    :keybinds="['s', 'd', 'g']"
-    :index="1"
-    :result-state="[null, null, null]"
+    :keybinds="storePlongeon.state.letters"
+    :index="storePlongeon.state.index"
+    :result-state="storePlongeon.state.lettersBolleanArray"
     name="plongeonGame-diveCommands"
     id="plongeonGame-diveCommands"
-    class="absolute -mt-40 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute -mt-40 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Score
     name="plongeonGame-score"

@@ -169,6 +169,10 @@ export class PlongeonGameState extends GameState {
     document
       .getElementById("plongeonGame-keyPressed")!
       .classList.remove("hidden");
+    document
+      .getElementById("plongeonGame-ready-button")!
+      .classList.add("hidden");
+    this.setDiversCommands([], 0);
   }
 
   // Implement abstract members of GameState
@@ -244,9 +248,6 @@ export class PlongeonGameState extends GameState {
         this.addEventListenerById("plongeonGame-ready-button", "click", () => {
           this.AfterCamAnim();
           this.initGui();
-          document
-            .getElementById("plongeonGame-ready-button")!
-            .classList.add("hidden");
           this.game.canvas.focus();
           this.startCountdown([
             "plongeonGame-text-1",
@@ -268,17 +269,25 @@ export class PlongeonGameState extends GameState {
     document.getElementById("plongeonGame-keyPressed")!.classList.add("hidden");
     document.getElementById("plongeonGame-results")!.classList.add("hidden");
     document
+        .getElementById("plongeonGame-diveCommands")!
+        .classList.add("hidden");
+    document
       .getElementById("plongeonGame-command-container")!
       .classList.add("hidden");
     document
       .getElementById("plongeonGame-action-container")!
       .classList.add("hidden");
-
     storePlongeon.commit("setScore", 0);
     storePlongeon.commit("setLetters", []);
     storePlongeon.commit("setResults", []);
+    this.setDiversCommands([], 0);
 
     this.cleanup();
+  }
+
+  private setDiversCommands(suitesLettersBoolean : boolean[] , index: number) {
+    storePlongeon.commit("setLettersBolleanArray", suitesLettersBoolean);
+    storePlongeon.commit("setIndex", index);
   }
 
   update(): void {
@@ -317,7 +326,6 @@ export class PlongeonGameState extends GameState {
         }
         this.createFinaleScoreBoard();
         this.showScoreBoard();
-        console.log("affiche le score board fin de jeu");
       }
       console.log("FIN DE JEU");
       return;
@@ -327,12 +335,11 @@ export class PlongeonGameState extends GameState {
       this.player.play(deltaTime, this.currentTime);
 
       if (this.letterIsGenerated && !this.suiteLettersAffiche) {
+        // tant que le joueur n'a pas lancé on fait rien
         if (this.player.isSpacedPressedForAnim) {
           this.suiteLettersAffiche = true;
           this.affichageLettersDebut();
         }
-        // tant que le joueur n'a pas lancé on fait rien
-        console.log("en attente que le joueru presse space");
         return;
       }
 
@@ -464,14 +471,17 @@ export class PlongeonGameState extends GameState {
       document
         .getElementById("plongeonGame-text-avous")!
         .classList.remove("hidden");
+      document
+        .getElementById("plongeonGame-diveCommands")!
+        .classList.remove("hidden");
+      this.playActive = true;
+      this.plongeonStartTime = performance.now();
+      this.player.gameActiveState();
     }, this.settings.level[this.difficulty].timeAffichageSuite);
     setTimeout(() => {
       document
         .getElementById("plongeonGame-text-avous")!
         .classList.add("hidden");
-      this.playActive = true;
-      this.plongeonStartTime = performance.now();
-      this.player.gameActiveState();
     }, this.settings.level[this.difficulty].timeAffichageSuite + 1500);
   }
 

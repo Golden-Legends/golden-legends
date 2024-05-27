@@ -1,8 +1,9 @@
 <script setup lang="ts">
 const props = defineProps({
   keybinds: {
-    type: Array<String>,
+    type: Array<String | undefined>,
     required: true,
+    default : [],
   },
   index: {
     type: Number,
@@ -11,8 +12,11 @@ const props = defineProps({
   resultState: {
     type: Array<boolean | null>,
     required: true,
+    default : [],
   },
 });
+
+
 </script>
 
 <template>
