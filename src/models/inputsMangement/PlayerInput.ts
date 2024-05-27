@@ -15,6 +15,7 @@ export class PlayerInput extends InputManager {
     public keyMap: boolean = false;
     public keyOptions: boolean = false;
     public keyGameObjects: boolean = false;
+    private keyDance: boolean = false;
 
     readonly keys = {
         KEY_UP: "KeyW",
@@ -27,6 +28,7 @@ export class PlayerInput extends InputManager {
         KEY_MAP: "KeyC",
         KEY_OPTIONS: "KeyO",
         KEY_GAMEOBJECTS: "KeyN",
+        KEY_DANCE : "KeyF"
     };
 
 	constructor(scene: Scene) {
@@ -42,6 +44,7 @@ export class PlayerInput extends InputManager {
         this.updateKeyMapInput();
         this.updateKeyOptionsInput();
         this.updateKeyGameObjectsInput();
+        this.updateDanceInput();
     };
 
     private updateMovementInput(): void {
@@ -120,5 +123,12 @@ export class PlayerInput extends InputManager {
         }
     }
     
+    private updateDanceInput(): void {
+        if (this.inputMap[this.keys.KEY_DANCE]) {
+            this.keyDance = true;
+        } else { 
+            this.keyDance = false;
+        }
+    }
 }
 

@@ -28,6 +28,7 @@ const KEY_UP = "KeyW";
 const KEY_DOWN = "KeyS";
 const KEY_LEFT = "KeyA";
 const KEY_RIGHT = "KeyD";
+const KEY_DANCE = "KeyF";
 const KEY_ARROW_LEFT = "ArrowLeft";
 const KEY_ARROW_RIGHT = "ArrowRight";
 const KEY_ARROW_UP = "ArrowUp";
@@ -147,6 +148,8 @@ export class Player extends TransformNode {
     this._prevAnim = this._idle;
   }
 
+  private isDancing : boolean = false;
+
   private _animatePlayer(): void {
     if (
       !this._dashPressed &&
@@ -159,6 +162,10 @@ export class Player extends TransformNode {
     ) {
       this._currentAnim = this._run;
       this.onRun.notifyObservers(true);
+      this.isDancing = false;
+    } else if (this._input?.inputMap[KEY_DANCE] || this.isDancing) {
+      this._currentAnim = this._dance; // Assuming you have a _dance animation defined
+      this.isDancing = true;
     } else if (this._jumped && !this._isFalling && !this._dashPressed) {
       this._currentAnim = this._jump;
       if (!this._jump.play()) {
@@ -173,8 +180,7 @@ export class Player extends TransformNode {
     } else if (this._isFalling && !this._jumped && !this._dashPressed) {
       // rajouter une anim land
       this._currentAnim = this._land;
-    }
-
+    } 
     //Animations
     if (this._currentAnim != null && this._prevAnim !== this._currentAnim) {
       this._prevAnim?.stop();

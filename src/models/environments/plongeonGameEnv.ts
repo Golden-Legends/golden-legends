@@ -69,7 +69,7 @@ export class plongeonGameEnv {
 				}
 				let position = new Vector3(-pos.position.x, pos.position.y, pos.position.z);
 				// await this._loadCharacterAssets(this._scene, position, this.filename[i-tour*6], "public" + i, rotation);
-				this.loadInstance(i-tour*6, position, rotation);
+				this.loadInstance(i-tour*6, i, position, rotation);
 			}	
 
 			compteur += 1;	
@@ -107,7 +107,7 @@ export class plongeonGameEnv {
 					}
 					let position = new Vector3(-pos.position.x, pos.position.y, pos.position.z);
 					// await this._loadCharacterAssets(this._scene, position, this.filename[i-tour*6], "public" + i, rotation);
-					this.loadInstance(i-tour*6, position, rotation);
+					this.loadInstance(i-tour*6, i, position, rotation);
 				}
 				compteur += 1;	
 				if(compteur === 6){
@@ -120,10 +120,10 @@ export class plongeonGameEnv {
 		}
 	}
 
-	private loadInstance(i : number, position : Vector3, rotation : Vector3) {
+	private loadInstance(fileNameId: number, i : number, position : Vector3, rotation : Vector3) {
 		// position, i, "public" + i, rotation
-		const child = InstanceManager.duplicateParentMesh(this.parentMesh, `publicNatation${i}`);
-		const res = InstanceManager.duplicateInstance(this.assetContainerTab[i], position, rotation, child, 0.018);
+		const child = InstanceManager.duplicateParentMesh(this.parentMesh, `publicBoxe${i}`);
+		const res = InstanceManager.duplicateInstance(this.assetContainerTab[fileNameId], position, rotation, child, 0.018);
 		const idle = res.animationGroups.find(ag => ag.name.includes("idle"));
 		const applause = res.animationGroups.find(ag => ag.name.includes("applause"));
 
@@ -163,7 +163,7 @@ export class plongeonGameEnv {
 			if(pos){
 				let position = new Vector3(-pos.position.x, pos.position.y, pos.position.z);
 				// await this._loadCharacterAssets(this._scene, position, this.filename[i], "athlete" + i, new Vector3(0, -80, 0));
-				this.loadInstance(i, position, new Vector3(0, -80, 0));
+				this.loadInstance(i, i, position, new Vector3(0, -80, 0));
 				pos.isVisible = false;
 			}
 		}

@@ -1,7 +1,6 @@
 import { ActionManager, Animation, AnimationGroup, Camera, Color3, ExecuteCodeAction, FreeCamera, Mesh, MeshBuilder, Ray, RayHelper, Scene, SceneLoader, StandardMaterial, Vector3 } from "@babylonjs/core";
 import { Scaling } from "../../utils/Scaling";
-import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGame";
-import { store } from "@/components/gui/store.ts";
+import { storeNatation } from "@/components/gui/storeNatation";
 import { PlayerInputNatationGame } from "../inputsMangement/PlayerInputNatationGame";
 
 const PLAYER_HEIGHT = 0.3;
@@ -301,7 +300,7 @@ export class PlayerNatationGame {
         // Applique le mouvement en fonction de la direction et de la vitesse
         const direction = this.baseSpeed * this._deltaTime; 
         const speed = this.baseSpeed * 10;
-        store.commit('setSpeedBar', speed);
+        storeNatation.commit('setSpeedBar', speed);
         this.transform.position.z += this.direction * direction;
         this.cubePersonnage.position.z += this.direction * direction;
         if (this._camera) {

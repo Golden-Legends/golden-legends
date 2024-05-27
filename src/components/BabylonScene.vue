@@ -188,11 +188,9 @@
     id="lose-jump-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <Dialog
-    name="Scoreboard"
-    :text="stationScoreboard"
+  <ScoreboardContainer
     id="scoreboard-station-dialog"
-    class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute -top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Dialog
     name="Game"
@@ -436,14 +434,6 @@
   >
     <ResultsContent :results="store.state.results" />
   </Results>
-  <SpeedBar
-    :min="0"
-    :max="100"
-    :speed="50"
-    name="runningGame-speed-bar"
-    id="runningGame-speed-bar"
-    class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
   <RDSText
     text="À vos marques"
     name="runningGame-text-1"
@@ -552,14 +542,6 @@
   >
     <ResultsContent :results="storeNatation.state.results" />
   </Results>
-  <SpeedBar
-    :min="0"
-    :max="100"
-    :speed="50"
-    name="natationGame-speed-bar"
-    id="natationGame-speed-bar"
-    class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
   <RDSText
     text="À vos marques"
     name="natationGame-text-1"
@@ -587,9 +569,9 @@
     name="natationGame-text-speedbar"
     id="natationGame-text-speedbar"
     class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
-    :speed="store.state.setSpeedBar"
+    :speed="storeNatation.state.setSpeedBar"
     :min="0"
-    :max="0.3"
+    :max="0.23"
   />
   <KeyPressInteraction
     :keys="['s', 'd', ' ']"
@@ -721,6 +703,14 @@
     name="plongeonGame-keyPressed"
     id="plongeonGame-keyPressed"
     class="hidden absolute left-1/2 bottom-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <DiveCommands
+    :keybinds="storePlongeon.state.letters"
+    :index="storePlongeon.state.index"
+    :result-state="storePlongeon.state.lettersBolleanArray"
+    name="plongeonGame-diveCommands"
+    id="plongeonGame-diveCommands"
+    class="hidden absolute -mt-40 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Score
     name="plongeonGame-score"
@@ -1103,6 +1093,8 @@ import Tips from "@/components/gui/onboarding/Tips.vue";
 import Info from "@/components/gui/games/Tips.vue";
 import JavelinAngle from "@/components/gui/javelin/JavelinAngle.vue";
 import BoxingContainer from "@/components/gui/boxing/BoxingContainer.vue";
+import DiveCommands from "@/components/gui/dive/DiveCommands.vue";
+import ScoreboardContainer from "@/components/gui/scoreboard/ScoreboardContainer.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs

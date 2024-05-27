@@ -232,10 +232,7 @@ export class NatationGameState extends GameState {
   // LOGIQUE DE JEU
   update(): void {
     try {
-      if (
-        this.player.getIsEndGame() &&
-        this.botArray.every((bot) => bot.getIsEndGame())
-      ) {
+      if (this.player.getIsEndGame() && this.botArray.every((bot) => bot.getIsEndGame())) {
         this.endGame = true;
       }
       if (this.endGame && !this.scoreboardIsShow) {
@@ -258,7 +255,7 @@ export class NatationGameState extends GameState {
         }
       }
     } catch (error) {
-      throw new Error("error : Running game class update." + error);
+      throw new Error("error : Natation game class update." + error);
     }
   }
 
@@ -426,6 +423,13 @@ export class NatationGameState extends GameState {
         this.game.changeState(new InGameState(this.game, this.game.canvas));
       },
     );
+    this.addEventListenerByQuerySelector(
+      "#natationGame-results #replay-button",
+      "click",
+      () => {
+        this.game.changeState(new NatationGameState(this.game, this.game.canvas, this.difficulty, this.isMultiplayer));
+      },
+    );
     await this.handleResult();
     // attendre 2 secondes avant d'afficher le tableau des scores
     setTimeout(() => {
@@ -443,7 +447,6 @@ export class NatationGameState extends GameState {
       document
         .getElementById("natationGame-results")!
         .classList.remove("hidden");
-      this.scoreboardIsShow = true;
     }, 2000);
   }
 

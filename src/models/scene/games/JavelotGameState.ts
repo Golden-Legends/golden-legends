@@ -588,17 +588,22 @@ export class JavelotGameState extends GameState {
     document
       .getElementById("javelotGame-text-finish")!
       .classList.remove("hidden");
-    let continueButton = document.querySelector(
-      "#javelotGame-results #continue-button",
-    );
     await handleNewRecord("javelin", Number(this.score), this.playerName);
 
-    if (continueButton) {
-      continueButton.addEventListener("click", () => {
-        if (this.continueButtonIsPressed) return;
+    this.addEventListenerByQuerySelector(
+      "#javelotGame-results #continue-button",
+      "click",
+      () => {
         this.game.changeState(new InGameState(this.game, this.game.canvas));
-      });
-    }
+      },
+    );
+    this.addEventListenerByQuerySelector(
+      "#javelotGame-results #replay-button",
+      "click",
+      () => {
+        this.game.changeState(new JavelotGameState(this.game, this.game.canvas,this.difficulty, this.isMultiplayer));
+      },
+    );
     // attendre 2 secondes avant d'afficher le tableau des scores
     setTimeout(() => {
       document
