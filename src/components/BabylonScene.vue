@@ -706,6 +706,14 @@
     id="plongeonGame-keyPressed"
     class="hidden absolute left-1/2 bottom-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+  <DiveCommands
+    :keybinds="['s', 'd', 'g']"
+    :index="1"
+    :result-state="[null, null, null]"
+    name="plongeonGame-diveCommands"
+    id="plongeonGame-diveCommands"
+    class="absolute -mt-40 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
   <Score
     name="plongeonGame-score"
     id="plongeonGame-score"
@@ -1087,6 +1095,7 @@ import Tips from "@/components/gui/onboarding/Tips.vue";
 import Info from "@/components/gui/games/Tips.vue";
 import JavelinAngle from "@/components/gui/javelin/JavelinAngle.vue";
 import BoxingContainer from "@/components/gui/boxing/BoxingContainer.vue";
+import DiveCommands from "@/components/gui/dive/DiveCommands.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs

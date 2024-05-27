@@ -71,7 +71,6 @@ export class PlongeonGameState extends GameState {
   private playActive: boolean = false;
   private suiteLettersAffiche: boolean = false;
   private results: Result[] = [];
-  private continueButtonIsPressed: boolean = false;
   private scoreboardIsShow: boolean = false;
   private currentTime = 0;
 
@@ -356,7 +355,6 @@ export class PlongeonGameState extends GameState {
   }
 
   private continueButtonHandler = () => {
-    this.continueButtonIsPressed = true;
     this.game.changeState(new InGameState(this.game, this.game.canvas));
   };
 
