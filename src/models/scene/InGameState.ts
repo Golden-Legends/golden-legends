@@ -543,6 +543,9 @@ export class InGameState extends GameState {
       // new Game(this.canvas);
       router.push({ name: "Landing" });
     });
+    this.addEventListenerById("close-records", "click", () => {
+      document.getElementById("scoreboard-station-dialog")!.classList.add("hidden");
+    });
 
     // GUI minimap
     this.addEventListenerById("tp-button", "click", () => {
