@@ -381,6 +381,13 @@ export class PlongeonGameState extends GameState {
       "click",
       this.continueButtonHandler,
     );
+    this.addEventListenerByQuerySelector(
+      "#plongeonGame-results #replay-button",
+      "click",
+      () => {
+        this.game.changeState(new PlongeonGameState(this.game, this.game.canvas));
+      },
+    );
     // attendre 2 secondes avant d'afficher le tableau des scores
     setTimeout(() => {
       document

@@ -255,7 +255,7 @@ export class NatationGameState extends GameState {
         }
       }
     } catch (error) {
-      throw new Error("error : Running game class update." + error);
+      throw new Error("error : Natation game class update." + error);
     }
   }
 
@@ -421,6 +421,13 @@ export class NatationGameState extends GameState {
       () => {
         if (this.continueButtonIsPressed) return;
         this.game.changeState(new InGameState(this.game, this.game.canvas));
+      },
+    );
+    this.addEventListenerByQuerySelector(
+      "#natationGame-results #replay-button",
+      "click",
+      () => {
+        this.game.changeState(new NatationGameState(this.game, this.game.canvas));
       },
     );
     await this.handleResult();

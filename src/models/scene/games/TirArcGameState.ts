@@ -645,6 +645,13 @@ export class TirArcGameState extends GameState {
         this.game.changeState(new InGameState(this.game, this.game.canvas));
       },
     );
+    this.addEventListenerByQuerySelector(
+      "#tirArcGame-results #replay-button",
+      "click",
+      () => {
+        this.game.changeState(new TirArcGameState(this.game, this.game.canvas));
+      },
+    );
     // attendre 2 secondes avant d'afficher le tableau des scores
     setTimeout(() => {
       document

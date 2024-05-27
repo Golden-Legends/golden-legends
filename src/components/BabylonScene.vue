@@ -436,14 +436,6 @@
   >
     <ResultsContent :results="store.state.results" />
   </Results>
-  <SpeedBar
-    :min="0"
-    :max="100"
-    :speed="50"
-    name="runningGame-speed-bar"
-    id="runningGame-speed-bar"
-    class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
   <RDSText
     text="À vos marques"
     name="runningGame-text-1"
@@ -552,14 +544,6 @@
   >
     <ResultsContent :results="storeNatation.state.results" />
   </Results>
-  <SpeedBar
-    :min="0"
-    :max="100"
-    :speed="50"
-    name="natationGame-speed-bar"
-    id="natationGame-speed-bar"
-    class="hidden absolute bottom-16 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
   <RDSText
     text="À vos marques"
     name="natationGame-text-1"
@@ -589,7 +573,7 @@
     class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
     :speed="storeNatation.state.setSpeedBar"
     :min="0"
-    :max="0.3"
+    :max="0.23"
   />
   <KeyPressInteraction
     :keys="['s', 'd', ' ']"
