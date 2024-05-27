@@ -275,7 +275,7 @@ const position = (position: number) => {
           </div>
         </GameHelpContainer>
       </SandboxContainer>
-      <SandboxContainer name="Tips">
+      <SandboxContainer name="Plongeon Tips">
         <DiveCommands
           :keybinds="['s', 'd', 'g', 'h']"
           :index="4"
