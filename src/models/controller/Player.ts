@@ -148,6 +148,8 @@ export class Player extends TransformNode {
     this._prevAnim = this._idle;
   }
 
+  private isDancing : boolean = false;
+
   private _animatePlayer(): void {
     if (
       !this._dashPressed &&
@@ -160,8 +162,10 @@ export class Player extends TransformNode {
     ) {
       this._currentAnim = this._run;
       this.onRun.notifyObservers(true);
-    } else if (this._input?.inputMap[KEY_DANCE]) {
+      this.isDancing = false;
+    } else if (this._input?.inputMap[KEY_DANCE] || this.isDancing) {
       this._currentAnim = this._dance; // Assuming you have a _dance animation defined
+      this.isDancing = true;
     } else if (this._jumped && !this._isFalling && !this._dashPressed) {
       this._currentAnim = this._jump;
       if (!this._jump.play()) {
