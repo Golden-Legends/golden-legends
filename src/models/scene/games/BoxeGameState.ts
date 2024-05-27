@@ -421,6 +421,13 @@ export class BoxeGameState extends GameState {
         this.game.changeState(new InGameState(this.game, this.game.canvas));
       },
     );
+    this.addEventListenerByQuerySelector(
+      "#boxeGame-results #replay-button",
+      "click",
+      () => {
+        this.game.changeState(new BoxeGameState(this.game, this.game.canvas));
+      },
+    );
     // attendre 2 secondes avant d'afficher le tableau des scores
     setTimeout(() => {
       document.getElementById("boxeGame-text-finish")!.classList.add("hidden");
