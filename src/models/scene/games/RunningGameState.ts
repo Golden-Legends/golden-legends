@@ -1,5 +1,6 @@
 import {
   Animation,
+  Color3,
   FreeCamera,
   HemisphericLight,
   Mesh,
@@ -46,17 +47,37 @@ interface IRunningGameState {
   };
 }
 
+export interface IPlayer {
+  fileName: string;
+  keys: { KeyLeft: string; KeyRight: string };
+  color: Color3;
+}
+
+const ACCELERATION_FACTOR = 0.01;
+
+const jouersSupplementaires : IPlayer[] = [
+  {
+    fileName : "perso3.glb",
+    keys : { KeyLeft: "KeyK", KeyRight: "KeyL" },
+    color : new Color3(1, 0, 0)
+  },
+  {
+    fileName : "perso4.glb",
+    keys : { KeyLeft: "KeyV", KeyRight: "KeyB" },
+    color : new Color3(0, 1, 0)
+  }
+]
+
 export class RunningGameState extends GameState {
   private readonly limitTime = 25;
-  private _input: PlayerInputRunningGame;
   public _camera!: FreeCamera;
   private endGame: boolean = false;
   private raceStartTime: number = 0;
 
-  private player!: PlayerRunningGame;
   private playerName: string = "PlayerPseudo";
 
   private botArray: Bot[] = [];
+  private playerArray: PlayerRunningGame[] = [];
 
   private settings: IRunningGameState;
   private startPlacement: Mesh[] = [];
@@ -73,19 +94,23 @@ export class RunningGameState extends GameState {
   private currentTime: number = 0;
 
   private posFinale: number = -1;
+  private numberPlayer: number = 1;
+  private timerPlayerArray : number[] = [0, 0, 0];
 
   constructor(
     game: Game,
     canvas: HTMLCanvasElement,
     difficulty?: "easy" | "intermediate" | "hard",
     multi?: boolean,
+    numberPlayer?: number,
   ) {
     super(game, canvas);
-    this._input = new PlayerInputRunningGame(this.scene);
     this.playerName = localStorage.getItem("username") || "Playertest";
     this.settings = RunningGameSettings;
     this.difficulty = difficulty ? difficulty : "easy";
     this.isMultiplayer = multi ? multi : false;
+    this.numberPlayer = numberPlayer ? numberPlayer : 1;
+
     const soundActive = storeSound.state.etat;
     if(!soundActive) {
       this.game.playTrack("100m");
@@ -106,40 +131,23 @@ export class RunningGameState extends GameState {
       this.createLight();
       this.setLinePlacement();
 
-      // test classe player
-      const indexForPlayerPlacement = 2;
-      const startMesh = this.startPlacement[indexForPlayerPlacement];
+      // init player
       const getFileName = localStorage.getItem("pathCharacter");
-      this.player = new PlayerRunningGame(
-        this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().x ||
-          0,
-        this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().y ||
-          0,
-        this.startPlacement[indexForPlayerPlacement].getAbsolutePosition().z ||
-          0,
-        this.scene,
-        `@/../models/characters/${getFileName}`,
-        this.endPlacement[indexForPlayerPlacement],
-        this._input,
-        false,
-      );
-      await this.player.init();
-
-      // permet d'enlever la position du joueur de la liste des positions facilitera la suite
-      this.startPlacement.splice(indexForPlayerPlacement, 1);
-      this.endPlacement.splice(indexForPlayerPlacement, 1);
-
-      // mettre de l'aléatoire dans les positions des bots
-      {
-        this.startPlacement, this.endPlacement;
-      }
-      this.shuffleArray(this.startPlacement, this.endPlacement);
-
+      const firstPlayer : IPlayer = {
+        keys: { KeyLeft: "KeyS", KeyRight: "KeyD" },
+        fileName: getFileName ? getFileName : "character1.glb",
+        color: new Color3(0, 0, 1)
+      };  
+      
+      await this.initPlayer(2, this.playerName, firstPlayer)
       // on init le jeu
-      if (!this.isMultiplayer) {
-        await this.runSoloGame();
+      if (this.isMultiplayer) { // ON EST DANS LE MODE MULTI ON CREER NOS JOUEURS SUPPLEMENTAIRES
+        for (let i = 1; i < this.numberPlayer; i++) { 
+          await this.initPlayer(2, this.playerName + "_" + i, jouersSupplementaires[i - 1]);
+        }
       }
-
+      
+      await this.runSoloGame();
       this.runUpdateAndRender();
 
       this._camera = new FreeCamera(
@@ -148,7 +156,9 @@ export class RunningGameState extends GameState {
         this.scene,
       );
       this._camera.rotation = new Vector3(0, Math.PI, 0);
-      this._camera.setTarget(startMesh.getAbsolutePosition());
+
+      const target = new Vector3(-9.704194068908691, 2.3620247840881348, -37.589664459228516);
+      this._camera.setTarget(target);
 
       document.getElementById("map-keybind")!.classList.add("hidden");
       document.getElementById("100mtp")!.classList.add("hidden");
@@ -184,7 +194,11 @@ export class RunningGameState extends GameState {
             "runningGame-text-3",
           ]);
           this.AfterCamAnim();
-          this.initGui();
+          if (this.isMultiplayer) {
+            // TODOk
+          } else {
+            this.initGuiSolo();
+          }
           document
             .getElementById("runningGame-ready-button")!
             .classList.add("hidden");
@@ -195,8 +209,26 @@ export class RunningGameState extends GameState {
         });
       });
     } catch (error) {
-      throw new Error("erreur.");
+      throw new Error("erreur -> " + error);
     }
+  }
+
+  public async initPlayer(index: number, playerName: string, settignsPlayer : IPlayer): Promise<void> {
+    const player = new PlayerRunningGame(
+        playerName,
+        this.startPlacement[index].getAbsolutePosition().x || 0,
+        this.startPlacement[index].getAbsolutePosition().y || 0,
+        this.startPlacement[index].getAbsolutePosition().z || 0,
+        this.scene,
+        this.endPlacement[index],
+        settignsPlayer
+    );
+    await player.init();
+
+    this.startPlacement.splice(index, 1);
+    this.endPlacement.splice(index, 1);
+
+    this.playerArray.push(player);
   }
 
   /**
@@ -205,11 +237,16 @@ export class RunningGameState extends GameState {
    * @description Allows you to start the game solo
    */
   private async runSoloGame() {
+    // mettre de l'aléatoire dans les positions des bots
+    {
+      this.startPlacement, this.endPlacement;
+    }
+    this.shuffleArray(this.startPlacement, this.endPlacement);
     await this.initSoloWithBot(this.difficulty);
     this.buildScoreBoard();
   }
 
-  initGui() {
+  initGuiSolo() {
     this.timer = 0;
     this.raceStartTime = 0;
     this.endGame = false;
@@ -224,8 +261,31 @@ export class RunningGameState extends GameState {
       .getElementById("runningGame-text-speedbar")!
       .classList.remove("hidden");
 
-    store.commit("setTimer", 0.0);
-    store.commit("setSpeedBar", 0);
+    this.playerArray.forEach((player, index) => {
+      store.commit("setTimer" + index, 0.0);
+      store.commit("setSpeedBar" + index, 0);
+    });
+  }
+
+  initGuiMulti() {
+    this.timer = 0;
+    this.raceStartTime = 0;
+    this.endGame = false;
+    this.scoreboardIsShow = false;
+    this.currentTime = 0;
+
+    document.getElementById("runningGame-timer")!.classList.remove("hidden");
+    document
+      .getElementById("runningGame-keyPressed")!
+      .classList.remove("hidden");
+    document
+      .getElementById("runningGame-text-speedbar")!
+      .classList.remove("hidden");
+
+    this.playerArray.forEach((player, index) => {
+      store.commit("setTimer" + index, 0.0);
+      store.commit("setSpeedBar" + index, 0);
+    });
   }
 
   /**
@@ -276,19 +336,19 @@ export class RunningGameState extends GameState {
     document
       .getElementById("runningGame-command-container")!
       .classList.add("hidden");
-    this.undisplayPosition();
-
-    store.commit("setTimer", 0.0);
-    store.commit("setSpeedBar", 0);
-    //this.buildScoreBoard(); WHY ??
+    this.undisplayPosition();    
     this.cleanup();
   }
 
   buildScoreBoard(): void {
-    this.results.push({
-      place: 1,
-      name: this.playerName,
-      result: "No score !",
+    let index = 1;
+    this.playerArray.forEach((bot) => {
+      this.results.push({
+        place: index,
+        name: bot.getName(),
+        result: "No score !",
+      });
+      index++;
     });
     this.botArray.forEach((bot, index) => {
       this.results.push({
@@ -296,16 +356,19 @@ export class RunningGameState extends GameState {
         name: bot.getName(),
         result: "No score !",
       });
+      index++;
     });
     store.commit("setResults", this.results);
   }
 
   async handleResult(): Promise<void> {
-    const playerScore = Math.round(
-      this.player.getEndTime() - this.raceStartTime,
-    );
-
-    await handleNewRecord("running", Number(playerScore), this.playerName);
+    this.playerArray.forEach(async (player) => {
+      if (!player.getIsEndGame()) return;
+      const playerScore = Math.round(
+        player.getEndTime() - this.raceStartTime,
+      );
+      await handleNewRecord("running", Number(playerScore), player.getName());
+    });
   }
 
   async showScoreBoard(): Promise<void> {
@@ -318,7 +381,9 @@ export class RunningGameState extends GameState {
     // attendre 2 secondes avant d'afficher le tableau des scores
     setTimeout(() => {
       this.createFinaleScoreBoard();
-      this.displayPosition();
+      if (!this.isMultiplayer) {
+        this.displayPosition();
+      }
       document
         .getElementById("runningGame-text-finish")!
         .classList.add("hidden");
@@ -404,13 +469,21 @@ export class RunningGameState extends GameState {
     const resultsTemp: Result[] = [];
 
     // Résultat du joueur
-    const playerResult = this.player.getEndTime()
-      ? timerToSMS(Math.round(this.player.getEndTime() - this.raceStartTime))
-      : "no score";
-    resultsTemp.push({ place: 0, name: this.playerName, result: playerResult });
+    let index = 1;
+    this.playerArray.forEach((player) => {
+      const playerRes = player.getEndTime()
+        ? timerToSMS(Math.round(player.getEndTime() - this.raceStartTime))
+        : "no score";
+      resultsTemp.push({
+        place: index,
+        name: player.getName(),
+        result: playerRes,
+      });
+      index ++;
+    });
 
     // Résultats des bots
-    this.botArray.forEach((bot, index) => {
+    this.botArray.forEach((bot) => {
       const botResult = bot.getEndTime()
         ? timerToSMS(Math.round(bot.getEndTime() - this.raceStartTime))
         : "no score";
@@ -419,6 +492,7 @@ export class RunningGameState extends GameState {
         name: bot.getName(),
         result: botResult,
       });
+      index ++;
     });
 
     // Tri des résultats
@@ -460,13 +534,11 @@ export class RunningGameState extends GameState {
   update(): void {
     try {
       if (
-        this.player.getIsEndGame() &&
+        this.playerArray.every((bot) => bot.getIsEndGame()) &&
         this.botArray.every((bot) => bot.getIsEndGame())
       ) {
         this.endGame = true;
       }
-
-      this.player._updateGroundDetection();
 
       if (this.endGame && !this.scoreboardIsShow) {
         this.scoreboardIsShow = true;
@@ -480,17 +552,70 @@ export class RunningGameState extends GameState {
       this.currentTime = performance.now();
       const deltaTime = this.scene.getEngine().getDeltaTime();
       this.checkGameIsOutOfTime();
-      this.player.play(deltaTime, this.currentTime);
+
+      this.playerPlay(deltaTime);
+
       this.botArray.forEach((bot) => {
         bot.play(deltaTime, this.currentTime);
       });
 
-      if (!this.player.getIsEndGame()) {
-        this.timer = Math.round(this.currentTime - this.raceStartTime);
-        store.commit("setTimer", this.timer);
-      }
+      // TODO : voir pour gérer le timer correctement
+      this.playerArray.forEach((player, index) => {
+          if (!player.getIsEndGame()) {
+            this.timer = Math.round(this.currentTime - this.raceStartTime);
+            this.timerPlayerArray[index] = this.timer;
+            store.commit("setTimer" + index, this.timer);
+            store.commit("setSpeedBar" + index, player.getSpeed());
+          }       
+      });
     } catch (error) {
       throw new Error("error : Running game class update." + error);
+    }
+  }
+
+  private playerPlay (deltaTime: number) {
+    let minZ = this._camera.position.z;
+    let maxZ = this._camera.position.z;
+
+    this.playerArray.forEach((player) => { 
+      player.play(deltaTime, this.currentTime);
+      if (player.transform.position.z < minZ) {
+        minZ = player.transform.position.z;
+      }
+      if (player.transform.position.z > maxZ) {
+        maxZ = player.transform.position.z;
+      }
+    });
+
+    // Calculer le milieu entre les deux joueurs sur l'axe x
+    const midPointZ = (minZ + maxZ) /2;
+
+    // Calculer la différence entre la position x de la caméra et le milieu
+    const diffZ = midPointZ - this._camera.position.z;
+        // Calculer le vecteur d'accélération (vous pouvez ajuster le facteur d'accélération comme vous le souhaitez)
+    const accelerationZ = diffZ * deltaTime * (ACCELERATION_FACTOR + 0.1) ;
+
+    if (this._camera.position.z + accelerationZ > -31.21) {
+      // Mettre à jour la position x de la caméra
+      this._camera.position.z += accelerationZ;
+    }
+
+    let distance = Math.abs(maxZ - minZ);
+    // si l'écart du milieu entre les joueurs est trop grand on déplace la caméra
+    if (distance > 10) {
+      if (this._camera.position.y < 30) {
+        this._camera.position.y += deltaTime * ACCELERATION_FACTOR ;
+      }
+      if ( this._camera.position.x < 35 ) { 
+        this._camera.position.x += deltaTime * ACCELERATION_FACTOR;
+      }
+    } else {
+      if (this._camera.position.y > 22.07) {
+        this._camera.position.y -= deltaTime * ACCELERATION_FACTOR;
+      }
+      if ( this._camera.position.x > 22.72 ) { 
+        this._camera.position.x -= deltaTime * ACCELERATION_FACTOR;
+      }
     }
   }
 
@@ -654,9 +779,12 @@ export class RunningGameState extends GameState {
 
   AfterCamAnim(): void {
     this._camera.dispose();
-    this._camera = this.player.createCameraPlayer(this.player.transform);
-    this.player.setCamera(this._camera);
-    // console.log(this._camera.rotation);
-    // console.log(this._camera.position);
+    this._camera = this.createCameraPlayer(this.playerArray[0].transform);
+  }
+
+  private createCameraPlayer(mesh : Mesh) : FreeCamera { 
+    const camera = new FreeCamera("camera1", new Vector3(22.72, 22.07, -31.21), this.scene);
+    camera.setTarget(new Vector3(mesh.position.x, mesh.position.y, mesh.position.z));
+    return camera;
   }
 }

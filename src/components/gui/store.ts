@@ -21,20 +21,36 @@ const results: Result[] = [
 export const store = createStore({
   state () {
     return {
-      timer: 0,
+      timer0: 0,
+      timer1: 0,
+      timer2: 0,
       results: results,
-      setSpeedBar : 0
+      setSpeedBar0 : 0,
+      setSpeedBar1 : 0,
+      setSpeedBar2 : 0,
     }
   },
   mutations: {
-    setTimer (state, value) {
-      state.timer = value
+    setTimer0 (state, value) {
+      state.timer0 = value
+    },
+    setTimer1 (state, value) {
+      state.timer1 = value
+    },
+    setTimer2 (state, value) {
+      state.timer2 = value
     },
     setResults (state, value) {
       state.results = value
     },
-    setSpeedBar (state, value) {
-      state.setSpeedBar = value
-    }
+    setSpeedBar0 (state, value) {
+      state.setSpeedBar0 = value
+    },
+    setSpeedBar1 (state, value) {
+      state.setSpeedBar1 = value
+    },
+    setSpeedBar2 (state, value) {
+      state.setSpeedBar2 = value
+    },
   }
 })

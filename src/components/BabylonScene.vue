@@ -423,11 +423,20 @@
     id="runningGame-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
   />
-  <Timer
+  <!-- TIMER J1 -->
+  <Timer 
     name="runningGame-timer"
     id="runningGame-timer"
     class="hidden absolute bottom-12 right-12"
-    :timer="store.state.timer"
+    :timer="store.state.timer0"
+  />
+  <SpeedBar
+    name="runningGame-text-speedbar"
+    id="runningGame-text-speedbar"
+    class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
+    :speed="store.state.setSpeedBar0"
+    :min="0"
+    :max="2.7"
   />
   <Results
     title="100m"
@@ -459,14 +468,6 @@
     name="runningGame-text-finish"
     id="runningGame-text-finish"
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-  />
-  <SpeedBar
-    name="runningGame-text-speedbar"
-    id="runningGame-text-speedbar"
-    class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
-    :speed="store.state.setSpeedBar"
-    :min="0"
-    :max="2.7"
   />
   <KeyPressInteraction
     :keys="['s', 'd']"

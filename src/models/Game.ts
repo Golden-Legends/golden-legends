@@ -26,7 +26,7 @@ export class Game {
     this.soundManager = new SoundManager();
     this.currentTrackName = "";
     this.initTrack();
-    this.changeState(new InGameState(this, canvas));
+    this.changeState(new RunningGameState(this, canvas, "easy", true, 3));
   }
 
   public setLoadingScreen(customLoadingScreen: ILoadingScreen) {

@@ -2,6 +2,7 @@ import { ActionManager, Animation, AnimationGroup, Camera, Color3, ExecuteCodeAc
 import { Scaling } from "../../utils/Scaling";
 import { PlayerInputRunningGame } from "../inputsMangement/PlayerInputRunningGame";
 import { store } from "@/components/gui/store.ts";
+import { IPlayer } from "../scene/games/RunningGameState";
 
 const PLAYER_HEIGHT = 3;
 const PLAYER_RADIUS = 0.5;
@@ -10,7 +11,7 @@ const PLAYER_SCALING = 0.12 ;
 export class PlayerRunningGame {
 
     private static readonly GRAVITY: number = -0.25;
-
+    private name : string;
     // posiution of the player
     private _x : number;
     private _y : number;
@@ -40,21 +41,19 @@ export class PlayerRunningGame {
     private _isIdle : boolean = false;
 
     // run
-    private readonly MIN_RUN_SPEED = 0.10;
+    private readonly MIN_RUN_SPEED = 0.06; // pour changer d'animation entre marche et course
     private baseSpeed: number = 0.04; // Vitesse de déplacement initiale
-    private acceleration: number = 0.02; // Ajustez selon vos besoins
-    private minDelayBetweenSwitches: number = 800; // Délai minimal entre chaque alternance en millisecondes
+    private acceleration: number = 0.0140; // Ajustez selon vos besoins
+    private minDelayBetweenSwitches: number = 600; // Délai minimal entre chaque alternance en millisecondes
     private lastSwitchTime: number = 0;
     private direction: number = 1; // -1 pour gauche, 1 pour droite, 0 pour arrêt
     private leftPressed: boolean = false;
     private rightPressed: boolean = false;
-    private deceleration: number = 0.0035; // Décélération lorsqu'aucune touche n'est enfoncée
+    private deceleration: number = 0.0040; // Décélération lorsqu'aucune touche n'est enfoncée
 
     // input
     // mettrre input manager et retravailler input manager pour qu'il soit plus générique et permettent la création de déplacement de bot
     private _input: PlayerInputRunningGame;
-    // camera
-    private _camera ?: Camera;
 
 	private _deltaTime: number = 0;
 
@@ -65,16 +64,15 @@ export class PlayerRunningGame {
     private currentTime : number = 0;
 
     private cubePersonnage : Mesh;
-    private dep: boolean = false;
 
-    constructor(x : number, y : number, z : number, scene : Scene, assetPath : string, endMesh : Mesh, input : PlayerInputRunningGame, activeCamera: boolean) {
+    constructor(name: string, x : number, y : number, z : number, scene : Scene, endMesh : Mesh, settingsPlayer : IPlayer) {
+        this.name = name;
         this._x = x;
         this._y = y;
         this._z = z;
         this.scene = scene;
-        this.assetPath = assetPath;
-        this._input = input ;
-        this._camera
+        this.assetPath = settingsPlayer.fileName;
+        this._input = new PlayerInputRunningGame(scene, settingsPlayer.keys.KeyLeft, settingsPlayer.keys.KeyRight);
         this.transform = MeshBuilder.CreateCapsule("player", {height: PLAYER_HEIGHT, radius: PLAYER_RADIUS}, this.scene);
         this.transform.position = new Vector3(this._x, this._y + 0.9, this._z);
         this.transform.isVisible = false; // mettre à faux par la suites
@@ -83,7 +81,7 @@ export class PlayerRunningGame {
         this.cubePersonnage.rotation = new Vector3(20.2, 20.1, 40);
         this.cubePersonnage.position = new Vector3(this._x, this._y + 2.4, this._z + 0.8);
         const material = new StandardMaterial("materialCube", scene);
-        material.emissiveColor = new Color3(0, 0, 1);  // Couleur bleu
+        material.emissiveColor = settingsPlayer.color;  // Couleur bleu
         // material.diffuseColor = new Color3(255/255, 54/255, 64/255);  // Couleur rouge
         this.cubePersonnage.material = material;
 
@@ -105,9 +103,6 @@ export class PlayerRunningGame {
         // Démarrer l'animation
         scene.beginAnimation(this.cubePersonnage, 0, 60, true);
 
-        if (activeCamera) {
-            this._camera = this.createCameraPlayer(this.transform);
-        }
         this.endGameMesh = endMesh;
         this.endGameMesh.actionManager = new ActionManager(this.scene);
         this.endGameMesh.actionManager.registerAction(
@@ -127,7 +122,7 @@ export class PlayerRunningGame {
     }
 
     public async init () {
-        const result = await SceneLoader.ImportMeshAsync("", "", this.assetPath, this.scene);
+        const result = await SceneLoader.ImportMeshAsync("", "", `@/../models/characters/${this.assetPath}`, this.scene);
         this.gameObject = result.meshes[0] as Mesh;
         this.gameObject.scaling = new Scaling(PLAYER_SCALING);
         this.gameObject.position = new Vector3(0, (-PLAYER_HEIGHT / 2) + 0.5, 0);
@@ -154,11 +149,11 @@ export class PlayerRunningGame {
         this._deltaTime = delta / 10;
         this.currentTime = currentTime;
         if (!this.isEndGame) {
-            if(!this.dep){
-                this.dep = true;
-                this.cubePersonnage.position.z -= 0.6;
-                this.cubePersonnage.position.y += 0.7;
-            }
+            // if(!this.dep){
+            //     this.dep = true;
+            //     this.cubePersonnage.position.z -= 0.6;
+            //     this.cubePersonnage.position.y += 0.7;
+            // }
             this.processInput();
             this.movePlayer();
             this.animationPlayer();
@@ -253,6 +248,10 @@ export class PlayerRunningGame {
 		}
 	}
 
+    public getSpeed() : number {
+        return this.baseSpeed * 10;
+    }
+
     public _updateGroundDetection(): void {
         this._deltaTime = this.scene.getEngine().getDeltaTime() / 10;
     
@@ -264,17 +263,11 @@ export class PlayerRunningGame {
         }
     }
     
-
-
     public movePlayer(): void {
         // Applique le mouvement en fonction de la direction et de la vitesse
-        const direction = this.baseSpeed * this._deltaTime; 
-        store.commit('setSpeedBar', this.baseSpeed * 10);  
+        const direction = this.baseSpeed * this._deltaTime;
         this.transform.position.z += this.direction * direction;
         this.cubePersonnage.position.z += this.direction * direction;
-        if (this._camera) {
-            this._camera.position.z += this.direction * direction;
-        }
     }
 
     public animationPlayer(): void {
@@ -308,13 +301,8 @@ export class PlayerRunningGame {
         }
     }
 
-    public createCameraPlayer(mesh : Mesh) : FreeCamera { 
-        const camera = new FreeCamera("camera1", new Vector3(22.72, 22.07, -31.21), this.scene);
-        camera.setTarget(new Vector3(mesh.position.x, mesh.position.y, mesh.position.z));
-        return camera;
+    public getName () : string {
+        return this.name;
     }
-
-    public setCamera (camera : Camera) {
-        this._camera = camera;
-    }
+    
 }

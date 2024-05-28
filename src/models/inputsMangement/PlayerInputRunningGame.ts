@@ -9,8 +9,10 @@ export class PlayerInputRunningGame extends InputManager {
     public left: boolean = false;
     public right: boolean = false;
 
-    constructor(scene) {
+    constructor(scene, keyLeft: string, keyRight: string) {
         super(scene);
+        this.keys.KEY_LEFT = keyLeft;
+        this.keys.KEY_RIGHT = keyRight;
         this.setupBeforeRenderObservable(this.updateFromKeyboard);
     }
 
