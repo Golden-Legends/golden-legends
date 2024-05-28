@@ -496,9 +496,11 @@ export class RunningGameState extends GameState {
     });
 
     // Tri des résultats
-    this.results = resultsTemp.sort(
-      (a, b) => parseFloat(a.result) - parseFloat(b.result),
-    );
+    this.results = resultsTemp.sort((a, b) => {
+      if (a.result === "no score") return 1; // Si le résultat de a est "no score", a est considéré comme plus grand
+      if (b.result === "no score") return -1; // Si le résultat de b est "no score", b est considéré comme plus grand
+      return parseFloat(a.result) - parseFloat(b.result); // Sinon, on compare les résultats normalement
+    });
     this.results.forEach((result, index) => {
       result.place = index + 1;
     });
@@ -586,37 +588,39 @@ export class RunningGameState extends GameState {
         maxZ = player.transform.position.z;
       }
     });
+    if (minZ !== maxZ) {
+      // Calculer le milieu entre les deux joueurs sur l'axe x
+      const midPointZ = (minZ + maxZ) /2;
 
-    // Calculer le milieu entre les deux joueurs sur l'axe x
-    const midPointZ = (minZ + maxZ) /2;
-
-    // Calculer la différence entre la position x de la caméra et le milieu
-    const diffZ = midPointZ - this._camera.position.z;
-        // Calculer le vecteur d'accélération (vous pouvez ajuster le facteur d'accélération comme vous le souhaitez)
-    const accelerationZ = diffZ * deltaTime * (ACCELERATION_FACTOR + 0.1) ;
-
-    if (this._camera.position.z + accelerationZ > -31.21) {
-      // Mettre à jour la position x de la caméra
-      this._camera.position.z += accelerationZ;
-    }
-
-    let distance = Math.abs(maxZ - minZ);
-    // si l'écart du milieu entre les joueurs est trop grand on déplace la caméra
-    if (distance > 10) {
-      if (this._camera.position.y < 30) {
-        this._camera.position.y += deltaTime * ACCELERATION_FACTOR ;
+      // Calculer la différence entre la position x de la caméra et le milieu
+      const diffZ = midPointZ - this._camera.position.z;
+          // Calculer le vecteur d'accélération (vous pouvez ajuster le facteur d'accélération comme vous le souhaitez)
+      const accelerationZ = diffZ * deltaTime * (ACCELERATION_FACTOR + 0.1) ;
+      if (this._camera.position.z + accelerationZ > -31.21) {
+        // Mettre à jour la position x de la caméra
+        this._camera.position.z += accelerationZ;
       }
-      if ( this._camera.position.x < 35 ) { 
-        this._camera.position.x += deltaTime * ACCELERATION_FACTOR;
+      let distance = Math.abs(Math.round(maxZ - minZ));
+      // si l'écart du milieu entre les joueurs est trop grand on déplace la caméra
+      if (distance > 10) {
+        if (this._camera.position.y < 30) {
+          this._camera.position.y += deltaTime * ACCELERATION_FACTOR ;
+        }
+        if ( this._camera.position.x < 35 ) { 
+          this._camera.position.x += deltaTime * ACCELERATION_FACTOR;
+        }
+      } else {
+        if (this._camera.position.y >= 22) {
+          this._camera.position.y -= deltaTime * ACCELERATION_FACTOR;
+        }
+        if ( this._camera.position.x >= 22 ) { 
+          this._camera.position.x -= deltaTime * ACCELERATION_FACTOR;
+        }
       }
     } else {
-      if (this._camera.position.y > 22.07) {
-        this._camera.position.y -= deltaTime * ACCELERATION_FACTOR;
-      }
-      if ( this._camera.position.x > 22.72 ) { 
-        this._camera.position.x -= deltaTime * ACCELERATION_FACTOR;
-      }
+      this._camera.position.z = minZ;
     }
+    
   }
 
   checkGameIsOutOfTime() {

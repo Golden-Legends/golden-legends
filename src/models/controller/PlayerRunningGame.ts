@@ -267,7 +267,7 @@ export class PlayerRunningGame {
         // Applique le mouvement en fonction de la direction et de la vitesse
         const direction = this.baseSpeed * this._deltaTime;
         this.transform.position.z += this.direction * direction;
-        this.cubePersonnage.position.z += this.direction * direction;
+        this.cubePersonnage.position.z = this.transform.getAbsolutePosition().z;
     }
 
     public animationPlayer(): void {
