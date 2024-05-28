@@ -3,8 +3,9 @@ import HorizontalColorBar from "@/components/gui/archery/HorizontalColorBar.vue"
 import VerticalColorBar from "@/components/gui/archery/VerticalColorBar.vue";
 import HorizontalMovingArrow from "@/components/gui/archery/HorizontalMovingArrow.vue";
 import VerticalMovingArrow from "@/components/gui/archery/VerticalMovingArrow.vue";
-import { computed, ref, watch, watchEffect } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
 import { storeTirArc } from "@/components/gui/storeTirArc.ts";
+import { storeBoxe } from "@/components/gui/storeBoxe.ts";
 
 const props = defineProps({
   orientation: {
@@ -82,16 +83,30 @@ window.addEventListener("keydown", (e) => {
     emit("update-position", positionV.value);
   }
 });
+let intervalId: NodeJS.Timeout;
 
-let interval = ref(setInterval(updatePosition, storeTirArc.state.speed));
+// SPEED OF CURSOR
+const SPEED = ref(storeTirArc.state.speed);
+
+watch(
+  () => storeTirArc.state.playable,
+  (newVal) => {
+    if (!newVal) {
+      console.log("clearing interval");
+      clearInterval(intervalId);
+    } else {
+      console.log(SPEED.value);
+      intervalId = setInterval(updatePosition, SPEED.value);
+    }
+  },
+);
 
 // Watch for the speed from the store to reset and update the speed from the cursor
 watch(
   () => storeTirArc.state.speed,
-  () => {
-    console.log("Speed changed to: " + storeTirArc.state.speed);
-    clearInterval(interval.value);
-    interval.value = setInterval(updatePosition, storeTirArc.state.speed);
+  (newVal) => {
+    console.log(SPEED.value);
+    SPEED.value = newVal;
   },
 );
 
@@ -108,6 +123,17 @@ watch(
   },
   { deep: true },
 );
+
+onMounted(() => {
+  // resetInterval();
+  // startTimer();
+});
+
+onUnmounted(() => {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
+});
 </script>
 
 <template>
