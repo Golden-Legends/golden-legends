@@ -94,7 +94,7 @@ const collectionToFrenchName = (collection: Collection) => {
         <div class="flex justify-between">
           <div class="flex gap-2">
             <MiniMedal :place="i + 1" />
-            <div class="max-w-[200px] truncate">{{ result.username }}</div>
+            <div class="max-w-[160px] truncate">{{ result.username }}</div>
           </div>
           <div>
             {{
@@ -104,7 +104,9 @@ const collectionToFrenchName = (collection: Collection) => {
                       | CollectionDataMap["jump"]
                       | CollectionDataMap["running"]
                       | CollectionDataMap["swimming"]
-                  ).time
+                  ).time /
+                    1000 +
+                  "s"
                 : (
                     result as
                       | CollectionDataMap["archery"]
