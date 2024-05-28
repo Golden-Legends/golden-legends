@@ -3,16 +3,12 @@ import HorizontalColorBar from "@/components/gui/archery/HorizontalColorBar.vue"
 import VerticalColorBar from "@/components/gui/archery/VerticalColorBar.vue";
 import HorizontalMovingArrow from "@/components/gui/archery/HorizontalMovingArrow.vue";
 import VerticalMovingArrow from "@/components/gui/archery/VerticalMovingArrow.vue";
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, watchEffect } from "vue";
 import { storeTirArc } from "@/components/gui/storeTirArc.ts";
 
 const props = defineProps({
   orientation: {
     type: String,
-    required: true,
-  },
-  ms: {
-    type: Number,
     required: true,
   },
 });
@@ -87,13 +83,15 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-const interval = setInterval(updatePosition, props.ms);
-//when prop.ms update, clear interval and set new interval
+let interval = ref(setInterval(updatePosition, storeTirArc.state.speed));
+
+// Watch for the speed from the store to reset and update the speed from the cursor
 watch(
-  () => props.ms,
+  () => storeTirArc.state.speed,
   () => {
-    clearInterval(interval);
-    setInterval(updatePosition, props.ms);
+    console.log("Speed changed to: " + storeTirArc.state.speed);
+    clearInterval(interval.value);
+    interval.value = setInterval(updatePosition, storeTirArc.state.speed);
   },
 );
 

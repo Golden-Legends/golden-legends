@@ -858,21 +858,13 @@
     id="tirArcGame-verticalgui"
     class="hidden absolute top-1/3 left-2/3 transform -translate-x-1/2 -ml-24"
   >
-    <ArcheryContainer
-      orientation="vertical"
-      :ms="storeTirArc.state.speed"
-      @update-position="positionV"
-    />
+    <ArcheryContainer orientation="vertical" @update-position="positionV" />
   </div>
   <div
     id="tirArcGame-horizontalgui"
     class="hidden absolute top-2/3 left-1/2 transform -translate-x-1/2 mt-12"
   >
-    <ArcheryContainer
-      orientation="horizontal"
-      :ms="storeTirArc.state.speed"
-      @update-position="positionH"
-    />
+    <ArcheryContainer orientation="horizontal" @update-position="positionH" />
   </div>
 
   <!-- Javelot -->

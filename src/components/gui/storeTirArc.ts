@@ -10,7 +10,7 @@ export const storeTirArc = createStore({
       score: 0,
       positionH: -10,
       positionV: -10,
-      speed: 40,
+      speed: 35,
       results: results,
       initialState: {
         positionH: -4,

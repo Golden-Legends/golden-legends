@@ -731,5 +731,6 @@ export class TirArcGameState extends GameState {
       verticalPlaying: false,
       isGameActive: false,
     });
+    storeTirArc.commit("setSpeed", 35);
   }
 }
