@@ -12,6 +12,10 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  player: {
+    type: String,
+    required: false,
+  },
 });
 
 const speedColor = (speed: number, min: number, max: number): string => {
@@ -36,11 +40,16 @@ const calculateProgress = (speed: number): string => {
 </script>
 
 <template>
-  <div class="w-80 h-12 border-2 border-black rounded-lg">
-    <div
-      class="h-full rounded"
-      :class="speedColor(props.speed, props.min, props.max)"
-      :style="calculateProgress(props.speed)"
-    ></div>
+  <div class="flex flex-col gap-2">
+    <span class="text-xl font-bold uppercase" v-if="props.player">{{
+      props.player
+    }}</span>
+    <div class="w-80 h-12 border-2 border-black rounded-lg">
+      <div
+        class="h-full rounded"
+        :class="speedColor(props.speed, props.min, props.max)"
+        :style="calculateProgress(props.speed)"
+      ></div>
+    </div>
   </div>
 </template>

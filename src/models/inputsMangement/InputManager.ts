@@ -2,19 +2,22 @@ import { Scene, ActionManager, ExecuteCodeAction } from "@babylonjs/core";
 
 export abstract class InputManager {
     public inputMap: Record<string, boolean> = {};
-	public scene: Scene;
+    public scene: Scene;
 
-    // est une propriété de la classe InputManager et non une methode
+    // est une propriété de la classe InputManager et non une méthode
     protected abstract updateFromKeyboard;
     abstract readonly keys: { [key: string]: string };
 
     constructor(scene: Scene) {
-		this.scene = scene;
+        this.scene = scene;
         this.setupKeyboardInput();
     }
 
     private setupKeyboardInput(): void {
-        this.scene.actionManager = new ActionManager(this.scene);
+        // Ne pas réassigner l'ActionManager si la scène en a déjà un
+        if (!this.scene.actionManager) {
+            this.scene.actionManager = new ActionManager(this.scene);
+        }
         this.scene.actionManager.registerAction(
             new ExecuteCodeAction(ActionManager.OnKeyDownTrigger, evt => {
                 this.inputMap[evt.sourceEvent.code] = true;
@@ -31,5 +34,4 @@ export abstract class InputManager {
     public setupBeforeRenderObservable(updateFromKeyboard: () => void): void {
         this.scene.onBeforeRenderObservable.add(updateFromKeyboard);
     }
-
 }

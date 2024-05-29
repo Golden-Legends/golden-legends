@@ -223,7 +223,7 @@
       game="level100m"
     />
     <template #duel>
-      <GateButton name="1v1" difficulty="easy" game="100m" />
+      <GateButton id="runningGame-duel" name="1v1" difficulty="easy" game="100m" />
     </template>
   </GameGate>
   <GameGate
@@ -388,6 +388,12 @@
     id="runningGame-command-container"
     class="hidden -mt-20 absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
+  <CommandContainer
+    name="COURIR2"
+    :keys="['k', 'l']"
+    id="runningGame-command-container-2"
+    class="-mt-20 absolute -top-2/3 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
   <GameHelpContainer
     id="runningGame-help"
     title="100m"
@@ -401,6 +407,7 @@
     </button>
     <template #commands>
       <CommandContainer class="w-fit" name="COURIR" :keys="['s', 'd']" />
+      <CommandContainer id="runningGame-help-2" class="w-fit" name="COURIR" :keys="['k', 'l']" />
     </template>
     <template #tips>
       <Info
@@ -423,11 +430,36 @@
     id="runningGame-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
   />
-  <Timer
+  <!-- TIMER J1 -->
+  <Timer 
     name="runningGame-timer"
     id="runningGame-timer"
-    class="hidden absolute bottom-12 right-12"
+    class="hidden absolute bottom-10 right-12"
     :timer="store.state.timer"
+  />
+  <SpeedBar
+    name="runningGame-text-speedbar"
+    id="runningGame-text-speedbar"
+    class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
+    :speed="store.state.setSpeedBar0"
+    :min="0"
+    :max="2.7"
+  />
+  <SpeedBar
+    name="runningGame-text-speedbar0"
+    id="runningGame-text-speedbar0"
+    class="hidden absolute left-1/4 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
+    :speed="store.state.setSpeedBar0"
+    :min="0"
+    :max="2.7"
+  />
+  <SpeedBar
+    name="runningGame-text-speedbar1"
+    id="runningGame-text-speedbar1"
+    class="hidden absolute left-2/3 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
+    :speed="store.state.setSpeedBar1"
+    :min="0"
+    :max="2.7"
   />
   <Results
     title="100m"
@@ -460,19 +492,24 @@
     id="runningGame-text-finish"
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <SpeedBar
-    name="runningGame-text-speedbar"
-    id="runningGame-text-speedbar"
-    class="hidden absolute left-1/2 bottom-10 transform -translate-x-1/2 -translate-y-1/2"
-    :speed="store.state.setSpeedBar"
-    :min="0"
-    :max="2.7"
-  />
   <KeyPressInteraction
     :keys="['s', 'd']"
     name="runningGame-keyPressed"
     id="runningGame-keyPressed"
     class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <!-- DUEL RUNNING GAME KEY PRESSED -->
+  <KeyPressInteraction
+    :keys="['s', 'd']"
+    name="runningGame-keyPressed0"
+    id="runningGame-keyPressed0"
+    class="hidden absolute left-1/4 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <KeyPressInteraction
+    :keys="['k', 'l']"
+    name="runningGame-keyPressed1"
+    id="runningGame-keyPressed1"
+    class="hidden absolute left-2/3 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
 
   <!-- NATATION -->
