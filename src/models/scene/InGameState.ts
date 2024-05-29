@@ -463,6 +463,11 @@ export class InGameState extends GameState {
         new JavelotGameState(this.game, this.canvas, "intermediate"),
       );
     });
+    this.addEventListenerById("javelotDifficile", "click", () => {
+      this.game.changeState(
+        new JavelotGameState(this.game, this.canvas, "hard"),
+      );
+    });
   }
 
   public listenerGui(): void {
@@ -538,7 +543,9 @@ export class InGameState extends GameState {
       router.push({ name: "Landing" });
     });
     this.addEventListenerById("close-records", "click", () => {
-      document.getElementById("scoreboard-station-dialog")!.classList.add("hidden");
+      document
+        .getElementById("scoreboard-station-dialog")!
+        .classList.add("hidden");
     });
 
     // GUI minimap

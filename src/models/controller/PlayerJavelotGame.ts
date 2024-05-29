@@ -58,6 +58,9 @@ export class PlayerJavelotGame {
   public verticalDirection: number = 0;
   public compteur: number = 0;
 
+  private isSpeedReady: boolean = true;
+  private power = 0;
+
   // input
   // mettrre input manager et retravailler input manager pour qu'il soit plus générique et permettent la création de déplacement de bot
   private _input: PlayerInputJavelotGame;
@@ -163,6 +166,9 @@ export class PlayerJavelotGame {
             .classList.add("hidden");
           this.isSpacedPressedForAnim = true;
           this.gameActiveState();
+          document
+            .getElementById("javelotGame-text-speedbar")!
+            .classList.remove("hidden");
         }
       } else {
         //todo récuperer ici les touches qu'enfonce le player
@@ -174,17 +180,73 @@ export class PlayerJavelotGame {
     }
   }
 
+  private startTime = 0;
+  private lastSwitchTime = 0;
+  private test: boolean = false;
+
   public processInput(): void {
     if (this.compteur === 0) {
-      if (this._input.figureh) {
-        // Random number between 1 and 7
-        // TODO : replace with speed value
-        this.verticalDirection = Math.floor(Math.random() * 7) + 1;
+      if (!this.test) {
+        this.startTime = performance.now();
+        this.lastSwitchTime = this.startTime;
+        this.test = true;
+      }
+      if (this.lastSwitchTime - this.startTime < 5000) {
+        this.lastSwitchTime = performance.now();
+        if (this._input.figures) {
+          if (this.power < 25) {
+            this.power += 2;
+          } else if (this.power > 25 && this.power < 50) {
+            this.power += 1.25;
+          } else if (this.power > 50 && this.power < 75) {
+            this.power += 1;
+          } else if (this.power >= 75 && this.power < 85) {
+            this.power += 0.75;
+          } else if (this.power >= 85 && this.power < 100) {
+            this.power += 0.5;
+          }
+          this._input.figures = false;
+        }
+        if (this._input.figured) {
+          this._input.figured = false;
+          if (this.power < 25) {
+            this.power += 2;
+          } else if (this.power > 25 && this.power < 50) {
+            this.power += 1.25;
+          } else if (this.power > 50 && this.power < 75) {
+            this.power += 0.75;
+          } else if (this.power >= 75 && this.power < 85) {
+            this.power += 0.5;
+          } else if (this.power >= 85 && this.power < 100) {
+            this.power += 0.25;
+          }
+        }
+        storeJavelot.commit("setSpeedBar", this.power);
+      } else {
+        console.log(this.power);
+        document
+          .getElementById("javelotGame-angle")!
+          .classList.remove("hidden");
+        this.verticalDirection = this.mapValueToDiscreteRange(
+          this.power,
+          0,
+          100,
+          1,
+          7,
+        );
         this.compteur++;
         storeJavelot.commit("setPlayable", true);
       }
+      /* if (this._input.figureh || this._input.figurev) {
+        this.power += 2;
+      }*/
+      /*if (this.isSpeedReady) {
+        this.isSpeedReady = false;
+        setTimeout(() => {
+
+        }, 5000);
+      }*/
     } else if (this.compteur === 1) {
-      console.log("compteur 1");
       if (!storeJavelot.state.playable) {
         this.horizontalDirection = this.mapValueToDiscreteRange(
           storeJavelot.state.angle,

@@ -50,15 +50,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 import { storeJavelot } from "@/components/gui/storeJavelot.ts";
 
-const angle = ref(0);
+const angle = ref(storeJavelot.state.angle);
 const isAnimating = ref(false);
-const SPEED = 1; // Adjust this value to change the speed (higher = faster)
+const SPEED = ref(storeJavelot.state.angleSpeed); // Adjust this value to change the speed (higher = faster)
 let direction = 1;
 let animationFrame: number | null = null;
 let lastTimestamp = 0;
+
+watch(
+  () => storeJavelot.state.angleSpeed,
+  (newSpeed) => {
+    SPEED.value = newSpeed;
+  },
+);
 
 const startAnimation = () => {
   if (!isAnimating.value) {
@@ -81,7 +88,7 @@ const animate = (timestamp: number) => {
     const elapsed = timestamp - lastTimestamp;
 
     // Update based on the speed (SPEED determines how many degrees per second)
-    const angleChange = (elapsed / 1000) * 90 * SPEED;
+    const angleChange = (elapsed / 1000) * 90 * SPEED.value;
     angle.value += direction * angleChange;
 
     if (angle.value >= 90) {
@@ -111,6 +118,13 @@ const handleKeyup = (event: KeyboardEvent) => {
     stopAnimation();
   }
 };
+
+watch(
+  () => storeJavelot.state.angle,
+  (newAngle) => {
+    angle.value = newAngle;
+  },
+);
 
 onMounted(() => {
   window.addEventListener("keydown", handleKeydown);

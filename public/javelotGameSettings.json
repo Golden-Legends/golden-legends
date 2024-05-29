@@ -8,7 +8,9 @@
                     "end" : "CylinderTirFacile"   
                 }
             ],
-            "pointToSucceed" : 25
+            "pointToSucceed" : 25,
+            "speed": 1,
+            "multiplier": 1
         },
         "intermediate" : {
             "placement" : 
@@ -18,7 +20,9 @@
                     "end" : "CylinderTirFacile"   
                 }
             ],
-            "pointToSucceed" : 25
+            "pointToSucceed" : 25,
+            "speed": 2,
+            "multiplier": 1.5
         },
         "hard" : {
             "placement" : 
@@ -28,7 +32,9 @@
                     "end" : "CylinderTirFacile"   
                 }
             ],
-            "pointToSucceed" : 25
+            "pointToSucceed" : 25,
+            "speed": 4,
+            "multiplier": 2
         }
     }
 }

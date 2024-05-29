@@ -10,8 +10,10 @@ export const storeJavelot = createStore({
       score: 0,
       results: results,
       speedBar: 0,
+      speedBarPlayable: false,
       playable: false,
       angle: 0,
+      angleSpeed: 0,
     };
   },
   mutations: {
@@ -29,6 +31,12 @@ export const storeJavelot = createStore({
     },
     setAngle(state, value) {
       state.angle = value;
+    },
+    setSpeedBarPlayable(state, value) {
+      state.speedBarPlayable = value;
+    },
+    setAngleSpeed(state, value) {
+      state.angleSpeed = value;
     },
   },
 });
