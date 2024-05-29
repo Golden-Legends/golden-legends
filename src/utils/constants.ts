@@ -55,7 +55,7 @@ export let CHARACTERS: Character[] = [
   {
     name: "Théo",
     path: "2",
-    pathGlb: "perso2.glb",
+    pathGlb: "perso3.glb",
     description: "The worst",
     enabled: "jeuObjets",
   },
