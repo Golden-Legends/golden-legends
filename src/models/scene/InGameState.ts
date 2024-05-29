@@ -353,25 +353,12 @@ export class InGameState extends GameState {
   }
 
   private async _initPlayer(scene: Scene): Promise<void> {
-    new HemisphericLight("HemiLight", new Vector3(0, 3, 0), scene);
-
-    const light = new PointLight("sparklight", new Vector3(0, 0, 0), scene);
-    light.diffuse = new Color3(
-      0.08627450980392157,
-      0.10980392156862745,
-      0.15294117647058825,
-    );
-    light.intensity = 35;
-    light.radius = 1;
-
-    const shadowGenerator = new ShadowGenerator(1024, light);
-    shadowGenerator.darkness = 0.4;
+    new HemisphericLight("HemiLight", new Vector3(0, 1, 1), scene);
 
     //Create the player
     this._player = new Player(
       this.assets,
       scene,
-      shadowGenerator,
       this,
       this._input,
     );
@@ -400,12 +387,17 @@ export class InGameState extends GameState {
     });
     this.addEventListenerById("100mMoyen", "click", () => {
       this.game.changeState(
-        new RunningGameState(this.game, this.canvas, "intermediate"),
+        new RunningGameState(this.game, this.canvas, "intermediate")
       );
     });
     this.addEventListenerById("100mDifficile", "click", () => {
       this.game.changeState(
-        new RunningGameState(this.game, this.canvas, "hard"),
+        new RunningGameState(this.game, this.canvas, "hard")
+      );
+    });
+    this.addEventListenerById("runningGame-duel", "click", () => {
+      this.game.changeState(
+        new RunningGameState(this.game, this.canvas, "easy", true, 2)
       );
     });
     // natation
@@ -469,6 +461,11 @@ export class InGameState extends GameState {
     this.addEventListenerById("javelotMoyen", "click", () => {
       this.game.changeState(
         new JavelotGameState(this.game, this.canvas, "intermediate"),
+      );
+    });
+    this.addEventListenerById("javelotDifficile", "click", () => {
+      this.game.changeState(
+        new JavelotGameState(this.game, this.canvas, "hard"),
       );
     });
   }
@@ -546,7 +543,9 @@ export class InGameState extends GameState {
       router.push({ name: "Landing" });
     });
     this.addEventListenerById("close-records", "click", () => {
-      document.getElementById("scoreboard-station-dialog")!.classList.add("hidden");
+      document
+        .getElementById("scoreboard-station-dialog")!
+        .classList.add("hidden");
     });
 
     // GUI minimap

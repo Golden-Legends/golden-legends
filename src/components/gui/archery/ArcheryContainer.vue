@@ -3,16 +3,13 @@ import HorizontalColorBar from "@/components/gui/archery/HorizontalColorBar.vue"
 import VerticalColorBar from "@/components/gui/archery/VerticalColorBar.vue";
 import HorizontalMovingArrow from "@/components/gui/archery/HorizontalMovingArrow.vue";
 import VerticalMovingArrow from "@/components/gui/archery/VerticalMovingArrow.vue";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from "vue";
 import { storeTirArc } from "@/components/gui/storeTirArc.ts";
+import { storeBoxe } from "@/components/gui/storeBoxe.ts";
 
 const props = defineProps({
   orientation: {
     type: String,
-    required: true,
-  },
-  ms: {
-    type: Number,
     required: true,
   },
 });
@@ -86,16 +83,28 @@ window.addEventListener("keydown", (e) => {
     emit("update-position", positionV.value);
   }
 });
+let intervalIdX: NodeJS.Timeout;
+let intervalIdY: NodeJS.Timeout;
 
-const interval = setInterval(updatePosition, props.ms);
-//when prop.ms update, clear interval and set new interval
+// SPEED OF CURSOR
+const SPEED = ref(storeTirArc.state.speed);
+// Watch for the speed from the store to reset and update the speed from the cursor
 watch(
-  () => props.ms,
-  () => {
-    clearInterval(interval);
-    setInterval(updatePosition, props.ms);
+  () => storeTirArc.state.speed,
+  (newVal) => {
+    SPEED.value = newVal;
+    clearInterval(intervalIdX);
+    clearInterval(intervalIdY);
   },
 );
+
+// When game is active, start the updatePosition function
+watchEffect(() => {
+  if (isGameActive.value) {
+    intervalIdX = setInterval(updatePosition, SPEED.value);
+    intervalIdY = setInterval(updatePosition, SPEED.value);
+  }
+});
 
 // Watch for the initial state + isGameActive to update the position
 watch(
@@ -110,6 +119,16 @@ watch(
   },
   { deep: true },
 );
+
+onMounted(() => {
+  // resetInterval();
+  // startTimer();
+});
+
+onUnmounted(() => {
+  clearInterval(intervalIdX);
+  clearInterval(intervalIdY);
+});
 </script>
 
 <template>

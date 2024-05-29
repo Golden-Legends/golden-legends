@@ -17,6 +17,7 @@ import { Result } from "@/components/gui/results/ResultsContent.vue";
 import { InGameState } from "../InGameState";
 import { handleNewRecord } from "@/services/result-service.ts";
 import { storeSound } from "@/components/gui/storeSound.ts";
+import { storeBoxe } from "@/components/gui/storeBoxe.ts";
 
 interface line {
   start: string;
@@ -93,6 +94,7 @@ export class TirArcGameState extends GameState {
     } else {
       this.game.changeActive("arcJavelot");
     }
+    storeTirArc.commit("setPlayable", true);
   }
 
   async setEnvironment(): Promise<void> {
@@ -358,6 +360,8 @@ export class TirArcGameState extends GameState {
 
   async exit(): Promise<void> {
     console.log("exit tir arc game");
+    storeBoxe.commit("setPlayable", false);
+
     document.getElementById("tirArcGame-score")!.classList.add("hidden");
     document
       .getElementById("tirArcGame-action-container")!
@@ -731,5 +735,6 @@ export class TirArcGameState extends GameState {
       verticalPlaying: false,
       isGameActive: false,
     });
+    storeTirArc.commit("setSpeed", 35);
   }
 }

@@ -20,14 +20,18 @@ const difficulty = ref(localStorage.getItem(props.game));
 const is1v1 = computed(() => props.name === "1v1");
 
 const disabled = computed(() => {
+  // ENABLE 1V1 BUTTON
   if (is1v1.value) {
     return false;
   }
+
+  // ENABLE EASY BUTTON
+  if (props.difficulty === "easy") {
+    return false;
+  }
+
+  // OTHER CASES
   if (!difficulty.value) {
-    // Wait 10sec and try again until localStorage is ready
-    setTimeout(() => {
-      difficulty.value = localStorage.getItem(props.game);
-    }, 10000);
     return true;
   } else if (difficulty.value === props.difficulty) {
     return false;
@@ -54,7 +58,7 @@ const colors = {
 };
 
 const displayScore = () => {
-  const sportsWithMultiplier = ["levelPlongeon", "levelTirArc"];
+  const sportsWithMultiplier = ["levelPlongeon", "levelTirArc", "levelJavelot"];
   if (sportsWithMultiplier.includes(props.game)) {
     if (props.difficulty === "intermediate") {
       return "(score x1.5)";
