@@ -94,17 +94,19 @@ const collectionToFrenchName = (collection: Collection) => {
         <div class="flex justify-between">
           <div class="flex gap-2">
             <MiniMedal :place="i + 1" />
-            <div class="max-w-[200px] truncate">{{ result.username }}</div>
+            <div class="max-w-[160px] truncate">{{ result.username }}</div>
           </div>
           <div>
             {{
               isTimeBasedCollection(props.title)
                 ? (
-                    result as
-                      | CollectionDataMap["jump"]
-                      | CollectionDataMap["running"]
-                      | CollectionDataMap["swimming"]
-                  ).time
+                    (
+                      result as
+                        | CollectionDataMap["jump"]
+                        | CollectionDataMap["running"]
+                        | CollectionDataMap["swimming"]
+                    ).time / 1000
+                  ).toFixed(3) + "s"
                 : (
                     result as
                       | CollectionDataMap["archery"]

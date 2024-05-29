@@ -16,9 +16,7 @@ import { PlayerPlongeonGame } from "@/models/controller/PlayerPlongeonGame";
 import { plongeonGameEnv } from "@/models/environments/plongeonGameEnv";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
 import { storePlongeon } from "@/components/gui/storePlongeon";
-import { doc } from "prettier";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
-import { store } from "@/components/gui/store";
 import { InGameState } from "../InGameState";
 import { storeSound } from "@/components/gui/storeSound";
 import { handleNewRecord } from "@/services/result-service.ts";
@@ -34,6 +32,7 @@ interface level {
   numLetters: number;
   limitTime: number;
   timeAffichageSuite: number;
+  multiplier: number;
 }
 
 interface IPlongeonGameState {
@@ -269,8 +268,8 @@ export class PlongeonGameState extends GameState {
     document.getElementById("plongeonGame-keyPressed")!.classList.add("hidden");
     document.getElementById("plongeonGame-results")!.classList.add("hidden");
     document
-        .getElementById("plongeonGame-diveCommands")!
-        .classList.add("hidden");
+      .getElementById("plongeonGame-diveCommands")!
+      .classList.add("hidden");
     document
       .getElementById("plongeonGame-command-container")!
       .classList.add("hidden");
@@ -285,7 +284,7 @@ export class PlongeonGameState extends GameState {
     this.cleanup();
   }
 
-  private setDiversCommands(suitesLettersBoolean : boolean[] , index: number) {
+  private setDiversCommands(suitesLettersBoolean: boolean[], index: number) {
     storePlongeon.commit("setLettersBolleanArray", suitesLettersBoolean);
     storePlongeon.commit("setIndex", index);
   }
@@ -325,7 +324,10 @@ export class PlongeonGameState extends GameState {
           }
         }
         this.createFinaleScoreBoard();
-        this.showScoreBoard();
+        this.scoreboardIsShow = true;
+        setTimeout(() => {
+          this.showScoreBoard();
+        }, 2000);
       }
       console.log("FIN DE JEU");
       return;
@@ -366,15 +368,16 @@ export class PlongeonGameState extends GameState {
   };
 
   private computeScore() {
-    return Math.round(
-      this.player.score +
-        (this.settings.level[this.difficulty].limitTime / 1000 -
-          (this.currentTime - this.plongeonStartTime) / 1000),
+    return (
+      Math.round(
+        this.player.score +
+          (this.settings.level[this.difficulty].limitTime / 1000 -
+            (this.currentTime - this.plongeonStartTime) / 1000),
+      ) * this.settings.level[this.difficulty].multiplier
     );
   }
 
   async showScoreBoard(): Promise<void> {
-    this.scoreboardIsShow = true;
     const score = this.computeScore();
     await handleNewRecord("diving", Number(score), this.playerName);
 
@@ -390,7 +393,14 @@ export class PlongeonGameState extends GameState {
       "#plongeonGame-results #replay-button",
       "click",
       () => {
-        this.game.changeState(new PlongeonGameState(this.game, this.game.canvas, this.difficulty, this.isMultiplayer));
+        this.game.changeState(
+          new PlongeonGameState(
+            this.game,
+            this.game.canvas,
+            this.difficulty,
+            this.isMultiplayer,
+          ),
+        );
       },
     );
     // attendre 2 secondes avant d'afficher le tableau des scores

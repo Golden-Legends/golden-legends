@@ -303,8 +303,8 @@ export class PlayerPlongeonGame {
         this._isWin = true;
         this.runFallAnim();
         while(this.transform.position.y > 0.5){
-            this.transform.position.y -= 0.01;
-            await new Promise(resolve => setTimeout(resolve, 15));
+            this.transform.position.y -= 0.02;
+            await new Promise(resolve => setTimeout(resolve, 5));
         }
         this.runPoolAnim();
     }

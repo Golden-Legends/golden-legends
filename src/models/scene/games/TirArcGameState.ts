@@ -27,6 +27,7 @@ interface level {
   placement: line[];
   pointToSucceed: number;
   speedCurseur: number;
+  multiplier: number;
 }
 
 interface ITirArcGameState {
@@ -87,10 +88,9 @@ export class TirArcGameState extends GameState {
     );
     this.isMultiplayer = multi ? multi : false;
     const soundActive = storeSound.state.etat;
-    if(!soundActive) {
+    if (!soundActive) {
       this.game.playTrack("arcJavelot");
-    }
-    else{
+    } else {
       this.game.changeActive("arcJavelot");
     }
   }
@@ -451,6 +451,8 @@ export class TirArcGameState extends GameState {
         this.score =
           this.tableauScore[Math.abs(this.player.verticalDirection)] *
           this.tableauScore[Math.abs(this.player.horizontalDirection)];
+        // Depending on difficulty, the score is multiplied by a factor
+        this.score *= this.settings.level[this.difficulty].multiplier;
         storeTirArc.commit("setScore", this.score);
         this.endGame();
         // console.log(this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]);
@@ -649,7 +651,14 @@ export class TirArcGameState extends GameState {
       "#tirArcGame-results #replay-button",
       "click",
       () => {
-        this.game.changeState(new TirArcGameState(this.game, this.game.canvas, this.difficulty, this.isMultiplayer));
+        this.game.changeState(
+          new TirArcGameState(
+            this.game,
+            this.game.canvas,
+            this.difficulty,
+            this.isMultiplayer,
+          ),
+        );
       },
     );
     // attendre 2 secondes avant d'afficher le tableau des scores
@@ -671,7 +680,11 @@ export class TirArcGameState extends GameState {
     this.results.push({
       place: 1,
       name: this.playerName,
-      result: "" + this.score + "/100",
+      result:
+        "" +
+        this.score +
+        "/" +
+        100 * this.settings.level[this.difficulty].multiplier,
     });
     storeTirArc.commit("setResults", this.results);
     if (this.score >= this.settings.level[this.difficulty].pointToSucceed) {
