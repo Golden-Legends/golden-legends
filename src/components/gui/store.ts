@@ -21,9 +21,7 @@ const results: Result[] = [
 export const store = createStore({
   state () {
     return {
-      timer0: 0,
-      timer1: 0,
-      timer2: 0,
+      timer: 0,
       results: results,
       setSpeedBar0 : 0,
       setSpeedBar1 : 0,
@@ -31,14 +29,8 @@ export const store = createStore({
     }
   },
   mutations: {
-    setTimer0 (state, value) {
-      state.timer0 = value
-    },
-    setTimer1 (state, value) {
-      state.timer1 = value
-    },
-    setTimer2 (state, value) {
-      state.timer2 = value
+    setTimer (state, value) {
+      state.timer = value
     },
     setResults (state, value) {
       state.results = value

@@ -435,7 +435,7 @@
     name="runningGame-timer"
     id="runningGame-timer"
     class="hidden absolute bottom-10 right-12"
-    :timer="store.state.timer0"
+    :timer="store.state.timer"
   />
   <SpeedBar
     name="runningGame-text-speedbar"

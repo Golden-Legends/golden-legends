@@ -273,7 +273,6 @@ export class RunningGameState extends GameState {
 
     // set les valeurs du store
     this.playerArray.forEach((player, index) => {
-      store.commit("setTimer" + index, 0.0);
       store.commit("setSpeedBar" + index, 0);
       document
       .getElementById("runningGame-text-speedbar" + index)!
@@ -282,6 +281,7 @@ export class RunningGameState extends GameState {
       .getElementById("runningGame-keyPressed" + index)!
       .classList.remove("hidden");
     });
+    store.commit("setTimer", this.timer);
   } 
 
   initGuiSolo() {
@@ -298,18 +298,8 @@ export class RunningGameState extends GameState {
     document
       .getElementById("runningGame-text-speedbar")!
       .classList.remove("hidden");
-
-    this.playerArray.forEach((player, index) => {
-      store.commit("setTimer" + index, 0.0);
-      store.commit("setSpeedBar" + index, 0);
-
-      document
-        .getElementById("runningGame-text-speedbar" + index)!
-        .classList.remove("hidden");
-        document
-        .getElementById("runningGame-keyPressed" + index)!
-        .classList.remove("hidden");
-    });
+    store.commit("setTimer", this.timer);
+    store.commit("setSpeedBar" + 0, 0);
   }
 
   /**
@@ -419,6 +409,15 @@ export class RunningGameState extends GameState {
       this.createFinaleScoreBoard();
       if (!this.isMultiplayer) {
         this.displayPosition();
+      } else {
+        this.playerArray.forEach((player, index) => {
+          document
+        .getElementById("runningGame-text-speedbar" + index)!
+        .classList.add("hidden");
+        document
+        .getElementById("runningGame-keyPressed" + index)!
+        .classList.add("hidden");
+        });
       }
       document
         .getElementById("runningGame-text-finish")!
@@ -605,15 +604,18 @@ export class RunningGameState extends GameState {
         bot.play(deltaTime, this.currentTime);
       });
 
+      const allPlayerEnd = this.playerArray.every((player) =>
+        player.getIsEndGame()
+      );
       // TODO : voir pour gérer le timer correctement
+      if (!allPlayerEnd) {
+        this.timer = Math.round(this.currentTime - this.raceStartTime);
+        store.commit("setTimer", this.timer);
+      }
       this.playerArray.forEach((player, index) => {
-        if (!player.getIsEndGame()) {
-          this.timer = Math.round(this.currentTime - this.raceStartTime);
-          this.timerPlayerArray[index] = this.timer;
-          store.commit("setTimer" + index, this.timer);
-          store.commit("setSpeedBar" + index, player.getSpeed());
+        store.commit("setSpeedBar" + index, player.getSpeed());
         }
-      });
+      );
     } catch (error) {
       throw new Error("error : Running game class update." + error);
     }
