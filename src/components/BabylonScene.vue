@@ -394,7 +394,7 @@
     class="hidden -mt-20 absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <CommandContainer
-    name="COURIR (J2)"
+    name="COURIR"
     :keys="['k', 'l']"
     id="runningGame-command-container-2"
     class="hidden -mt-20 absolute -top-2/3 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
