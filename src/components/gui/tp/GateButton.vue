@@ -58,7 +58,7 @@ const colors = {
 };
 
 const displayScore = () => {
-  const sportsWithMultiplier = ["levelPlongeon", "levelTirArc"];
+  const sportsWithMultiplier = ["levelPlongeon", "levelTirArc", "levelJavelot"];
   if (sportsWithMultiplier.includes(props.game)) {
     if (props.difficulty === "intermediate") {
       return "(score x1.5)";

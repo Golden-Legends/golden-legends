@@ -27,6 +27,8 @@ interface line {
 interface level {
   placement: line[];
   pointToSucceed: number;
+  multiplier: number;
+  speed: number;
 }
 
 interface IJavelotGameState {
@@ -59,7 +61,7 @@ export class JavelotGameState extends GameState {
   private playActive: boolean = false;
   private scoreboardIsShow: boolean = false;
   private animationJavelot: boolean = false;
-  private tableauScore: number[] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+  private tableauScore: number[] = [10, 9, 8, 7, 6, 5, 4];
   private animArc: boolean = false;
   private score: number = 0;
   private results: Result[] = [];
@@ -88,12 +90,26 @@ export class JavelotGameState extends GameState {
     } else {
       this.game.changeActive("arcJavelot");
     }
+    storeJavelot.commit(
+      "setAngleSpeed",
+      this.settings.level[this.difficulty].speed,
+    );
   }
 
   async setEnvironment(): Promise<void> {
     try {
       const maps = new javelotGameEnv(this.scene);
       this.env = maps;
+      const loadJavelotAssets = async () => {
+        await this.env._loadJavelotAssets(
+          this.scene,
+          new Vector3(-0.95, 0.1, 7.1),
+          "jav.glb",
+          "javelot",
+          new Vector3(0, 0, 0),
+        );
+      };
+      await loadJavelotAssets();
       await maps.load();
     } catch (error) {
       throw new Error("Method not implemented.");
@@ -362,6 +378,8 @@ export class JavelotGameState extends GameState {
     document.getElementById("javelotGame-results")!.classList.add("hidden");
 
     storeJavelot.commit("setScore", 0);
+    storeJavelot.commit("setSpeedBar", 0);
+    storeJavelot.commit("setAngle", 0);
     storeJavelot.commit("setResults", []);
 
     this.cleanup();
@@ -381,6 +399,10 @@ export class JavelotGameState extends GameState {
     }
 
     if (!this.playActive) {
+      document.getElementById("javelotGame-angle")!.classList.add("hidden");
+      document
+        .getElementById("javelotGame-text-speedbar")!
+        .classList.add("hidden");
       if (this.player._isWin && !this.scoreboardIsShow) {
         this.showScoreBoard();
         // console.log("scoreboard");
@@ -395,16 +417,6 @@ export class JavelotGameState extends GameState {
         //attendre quelques secondes et load le javelot puis démarrer l'anim du javelot
         // this.animationJavelot = true;
         setTimeout(() => {
-          const loadJavelotAssets = async () => {
-            await this.env._loadJavelotAssets(
-              this.scene,
-              new Vector3(-0.95, 0.1, 7.1),
-              "jav.glb",
-              "javelot",
-              new Vector3(0, 0, 0),
-            );
-          };
-          loadJavelotAssets();
           setTimeout(() => {
             this.animateJavelot();
             this.animationJavelot = true;
@@ -412,9 +424,18 @@ export class JavelotGameState extends GameState {
         }, 1300);
       } else if (this.player._isWin && this.animationJavelot) {
         // console.log("win");
+
+        // Vertical score is between 1 and 7
+        // Horizontal score is between -3 and 3
+        // Vertical 7 score should be the 1st value of this.tableauScore
+        // Horizontal 3 and -3 score should be the 4th value of this.tableauScore
+        // Horizontal 2 and -2 score should be the 3th value of this.tableauScore
+        // Horizontal 1 and -1 score should be the 2th value of this.tableauScore
+        // Horizontal 0 score should be the 1st value of this.tableauScore
         this.score =
-          this.tableauScore[Math.abs(this.player.verticalDirection)] *
-          this.tableauScore[Math.abs(this.player.horizontalDirection)];
+          this.tableauScore[Math.abs(this.player.horizontalDirection)] *
+          (this.player.verticalDirection + 3) *
+          this.settings.level[this.difficulty].multiplier;
         storeJavelot.commit("setScore", this.score);
         this.endGame();
       }
@@ -601,7 +622,14 @@ export class JavelotGameState extends GameState {
       "#javelotGame-results #replay-button",
       "click",
       () => {
-        this.game.changeState(new JavelotGameState(this.game, this.game.canvas,this.difficulty, this.isMultiplayer));
+        this.game.changeState(
+          new JavelotGameState(
+            this.game,
+            this.game.canvas,
+            this.difficulty,
+            this.isMultiplayer,
+          ),
+        );
       },
     );
     // attendre 2 secondes avant d'afficher le tableau des scores
@@ -625,7 +653,11 @@ export class JavelotGameState extends GameState {
     this.results.push({
       place: 1,
       name: this.playerName,
-      result: "" + this.score,
+      result:
+        "" +
+        this.score +
+        "/" +
+        100 * this.settings.level[this.difficulty].multiplier,
     });
     storeJavelot.commit("setResults", this.results);
     if (this.score >= this.settings.level[this.difficulty].pointToSucceed) {
