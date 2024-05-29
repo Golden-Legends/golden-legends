@@ -218,20 +218,20 @@ export class JavelotGameState extends GameState {
       document
         .getElementById("javelotGame-skip-button")!
         .classList.remove("hidden");
+      document.getElementById("javelotgame-help")!.classList.remove("hidden");
+      this.addEventListenerById("close-help-javelot", "click", () => {
+        document.getElementById("javelotgame-help")!.classList.add("hidden");
+      });
       document
         .getElementById("javelotGame-action-container")!
         .classList.remove("hidden");
-      document
-        .getElementById("javelotGame-vertical-container")!
-        .classList.remove("hidden");
-      document
-        .getElementById("javelotGame-horizontal-container")!
-        .classList.remove("hidden");
+      document.getElementById("javelotGame-puissance-container")!.classList.remove("hidden");
       document
         .getElementById("javelotGame-skip-button")!
         .addEventListener("click", () => {
           this.scene.stopAnimation(this._camera);
           this.AfterCamAnim();
+          document.getElementById("javelotgame-help")!.classList.add("hidden");
         });
 
       await this.scene.whenReadyAsync(); // on attends que la scene soit bien chargé
@@ -245,10 +245,11 @@ export class JavelotGameState extends GameState {
         document
           .getElementById("javelotGame-skip-button")!
           .classList.add("hidden");
-
         document
           .getElementById("javelotGame-ready-button")!
           .addEventListener("click", () => {
+            document.getElementById("javelotGame-keyPressed")!.classList.remove("hidden");
+            document.getElementById("javelotgame-help")!.classList.add("hidden");
             this.startCountdown([
               "javelotGame-text-1",
               "javelotGame-text-2",
@@ -369,13 +370,9 @@ export class JavelotGameState extends GameState {
     document
       .getElementById("javelotGame-action-container")!
       .classList.add("hidden");
-    document
-      .getElementById("javelotGame-vertical-container")!
-      .classList.add("hidden");
-    document
-      .getElementById("javelotGame-horizontal-container")!
-      .classList.add("hidden");
+    document.getElementById("javelotGame-puissance-container")!.classList.add("hidden");
     document.getElementById("javelotGame-results")!.classList.add("hidden");
+    document.getElementById("javelotGame-keyPressed")!.classList.add("hidden");
 
     storeJavelot.commit("setScore", 0);
     storeJavelot.commit("setSpeedBar", 0);
@@ -400,9 +397,7 @@ export class JavelotGameState extends GameState {
 
     if (!this.playActive) {
       document.getElementById("javelotGame-angle")!.classList.add("hidden");
-      document
-        .getElementById("javelotGame-text-speedbar")!
-        .classList.add("hidden");
+      document.getElementById("javelotGame-text-speedbar")!.classList.add("hidden");
       if (this.player._isWin && !this.scoreboardIsShow) {
         this.showScoreBoard();
         // console.log("scoreboard");

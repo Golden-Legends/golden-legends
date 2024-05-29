@@ -199,13 +199,13 @@ const carousel = ref(0);
                 class="w-fit my-4"
               />
               <CommandContainer
-                name="VISÉE↕️"
-                :keys="['V']"
+                name="VISÉE↔️"
+                :keys="['H']"
                 class="w-fit my-4"
               />
               <CommandContainer
-                name="VISÉE↔️"
-                :keys="['H']"
+                name="VISÉE↕️"
+                :keys="['V']"
                 class="w-fit my-4"
               />
             </div>
@@ -236,10 +236,31 @@ const carousel = ref(0);
             />
           </div>
         </CarouselContent>
+        <CarouselContent v-if="carousel === 7">
+          <div>
+            <Title text="Javelot - Comment jouer ?"></Title>
+            <div class="flex gap-5">
+              <CommandContainer class="w-fit my-4" name="PUISSANCE" :keys="['s', 'd']" width="180"/>
+              <CommandContainer
+                name="ANGLE"
+                :keys="['ESPACE']"
+                class="w-fit my-4"
+              />
+            </div>
+            <Title text="Astuces" class="mb-3"></Title>
+            <Info
+              :content="[
+                'Appuyer sur ESPACE pour démarrer.',
+                'Quand le barre de puissance apparaitra, vous aurez 5 secondes pour la remplir en alternant les touches S et D.',
+                'Puis, après avoir réglé la puissance, vous devrez régler l\'angle en appuyant sur ESPACE (gardez le bouton enfoncé pour régler l\'angle puis relâcher).'
+              ]"
+            />
+          </div>
+        </CarouselContent>
       </div>
 
       <button
-        :disabled="carousel === 6"
+        :disabled="carousel === 7"
         @click="carousel++"
         class="disabled:opacity-30 ml-8 p-4 rounded-full backdrop-brightness-50 w-20"
       >
