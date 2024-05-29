@@ -392,7 +392,7 @@
     name="COURIR2"
     :keys="['k', 'l']"
     id="runningGame-command-container-2"
-    class="-mt-20 absolute -top-2/3 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden -mt-20 absolute -top-2/3 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <GameHelpContainer
     id="runningGame-help"
