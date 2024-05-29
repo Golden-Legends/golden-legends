@@ -10,8 +10,9 @@ export const storeTirArc = createStore({
       score: 0,
       positionH: -10,
       positionV: -10,
-      speed: 40,
+      speed: 35,
       results: results,
+      playable: false,
       initialState: {
         positionH: -4,
         positionV: -1,
@@ -43,6 +44,9 @@ export const storeTirArc = createStore({
     },
     setGameActive(state, value) {
       state.initialState.isGameActive = value;
+    },
+    setPlayable(state, value) {
+      state.playable = value;
     },
   },
 });
