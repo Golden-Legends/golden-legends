@@ -16,7 +16,7 @@ const props = defineProps({
 
 <template>
   <div
-    class="relative border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white items-center p-2 px-4 rounded-lg h-fit w-[800px]"
+    class="relative border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white items-center p-2 px-4 rounded-lg h-fit w-[600px]"
   >
     <button
       id="close-objects"

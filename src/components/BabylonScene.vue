@@ -222,6 +222,9 @@
       difficulty="hard"
       game="level100m"
     />
+    <template #duel>
+      <GateButton name="1v1" difficulty="easy" game="100m" />
+    </template>
   </GameGate>
   <GameGate
     title="100m Brasse"

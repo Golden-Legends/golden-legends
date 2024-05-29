@@ -9,7 +9,8 @@
                 }
             ],
             "pointToSucceed" : 50,
-            "speedCurseur" : 35
+            "speedCurseur" : 35,
+            "multiplier" : 1
         },
         "intermediate" : {
             "placement" : 
@@ -20,7 +21,8 @@
                 }
             ],
             "pointToSucceed" : 50,
-            "speedCurseur" : 25
+            "speedCurseur" : 25,
+            "multiplier" : 1.5
         },
         "hard" : {
             "placement" : 
@@ -31,7 +33,8 @@
                 }
             ],
             "pointToSucceed" : 50,
-            "speedCurseur" : 15
+            "speedCurseur" : 15,
+            "multiplier" : 2
         }
     }
 }

@@ -63,7 +63,13 @@ const carousel = ref(0);
               le lobby pour débloquer 2 nouveaux personnages. Une fumée rouge
               sort de ces objets pour vous aider.</span
             >
-            <img :src="objets" alt="objets" class="w-full rounded-lg my-2" />
+            <div class="flex justify-center">
+              <img
+                :src="objets"
+                alt="objets"
+                class="w-[600px] rounded-lg my-2"
+              />
+            </div>
           </div>
         </CarouselContent>
       </div>

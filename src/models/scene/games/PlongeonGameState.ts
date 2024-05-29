@@ -16,13 +16,10 @@ import { PlayerPlongeonGame } from "@/models/controller/PlayerPlongeonGame";
 import { plongeonGameEnv } from "@/models/environments/plongeonGameEnv";
 import { SkyMaterial, WaterMaterial } from "@babylonjs/materials";
 import { storePlongeon } from "@/components/gui/storePlongeon";
-import { doc } from "prettier";
 import { Result } from "@/components/gui/results/ResultsContent.vue";
-import { store } from "@/components/gui/store";
 import { InGameState } from "../InGameState";
 import { storeSound } from "@/components/gui/storeSound";
 import { handleNewRecord } from "@/services/result-service.ts";
-import { set } from "firebase/database";
 
 interface line {
   start: string;
@@ -35,6 +32,7 @@ interface level {
   numLetters: number;
   limitTime: number;
   timeAffichageSuite: number;
+  multiplier: number;
 }
 
 interface IPlongeonGameState {
@@ -270,8 +268,8 @@ export class PlongeonGameState extends GameState {
     document.getElementById("plongeonGame-keyPressed")!.classList.add("hidden");
     document.getElementById("plongeonGame-results")!.classList.add("hidden");
     document
-        .getElementById("plongeonGame-diveCommands")!
-        .classList.add("hidden");
+      .getElementById("plongeonGame-diveCommands")!
+      .classList.add("hidden");
     document
       .getElementById("plongeonGame-command-container")!
       .classList.add("hidden");
@@ -286,7 +284,7 @@ export class PlongeonGameState extends GameState {
     this.cleanup();
   }
 
-  private setDiversCommands(suitesLettersBoolean : boolean[] , index: number) {
+  private setDiversCommands(suitesLettersBoolean: boolean[], index: number) {
     storePlongeon.commit("setLettersBolleanArray", suitesLettersBoolean);
     storePlongeon.commit("setIndex", index);
   }
@@ -308,11 +306,20 @@ export class PlongeonGameState extends GameState {
     if (this.player._isWin) {
       if (!this.scoreboardIsShow) {
         // console.log(this.player.score, this.settings.level[this.difficulty].pointToSucceed)
-        if (this.player.score >= this.settings.level[this.difficulty].pointToSucceed) {
-          if (this.difficulty === "easy" && localStorage.getItem("levelPlongeon") === "easy") {
+        if (
+          this.player.score >=
+          this.settings.level[this.difficulty].pointToSucceed
+        ) {
+          if (
+            this.difficulty === "easy" &&
+            localStorage.getItem("levelPlongeon") === "easy"
+          ) {
             localStorage.setItem("levelPlongeon", "intermediate");
           }
-          if (this.difficulty === "intermediate" && localStorage.getItem("levelPlongeon") === "intermediate") {
+          if (
+            this.difficulty === "intermediate" &&
+            localStorage.getItem("levelPlongeon") === "intermediate"
+          ) {
             localStorage.setItem("levelPlongeon", "hard");
           }
         }
@@ -361,10 +368,12 @@ export class PlongeonGameState extends GameState {
   };
 
   private computeScore() {
-    return Math.round(
-      this.player.score +
-        (this.settings.level[this.difficulty].limitTime / 1000 -
-          (this.currentTime - this.plongeonStartTime) / 1000),
+    return (
+      Math.round(
+        this.player.score +
+          (this.settings.level[this.difficulty].limitTime / 1000 -
+            (this.currentTime - this.plongeonStartTime) / 1000),
+      ) * this.settings.level[this.difficulty].multiplier
     );
   }
 
@@ -384,7 +393,14 @@ export class PlongeonGameState extends GameState {
       "#plongeonGame-results #replay-button",
       "click",
       () => {
-        this.game.changeState(new PlongeonGameState(this.game, this.game.canvas, this.difficulty, this.isMultiplayer));
+        this.game.changeState(
+          new PlongeonGameState(
+            this.game,
+            this.game.canvas,
+            this.difficulty,
+            this.isMultiplayer,
+          ),
+        );
       },
     );
     // attendre 2 secondes avant d'afficher le tableau des scores

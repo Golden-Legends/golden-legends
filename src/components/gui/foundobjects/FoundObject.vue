@@ -23,14 +23,14 @@ const getAsset = (name: string) => {
       <img
         :src="getAsset(props.object.path)"
         alt="object"
-        class="w-16 rounded-xl aspect-square"
+        class="w-12 rounded-xl aspect-square"
       />
-      <div class="text-2xl text-white font-black uppercase">
+      <div class="text-xl text-white font-black uppercase">
         {{ props.object.name }}
       </div>
     </div>
 
-    <div class="text-2xl text-white font-black uppercase">
+    <div class="text-xl text-white font-black uppercase">
       {{ props.object.found ? "Trouvé" : "Non trouvé" }}
     </div>
   </div>

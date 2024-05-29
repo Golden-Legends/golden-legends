@@ -100,13 +100,13 @@ const collectionToFrenchName = (collection: Collection) => {
             {{
               isTimeBasedCollection(props.title)
                 ? (
-                    result as
-                      | CollectionDataMap["jump"]
-                      | CollectionDataMap["running"]
-                      | CollectionDataMap["swimming"]
-                  ).time /
-                    1000 +
-                  "s"
+                    (
+                      result as
+                        | CollectionDataMap["jump"]
+                        | CollectionDataMap["running"]
+                        | CollectionDataMap["swimming"]
+                    ).time / 1000
+                  ).toFixed(3) + "s"
                 : (
                     result as
                       | CollectionDataMap["archery"]
