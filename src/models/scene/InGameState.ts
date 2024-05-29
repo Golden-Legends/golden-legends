@@ -353,7 +353,7 @@ export class InGameState extends GameState {
   }
 
   private async _initPlayer(scene: Scene): Promise<void> {
-    new HemisphericLight("HemiLight", new Vector3(0, 3, 0), scene);
+    new HemisphericLight("HemiLight", new Vector3(0, 1, 1), scene);
 
     //Create the player
     this._player = new Player(
