@@ -266,23 +266,23 @@ export class RunningGameState extends GameState {
     this.currentTime = 0;
 
     document
-    .getElementById("runningGame-command-container-2")!
-    .classList.remove("hidden");
-    
+      .getElementById("runningGame-command-container-2")!
+      .classList.remove("hidden");
+
     document.getElementById("runningGame-timer")!.classList.remove("hidden");
 
     // set les valeurs du store
-    this.playerArray.forEach((player, index) => {
+    this.playerArray.forEach((_, index) => {
       store.commit("setSpeedBar" + index, 0);
       document
-      .getElementById("runningGame-text-speedbar" + index)!
-      .classList.remove("hidden");
+        .getElementById("runningGame-text-speedbar" + index)!
+        .classList.remove("hidden");
       document
-      .getElementById("runningGame-keyPressed" + index)!
-      .classList.remove("hidden");
+        .getElementById("runningGame-keyPressed" + index)!
+        .classList.remove("hidden");
     });
     store.commit("setTimer", this.timer);
-  } 
+  }
 
   initGuiSolo() {
     this.timer = 0;
@@ -352,18 +352,18 @@ export class RunningGameState extends GameState {
       .classList.add("hidden");
     if (this.isMultiplayer) {
       document
-      .getElementById("runningGame-command-container-2")!
-      .classList.add("hidden");
-      this.playerArray.forEach((player, index) => {
-        document
-        .getElementById("runningGame-text-speedbar" + index)!
+        .getElementById("runningGame-command-container-2")!
         .classList.add("hidden");
+      this.playerArray.forEach((_, index) => {
         document
-        .getElementById("runningGame-keyPressed" + index)!
-        .classList.add("hidden");
+          .getElementById("runningGame-text-speedbar" + index)!
+          .classList.add("hidden");
+        document
+          .getElementById("runningGame-keyPressed" + index)!
+          .classList.add("hidden");
       });
     }
-  
+
     this.undisplayPosition();
     this.cleanup();
   }
@@ -410,13 +410,13 @@ export class RunningGameState extends GameState {
       if (!this.isMultiplayer) {
         this.displayPosition();
       } else {
-        this.playerArray.forEach((player, index) => {
+        this.playerArray.forEach((_, index) => {
           document
-        .getElementById("runningGame-text-speedbar" + index)!
-        .classList.add("hidden");
-        document
-        .getElementById("runningGame-keyPressed" + index)!
-        .classList.add("hidden");
+            .getElementById("runningGame-text-speedbar" + index)!
+            .classList.add("hidden");
+          document
+            .getElementById("runningGame-keyPressed" + index)!
+            .classList.add("hidden");
         });
       }
       document
@@ -448,7 +448,7 @@ export class RunningGameState extends GameState {
               this.game.canvas,
               this.difficulty,
               this.isMultiplayer,
-              this.numberPlayer
+              this.numberPlayer,
             ),
           );
         },
@@ -605,7 +605,7 @@ export class RunningGameState extends GameState {
       });
 
       const allPlayerEnd = this.playerArray.every((player) =>
-        player.getIsEndGame()
+        player.getIsEndGame(),
       );
       // TODO : voir pour gérer le timer correctement
       if (!allPlayerEnd) {
@@ -614,8 +614,7 @@ export class RunningGameState extends GameState {
       }
       this.playerArray.forEach((player, index) => {
         store.commit("setSpeedBar" + index, player.getSpeed());
-        }
-      );
+      });
     } catch (error) {
       throw new Error("error : Running game class update." + error);
     }

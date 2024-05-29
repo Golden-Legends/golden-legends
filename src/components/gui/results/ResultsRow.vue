@@ -9,9 +9,9 @@ const props = defineProps({
 
 <template>
   <div class="flex justify-between font-bold text-2xl" v-if="props.result">
-    <div class="">
+    <div class="flex">
       <span> {{ props.result.place }}) </span>
-      <span>
+      <span class="flex w-[200px] truncate pl-1">
         {{ props.result.name }}
       </span>
     </div>
