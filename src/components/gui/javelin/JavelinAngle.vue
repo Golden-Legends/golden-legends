@@ -51,6 +51,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
+import { storeJavelot } from "@/components/gui/storeJavelot.ts";
 
 const angle = ref(0);
 const isAnimating = ref(false);
@@ -97,13 +98,16 @@ const animate = (timestamp: number) => {
 };
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (event.code === "Space") {
+  if (event.code === "Space" && storeJavelot.state.playable) {
     startAnimation();
   }
 };
 
 const handleKeyup = (event: KeyboardEvent) => {
   if (event.code === "Space") {
+    storeJavelot.commit("setAngle", angle.value);
+    storeJavelot.commit("setPlayable", false);
+
     stopAnimation();
   }
 };

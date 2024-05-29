@@ -26,7 +26,7 @@ export class Game {
     this.soundManager = new SoundManager();
     this.currentTrackName = "";
     this.initTrack();
-    this.changeState(new InGameState(this, canvas));
+    this.changeState(new JavelotGameState(this, canvas));
   }
 
   public setLoadingScreen(customLoadingScreen: ILoadingScreen) {

@@ -1006,7 +1006,15 @@
   </Results>
   <JavelinAngle
     id="javelotGame-angle"
-    class="hidden absolute -ml-24 top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="absolute -ml-24 top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <SpeedBar
+    name="javelotGame-text-speedbar"
+    id="javelotGame-text-speedbar"
+    :speed="storeJavelot.state.speedBar"
+    :min="0"
+    :max="2.7"
+    class="-rotate-90 absolute -ml-36 top-2/3 -mt-32 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
 
   <!-- BOXE -->
