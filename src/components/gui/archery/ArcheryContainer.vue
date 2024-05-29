@@ -83,32 +83,28 @@ window.addEventListener("keydown", (e) => {
     emit("update-position", positionV.value);
   }
 });
-let intervalId: NodeJS.Timeout;
+let intervalIdX: NodeJS.Timeout;
+let intervalIdY: NodeJS.Timeout;
 
 // SPEED OF CURSOR
 const SPEED = ref(storeTirArc.state.speed);
-
-watch(
-  () => storeTirArc.state.playable,
-  (newVal) => {
-    if (!newVal) {
-      console.log("clearing interval");
-      clearInterval(intervalId);
-    } else {
-      console.log(SPEED.value);
-      intervalId = setInterval(updatePosition, SPEED.value);
-    }
-  },
-);
-
 // Watch for the speed from the store to reset and update the speed from the cursor
 watch(
   () => storeTirArc.state.speed,
   (newVal) => {
-    console.log(SPEED.value);
     SPEED.value = newVal;
+    clearInterval(intervalIdX);
+    clearInterval(intervalIdY);
   },
 );
+
+// When game is active, start the updatePosition function
+watchEffect(() => {
+  if (isGameActive.value) {
+    intervalIdX = setInterval(updatePosition, SPEED.value);
+    intervalIdY = setInterval(updatePosition, SPEED.value);
+  }
+});
 
 // Watch for the initial state + isGameActive to update the position
 watch(
@@ -130,9 +126,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (intervalId) {
-    clearInterval(intervalId);
-  }
+  clearInterval(intervalIdX);
+  clearInterval(intervalIdY);
 });
 </script>
 
