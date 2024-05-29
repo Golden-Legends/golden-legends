@@ -203,7 +203,7 @@ export class RunningGameState extends GameState {
           ]);
           this.AfterCamAnim();
           if (this.isMultiplayer) {
-            // TODOk
+            this.initGuiMulti();
           } else {
             this.initGuiSolo();
           }
@@ -258,6 +258,32 @@ export class RunningGameState extends GameState {
     this.buildScoreBoard();
   }
 
+  initGuiMulti() {
+    this.timer = 0;
+    this.raceStartTime = 0;
+    this.endGame = false;
+    this.scoreboardIsShow = false;
+    this.currentTime = 0;
+
+    document
+    .getElementById("runningGame-command-container-2")!
+    .classList.remove("hidden");
+    
+    document.getElementById("runningGame-timer")!.classList.remove("hidden");
+
+    // set les valeurs du store
+    this.playerArray.forEach((player, index) => {
+      store.commit("setTimer" + index, 0.0);
+      store.commit("setSpeedBar" + index, 0);
+      document
+      .getElementById("runningGame-text-speedbar" + index)!
+      .classList.remove("hidden");
+      document
+      .getElementById("runningGame-keyPressed" + index)!
+      .classList.remove("hidden");
+    });
+  } 
+
   initGuiSolo() {
     this.timer = 0;
     this.raceStartTime = 0;
@@ -276,27 +302,13 @@ export class RunningGameState extends GameState {
     this.playerArray.forEach((player, index) => {
       store.commit("setTimer" + index, 0.0);
       store.commit("setSpeedBar" + index, 0);
-    });
-  }
 
-  initGuiMulti() {
-    this.timer = 0;
-    this.raceStartTime = 0;
-    this.endGame = false;
-    this.scoreboardIsShow = false;
-    this.currentTime = 0;
-
-    document.getElementById("runningGame-timer")!.classList.remove("hidden");
-    document
-      .getElementById("runningGame-keyPressed")!
-      .classList.remove("hidden");
-    document
-      .getElementById("runningGame-text-speedbar")!
-      .classList.remove("hidden");
-
-    this.playerArray.forEach((player, index) => {
-      store.commit("setTimer" + index, 0.0);
-      store.commit("setSpeedBar" + index, 0);
+      document
+        .getElementById("runningGame-text-speedbar" + index)!
+        .classList.remove("hidden");
+        document
+        .getElementById("runningGame-keyPressed" + index)!
+        .classList.remove("hidden");
     });
   }
 
@@ -348,6 +360,20 @@ export class RunningGameState extends GameState {
     document
       .getElementById("runningGame-command-container")!
       .classList.add("hidden");
+    if (this.isMultiplayer) {
+      document
+      .getElementById("runningGame-command-container-2")!
+      .classList.add("hidden");
+      this.playerArray.forEach((player, index) => {
+        document
+        .getElementById("runningGame-text-speedbar" + index)!
+        .classList.add("hidden");
+        document
+        .getElementById("runningGame-keyPressed" + index)!
+        .classList.add("hidden");
+      });
+    }
+  
     this.undisplayPosition();
     this.cleanup();
   }
