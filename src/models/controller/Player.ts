@@ -104,7 +104,6 @@ export class Player extends TransformNode {
   constructor(
     assets,
     scene: Scene,
-    shadowGenerator: ShadowGenerator,
     gameState: InGameState,
     input?,
   ) {
@@ -124,7 +123,7 @@ export class Player extends TransformNode {
     this._dance = assets.animationGroups.find((ag) => ag.name === "Anim|dance");
 
     this._setUpAnimations();
-    shadowGenerator.addShadowCaster(assets.mesh); //the player mesh will cast shadows
+    // shadowGenerator.addShadowCaster(assets.mesh); //the player mesh will cast shadows
 
     this._input = input;
 
