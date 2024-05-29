@@ -177,14 +177,16 @@ export class PlayerJavelotGame {
   public processInput(): void {
     if (this.compteur === 0) {
       if (this._input.figureh) {
-        this.horizontalDirection = Math.floor(Math.random() * 7) - 3;
+        // Random number between 1 and 7
+        // TODO : replace with speed value
+        this.verticalDirection = Math.floor(Math.random() * 7) + 1;
         this.compteur++;
         storeJavelot.commit("setPlayable", true);
       }
     } else if (this.compteur === 1) {
       console.log("compteur 1");
       if (!storeJavelot.state.playable) {
-        this.verticalDirection = this.mapValueToDiscreteRange(
+        this.horizontalDirection = this.mapValueToDiscreteRange(
           storeJavelot.state.angle,
         );
         this.compteur++;
@@ -198,8 +200,8 @@ export class PlayerJavelotGame {
     value: number,
     srcMin: number = 0,
     srcMax: number = 90,
-    destMin: number = 1,
-    destMax: number = 7,
+    destMin: number = -3,
+    destMax: number = 3,
   ): number {
     // Vérifier si la valeur est dans la plage d'origine
     if (value < srcMin || value > srcMax) {
