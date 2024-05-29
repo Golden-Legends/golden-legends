@@ -423,6 +423,7 @@ export class RunningGameState extends GameState {
               this.game.canvas,
               this.difficulty,
               this.isMultiplayer,
+              this.numberPlayer
             ),
           );
         },

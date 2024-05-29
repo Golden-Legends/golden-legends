@@ -400,12 +400,17 @@ export class InGameState extends GameState {
     });
     this.addEventListenerById("100mMoyen", "click", () => {
       this.game.changeState(
-        new RunningGameState(this.game, this.canvas, "intermediate"),
+        new RunningGameState(this.game, this.canvas, "intermediate")
       );
     });
     this.addEventListenerById("100mDifficile", "click", () => {
       this.game.changeState(
-        new RunningGameState(this.game, this.canvas, "hard"),
+        new RunningGameState(this.game, this.canvas, "hard")
+      );
+    });
+    this.addEventListenerById("runningGame-duel", "click", () => {
+      this.game.changeState(
+        new RunningGameState(this.game, this.canvas, "easy", true, 2)
       );
     });
     // natation
