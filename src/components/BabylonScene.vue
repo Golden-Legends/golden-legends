@@ -853,15 +853,15 @@
     class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <CommandContainer
-    name="VISÉE↕️"
-    :keys="['V']"
-    id="tirArcGame-vertical-container"
-    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
-  />
-  <CommandContainer
     name="VISÉE↔️"
     :keys="['H']"
     id="tirArcGame-horizontal-container"
+    class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <CommandContainer
+    name="VISÉE↕️"
+    :keys="['V']"
+    id="tirArcGame-vertical-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <GameHelpContainer
@@ -877,8 +877,8 @@
     </button>
     <template #commands>
       <CommandContainer name="ACTION" :keys="['ESPACE']" class="w-fit my-4" />
-      <CommandContainer name="VISÉE↕️" :keys="['V']" class="w-fit my-4" />
       <CommandContainer name="VISÉE↔️" :keys="['H']" class="w-fit my-4" />
+      <CommandContainer name="VISÉE↕️" :keys="['V']" class="w-fit my-4" />
     </template>
     <template #tips>
       <Info
