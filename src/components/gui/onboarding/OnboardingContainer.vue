@@ -45,18 +45,22 @@ const carousel = ref(0);
               toi. Explore les alentours pour trouver tous les secrets de cette
               carte. Et des PNJ seront là pour t'aider si besoin.</span
             >
-            <img
-              :src="map_overview"
-              alt="map-overview"
-              class="w-full rounded-lg my-2"
-            />
+            <div class="flex justify-center">
+              <img
+                :src="map_overview"
+                alt="map-overview"
+                class="w-[500px] rounded-lg my-2"
+              />
+            </div>
           </div>
         </CarouselContent>
         <CarouselContent v-if="carousel === 1">
           <div>
             <Title text="Des portails ?"></Title>
             <span>Ils servent à accéder à nos différentes épreuves.</span>
-            <img :src="lobby" alt="lobby" class="w-full rounded-lg my-2" />
+            <div class="flex justify-center">
+              <img :src="lobby" alt="lobby" class="w-[500px] rounded-lg my-2" />
+            </div>
           </div>
 
           <div>
@@ -96,14 +100,27 @@ const carousel = ref(0);
         <CarouselContent v-if="carousel === 3">
           <div>
             <Title text="Des records ?"></Title>
-            <span>Approchez vous près des stations rouges avec un i bleu tournant au dessus pour voir les 10 meilleurs scores de chaque jeu.</span><br>
-            <span>Plus la difficulté du jeu sera élévée, plus vous pourrez obtenir un score élevé.</span>
-            <img :src="scoreboard" alt="lobby" class="w-1/2 h-1/2 rounded-lg my-2" />
+            <span
+              >Approchez vous près des stations rouges pour voir les 10
+              meilleurs scores de chaque jeu. Plus la difficulté du jeu sera
+              élévée, plus vous pourrez obtenir un score élevé.</span
+            ><br />
+            <span></span>
+            <div class="flex justify-center">
+              <img
+                :src="scoreboard"
+                alt="lobby"
+                class="w-1/2 h-[400px] rounded-lg my-2"
+              />
+            </div>
           </div>
 
-          <div>
+          <div class="-mt-4">
             <Title text="Comment faire partie des Golden Legends ?"></Title>
-            <span>Spammer nos mini-jeux pour atteindre les sommets des scoreboards !</span>
+            <span
+              >Spammer nos mini-jeux pour atteindre les sommets des scoreboards
+              !</span
+            >
           </div>
         </CarouselContent>
       </div>

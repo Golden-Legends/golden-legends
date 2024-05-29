@@ -36,7 +36,7 @@ const carousel = ref(0);
     <div class="text-4xl font-bold text-center mt-2 mb-4">
       Aides du jeu Golden Legends !
     </div>
-    <div class="w-full h-fit flex justify-between items-center">
+    <div class="w-full h-fit flex justify-between items-center overflow-y-auto">
       <button
         :disabled="carousel === 0"
         @click="carousel--"
@@ -47,8 +47,9 @@ const carousel = ref(0);
       <div class="rounded-xl backdrop-brightness-75 px-4 py-4 w-3/4">
         <CarouselContent v-if="carousel === 0">
           <div>
-            <Title text="Dans le lobby :"></Title>
-            <Title text="Les déplacements" class="mt-4 -mb-2"></Title>
+            <Title text="Déplacements dans le lobby" class="mb-4"></Title>
+
+            <Title text="Se déplacer" class="-mb-2"></Title>
             <div class="flex gap-12 items-center">
               <div class="flex flex-col w-fit my-4">
                 <div class="flex justify-center">
@@ -73,19 +74,23 @@ const carousel = ref(0);
               </div>
             </div>
 
-            <Title text="La vision" class="-mb-2"></Title>
+            <Title text="Caméra" class="-mb-2"></Title>
             <CustomKBD :keybind="'souris'" class="w-fit my-4" />
             <Info
               :content="[
                 'N\'oubliez pas de verrouiller la souris en cliquant sur l\'écran pour que les mouvements de la souris soient pris en compte !',
-                'Inversement, pour récupérer la souris, appuyez sur la touche Echap.'
+                'Inversement, pour récupérer la souris, appuyez sur la touche Echap.',
               ]"
             />
-            <Title
-              text="Dash - Appuyez sur A/Q en sautant"
-              class="mt-8 -mb-2"
-            ></Title>
-            <div class="flex gap-12 items-center">
+          </div>
+        </CarouselContent>
+
+        <CarouselContent v-if="carousel === 1">
+          <div>
+            <Title text="Actions dans le lobby" class="mb-4"></Title>
+
+            <Title text="Dash (en sautant)" class="-mb-2"></Title>
+            <div class="flex gap-4 items-center">
               <div class="flex flex-col w-fit my-4">
                 <div class="flex justify-center">
                   <CustomKBD :keybind="'a'" class="w-fit" />
@@ -99,16 +104,24 @@ const carousel = ref(0);
               </div>
             </div>
 
-            <Title text="Ouvrir le menu" class="mt-8 -mb-2"></Title>
-            <CustomKBD :keybind="'o'" class="w-fit my-4" />
-            <Title text="Ouvrir la minimap" class="mt-4 -mb-2"></Title>
-            <CustomKBD :keybind="'c'" class="w-fit my-4" />
-            <Title text="Une petite danse de la victoire ?" class="mt-4 -mb-2"></Title>
-            <CustomKBD :keybind="'f'" class="w-fit my-4" />
+            <div class="flex justify-between gap-8">
+              <div class="w-1/3">
+                <Title text="Ouvrir le menu" class="mt-8 -mb-2"></Title>
+                <CustomKBD :keybind="'o'" class="w-fit my-4" />
+              </div>
+              <div class="w-2/5">
+                <Title text="Ouvrir la minimap" class="mt-8 -mb-2"></Title>
+                <CustomKBD :keybind="'c'" class="w-fit my-4" />
+              </div>
+              <div class="w-1/3">
+                <Title text="Danse" class="mt-8 -mb-2"></Title>
+                <CustomKBD :keybind="'f'" class="w-fit my-4" />
+              </div>
+            </div>
           </div>
         </CarouselContent>
 
-        <CarouselContent v-if="carousel === 1">
+        <CarouselContent v-if="carousel === 2">
           <div>
             <Title text="100m - Comment jouer ?" class=""></Title>
             <CommandContainer
@@ -125,7 +138,7 @@ const carousel = ref(0);
           </div>
         </CarouselContent>
 
-        <CarouselContent v-if="carousel === 2">
+        <CarouselContent v-if="carousel === 3">
           <div>
             <Title text="100m Brasse - Comment jouer ?"></Title>
             <div class="flex gap-5">
@@ -150,7 +163,7 @@ const carousel = ref(0);
           </div>
         </CarouselContent>
 
-        <CarouselContent v-if="carousel === 3">
+        <CarouselContent v-if="carousel === 4">
           <div>
             <Title text="Plongeon - Comment jouer ?"></Title>
             <div class="flex gap-5">
@@ -176,7 +189,7 @@ const carousel = ref(0);
           </div>
         </CarouselContent>
 
-        <CarouselContent v-if="carousel === 4">
+        <CarouselContent v-if="carousel === 5">
           <div>
             <Title text="Tir à l'arc - Comment jouer ?"></Title>
             <div class="flex gap-5">
@@ -205,7 +218,7 @@ const carousel = ref(0);
             />
           </div>
         </CarouselContent>
-        <CarouselContent v-if="carousel === 5">
+        <CarouselContent v-if="carousel === 6">
           <div>
             <Title text="Boxe - Comment jouer ?"></Title>
             <div class="flex gap-5">
@@ -226,7 +239,7 @@ const carousel = ref(0);
       </div>
 
       <button
-        :disabled="carousel === 5"
+        :disabled="carousel === 6"
         @click="carousel++"
         class="disabled:opacity-30 ml-8 p-4 rounded-full backdrop-brightness-50 w-20"
       >
