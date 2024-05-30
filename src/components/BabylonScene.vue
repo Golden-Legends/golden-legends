@@ -1196,7 +1196,7 @@ const objectGameText =
 const tpGameText =
   "Approche toi des portails pour te téléporter dans différents stades olympiques pour défier tes amis !";
 const footGameText =
-  "Arriveras tu à marquer le plus de but ? Appuie sur R pour commencer le jeu !";
+  "Team foot ⚽ ou rugby 🏉 ? 😉";
 //Objects message
 const objetHaieText = "Récupére la Haie olympique en appuyant sur R";
 const objetgGantText = "Récupére le Gant de boxe en appuyant sur R";

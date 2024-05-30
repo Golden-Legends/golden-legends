@@ -70,35 +70,6 @@ const carousel = ref(0);
         </CarouselContent>
         <CarouselContent v-if="carousel === 2">
           <div>
-            <Title text="Comment jouer ?"></Title>
-            <span
-              >Chaque jeu à des touches différentes, n'oubliez pas de les
-              consulter! Voici comment cela sera affiché :
-            </span>
-            <div class="flex gap-2">
-              <CommandContainer
-                name="COURIR"
-                :keys="['s', 'd']"
-                class="w-fit my-4"
-              />
-              <CommandContainer
-                name="ACTION"
-                :keys="['ESPACE']"
-                class="w-fit my-4"
-              />
-            </div>
-          </div>
-          <div>
-            <Title text="Mais qu'est-ce que je peux bien faire ?"></Title>
-            <span
-              >Tu peux visiter la carte, découvrir des lieux emblématiques,
-              trouver d'autres mini-jeux ou des objets cachés...pour débloquer
-              de nouveaux personnages.</span
-            >
-          </div>
-        </CarouselContent>
-        <CarouselContent v-if="carousel === 3">
-          <div>
             <Title text="Des records ?"></Title>
             <span
               >Approchez vous près des stations rouges pour voir les 10
@@ -120,6 +91,23 @@ const carousel = ref(0);
             <span
               >Spammer nos mini-jeux pour atteindre les sommets des scoreboards
               !</span
+            >
+          </div>
+        </CarouselContent>
+        <CarouselContent v-if="carousel === 3">
+          <div>
+            <Title text="Comment jouer ?"></Title>
+            <span>
+              Pour vous déplacer, utilisez les touches Z, Q, S, D (azerty) ou W, A, S, D (qwerty) et utilisez la souris pour bouger la caméra.
+              Si vous voulez plus de détails sur les commandes dans la ville de Paris ou dans les différents jeux, vous pouvez les retrouver dans le menu, section "Aides".
+            </span>
+          </div>
+          <div>
+            <Title text="Mais qu'est-ce que je peux bien faire ?"></Title>
+            <span
+              >Tu peux visiter la carte, découvrir des lieux emblématiques,
+              trouver d'autres mini-jeux ou des objets cachés...pour débloquer
+              de nouveaux personnages.</span
             >
           </div>
         </CarouselContent>
