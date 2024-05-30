@@ -59,7 +59,7 @@ export class TennisGameState extends GameState{
 				if (this.isMultiplayer) {
 					this._paddle1 = new Paddle('player', this.scene, this.input);
 					this._paddle2 = new Paddle('player2', this.scene, this.input);
-					this.ball = new Ball(this.scene, this._paddle1, this._paddle2, 1);
+					this.ball = new Ball(this.scene, this._paddle1, this._paddle2, 3);
 				} else {
 					this._paddle1 = new Paddle('player', this.scene, this.input);
 					this._paddle2 = new Paddle('cpu', this.scene, this.input);
