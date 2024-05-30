@@ -2,7 +2,7 @@ import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
 import { TennisGameEnv } from "@/models/environments/tennisGameEnv";
 import { PlayerInputTennisGame } from "@/models/inputsMangement/PlayerInputTennisGame";
-import { AbstractMesh, Color3, HemisphericLight, Mesh, MeshBuilder, Scene, StandardMaterial, UniversalCamera, Vector3 } from "@babylonjs/core";
+import { AbstractMesh, Color3, HemisphericLight, Mesh, MeshBuilder, Scalar, Scene, StandardMaterial, UniversalCamera, Vector3 } from "@babylonjs/core";
 
 export class TennisGameState extends GameState{
 		private _camera: UniversalCamera;
@@ -56,10 +56,10 @@ export class TennisGameState extends GameState{
 					boite.isVisible = false;
 				}
 
-				this._camera.rotation = new Vector3(0.3, 0, 0);
-				const cameraMesh = this.scene.getMeshByName("cameraJoueur");
+				const cameraMesh = this.scene.getMeshByName("filet");
 				if (cameraMesh) {
-					this._camera.position = new Vector3(-cameraMesh.position.x, cameraMesh.position.y + 1.5, cameraMesh.position.z - 0.7);
+					this._camera.position = new Vector3(-cameraMesh.position.clone().x, cameraMesh.position.clone().y + 10, cameraMesh.position.clone().z);
+					this._camera.rotation = new Vector3(1.50, -1.563, 0);
 				}
 
 				//add paddles to the scene
@@ -69,12 +69,8 @@ export class TennisGameState extends GameState{
 
 				if (this.isMultiplayer) {
 					console.log("multiplayer");
-				} else {
-					await this.initPlayer();
 				}
 
-				// this.joueur1.checkCollisions = true;
-				// console.log("player : ",  this.joueur1.checkCollisions)
 				this.runUpdateAndRender();
 				await this.scene.whenReadyAsync(); // on attends que la scene soit bien chargé
 				this.scene.attachControl();
@@ -93,8 +89,6 @@ export class TennisGameState extends GameState{
 
     update(): void {
 			try {
-				// this.deplacementJoueur1();
-				// this.ball.update();
 				this._paddle1.handleEvent();
 				this._paddle2.moveByBallPosition(this.ball._body.position.x);
 				this.ball.update();
@@ -122,39 +116,10 @@ export class TennisGameState extends GameState{
 
 		private createCamera() : UniversalCamera {
 			const camera = new UniversalCamera("camera", new Vector3(0, 1, 0), this.scene);
-			camera.attachControl(this.canvas, true);
+			// camera.attachControl(this.canvas, true);
 			return camera;
 		}
 
-		private async initPlayer() {
-			// const player1MeshBlender = this.scene.getMeshByName("joueur1");
-			// this.joueur1 = MeshBuilder.CreateBox("joueur1", {width: 0.4, height: 0.3, depth: 0.1}, this.scene);
-			// this.joueur1.position = player1MeshBlender?.getAbsolutePosition() as Vector3;
-			// // mettre une couleur rouge 
-			// const material = new StandardMaterial("texture1", this.scene);
-			// material.emissiveColor = new Color3(0, 0, 1);
-			// this.joueur1.material = material;	
-			// // J2
-			// const player2MeshBlender = this.scene.getMeshByName("joueur2");
-			// this.joueur2 = MeshBuilder.CreateBox("joueur2", {width: 0.4, height: 0.3, depth: 0.1}, this.scene);
-			// this.joueur2.position = player2MeshBlender?.getAbsolutePosition() as Vector3;
-			// // mettre une couleur bleu
-			// const material2 = new StandardMaterial("texture2", this.scene);
-			// material2.emissiveColor = new Color3(1, 0, 0);
-			// this.joueur2.material = material2;
-		}	
-
-		private deplacementJoueur1() {
-			// const newX = this.joueur1.position.x + this.input.horizontal * this.speed;
-			// // Vérification des limites
-			// if (newX < this.minX) {
-			// 	this.joueur1.position.x = this.minX;
-			// } else if (newX > this.maxX) {
-			// 	this.joueur1.position.x = this.maxX;
-			// } else {
-			// 	this.joueur1.position.x = newX;
-			// }
-		}
 }
 
 class Ball {
@@ -180,13 +145,15 @@ class Ball {
 	private maxX = 0;
 	private minZ = 0;
 	private maxZ = 0;
+	private isReadyToRun = false;
 	private _scene : Scene;
+	private distanceBetweenJ1J2 = 0;
 	
 	constructor(scene: Scene, paddle1, paddle2: Paddle) {
 			// create a ball
 			this._scene = scene;
 			this._body = MeshBuilder.CreateSphere("ball", {
-					diameter: 0.1,
+					diameter: 0.15,
 					updatable: true
 			}, scene);
 
@@ -211,19 +178,20 @@ class Ball {
 				this.meshFinJ2 = finJ2;
 			}
 
+			
 			// add color to a ball
 			this._body.material = mat;
-
+			
 			// set start speed and direction
 			this._speed = 0.01;
 			this._direction = 1;
-
+			
 			// enable collision
 			this._body.checkCollisions = true;
-
+			
 			this._paddle1 = paddle1;
 			this._paddle2 = paddle2;
-
+			
 			// initialisation
 			this.resetBall = true;
 			// set start speed and direction
@@ -232,7 +200,24 @@ class Ball {
 			this.setMinAndMax();
 	}
 
-	private isReadyToRun = false;
+	private _calculateHeight(z: number): number {
+    const posj1 = this._paddle1._body.position.z;
+    const posj2 = this._paddle2._body.position.z;
+    const middleZ = (posj1 + posj2) / 2;
+    const minHeight = -0.35;
+    const maxHeight = 0.1;
+
+    // Calcul de a, h et k pour la parabole
+    const h = middleZ;
+    const k = maxHeight;
+    const a = minHeight / Math.pow(posj1 - h, 2);
+
+    // Calcul de la hauteur en utilisant la formule quadratique
+    const height = a * Math.pow(z - h, 2) + k;
+
+    // Assurez-vous que la hauteur ne dépasse pas les bornes spécifiées
+    return Math.max(minHeight, Math.min(height, maxHeight));
+	}
 
 	update() {
 		if (!this._isEndGame) {
@@ -263,10 +248,13 @@ class Ball {
 
 	_move() {
 		let ballPos = this._body.position;
+		// console.log("ballPos : ", ballPos, this._velocity);
+		// Mise à jour de la position de la balle en utilisant le vecteur de vitesse
+		ballPos.x += this._velocity.x;
+		ballPos.z += this._velocity.z;
 
-        // Mise à jour de la position de la balle en utilisant le vecteur de vitesse
-        ballPos.x += this._velocity.x;
-        ballPos.z += this._velocity.z;
+		const test = this._calculateHeight(this._body.position.z);
+		this._body.position.y = test;
 	}
 
 	private _checkCollision() {
@@ -275,7 +263,6 @@ class Ball {
     const paddle2Pos = this._paddle2._body.position;
 
     // Collision with Paddle 1
-		console.log(Math.abs(ballPos.x - paddle1Pos.x) < WIDTH / 2, Math.abs(ballPos.z - paddle1Pos.z) < HEIGHT / 2)
     if (Math.abs(ballPos.x - paddle1Pos.x) < WIDTH / 2 && 
 			Math.abs(ballPos.z - paddle1Pos.z) < HEIGHT / 2) {
 			this.hitBallBack(this._paddle1);
@@ -351,16 +338,16 @@ enum PaddleDirection {
 	NONE
 }
 
-const WIDTH = 0.4;
+const WIDTH = 0.5;
 const HEIGHT = 0.3;
 const DEPTH = 0.1;
 
 class Paddle {
-    _body: Mesh;
+    public _body: Mesh;
     _type: string; //player or cpu
     _direction: PaddleDirection;
 		_input : PlayerInputTennisGame;
-		speed = 0.01;
+		speed = 0.03;
 
     constructor(paddleType: string, scene: Scene, input: PlayerInputTennisGame) {
 			this._type = paddleType;
@@ -373,7 +360,7 @@ class Paddle {
 
 			// prepare the material
 			let mat = new StandardMaterial('paddleMaterial', scene);
-			mat.emissiveColor = this._type == 'player' ? new Color3(0, 0, 1) : new Color3(1, 0, 0);
+			mat.emissiveColor = this._type == 'player' ? new Color3(1, 0, 0) : new Color3(0, 0, 1);
 
 			// add color to a paddle
 			this._body.material = mat;
@@ -405,18 +392,22 @@ class Paddle {
 			}
     }
 
+		private baseSpeed = 0;
+		private acceleration = 0.1;
     moveByBallPosition(x:number) {
+			const movementLerpSpeed = 0.05;
 			if(this._type=='cpu'){
+				// const distance = Math.abs(x-this._body.position.x);
+				// console.log("distance : ", distance);
+
 				if(x>this._body.position.x){
-					this._body.position.x+=0.3;
-					this._direction = PaddleDirection.LEFT;
+					// this._body.position.x+=0.1;
+					let horizontal = Scalar.Lerp(this.baseSpeed, 0.5, movementLerpSpeed);
+					this._body.position.x += horizontal;
 				}
 				if(x<this._body.position.x){
-					this._body.position.x-=0.3;
-					this._direction = PaddleDirection.RIGHT;
-				}
-				if(x==this._body.position.x){
-					this._direction = PaddleDirection.NONE;
+					let horizontal = Scalar.Lerp(this.baseSpeed, -0.5, movementLerpSpeed);
+					this._body.position.x += horizontal;
 				}
 			}
     }

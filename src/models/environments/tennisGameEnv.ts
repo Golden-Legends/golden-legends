@@ -18,9 +18,6 @@ export class TennisGameEnv {
 			// m.receiveShadows = true;
 			m.checkCollisions = true;
 		});
-		// this.createSkybox(this._scene);
-		// this.assetContainerTab = await InstanceManager.initInstance(this.filename, this._scene, "./models/characters/");
-		// this.loadPublic();
 	}
 
     public async _loadAsset() {
