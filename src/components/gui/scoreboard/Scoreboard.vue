@@ -85,7 +85,7 @@ const collectionToFrenchName = (collection: Collection) => {
     <h2 class="text-3xl font-bold my-4">
       {{ collectionToFrenchName(props.title) }}
     </h2>
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 mt-4">
       <div
         class="flex flex-col text-2xl gap-2"
         v-for="(result, i) in sortedResults"
