@@ -29,7 +29,7 @@ export class TennisGameState extends GameState{
 				this.input = new PlayerInputTennisGame(this.scene);
     }
 
-		// cameraJoueur, joueur1, filet, joueur2
+		// cameraJoueur, joueur1, filet, joueur2, boite
     async enter(): Promise<void> {
 			try {
 				console.log("TennisGameState")
@@ -67,7 +67,7 @@ export class TennisGameState extends GameState{
 
     update(): void {
 			try {
-				console.log(this.input.horizontal, this.input.horizontalAxis);
+				console.log(this.input.horizontal);
 			} catch (error) {
         throw new Error("Method not implemented.");
 			}

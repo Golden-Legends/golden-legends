@@ -24,7 +24,7 @@ export class tennisGameEnv {
 		const result = await SceneLoader.ImportMeshAsync(
 			null,
 			"./models/maps/games/",
-			"tennis1.glb",
+			"tennis.glb",
 			this._scene,
 		);
 
