@@ -27,7 +27,7 @@ export class Game {
     this.soundManager = new SoundManager();
     this.currentTrackName = "";
     this.initTrack();
-    this.changeState(new TennisGameState(this, canvas, false));
+    this.changeState(new TennisGameState(this, canvas, true));
   }
 
   public setLoadingScreen(customLoadingScreen: ILoadingScreen) {

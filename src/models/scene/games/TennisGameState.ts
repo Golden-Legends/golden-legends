@@ -277,7 +277,7 @@ class Ball {
 				// donne moi un nombre random entre -0.05 et 0.05
 				const random = Math.random() * (0.04 - -0.04) + -0.04;
 				if (this._paddle2._type == 'player2') {
-					this._velocity = new Vector3(0, 0, 0.02);
+					this._velocity = new Vector3(random, 0, 0.03);
 				} else  {
 				this._velocity = new Vector3(random, 0, -0.04); // Reset velocity if needed
 					
@@ -297,10 +297,12 @@ class Ball {
 		}
 	}
 
+
+	private maxSpeed = 0.2;
 	_move() {
 		let ballPos = this._body.position;
-		// console.log("ballPos : ", ballPos, this._velocity);
-		// Mise à jour de la position de la balle en utilisant le vecteur de vitesse
+		this._velocity.x = Math.min(this.maxSpeed, Math.max(-this.maxSpeed, this._velocity.x));
+		this._velocity.z = Math.min(this.maxSpeed, Math.max(-this.maxSpeed, this._velocity.z));
 		ballPos.x += this._velocity.x;
 		ballPos.z += this._velocity.z;
 
