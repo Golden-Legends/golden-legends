@@ -3,8 +3,8 @@ import { InputManager } from "./InputManager";
 
 export class PlayerInputTennisGame extends InputManager {
     readonly keys = {
-        KEY_LEFT: "KeyS",
-        KEY_RIGHT: "KeyD",
+        KEY_LEFT: "ArrowDown",
+        KEY_RIGHT: "ArrowUp",
     };
 
     public left : boolean = false;
