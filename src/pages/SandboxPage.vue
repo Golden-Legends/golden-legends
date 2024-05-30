@@ -206,11 +206,9 @@ const position = (position: number) => {
       </SandboxContainer>
       <SandboxContainer name="Game gate">
         <GameGate title="100m">
-          <template>
-            <GateButton name="Facile" difficulty="easy" game="100m" />
-            <GateButton name="Moyen" difficulty="medium" game="100m" />
-            <GateButton name="Difficile" difficulty="hard" game="100m" />
-          </template>
+          <GateButton name="Facile" difficulty="easy" game="100m" />
+          <GateButton name="Moyen" difficulty="medium" game="100m" />
+          <GateButton name="Difficile" difficulty="hard" game="100m" />
           <template #duel>
             <GateButton name="Facile" difficulty="medium" game="100m" />
           </template>

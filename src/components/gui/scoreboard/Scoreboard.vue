@@ -4,6 +4,14 @@ import {
   isTimeBasedCollection,
   Collection,
   isScoreBasedCollection,
+  Archery,
+  Boxing,
+  Diving,
+  Javelin,
+  Tennis,
+  Jump,
+  Running,
+  Swimming,
 } from "@/services/result-service.ts";
 import { computed } from "vue";
 import MiniMedal from "@/components/gui/scoreboard/MiniMedal.vue";
@@ -14,46 +22,28 @@ const props = defineProps<{
   title: Collection;
 }>();
 
+// Type Guard Functions
+function isTimeBased(
+  result: CollectionDataMap[keyof CollectionDataMap],
+): result is Jump | Running | Swimming {
+  return (result as Jump | Running | Swimming).time !== undefined;
+}
+
 // Computed property to sort the results
 const sortedResults = computed(() => {
   if (isTimeBasedCollection(props.title)) {
-    // Sort by time in ascending order
     return [...props.result].sort((a, b) => {
-      const aTime = (
-        a as
-          | CollectionDataMap["jump"]
-          | CollectionDataMap["running"]
-          | CollectionDataMap["swimming"]
-      ).time;
-      const bTime = (
-        b as
-          | CollectionDataMap["jump"]
-          | CollectionDataMap["running"]
-          | CollectionDataMap["swimming"]
-      ).time;
+      const aTime = (a as Jump | Running | Swimming).time;
+      const bTime = (b as Jump | Running | Swimming).time;
       return aTime - bTime;
     });
   } else if (isScoreBasedCollection(props.title)) {
-    // Sort by score in descending order
     return [...props.result].sort((a, b) => {
-      const aScore = (
-        a as
-          | CollectionDataMap["archery"]
-          | CollectionDataMap["boxing"]
-          | CollectionDataMap["diving"]
-          | CollectionDataMap["javelin"]
-      ).score;
-      const bScore = (
-        b as
-          | CollectionDataMap["archery"]
-          | CollectionDataMap["boxing"]
-          | CollectionDataMap["diving"]
-          | CollectionDataMap["javelin"]
-      ).score;
+      const aScore = (a as Archery | Boxing | Diving | Javelin | Tennis).score;
+      const bScore = (b as Archery | Boxing | Diving | Javelin | Tennis).score;
       return bScore - aScore;
     });
   } else {
-    // Return unsorted if title is not recognized
     return props.result;
   }
 });
@@ -72,6 +62,8 @@ const collectionToFrenchName = (collection: Collection) => {
       return "🏅 Plongeon";
     case "javelin":
       return "💪 Lancer de javelot";
+    case "tennis":
+      return "🎾 Tennis";
     case "jump":
       return "🐇 Épreuve de saut";
     default:
@@ -82,7 +74,7 @@ const collectionToFrenchName = (collection: Collection) => {
 
 <template>
   <div class="w-[340px]">
-    <h2 class="text-3xl font-bold my-4">
+    <h2 class="text-3xl font-bold mb-4">
       {{ collectionToFrenchName(props.title) }}
     </h2>
     <div class="flex flex-col gap-2 mt-4">
@@ -98,22 +90,9 @@ const collectionToFrenchName = (collection: Collection) => {
           </div>
           <div>
             {{
-              isTimeBasedCollection(props.title)
-                ? (
-                    (
-                      result as
-                        | CollectionDataMap["jump"]
-                        | CollectionDataMap["running"]
-                        | CollectionDataMap["swimming"]
-                    ).time / 1000
-                  ).toFixed(3) + "s"
-                : (
-                    result as
-                      | CollectionDataMap["archery"]
-                      | CollectionDataMap["boxing"]
-                      | CollectionDataMap["diving"]
-                      | CollectionDataMap["javelin"]
-                  ).score
+              isTimeBased(result)
+                ? (result.time / 1000).toFixed(3) + "s"
+                : result.score
             }}
           </div>
         </div>
@@ -125,15 +104,3 @@ const collectionToFrenchName = (collection: Collection) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.gold {
-  color: gold;
-}
-.silver {
-  color: silver;
-}
-.bronze {
-  color: #cd7f32; /* Bronze color */
-}
-</style>
