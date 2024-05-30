@@ -402,7 +402,7 @@
   <GameHelpContainer
     id="runningGame-help"
     title="100m"
-    class="hidden -top-3/4 left-1/2 transform -translate-x-1/2"
+    class="hidden -mt-40 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
       id="close-help-100m"
@@ -547,7 +547,7 @@
   <GameHelpContainer
     id="natationgame-help"
     title="100m Brasse"
-    class="hidden -mt-28 -top-3/4 left-1/2 transform -translate-x-1/2"
+    class="hidden -mt-48 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
       id="close-help-natation"
@@ -670,7 +670,7 @@
   <GameHelpContainer
     id="plongeongame-help"
     title="Plongeon"
-    class="hidden -mt-28 -top-3/4 left-1/2 transform -translate-x-1/2"
+    class="hidden -mt-48 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
       id="close-help-plongeon"
@@ -866,8 +866,8 @@
   />
   <GameHelpContainer
     id="tirArcgame-help"
-    title="Plongeon"
-    class="hidden -mt-56 -top-3/4 left-1/2 transform -translate-x-1/2"
+    title="Tir à l'arc"
+    class="hidden -mt-80 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
       id="close-help-tirArc"
@@ -982,7 +982,7 @@
   <GameHelpContainer
     id="javelotgame-help"
     title="Javelot"
-    class="hidden -mt-52 -top-3/4 left-1/2 transform -translate-x-1/2"
+    class="hidden -mt-72 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
       id="close-help-javelot"
@@ -1059,7 +1059,7 @@
   <GameHelpContainer
     id="boxeGame-help"
     title="Boxe"
-    class="hidden -mt-16 -top-3/4 left-1/2 transform -translate-x-1/2"
+    class="hidden -mt-32 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
       id="close-help-boxe"

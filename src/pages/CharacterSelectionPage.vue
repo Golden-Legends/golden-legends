@@ -36,9 +36,9 @@ const setPathCharacterLocalStorage = (path: Character | null) => {
 <template>
   <div class="h-screen w-screen bg-white flex">
     <div
-      class="w-3/5 h-screen bg-primary p-14 flex flex-col gap-12 overflow-auto"
+      class="w-3/5 h-screen bg-primary px-14 py-6 flex flex-col gap-12 overflow-auto"
     >
-      <div class="flex flex-col gap-16">
+      <div class="flex flex-col gap-12">
         <ClassicButton
           text="Retour"
           @click="router.push({ name: 'Landing' })"
