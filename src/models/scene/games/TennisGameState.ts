@@ -17,17 +17,8 @@ export class TennisGameState extends GameState{
 		private ball !: Ball;
 		_paddle1!: Paddle;
     _paddle2!: Paddle;
-		private ballSpeed = 0.05;
-		// DEPLACEMENT
-		private speed = 0.05;
-		
-
-		private score = {
-			player1: 0,
-			player2: 0
-		}
+		// DEPLACEMENT		
 		private isEndGame = false;
-		private limitTime = 30;
 
     constructor(
         game: Game,
@@ -37,7 +28,7 @@ export class TennisGameState extends GameState{
         super(game, canvas);
 				this.isMultiplayer = multi ? multi : false;
 				this._camera = this.createCamera();
-				this.input = new PlayerInputTennisGame(this.scene);
+				this.input = new PlayerInputTennisGame(this.scene, this.isMultiplayer);
 				this.environment = new TennisGameEnv(this.scene);
 				
     }
@@ -65,11 +56,17 @@ export class TennisGameState extends GameState{
 				}
 
 				//add paddles to the scene
-        this._paddle1 = new Paddle('player', this.scene, this.input);
-        this._paddle2 = new Paddle('cpu', this.scene, this.input);
-				this.ball = new Ball(this.scene, this._paddle1, this._paddle2);
+				if (this.isMultiplayer) {
+					this._paddle1 = new Paddle('player', this.scene, this.input);
+					this._paddle2 = new Paddle('player2', this.scene, this.input);
+					this.ball = new Ball(this.scene, this._paddle1, this._paddle2, 1);
+				} else {
+					this._paddle1 = new Paddle('player', this.scene, this.input);
+					this._paddle2 = new Paddle('cpu', this.scene, this.input);
+					this.ball = new Ball(this.scene, this._paddle1, this._paddle2, 1);
+				}
+				
 				this.ball.initGlb();
-
 				if (this.isMultiplayer) {
 					console.log("multiplayer");
 				}
@@ -89,12 +86,28 @@ export class TennisGameState extends GameState{
         throw new Error("Method not implemented.");
     }
 
-
+		private isResultShown = false;
     update(): void {
 			try {
-				this._paddle1.handleEvent();
-				this._paddle2.moveByBallPosition(this.ball._body.position.x);
-				this.ball.update();
+				if(!this.ball.getIsEndGame()){
+					this._paddle1.handleEvent();
+					if (this.isMultiplayer) {
+						this._paddle2.handleEventJ2();
+					} else {
+						this._paddle2.moveByBallPosition(this.ball._body.position.x);
+					}
+					this.ball.update();
+				} else {
+					if (!this.isResultShown) {
+						this.isResultShown = true;
+						if (this.isMultiplayer) {
+							console.log("Show Result Multi : ", this.ball.getScoreMulti());
+						} else {
+							console.log("Show Result : ", this.ball.getScore(), this.ball.getScoreMulti());
+						}
+					}
+					console.log("End Game");
+				}
 			} catch (error) {
         throw new Error("Method not implemented.");
 			}
@@ -133,10 +146,11 @@ class Ball {
 	_paddle2: Paddle;
 	meshFinJ1: AbstractMesh;
 	meshFinJ2: AbstractMesh;
-	private _score = {
-		player1: 0,
-		player2: 0
-	}
+	private _score = 0;
+	private _scoreMulti = {
+		scoreJ1: 0,
+		scoreJ2: 0
+	};
 	private _isEndGame = false;
 	private indexGame = 0;
 	private maxGame = 3;
@@ -151,14 +165,14 @@ class Ball {
 	private isReadyToRun = false;
 	private _scene : Scene;
 	
-	constructor(scene: Scene, paddle1, paddle2: Paddle) {
+	constructor(scene: Scene, paddle1, paddle2: Paddle, maxGame : number) {
 			// create a ball
 			this._scene = scene;
 			this._body = MeshBuilder.CreateSphere("ball", {
 					diameter: 0.15,
 					updatable: true
 			}, scene);
-
+			this.maxGame = maxGame;
 			// prepare the material
 			let mat = new StandardMaterial('ballMaterial', scene);
 			mat.diffuseColor = new Color3(1, 0, 0);
@@ -193,6 +207,9 @@ class Ball {
 			
 			this._paddle1 = paddle1;
 			this._paddle2 = paddle2;
+			if (this._paddle2._type == 'player2') {
+				this._speed = 0.002;
+			}
 			
 			// initialisation
 			this.resetBall = true;
@@ -250,8 +267,7 @@ class Ball {
 	update() {
 		if (!this._isEndGame) {
 			if (this.indexGame - 1 >= this.maxGame) {
-				this._isEndGame = true;
-				console.log("End Game");
+				// this._isEndGame = true;
 				return;
 			}
 			if (this.resetBall && this.indexGame -1  <= this.maxGame) {
@@ -259,8 +275,13 @@ class Ball {
 				this.resetBall = false;
 				this._body.position.copyFrom(this.resetPlacement);
 				// donne moi un nombre random entre -0.05 et 0.05
-				const random = Math.random() * (0.05 - -0.05) + -0.05;
+				const random = Math.random() * (0.04 - -0.04) + -0.04;
+				if (this._paddle2._type == 'player2') {
+					this._velocity = new Vector3(0, 0, 0.02);
+				} else  {
 				this._velocity = new Vector3(random, 0, -0.04); // Reset velocity if needed
+					
+				}
 				this.indexGame++;
 				this.isReadyToRun = false;
 				setTimeout(() => {
@@ -293,7 +314,6 @@ class Ball {
     const paddle2Pos = this._paddle2._body.position;
 
     // Collision with Paddle 1
-		console.log(WIDTH)
     if (Math.abs(ballPos.x - paddle1Pos.x) < WIDTH / 2 && 
 			Math.abs(ballPos.z - paddle1Pos.z) < HEIGHT /2 ) {
 			this.hitBallBack(this._paddle1);
@@ -308,17 +328,15 @@ class Ball {
 
 	private hitBallBack(paddle: Paddle) {
 		this._velocity.x = (this._body.position.x - paddle._body.position.x) / 5;
-		console.log("hitBallBack", this._velocity.z)
 		if (Math.abs(this._velocity.z) < 0.06) {
-			this._velocity.z *= -1.05; // Inverse la direction z
+			this._velocity.z *= -1.03; 
 		} else if (Math.abs(this._velocity.z) < 0.1) {
-			this._velocity.z *= -1.02; // Inverse la direction z
-		} else if (Math.abs(this._velocity.z) >= 0.15) {
-			this._velocity.z *= -1.0; // Inverse la direction z
+			this._velocity.z *= -1.015; 
 			
+		} else if (Math.abs(this._velocity.z) >= 0.15) {
+			this._velocity.z *= -1.0; 
 		}
-		// incrémente la vitesse de façon loggartihmique
-
+		this._score++;
 	}
 
 	private _checkBoundaryCollision() {
@@ -328,11 +346,11 @@ class Ball {
 			this._velocity.x *= -1;
     }
     if (ballPos.z <= this.minZ ) {
-			this._score.player1++;
 			this.resetBall = true;
+			this._scoreMulti.scoreJ1++;
     } else if (ballPos.z >= this.maxZ) { 
 			this.resetBall = true;
-			this._score.player2++;
+			this._scoreMulti.scoreJ2++;
 		}
 	}	
 
@@ -360,8 +378,16 @@ class Ball {
 		}
 	}
 
+	public getIsEndGame() {
+		return this._isEndGame;
+	}
+
 	public getScore() {
 		return this._score;
+	}
+
+	public getScoreMulti() {
+		return this._scoreMulti;
 	}
 };
 
@@ -434,7 +460,7 @@ class Paddle {
 			}
     }
 
-    handleEvent() {
+    handleEvent() {			
 			if (this._type == 'player') {
 				// mettre les limites de déplacement
 				if (this._body.position.x <= this.minX) {
@@ -447,6 +473,23 @@ class Paddle {
 					}
 				} else {
 					this._body.position.x += this._input.horizontal * this.speed;
+				}
+			}
+    }
+
+		handleEventJ2() {
+			if (this._type == 'player2') {
+				// mettre les limites de déplacement
+				if (this._body.position.x <= this.minX) {
+					if (this._input.horizontalJ2 > 0) {
+						this._body.position.x += this._input.horizontalJ2 * this.speed;
+					}
+				} else if (this._body.position.x >= this.maxX) {
+					if (this._input.horizontalJ2 < 0) {
+						this._body.position.x += this._input.horizontalJ2 * this.speed;
+					}
+				} else {
+					this._body.position.x += this._input.horizontalJ2 * this.speed;
 				}
 			}
     }
@@ -471,4 +514,11 @@ class Paddle {
     getDirection(): PaddleDirection {
 			return this._direction;
     }
+
+		public getHorizontal(): number {
+			return this._input.horizontal;
+		}
+		public getHorizontalJ2(): number {
+			return this._input.horizontalJ2;
+		}
 }

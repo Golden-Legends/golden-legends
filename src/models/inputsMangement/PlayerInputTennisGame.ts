@@ -5,19 +5,28 @@ export class PlayerInputTennisGame extends InputManager {
     readonly keys = {
         KEY_LEFT: "ArrowDown",
         KEY_RIGHT: "ArrowUp",
+        KEY_LEFTJ2: "KeyS",
+        KEY_RIGHTJ2: "KeyW",
     };
 
     public left : boolean = false;
     public right : boolean = false;
     public horizontal: number = 0;
-
-    constructor(scene) {
+    public horizontalJ2: number = 0;
+    private inverse : boolean;
+    constructor(scene, inverse = false) {
         super(scene);
+        this.inverse = inverse;
+        this.keys.KEY_LEFT = this.inverse ? "KeyS" : "ArrowDown";
+        this.keys.KEY_RIGHT = this.inverse ? "KeyW" : "ArrowUp";
+        this.keys.KEY_LEFTJ2 = this.inverse ? "ArrowDown" : "KeyS";
+        this.keys.KEY_RIGHTJ2 = this.inverse ? "ArrowUp" : "KeyW";
         this.setupBeforeRenderObservable(this.updateFromKeyboard);
     }
 
     protected updateFromKeyboard = () => {
         this.updateKeys();
+        this.updateKeysJ2();
     }
     
     private updateKeys(): void {
@@ -30,5 +39,24 @@ export class PlayerInputTennisGame extends InputManager {
         } else {
             this.horizontal = 0;
         }
-    }    
+    }  
+    private updateKeysJ2(): void {
+        const movementLerpSpeed = 0.2;
+        // Left/right movement
+        if (this.inputMap[this.keys.KEY_LEFTJ2]) {
+            this.horizontalJ2 = Scalar.Lerp(this.horizontalJ2, -1, movementLerpSpeed);
+        } else if (this.inputMap[this.keys.KEY_RIGHTJ2]) {
+            this.horizontalJ2 = Scalar.Lerp(this.horizontalJ2, 1, movementLerpSpeed);
+        } else {
+            this.horizontalJ2 = 0;
+        }
+    }
+
+    public getHorizontal(): number {
+        return this.horizontal;
+    }
+
+    public getHorizontalJ2(): number {
+        return this.horizontalJ2;
+    }
 }
