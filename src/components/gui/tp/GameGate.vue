@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps, ref, watchEffect } from "vue";
+import { computed, defineProps, ref } from "vue";
 import Scoreboard from "@/components/gui/scoreboard/Scoreboard.vue";
 import { Collection, fetchResults } from "@/services/result-service.ts";
 
@@ -34,9 +34,13 @@ const frenchToEnglish = () => {
   return "Unknown";
 };
 
-fetchResults(frenchToEnglish() as Collection).then((res) => {
+const fetch = async () => {
+  const res = await fetchResults(frenchToEnglish() as Collection);
   results.value[props.title as Collection] = res;
-});
+};
+
+// Fetch initial results
+fetch();
 
 const result = computed(() => results.value[props.title as Collection]);
 </script>
@@ -64,8 +68,18 @@ const result = computed(() => results.value[props.title as Collection]);
       </div>
     </div>
     <div
-      class="border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white p-4 rounded-lg h-fit w-[400px] ml-4 -mt-48"
+      class="relative border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white p-4 rounded-lg h-fit w-[400px] ml-4 -mt-48"
     >
+      <button
+        class="absolute top-3.5 right-4 w-10 h-10 bg-blue-darker rounded-lg hover:bg-blue-darker/80 transition-all"
+        @click="fetch"
+      >
+        <img
+          src="@/../public/refresh.svg"
+          alt="refresh"
+          class="w-8 h-8 pl-1.5"
+        />
+      </button>
       <Scoreboard
         v-if="result"
         :title="frenchToEnglish() as Collection"
