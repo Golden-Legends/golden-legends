@@ -10,6 +10,7 @@ import { TirArcGameState } from "./scene/games/TirArcGameState.ts";
 import { JavelotGameState } from "./scene/games/JavelotGameState.ts";
 import { SoundManager } from "./environments/sound.ts";
 import { BoxeGameState } from "./scene/games/BoxeGameState.ts";
+import { TennisGameState } from "./scene/games/TennisGameState.ts";
 
 export class Game {
   public engine: Engine;
@@ -26,7 +27,7 @@ export class Game {
     this.soundManager = new SoundManager();
     this.currentTrackName = "";
     this.initTrack();
-    this.changeState(new InGameState(this, canvas));
+    this.changeState(new TennisGameState(this, canvas));
   }
 
   public setLoadingScreen(customLoadingScreen: ILoadingScreen) {
