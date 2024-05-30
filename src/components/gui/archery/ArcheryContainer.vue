@@ -116,6 +116,8 @@ watch(
     horizontalPlaying.value = storeTirArc.state.initialState.horizontalPlaying;
     verticalPlaying.value = storeTirArc.state.initialState.verticalPlaying;
     isGameActive.value = storeTirArc.state.initialState.isGameActive;
+    clearInterval(intervalIdX);
+    clearInterval(intervalIdY);
   },
   { deep: true },
 );
