@@ -955,7 +955,7 @@
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="En place !"
+    text="Spammez !"
     name="javelotGame-text-4"
     id="javelotGame-text-4"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -991,18 +991,20 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer class="w-fit" name="PUISSANCE" :keys="['s', 'd']" width="180"/>
       <CommandContainer
-        name="ANGLE"
-        :keys="['espace']"
+        class="w-fit"
+        name="PUISSANCE"
+        :keys="['s', 'd']"
+        width="180"
       />
+      <CommandContainer name="ANGLE" :keys="['espace']" />
     </template>
     <template #tips>
       <Info
         :content="[
           'Appuyer sur ESPACE pour démarrer.',
           'Quand le barre de puissance apparaitra, vous aurez 5 secondes pour la remplir en alternant les touches S et D.',
-          'Puis, après avoir réglé la puissance, vous devrez régler l\'angle en appuyant sur ESPACE (gardez le bouton enfoncé pour régler l\'angle puis relâcher).'
+          'Puis, après avoir réglé la puissance, vous devrez régler l\'angle en appuyant sur ESPACE (gardez le bouton enfoncé pour régler l\'angle puis relâcher).',
         ]"
       />
     </template>
@@ -1036,7 +1038,7 @@
   </Results>
   <JavelinAngle
     id="javelotGame-angle"
-    class="hidden absolute -ml-24 mt-24 top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden absolute -ml-24 mt-4 top-2/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <SpeedBar
     name="javelotGame-text-speedbar"
