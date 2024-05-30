@@ -155,21 +155,11 @@ export class PlayerJavelotGame {
     this.currentTime = currentTime;
     if (!this.isEndGame) {
       if (!this.gameActive) {
-        if (!this.isTextTirShow) {
-          this.isTextTirShow = true;
-          document
-            .getElementById("javelotGame-text-tir")!
-            .classList.remove("hidden");
-        } else if (this._input.space) {
-          document
-            .getElementById("javelotGame-text-tir")!
-            .classList.add("hidden");
-          this.isSpacedPressedForAnim = true;
-          this.gameActiveState();
-          document
-            .getElementById("javelotGame-text-speedbar")!
-            .classList.remove("hidden");
-        }
+        this.isSpacedPressedForAnim = true;
+        this.gameActiveState();
+        document
+          .getElementById("javelotGame-text-speedbar")!
+          .classList.remove("hidden");
       } else {
         //todo récuperer ici les touches qu'enfonce le player
         // console.log("gameActive");
