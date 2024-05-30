@@ -356,6 +356,25 @@
       game="levelJavelot"
     />
   </GameGate>
+  <GameGate
+    title="Tennis"
+    name="tennistp"
+    id="tennistp"
+    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+    <GateButton
+      id="tennisBot"
+      name="Contre un bot"
+      difficulty="easy"
+      game="levelJavelot"
+    />
+    <GateButton
+      id="tennisDuel"
+      name="1v1"
+      difficulty="easy"
+      game="levelJavelot"
+    />
+  </GameGate>
   <Position
     id="position-1"
     position="1"

@@ -241,11 +241,13 @@ export class InGameState extends GameState {
       !document.getElementById("map-keybind")!.classList.contains("hidden")
     ) {
       this._environment?.carte.openCarte();
+      this.removeHandlePointerLock();
     } else if (
       this._input.keyMap &&
       !document.getElementById("carte-dialog")!.classList.contains("hidden") &&
       !document.getElementById("map-keybind")!.classList.contains("hidden")
     ) {
+      this.addHandlePointerLock();
       this._environment?.carte.closeCarte();
     }
 
@@ -553,21 +555,25 @@ export class InGameState extends GameState {
       const pos = new Vector3(-185, 7, -90);
       this._player!.mesh.position = pos;
       this._environment?.carte.closeCarte(pos);
+      this.addHandlePointerLock();
     });
     this.addEventListenerById("jump-button", "click", () => {
       const pos = new Vector3(-71, 7, -128.67);
       this._player!.mesh.position = pos;
       this._environment?.carte.closeCarte(pos);
+      this.addHandlePointerLock();
     });
     this.addEventListenerById("foret-button", "click", () => {
       const pos = new Vector3(-64.1, 7, 14);
       this._player!.mesh.position = pos;
       this._environment?.carte.closeCarte(pos);
+      this.addHandlePointerLock();
     });
     this.addEventListenerById("pnj-button", "click", () => {
       const pos = new Vector3(-184.75, 7, -11.2);
       this._player!.mesh.position = pos;
       this._environment?.carte.closeCarte(pos);
+      this.addHandlePointerLock();
     });
 
     // GUI sound
