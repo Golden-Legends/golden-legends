@@ -50,6 +50,12 @@ export interface Swimming {
   time: number;
 }
 
+export interface Tennis {
+  id: string;
+  username: string;
+  score: number;
+}
+
 export type Collection =
   | "archery"
   | "boxing"
@@ -57,10 +63,16 @@ export type Collection =
   | "javelin"
   | "jump"
   | "running"
-  | "swimming";
+  | "swimming"
+  | "tennis";
 
 export type TimeBasedCollection = "jump" | "running" | "swimming";
-export type ScoreBasedCollection = "archery" | "boxing" | "diving" | "javelin";
+export type ScoreBasedCollection =
+  | "archery"
+  | "boxing"
+  | "diving"
+  | "javelin"
+  | "tennis";
 
 export type CollectionDataMap = {
   archery: Archery;
@@ -70,7 +82,56 @@ export type CollectionDataMap = {
   jump: Jump;
   running: Running;
   swimming: Swimming;
+  tennis: Tennis;
 };
+
+export function isArchery(
+  result: CollectionDataMap[keyof CollectionDataMap],
+): result is Archery {
+  return (result as Archery).score !== undefined;
+}
+
+export function isBoxing(
+  result: CollectionDataMap[keyof CollectionDataMap],
+): result is Boxing {
+  return (result as Boxing).score !== undefined;
+}
+
+export function isDiving(
+  result: CollectionDataMap[keyof CollectionDataMap],
+): result is Diving {
+  return (result as Diving).score !== undefined;
+}
+
+export function isJavelin(
+  result: CollectionDataMap[keyof CollectionDataMap],
+): result is Javelin {
+  return (result as Javelin).score !== undefined;
+}
+
+export function isJump(
+  result: CollectionDataMap[keyof CollectionDataMap],
+): result is Jump {
+  return (result as Jump).time !== undefined;
+}
+
+export function isRunning(
+  result: CollectionDataMap[keyof CollectionDataMap],
+): result is Running {
+  return (result as Running).time !== undefined;
+}
+
+export function isSwimming(
+  result: CollectionDataMap[keyof CollectionDataMap],
+): result is Swimming {
+  return (result as Swimming).time !== undefined;
+}
+
+export function isTennis(
+  result: CollectionDataMap[keyof CollectionDataMap],
+): result is Tennis {
+  return (result as Tennis).score !== undefined;
+}
 
 export const isTimeBasedCollection = (
   collectionName: Collection,
@@ -81,7 +142,9 @@ export const isTimeBasedCollection = (
 export const isScoreBasedCollection = (
   collectionName: Collection,
 ): collectionName is ScoreBasedCollection => {
-  return ["archery", "boxing", "diving", "javelin"].includes(collectionName);
+  return ["archery", "boxing", "diving", "javelin", "tennis"].includes(
+    collectionName,
+  );
 };
 
 export const fetchResults = async <T extends Collection>(
@@ -152,46 +215,4 @@ export const handleNewRecord = async <T extends Collection>(
   } else {
     throw new Error("Invalid collection name");
   }
-};
-
-// It should return an object such as :
-// {
-//   archery: [
-//     { id: "1", username: "John", score: 100 },
-//     { id: "2", username: "Jane", score: 90 },
-// ...],
-//   boxing: [
-//     { id: "1", username: "John", score: 100 },
-//     { id: "2", username: "Jane", score: 90 },
-// ...],
-//}
-export const fetchAllResults = async (): Promise<{
-  archery: Archery[];
-  boxing: Boxing[];
-  diving: Diving[];
-  javelin: Javelin[];
-  jump: Jump[];
-  running: Running[];
-  swimming: Swimming[];
-}> => {
-  const [archery, boxing, diving, javelin, jump, running, swimming] =
-    await Promise.all([
-      fetchResults("archery"),
-      fetchResults("boxing"),
-      fetchResults("diving"),
-      fetchResults("javelin"),
-      fetchResults("jump"),
-      fetchResults("running"),
-      fetchResults("swimming"),
-    ]);
-
-  return {
-    archery,
-    boxing,
-    diving,
-    javelin,
-    jump,
-    running,
-    swimming,
-  };
 };

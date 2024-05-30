@@ -15,7 +15,7 @@
 
     <div
       v-if="isReady"
-      class="flex justify-between gap-4 text-white p-2 px-4 w-full h-full rounded-lg"
+      class="flex justify-between gap-4 text-white p-2 px-4 w-full h-full rounded-lg pt-4"
     >
       <button
         @click="prev"
