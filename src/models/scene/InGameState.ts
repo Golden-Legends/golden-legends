@@ -34,6 +34,7 @@ import { storeOnboard } from "@/components/gui/storeOnboard.ts";
 import { storeSound } from "@/components/gui/storeSound.ts";
 import { doc } from "prettier";
 import router from "@/router/routes.ts";
+import { TennisGameState } from "./games/TennisGameState.ts";
 
 export class InGameState extends GameState {
   public assets;
@@ -464,6 +465,19 @@ export class InGameState extends GameState {
       this.game.changeState(
         new JavelotGameState(this.game, this.canvas, "intermediate"),
       );
+    });
+
+    this.addEventListenerById("tennisBot", "click", () => {
+      this.game.changeState(
+        new TennisGameState(this.game, this.canvas, false),
+      );
+      document.getElementById("tennistp")!.classList.add("hidden");
+    });
+    this.addEventListenerById("tennisDuel", "click", () => {
+      this.game.changeState(
+        new TennisGameState(this.game, this.canvas, true),
+      );
+      document.getElementById("tennistp")!.classList.add("hidden");
     });
     this.addEventListenerById("javelotDifficile", "click", () => {
       this.game.changeState(
