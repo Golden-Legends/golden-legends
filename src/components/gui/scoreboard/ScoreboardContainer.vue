@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative w-[600px] h-[700px] bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient border-4 border-black rounded-lg mt-4"
+    class="relative w-[600px] h-[650px] bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient border-4 border-black rounded-lg mt-4"
   >
     <button
       id="close-records"
@@ -12,9 +12,7 @@
         class="w-6 h-6 ml-1.5"
       />
     </button>
-    <div class="flex justify-center mt-4">
-      <span class="text-4xl text-white font-bold">Records</span>
-    </div>
+
     <div
       v-if="isReady"
       class="flex justify-between gap-4 text-white p-2 px-4 w-full h-full rounded-lg"

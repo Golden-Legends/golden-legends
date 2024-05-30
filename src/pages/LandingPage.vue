@@ -2,23 +2,16 @@
 import { useRouter } from "vue-router";
 import ClassicButton from "@/components/landing/ClassicButton.vue";
 import ClassicInput from "@/components/landing/ClassicInput.vue";
-
-import { Music } from "@/utils/Music.ts";
 import PlayButton from "@/components/characters/PlayButton.vue";
-import { ref } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { UserService } from "@/services/user-service.ts";
 import { toast } from "vue-sonner";
-
-// const musiqueAccueil = new Howl({
-//   src: ["./sounds/musiqueAccueilShort.m4a"],
-//   autoplay: true,
-//   loop: true,
-//   volume: 0.1, // Volume par défaut
-// });
+import { Music } from "@/utils/Music.ts";
 
 const music = Music.getInstance("./sounds/newAccueil.mp3", 0.1);
-
 const error = ref(false);
+const username = ref("");
+const router = useRouter();
 
 const play = async () => {
   try {
@@ -30,9 +23,19 @@ const play = async () => {
   }
 };
 
-const username = ref("");
+const handleKeyDown = (event: KeyboardEvent) => {
+  if (event.key === "Enter" && username.value.length > 0) {
+    play();
+  }
+};
 
-const router = useRouter();
+onMounted(() => {
+  document.addEventListener("keydown", handleKeyDown);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keydown", handleKeyDown);
+});
 </script>
 
 <template>
@@ -43,7 +46,7 @@ const router = useRouter();
         <div class="flex flex-col items-center gap-4 mt-16">
           <ClassicInput
             :class="{ 'border-red-500 border-2': error }"
-            placeholder="XxGamerdu12xX"
+            placeholder="XxGamerdu31xX"
             @update-username="username = $event"
           />
           <PlayButton :disabled="username.length <= 0" @click="play" />
@@ -53,7 +56,6 @@ const router = useRouter();
     <div
       class="hidden h-screen w-1/2 bg-white absolute top-0 right-0 lg:block"
     ></div>
-
     <div class="hidden lg:block lg:w-1/2 bg-white">
       <div class="absolute -right-24 top-40">
         <img src="../../public/landing.svg" alt="Vue logo" />
