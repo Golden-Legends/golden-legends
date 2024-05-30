@@ -39,10 +39,17 @@ export class TennisGameState extends GameState{
 				await this.setEnvironment();
 				this.createLight();
 
-				const cameraMesh = this.scene.getMeshByName("cameraJoueur");
-				this._camera.position = cameraMesh?.getAbsolutePosition() as Vector3;
-				this._camera.position.y += 1;
+				const boite = this.scene.getMeshByName("boite");
+				if (boite) {
+					boite.isVisible = false;
+				}
+
 				this._camera.rotation = new Vector3(0.3, 0, 0);
+				const cameraMesh = this.scene.getMeshByName("cameraJoueur");
+				if (cameraMesh) {
+					this._camera.position = new Vector3(-cameraMesh.position.x, cameraMesh.position.y + 1, cameraMesh.position.z);
+				}
+
 
 				if (this.isMultiplayer) {
 					console.log("multiplayer");
@@ -67,7 +74,7 @@ export class TennisGameState extends GameState{
 
     update(): void {
 			try {
-				console.log(this.input.horizontal);
+				// console.log(this.input.horizontal);
 			} catch (error) {
         throw new Error("Method not implemented.");
 			}
