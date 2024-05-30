@@ -202,7 +202,7 @@
     title="100m"
     name="100mtp"
     id="100mtp"
-    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="100mFacile"
@@ -235,7 +235,7 @@
     title="100m Brasse"
     name="natationtp"
     id="natationtp"
-    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="natationFacile"
@@ -260,7 +260,7 @@
     title="Plongeon"
     name="plongeontp"
     id="plongeontp"
-    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="plongeonFacile"
@@ -285,7 +285,7 @@
     title="Boxe"
     name="boxetp"
     id="boxetp"
-    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="boxeFacile"
@@ -310,7 +310,7 @@
     title="Tir à l'arc"
     name="tirArctp"
     id="tirArctp"
-    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="tirArcFacile"
@@ -335,7 +335,7 @@
     title="Javelot"
     name="javelottp"
     id="javelottp"
-    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="javelotFacile"
@@ -1195,8 +1195,7 @@ const objectGameText =
   "Des objets en référence aux JO sont cachés dans cette ville, sauras tu les retrouver ?!";
 const tpGameText =
   "Approche toi des portails pour te téléporter dans différents stades olympiques pour défier tes amis !";
-const footGameText =
-  "Team foot ⚽ ou rugby 🏉 ? 😉";
+const footGameText = "Team foot ⚽ ou rugby 🏉 ? 😉";
 //Objects message
 const objetHaieText = "Récupére la Haie olympique en appuyant sur R";
 const objetgGantText = "Récupére le Gant de boxe en appuyant sur R";
