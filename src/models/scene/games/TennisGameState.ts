@@ -293,14 +293,15 @@ class Ball {
     const paddle2Pos = this._paddle2._body.position;
 
     // Collision with Paddle 1
-    if (Math.abs(ballPos.x - paddle1Pos.x) < WIDTH && 
-			Math.abs(ballPos.z - paddle1Pos.z) < HEIGHT) {
+		console.log(WIDTH)
+    if (Math.abs(ballPos.x - paddle1Pos.x) < WIDTH / 2 && 
+			Math.abs(ballPos.z - paddle1Pos.z) < HEIGHT /2 ) {
 			this.hitBallBack(this._paddle1);
     }
 
     // Collision with Paddle 2
-    if (Math.abs(ballPos.x - paddle2Pos.x) < WIDTH && 
-			Math.abs(ballPos.z - paddle2Pos.z) < HEIGHT) {
+    if (Math.abs(ballPos.x - paddle2Pos.x) < WIDTH /2  && 
+			Math.abs(ballPos.z - paddle2Pos.z) < HEIGHT/ 2) {
 			this.hitBallBack(this._paddle2);
     }
 	}
