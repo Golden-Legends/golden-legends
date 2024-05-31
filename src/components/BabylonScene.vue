@@ -1170,13 +1170,36 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer class="w-fit" name="J1" :keys="['s', 'x']" />
+      <CommandContainer class="w-fit" name="J1" :keys="['ArrowUp', 'ArrowDown']" />
       <CommandContainer
         id="tennis-help-2"
         class="w-fit"
         name="J2"
-        :keys="['ArrowUp', 'ArrowDown']"
+        :keys="['s', 'x']"
       />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Vous devez renvoyez un maximum de balle ! Si vous êtes en multijoueur vous aurez 3 rounds pour vous départager.',
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4"></div>
+  </GameHelpContainer>
+  <GameHelpContainer
+    id="tennis-help-solo"
+    title="Tennis"
+    class="hidden -top-3/4 left-1/2 transform -translate-x-1/2"
+  >
+    <button
+      id="close-help-tennis-solo"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="J1" :keys="['ArrowUp', 'ArrowDown']" />
     </template>
     <template #tips>
       <Info
@@ -1221,7 +1244,7 @@
     :keys="['ArrowUp', 'ArrowDown']"
     name="tennis-keyPressed"
     id="tennis-keyPressed"
-    class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/3 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <KeyPressInteraction
     :keys="['s', 'x']"

@@ -9,11 +9,13 @@ export class TennisGameGui {
     private scoreComponent : boolean = false;
     private keyPressedComponent : boolean = false;
     private resultComponent : boolean = false;
+    private multi : boolean | undefined;
 
     private gameState : TennisGameState;
 
-    constructor(gameState: TennisGameState) {
+    constructor(gameState: TennisGameState, multi: boolean) {
         this.gameState = gameState;
+        this.multi = multi;
     }
 
     public initFirstGuiSolo(): void {
@@ -29,9 +31,16 @@ export class TennisGameGui {
     }
 
     public initListeners(): void {
-        this.gameState.addEventListenerById("close-help-tennis", "click", () => {
-            document.getElementById("tennis-help")!.classList.add("hidden");
-        });
+        if(this.multi) {
+            this.gameState.addEventListenerById("close-help-tennis", "click", () => {
+                document.getElementById("tennis-help")!.classList.add("hidden");
+            });
+        }
+        else{
+            this.gameState.addEventListenerById("close-help-tennis-solo", "click", () => {
+                document.getElementById("tennis-help-solo")!.classList.add("hidden");
+            });
+        }
         this.gameState.addEventListenerByQuerySelector(
             "#tennis-results #continue-button",
             "click", () => {
@@ -56,12 +65,23 @@ export class TennisGameGui {
     }
 
     public helperComponent () { 
-        if (!this.helpComponent) {
-            document.getElementById("tennis-help")!.classList.remove("hidden");
-        } else {
-            document.getElementById("tennis-help")!.classList.add("hidden");
+        if(this.multi){
+            if (!this.helpComponent) {
+                document.getElementById("tennis-help")!.classList.remove("hidden");
+            } else {
+                document.getElementById("tennis-help")!.classList.add("hidden");
+            }
+            this.helpComponent = !this.helpComponent;
+        }  
+        else{
+            if (!this.helpComponent) {
+                document.getElementById("tennis-help-solo")!.classList.remove("hidden");
+            } else {
+                document.getElementById("tennis-help-solo")!.classList.add("hidden");
+            }
+            this.helpComponent = !this.helpComponent;
         }
-        this.helpComponent = !this.helpComponent;
+        
     }
 
     public readyButton () {
