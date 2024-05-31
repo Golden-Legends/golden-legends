@@ -491,6 +491,7 @@ export class InGameState extends GameState {
     // GUI démarrage du jeu
     this.addEventListenerById("close-onboarding", "click", () => {
       document.getElementById("onboarding-container")!.classList.add("hidden");
+      this.addHandlePointerLock();
     });
     this.addEventListenerById("close-objects", "click", () => {
       document.getElementById("objectsFound")!.classList.add("hidden");

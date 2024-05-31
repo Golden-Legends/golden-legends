@@ -103,6 +103,7 @@ export abstract class GameState {
   addHandlePointerLock(): void {
     this.canvas.requestPointerLock();
     this.alreadylocked = true;
+    this.game.canvas.focus();
   }
 
   addEventListenerById(elementId: string, event: string, handler: EventListenerOrEventListenerObject): void {
