@@ -141,7 +141,6 @@ export class TennisGameState extends GameState {
           if (this.isMultiplayer) {
             this.guiComponent!.initFirstGuiMulti();
             this.createFinaleScoreBoard(this.ball.getScore());
-            "Show Result Multi : ", this.ball.getScoreMulti();
           } else {
             this.guiComponent!.initFirstGuiSolo();
             this.createFinaleScoreBoard(this.ball.getScore());

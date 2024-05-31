@@ -129,7 +129,6 @@ export class JumpGame {
         // Plateforme visible et collision détectée
         this.platformsAlreadyJump.push(collidedMesh.name);
         this.platformsJumped++; // Incrémenter le compteur de plateformes sautées
-        "Plateforme sautée: ", this.platformsJumped;
 
         // Vérifier si toutes les plateformes ont été sautées
         if (this.platformsJumped === this.TOTAL_PLATFORMS) {
@@ -155,7 +154,6 @@ export class JumpGame {
       if (collidedMesh && collidedMesh.name === "fondBassin") {
         // Afficher un message de défaite et réinitialiser le jeu
         this.showDefeatMessage();
-        ("endgame");
         this.resetGame();
         this.invisiblePlatform(1, this.TOTAL_PLATFORMS);
         this.gameRunning = false;

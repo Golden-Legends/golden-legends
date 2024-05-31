@@ -57,7 +57,7 @@ export class InGameState extends GameState {
   async enter() {
     const test = new CustomLoadingScreen("Chargement en cours...");
     this.game.setLoadingScreen(test);
-    this.game.engine.loadingScreen;
+    console.log(this.game.engine.loadingScreen)
     this.game.engine.displayLoadingUI();
     this.scene.detachControl();
     // Request to server to tell that the user is in game
@@ -123,7 +123,7 @@ export class InGameState extends GameState {
   }
 
   public animStartGame() {
-    ("animStartGame");
+    console.log("animStartGame");
     //camera 1
     // const camera = new FollowCamera("carteCamera", new Vector3(-145, 80, -260), this.scene);
     // camera.rotation = new Vector3(Math.PI/6, 0, 0);
@@ -233,7 +233,7 @@ export class InGameState extends GameState {
     // Nettoyer la scène lors de la sortie de cet état
     document.getElementById("map-keybind")!.classList.add("hidden");
     document.getElementById("options-keybind")!.classList.add("hidden");
-    ("exit in game state");
+    console.log("exit in game state");
     this.cleanup();
   }
 
@@ -365,7 +365,12 @@ export class InGameState extends GameState {
     new HemisphericLight("HemiLight", new Vector3(0, 1, 1), scene);
 
     //Create the player
-    this._player = new Player(this.assets, scene, this, this._input);
+    this._player = new Player(
+      this.assets,
+      scene,
+      this,
+      this._input,
+    );
     this._player.mesh.position = new Vector3(-185, 7, -90);
   }
 
@@ -391,17 +396,17 @@ export class InGameState extends GameState {
     });
     this.addEventListenerById("100mMoyen", "click", () => {
       this.game.changeState(
-        new RunningGameState(this.game, this.canvas, "intermediate"),
+        new RunningGameState(this.game, this.canvas, "intermediate")
       );
     });
     this.addEventListenerById("100mDifficile", "click", () => {
       this.game.changeState(
-        new RunningGameState(this.game, this.canvas, "hard"),
+        new RunningGameState(this.game, this.canvas, "hard")
       );
     });
     this.addEventListenerById("runningGame-duel", "click", () => {
       this.game.changeState(
-        new RunningGameState(this.game, this.canvas, "easy", true, 2),
+        new RunningGameState(this.game, this.canvas, "easy", true, 2)
       );
     });
     // natation
@@ -469,11 +474,15 @@ export class InGameState extends GameState {
     });
 
     this.addEventListenerById("tennisBot", "click", () => {
-      this.game.changeState(new TennisGameState(this.game, this.canvas, false));
+      this.game.changeState(
+        new TennisGameState(this.game, this.canvas, false),
+      );
       document.getElementById("tennistp")!.classList.add("hidden");
     });
     this.addEventListenerById("tennisDuel", "click", () => {
-      this.game.changeState(new TennisGameState(this.game, this.canvas, true));
+      this.game.changeState(
+        new TennisGameState(this.game, this.canvas, true),
+      );
       document.getElementById("tennistp")!.classList.add("hidden");
     });
     this.addEventListenerById("javelotDifficile", "click", () => {
@@ -565,6 +574,7 @@ export class InGameState extends GameState {
         .getElementById("scoreboard-station-dialog")!
         .classList.add("hidden");
       this.addHandlePointerLock();
+
     });
 
     // GUI minimap
@@ -601,15 +611,15 @@ export class InGameState extends GameState {
         const newVolume =
           1 + (storeSound.state.sound - storeSound.state.oldSound) / 100;
         this.game.getSoundManager().setVolumeAllTracks(newVolume);
-        // (1+(storeSound.state.sound - storeSound.state.oldSound)/100)
+        // console.log(1+(storeSound.state.sound - storeSound.state.oldSound)/100)
       } else if (storeSound.state.sound < storeSound.state.oldSound) {
         const newVolume =
           1 - (storeSound.state.oldSound - storeSound.state.sound) / 100;
         this.game.getSoundManager().setVolumeAllTracks(newVolume);
-        // (1-(storeSound.state.oldSound - storeSound.state.sound)/100)
+        // console.log(1-(storeSound.state.oldSound - storeSound.state.sound)/100)
       } else {
         this.game.getSoundManager().setVolumeAllTracks(1);
-        // (1)
+        // console.log(1)
       }
     });
   }

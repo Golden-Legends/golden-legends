@@ -1,21 +1,19 @@
 import {
-  Animation,
-  AnimationGroup,
-  AssetContainer,
-  InstancedMesh,
-  Matrix,
-  Mesh,
-  MeshBuilder,
-  Quaternion,
-  Scene,
-  SceneLoader,
-  Vector3,
+    Animation,
+	AnimationGroup,
+	AssetContainer,
+	InstancedMesh,
+	Matrix,
+	Mesh,
+	MeshBuilder,
+	Quaternion,
+	Scene, SceneLoader, Vector3,
 } from "@babylonjs/core";
 import { Scaling } from "@/utils/Scaling";
 
 export interface CharacterAssets {
-  mesh: InstancedMesh;
-  animationGroups: AnimationGroup[];
+    mesh: InstancedMesh;
+    animationGroups: AnimationGroup[];
 }
 
 export class PnjMobile {
@@ -87,102 +85,84 @@ export class PnjMobile {
     new Vector3(-10, 0, 0),
   ];
 
-  constructor(scene: Scene) {
-    this._scene = scene;
-  }
 
-  private duplicatePnjIdle(
-    container: AssetContainer,
-    position: Vector3,
-    rotation: Vector3,
-    parent: InstancedMesh,
-  ): CharacterAssets {
-    let entries = container.instantiateModelsToScene();
-    const root = entries.rootNodes[0] as Mesh;
-    const body = root;
+	constructor(scene: Scene) {
+		this._scene = scene;
+	}
 
-    body.parent = parent;
-    body.isPickable = false;
-    body.getChildMeshes().forEach((m) => {
-      m.isPickable = false;
-    });
-    body.scaling = new Scaling(2);
+    private duplicatePnjIdle(container: AssetContainer, position: Vector3, rotation: Vector3, parent : InstancedMesh): CharacterAssets {
+        let entries = container.instantiateModelsToScene();
+        const root = entries.rootNodes[0] as Mesh;
+        const body = root;
 
-    // Set the position and rotation of the ellipsoid
-    parent.position = position;
-    parent.rotation = rotation;
+        body.parent = parent;
+        body.isPickable = false;
+        body.getChildMeshes().forEach(m => {
+            m.isPickable = false;
+        });
+        body.scaling = new Scaling(2);
+    
+        // Set the position and rotation of the ellipsoid
+        parent.position = position;
+        parent.rotation = rotation;
 
-    root.position = Vector3.Zero();
+        root.position = Vector3.Zero();
+    
+        entries.animationGroups[0].stop();
+        // Play the idle animation if available
+        const idle = entries.animationGroups.find(ag => ag.name.includes("idle"));
+        idle?.play(true);
 
-    entries.animationGroups[0].stop();
-    // Play the idle animation if available
-    const idle = entries.animationGroups.find((ag) => ag.name.includes("idle"));
-    idle?.play(true);
-
-    return {
-      mesh: parent,
-      animationGroups: entries.animationGroups,
-    };
-  }
-
-  public async createPnjMobile(
-    assetContainers: AssetContainer[],
-    parentMesh: Mesh,
-  ) {
-    // pnj Talk
-    for (let i = 0; i < this.pnjPositions.length; i++) {
-      const position = this.pnjPositions[i];
-      const rotation = this.pnjRotation[i];
-      const parent = parentMesh.createInstance("pnjMobile" + i);
-      parent.checkCollisions = true;
-      parent.isVisible = false;
-      const randomNumber = Math.floor(Math.random() * 5);
-      this.assets.push(
-        this.duplicatePnjIdle(
-          assetContainers[randomNumber],
-          position,
-          rotation,
-          parent,
-        ),
-      );
+        return {
+            mesh: parent,
+            animationGroups: entries.animationGroups,
+        }
     }
 
-    while (true) {
-      const movePromises: Promise<void>[] = [];
-      for (let i = 0; i < this.pnjPositions.length; i++) {
-        const direction = this.pnjDirection[i];
-        const movePromise = this.moveCharacter(i, direction);
-        movePromises.push(movePromise);
-      }
-      await Promise.all(movePromises);
-    }
-  }
+    public async createPnjMobile (assetContainers : AssetContainer[], parentMesh : Mesh) { 
+        // pnj Talk
+        for (let i = 0; i < this.pnjPositions.length; i++) {
+            const position = this.pnjPositions[i];
+            const rotation = this.pnjRotation[i];
+            const parent = parentMesh.createInstance("pnjMobile" + i);
+            parent.checkCollisions = true;
+            parent.isVisible = false;
+            const randomNumber = Math.floor(Math.random() * 5);
+            this.assets.push(this.duplicatePnjIdle(assetContainers[randomNumber], position, rotation, parent));
+        }
 
-  public async moveCharacter(num: number, direction: Vector3) {
-    const characterMesh = this.assets[num].mesh; // Supposons que le personnage principal est nommé "outer"
-
-    // Démarrez l'animation de marche
-    const walk = this.assets[num].animationGroups.find((ag) =>
-      ag.name.includes("walk"),
-    );
-    if (walk) {
-      walk.loopAnimation = true;
-      walk.play(true);
+        while (true) {
+            const movePromises: Promise<void>[] = [];
+            for (let i = 0; i < this.pnjPositions.length; i++) {
+                const direction = this.pnjDirection[i];
+                const movePromise = this.moveCharacter(i, direction);
+                movePromises.push(movePromise);
+            }
+            await Promise.all(movePromises);
+        }
     }
-    // Déplacement vers l'avant
-    const inv = new Vector3(-direction.x, -direction.y, -direction.z);
-    await this.moveLinear(inv, 150, walk!, num);
 
-    // Démarrez l'animation idle
-    const idle = this.assets[num].animationGroups.find((ag) =>
-      ag.name.includes("idle"),
-    );
-    if (idle) {
-      idle.loopAnimation = true;
-      idle.play(true);
-    }
-    // Attente pendant 5 secondes
-    await this.wait(1500);
+    public async moveCharacter(num: number, direction: Vector3, ) {
+        const characterMesh = this.assets[num].mesh; // Supposons que le personnage principal est nommé "outer"
+        
+        // Démarrez l'animation de marche
+        const walk = this.assets[num].animationGroups.find(ag => ag.name.includes("walk"));
+        if(walk){
+            walk.loopAnimation = true;
+            walk.play(true);
+        }
+        // Déplacement vers l'avant
+        const inv = new Vector3(-direction.x, -direction.y, -direction.z);
+        await this.moveLinear(inv, 150, walk!, num);
+
+        // Démarrez l'animation idle
+        const idle = this.assets[num].animationGroups.find(ag => ag.name.includes("idle"));
+        if(idle){
+            idle.loopAnimation = true;
+            idle.play(true);
+        }
+        // Attente pendant 5 secondes
+        await this.wait(1500);
 
     for (let i = 0; i < 3; i++) {
       const randomDirection = Math.floor(Math.random() * 3); // Générer un nombre aléatoire entre 0 et 2
@@ -265,71 +245,58 @@ export class PnjMobile {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  private async lookDirection(mesh: InstancedMesh, direction: number) {
-    let rotationAngle = 0;
-    switch (direction) {
-      case 0: // Regarder à droite
-        rotationAngle = Math.PI / 2; // 90 degrés en radians
-        break;
-      case 1: // Regarder à gauche
-        rotationAngle = (3 * Math.PI) / 2; // -90 degrés en radians
-        break;
-      case 2: // Regarder devant
-        rotationAngle = 0; // Aucune rotation nécessaire
-        break;
-      case 3: // Regarder derrière
-        rotationAngle = Math.PI; // 180 degrés en radians
-        break;
-      default:
-        "Invalid direction";
-        return;
+    private async lookDirection(mesh: InstancedMesh, direction: number) {
+        let rotationAngle = 0;
+        switch (direction) {
+            case 0: // Regarder à droite
+                rotationAngle = Math.PI / 2; // 90 degrés en radians
+                break;
+            case 1: // Regarder à gauche
+                rotationAngle = 3*Math.PI / 2; // -90 degrés en radians
+                break;
+            case 2: // Regarder devant
+                rotationAngle = 0; // Aucune rotation nécessaire
+                break;
+            case 3: // Regarder derrière
+                rotationAngle = Math.PI; // 180 degrés en radians
+                break;
+            default:
+                console.log("Invalid direction");
+                return;
+        }
+    
+        const rotationQuaternion = Quaternion.RotationAxis(Vector3.Up(), rotationAngle);
+        mesh.rotationQuaternion = Quaternion.RotationYawPitchRoll(rotationQuaternion.toEulerAngles().y, 0, 0);
+    
+        // Attente pour donner le temps de voir la direction
+        await this.wait(1500);
     }
 
-    const rotationQuaternion = Quaternion.RotationAxis(
-      Vector3.Up(),
-      rotationAngle,
-    );
-    mesh.rotationQuaternion = Quaternion.RotationYawPitchRoll(
-      rotationQuaternion.toEulerAngles().y,
-      0,
-      0,
-    );
-
-    // Attente pour donner le temps de voir la direction
-    await this.wait(1500);
-  }
-
-  private async lookDirectionBis(mesh: InstancedMesh, direction: number) {
-    let rotationAngle = 0;
-    switch (direction) {
-      case 0: // Regarder à droite
-        rotationAngle = 0; // Aucune rotation nécessaire
-        break;
-      case 1: // Regarder à gauche
-        rotationAngle = Math.PI; // 180 degrés en radians
-        break;
-      case 2: // Regarder devant
-        rotationAngle = (3 * Math.PI) / 2; // -90 degrés en radians
-        break;
-      case 3: // Regarder derrière
-        rotationAngle = Math.PI / 2; // 90 degrés en radians
-        break;
-      default:
-        "Invalid direction";
-        return;
+    private async lookDirectionBis(mesh: InstancedMesh, direction: number) {
+        let rotationAngle = 0;
+        switch (direction) {
+            case 0: // Regarder à droite
+                rotationAngle = 0; // Aucune rotation nécessaire
+                break;
+            case 1: // Regarder à gauche
+                rotationAngle = Math.PI; // 180 degrés en radians
+                break;
+            case 2: // Regarder devant
+                rotationAngle = 3*Math.PI / 2; // -90 degrés en radians
+                break;
+            case 3: // Regarder derrière
+                rotationAngle = Math.PI / 2; // 90 degrés en radians
+                break;
+            default:
+                console.log("Invalid direction");
+                return;
+        }
+    
+        const rotationQuaternion = Quaternion.RotationAxis(Vector3.Up(), rotationAngle);
+        mesh.rotationQuaternion = Quaternion.RotationYawPitchRoll(rotationQuaternion.toEulerAngles().y, 0, 0);
+    
+        // Attente pour donner le temps de voir la direction
+        await this.wait(1500);
     }
 
-    const rotationQuaternion = Quaternion.RotationAxis(
-      Vector3.Up(),
-      rotationAngle,
-    );
-    mesh.rotationQuaternion = Quaternion.RotationYawPitchRoll(
-      rotationQuaternion.toEulerAngles().y,
-      0,
-      0,
-    );
-
-    // Attente pour donner le temps de voir la direction
-    await this.wait(1500);
-  }
 }

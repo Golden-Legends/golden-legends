@@ -13,7 +13,7 @@ export class SoundManager {
 
   private soundButtonListener(): void {
     document.getElementById("sound-button")?.addEventListener("click", () => {
-      ("click");
+      console.log("click");
       if (this.etatMusic) {
         this.pauseTrack(this.currentMusic);
         this.etatMusic = false;
@@ -75,15 +75,18 @@ export class SoundManager {
   getEtatMusic(): boolean {
     return this.etatMusic;
   }
-
+  
   setEtatMusic(etat: boolean): void {
     this.etatMusic = etat;
   }
 
   getCurrentMusic(): string {
     return this.currentMusic;
-  }
+  } 
 }
+
+
+
 
 // import { Music } from "@/utils/Music";
 // import { Scene, Sound } from "@babylonjs/core";
@@ -103,7 +106,7 @@ export class SoundManager {
 
 //   private soundButtonListener(): void {
 //     document.getElementById("sound-button")?.addEventListener("click", () => {
-//       ("click");
+//       console.log("click");
 //       this.music = Music.getInstance("./sounds/musiqueJeu.m4a", 0.025);
 //       if (this.etatMusic) {
 //         // this.soundPause();

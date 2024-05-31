@@ -262,7 +262,7 @@ export class PlongeonGameState extends GameState {
   }
 
   async exit(): Promise<void> {
-    ("exit plongeon game");
+    console.log("exit plongeon game");
 
     document.getElementById("plongeonGame-score")!.classList.add("hidden");
     document.getElementById("plongeonGame-keyPressed")!.classList.add("hidden");
@@ -305,7 +305,7 @@ export class PlongeonGameState extends GameState {
 
     if (this.player._isWin) {
       if (!this.scoreboardIsShow) {
-        // (this.player.score, this.settings.level[this.difficulty].pointToSucceed)
+        // console.log(this.player.score, this.settings.level[this.difficulty].pointToSucceed)
         if (
           this.player.score >=
           this.settings.level[this.difficulty].pointToSucceed
@@ -329,7 +329,7 @@ export class PlongeonGameState extends GameState {
           this.showScoreBoard();
         }, 2000);
       }
-      ("FIN DE JEU");
+      console.log("FIN DE JEU");
       return;
     } else if (!this.player._isWin) {
       const deltaTime = this.scene.getEngine().getDeltaTime();
@@ -436,7 +436,7 @@ export class PlongeonGameState extends GameState {
     if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
     let countdownIndex = 0;
     let previousElement = "";
-    // (this._camera.position, this._camera.rotation);
+    // console.log(this._camera.position, this._camera.rotation);
 
     const countdownInterval = setInterval(() => {
       const countdownElement = countdownElements[countdownIndex];
@@ -501,7 +501,7 @@ export class PlongeonGameState extends GameState {
       let randomNumber = Math.floor(Math.random() * 4);
       lettersArray.push(this.letterPossible[randomNumber]);
     }
-    // (lettersArray);
+    // console.log(lettersArray);
     return lettersArray;
   }
 

@@ -462,7 +462,6 @@ export class JavelotGameState extends GameState {
     let booleanPos3 = false;
     const verticalDirection = this.player.verticalDirection;
     const horizontalDirection = this.player.horizontalDirection;
-    verticalDirection, horizontalDirection;
     let booleanMonteeFinit = false;
 
     let position;

@@ -115,7 +115,7 @@ export class PlayerJavelotGame {
           this.isEndGame = true;
           this.stopAnimations();
           this.raceEndTime = this.currentTime;
-          // (`Joueur fin : `, this.raceEndTime);
+          // console.log(`Joueur fin : `, this.raceEndTime);
         },
       ),
     );
@@ -150,7 +150,7 @@ export class PlayerJavelotGame {
   }
 
   public play(delta: number, currentTime: number) {
-    // ("play");
+    // console.log("play");
     this._deltaTime = delta / 10;
     this.currentTime = currentTime;
     if (!this.isEndGame) {
@@ -162,11 +162,11 @@ export class PlayerJavelotGame {
           .classList.remove("hidden");
       } else {
         //todo récuperer ici les touches qu'enfonce le player
-        // ("gameActive");
+        // console.log("gameActive");
         this.processInput();
       }
     } else {
-      // ("endGame");
+      // console.log("endGame");
     }
   }
 
@@ -213,7 +213,7 @@ export class PlayerJavelotGame {
         }
         storeJavelot.commit("setSpeedBar", this.power);
       } else {
-        this.power;
+        console.log(this.power);
         document
           .getElementById("javelotGame-angle")!
           .classList.remove("hidden");

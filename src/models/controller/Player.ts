@@ -101,7 +101,12 @@ export class Player extends TransformNode {
 
   private gameState: GameState;
 
-  constructor(assets, scene: Scene, gameState: InGameState, input?) {
+  constructor(
+    assets,
+    scene: Scene,
+    gameState: InGameState,
+    input?,
+  ) {
     super("player", scene);
     this.scene = scene;
     this.gameState = gameState;
@@ -142,7 +147,7 @@ export class Player extends TransformNode {
     this._prevAnim = this._idle;
   }
 
-  private isDancing: boolean = false;
+  private isDancing : boolean = false;
 
   private _animatePlayer(): void {
     if (
@@ -174,7 +179,7 @@ export class Player extends TransformNode {
     } else if (this._isFalling && !this._jumped && !this._dashPressed) {
       // rajouter une anim land
       this._currentAnim = this._land;
-    }
+    } 
     //Animations
     if (this._currentAnim != null && this._prevAnim !== this._currentAnim) {
       this._prevAnim?.stop();
@@ -185,7 +190,7 @@ export class Player extends TransformNode {
 
   private _updateFromControls(): void {
     if (this._input) {
-      // (this.mesh.position); // utilie pour récup les positions du joueur
+      // console.log(this.mesh.position); // utilie pour récup les positions du joueur
       this._moveDirection = Vector3.Zero(); // vector that holds movement information
       this._h = this._input.horizontal; //x-axis
       this._v = this._input.vertical; //z-axis
@@ -371,7 +376,7 @@ export class Player extends TransformNode {
     if (!isGrounded) {
       //if the body isnt grounded, check if it's on a slope and was either falling or walking onto it
       if (this._checkSlope() && this._gravity.y <= 0) {
-        ("slope");
+        console.log("slope");
         //if you are considered on a slope, you're able to jump and gravity wont affect you
         this._gravity.y = 0;
         this._jumpCount = 1;
@@ -455,7 +460,7 @@ export class Player extends TransformNode {
         newRotationX > this.CAMERA_MIN_ANGLE &&
         newRotationX < this.CAMERA_MAX_ANGLE
       ) {
-        // (newRotationX);
+        // console.log(newRotationX);
         this._yTilt!.rotation.x = newRotationX;
       }
     });
