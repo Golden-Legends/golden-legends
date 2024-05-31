@@ -99,6 +99,7 @@ const carousel = ref(0);
             <Title text="Comment jouer ?"></Title>
             <span>
               Pour vous déplacer, utilisez les touches Z, Q, S, D (azerty) ou W, A, S, D (qwerty) et utilisez la souris pour bouger la caméra.
+              Vous pouvez danser avec F et vous pouvez dash avec A lorsque vous avancez en sautant.<br>
               Si vous voulez plus de détails sur les commandes dans la ville de Paris ou dans les différents jeux, vous pouvez les retrouver dans le menu, section "Aides".
             </span>
           </div>
