@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="flex flex-col items-center">
+  <div class="flex relative flex-col items-center">
     <span class="text-3xl font-bold mb-4"> Chargement en cours... </span>
     <img
       src="@/../public/timer_logo.svg"

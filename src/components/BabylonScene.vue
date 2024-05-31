@@ -1266,6 +1266,9 @@
   >
     <ResultsContent :results="storeTennis.state.results" />
   </Results>
+  <div class="absolute top-0 left-0 w-screen h-screen bg-red-800">
+    <Loading id="loading" class="z-100 relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+  </div>
 </template>
 
 <script setup lang="ts">

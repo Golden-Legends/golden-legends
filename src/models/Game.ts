@@ -15,7 +15,6 @@ import { TennisGameState } from "./scene/games/TennisGameState.ts";
 export class Game {
   public engine: Engine;
   private currentState: GameState | null = null;
-  // public loadingScreen: CustomLoadingScreen;
   public canvas: HTMLCanvasElement;
   private soundManager: SoundManager;
   private currentTrackName: string;
@@ -28,6 +27,9 @@ export class Game {
     this.currentTrackName = "";
     this.initTrack();
     this.changeState(new InGameState(this, canvas));
+    // const customScene = new CustomLoadingScreen("Chargement en cours...");
+    // this.setLoadingScreen(customScene);
+    // this.engine.hideLoadingUI();
   }
 
   public setLoadingScreen(customLoadingScreen: ILoadingScreen) {

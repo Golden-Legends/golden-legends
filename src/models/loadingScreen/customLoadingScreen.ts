@@ -5,15 +5,19 @@ export class CustomLoadingScreen implements ILoadingScreen {
     public loadingUIBackgroundColor: string;
 
     constructor(public loadingUIText: string) {
-        this.loadingUIBackgroundColor = "white";
+        this.loadingUIBackgroundColor = "black";
     }
 
     public displayLoadingUI() {
-        console.log("je charge l'ui");
-        alert(this.loadingUIText);
+      console.log(performance.now());
+      console.log("je charge l'ui");
+      // alert(this.loadingUIText);
+      document.getElementById("loading")!.classList.remove("hidden");
     }
   
     public hideLoadingUI() {
-      alert("Loaded!");
+      console.log(performance.now());
+      document.getElementById("loading")!.classList.add("hidden");
+      console.log("tout est chargé");
     }
   }
