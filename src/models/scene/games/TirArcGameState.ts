@@ -482,7 +482,6 @@ export class TirArcGameState extends GameState {
     let booleanPos3 = false;
     const verticalDirection = this.player.verticalDirection;
     const horizontalDirection = this.player.horizontalDirection;
-    verticalDirection, horizontalDirection;
     // this.env.flecheAssets.mesh.position.y = 0.362621;
     // (this.env.flecheAssets.mesh.position.y);
     // (this.env.flecheAssets.mesh.position.x);

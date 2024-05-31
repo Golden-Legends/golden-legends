@@ -425,7 +425,14 @@ export class BoxeGameState extends GameState {
       "#boxeGame-results #replay-button",
       "click",
       () => {
-        this.game.changeState(new BoxeGameState(this.game, this.game.canvas, this.difficulty, this.isMultiplayer));
+        this.game.changeState(
+          new BoxeGameState(
+            this.game,
+            this.game.canvas,
+            this.difficulty,
+            this.isMultiplayer,
+          ),
+        );
       },
     );
     // attendre 2 secondes avant d'afficher le tableau des scores
@@ -449,13 +456,6 @@ export class BoxeGameState extends GameState {
       result: this.score,
     });
     storeBoxe.commit("setResults", this.results);
-    (
-      Number(this.score),
-      this.settings.level[this.difficulty].pointToSucceed,
-    );
-    (
-      Number(this.score) >= this.settings.level[this.difficulty].pointToSucceed,
-    );
     if (
       Number(this.score) >= this.settings.level[this.difficulty].pointToSucceed
     ) {

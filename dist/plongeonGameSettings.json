@@ -11,7 +11,8 @@
             "pointToSucceed" : 50,
             "numLetters" : 3,
             "limitTime" : 15000,
-            "timeAffichageSuite" : 4000
+            "timeAffichageSuite" : 4000,
+            "multiplier" : 1
         },
         "intermediate" : {
             "placement" : 
@@ -24,7 +25,8 @@
             "pointToSucceed" : 75,
             "numLetters" : 5,
             "limitTime" : 12500,
-            "timeAffichageSuite" : 6000
+            "timeAffichageSuite" : 6000,
+            "multiplier" : 1.5
         },
         "hard" : {
             "placement" : 
@@ -37,7 +39,8 @@
             "pointToSucceed" : 150,
             "numLetters" : 7,
             "limitTime" : 10000,
-            "timeAffichageSuite" : 8000
+            "timeAffichageSuite" : 8000,
+            "multiplier" : 2
         }
     }
 }
