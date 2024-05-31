@@ -9,15 +9,11 @@ export class CustomLoadingScreen implements ILoadingScreen {
     }
 
     public displayLoadingUI() {
-      console.log(performance.now());
-      console.log("je charge l'ui");
       // alert(this.loadingUIText);
-      document.getElementById("loading")!.classList.remove("hidden");
+      document.getElementById("loading-container")!.classList.remove("hidden");
     }
   
     public hideLoadingUI() {
-      console.log(performance.now());
-      document.getElementById("loading")!.classList.add("hidden");
-      console.log("tout est chargé");
+      document.getElementById("loading-container")!.classList.add("hidden");
     }
   }

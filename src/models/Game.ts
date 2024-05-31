@@ -27,9 +27,6 @@ export class Game {
     this.currentTrackName = "";
     this.initTrack();
     this.changeState(new InGameState(this, canvas));
-    // const customScene = new CustomLoadingScreen("Chargement en cours...");
-    // this.setLoadingScreen(customScene);
-    // this.engine.hideLoadingUI();
   }
 
   public setLoadingScreen(customLoadingScreen: ILoadingScreen) {
