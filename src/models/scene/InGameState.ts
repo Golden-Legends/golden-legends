@@ -101,7 +101,6 @@ export class InGameState extends GameState {
 
     // lancer la boucle de rendu
     this.runUpdateAndRender();
-    this.initializePointerLock();
 
     // lancer le mini jeu
     if (this.jumpGame) {
@@ -115,6 +114,8 @@ export class InGameState extends GameState {
     await this.scene.whenReadyAsync();
     this.scene.attachControl();
     this.game.engine.hideLoadingUI();
+
+    this.initializePointerLock();
   }
 
   public animStartGame() {

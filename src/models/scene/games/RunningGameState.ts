@@ -196,6 +196,7 @@ export class RunningGameState extends GameState {
           .classList.remove("hidden");
         document.getElementById("runningGame-help")!.classList.add("hidden");
         this.addEventListenerById("runningGame-ready-button", "click", () => {
+          this.addHandlePointerLock();
           this.startCountdown([
             "runningGame-text-1",
             "runningGame-text-2",
@@ -390,10 +391,17 @@ export class RunningGameState extends GameState {
   }
 
   async handleResult(): Promise<void> {
+    let bestScore = 100000;
     for (const player of this.playerArray) {
       if (!player.getIsEndGame()) continue;
       const playerScore = Math.round(player.getEndTime() - this.raceStartTime);
-      await handleNewRecord("running", Number(playerScore), player.getName());
+      if (bestScore > playerScore) {
+        bestScore = playerScore;
+      }
+    }
+    if (bestScore !== 100000) {
+      console.log(bestScore);
+      await handleNewRecord("running", Number(bestScore), this.playerName);
     }
   }
 
@@ -587,6 +595,7 @@ export class RunningGameState extends GameState {
 
       if (this.endGame && !this.scoreboardIsShow) {
         this.scoreboardIsShow = true;
+        this.removeHandlePointerLock();
         this.showScoreBoard();
         console.log("Game over: All players have finished.");
         return;
