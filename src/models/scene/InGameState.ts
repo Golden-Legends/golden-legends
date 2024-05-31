@@ -495,6 +495,7 @@ export class InGameState extends GameState {
     });
     this.addEventListenerById("close-objects", "click", () => {
       document.getElementById("objectsFound")!.classList.add("hidden");
+      this.addHandlePointerLock();
       setTimeout(() => {
         this.isGameObjectInterfacedPressed = false;
       }, 250);
@@ -517,6 +518,7 @@ export class InGameState extends GameState {
       }, 250);
     });
     this.addEventListenerById("close-aide", "click", () => {
+      this.addHandlePointerLock();
       document.getElementById("aide-container")!.classList.add("hidden");
     });
     this.addEventListenerById("open-tips-menu", "click", () => {
@@ -527,6 +529,7 @@ export class InGameState extends GameState {
       }, 250);
     });
     this.addEventListenerById("close-tips", "click", () => {
+      this.addHandlePointerLock();
       document.getElementById("tips-container")!.classList.add("hidden");
     });
     this.addEventListenerById("back-options", "click", () => {
@@ -552,6 +555,7 @@ export class InGameState extends GameState {
     });
     this.addEventListenerById("close-options", "click", () => {
       document.getElementById("options")!.classList.add("hidden");
+      this.addHandlePointerLock();
       setTimeout(() => {
         this.isOptionsInterfacedPressed = false;
       }, 250);
@@ -564,6 +568,8 @@ export class InGameState extends GameState {
       document
         .getElementById("scoreboard-station-dialog")!
         .classList.add("hidden");
+      this.addHandlePointerLock();
+
     });
 
     // GUI minimap
