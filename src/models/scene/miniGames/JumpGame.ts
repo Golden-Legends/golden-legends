@@ -15,6 +15,7 @@ import { AdvancedDynamicTexture, TextBlock } from "@babylonjs/gui";
 import { storeJump } from "@/components/gui/storeJump.ts";
 import { GameState } from "@/models/GameState";
 import { PlayerInput } from "@/models/inputsMangement/PlayerInput.ts";
+import { handleNewRecord } from "@/services/result-service";
 
 export class JumpGame {
   progress: number;
@@ -36,12 +37,14 @@ export class JumpGame {
   private raceStartTime: number = 0;
   private timer: number = 0;
   private currentTime: number = 0;
+  private playerName: string = "";
 
-  constructor(scene: Scene, player: Mesh, input: PlayerInput) {
+  constructor(scene: Scene, player: Mesh, input: PlayerInput, playername : string) {
     this.scene = scene;
     this.player = player;
     this.progress = 0;
     this.playerInput = input;
+    this.playerName = playername;
   }
 
   public init() {
@@ -250,6 +253,7 @@ export class JumpGame {
   showVictoryMessage() {
     // Créer un message de victoire à afficher à l'écran
     document.getElementById("victory-jump-dialog")!.classList.remove("hidden");
+    handleNewRecord("tennis", Number(this.timer), this.playerName);
     setTimeout(() => {
       storeJump.commit("setTimer", 0.0);
       document.getElementById("victory-jump-dialog")!.classList.add("hidden");

@@ -73,11 +73,13 @@ export class InGameState extends GameState {
 
     await this._initPlayer(this.scene).then(async () => {
       if (!!this._player) {
+        const playerName = localStorage.getItem("username") || "Playertest";
         await this._player.activatePlayerCamera();
         this.jumpGame = new JumpGame(
           this.scene,
           this._player.mesh,
           this._input,
+          playerName!,
         );
         this.objectGame = new ObjectGame(
           this.scene,
