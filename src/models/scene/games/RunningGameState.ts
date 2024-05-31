@@ -184,7 +184,9 @@ export class RunningGameState extends GameState {
         document
           .getElementById("runningGame-command-container-2")!
           .classList.remove("hidden");
-        document.getElementById("runningGame-help-2")!.classList.remove("hidden");
+          document.getElementById("runningGame-help-2")!.classList.remove("hidden");
+      } else {
+        document.getElementById("runningGame-help-2")!.classList.add("hidden");
       }
       this.addEventListenerById("runningGame-skip-button", "click", () => {
         document.getElementById("runningGame-help")!.classList.add("hidden");
