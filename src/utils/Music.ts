@@ -26,35 +26,37 @@ export class Music extends Howl {
     super.stop();
   }
 
+
   public modifMusique(path: string, volume: number): void {
-    // ("modif musique");
+    // console.log("modif musique");
     // super.stop();
     // super._src = [path];
-    // this.volumeCourant = volume;
-    // super.play();
+    // this.volumeCourant = volume; 
+    // super.play();   
     // super.loop(true);
     const newMusic = new Howl({
-      src: path,
-      autoplay: true,
-      loop: true,
-      volume: volume, // Volume par défaut
-    }) as Music;
+          src: path,
+          autoplay: true,
+          loop: true,
+          volume: volume, // Volume par défaut
+        }) as Music;
     Music.instance = newMusic;
   }
 
   public couperSon(): void {
     this.volumeCourant = super.volume();
     super.volume(0);
-    ("couper son");
+    console.log("couper son");
   }
 
   public remettreSon(): void {
     super.volume(this.volumeCourant);
-    ("remettre son");
+    console.log("remettre son");
   }
 
   public modifVolume(volume: number): void {
     super.volume(volume);
     this.volumeCourant = volume;
   }
+
 }

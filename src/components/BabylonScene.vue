@@ -1170,11 +1170,7 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer
-        class="w-fit"
-        name="J1"
-        :keys="['ArrowUp', 'ArrowDown']"
-      />
+      <CommandContainer class="w-fit" name="J1" :keys="['ArrowUp', 'ArrowDown']" />
       <CommandContainer
         id="tennis-help-2"
         class="w-fit"
@@ -1203,11 +1199,7 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer
-        class="w-fit"
-        name="J1"
-        :keys="['ArrowUp', 'ArrowDown']"
-      />
+      <CommandContainer class="w-fit" name="J1" :keys="['ArrowUp', 'ArrowDown']" />
     </template>
     <template #tips>
       <Info
@@ -1365,13 +1357,13 @@ const tpGame = "Comeback later...";
 
 const positionH = (position: number) => {
   // You can get the position in params from the child
-  // (position);
+  // console.log(position);
   storeTirArc.commit("setPosH", position);
 };
 
 const positionV = (position: number) => {
   // You can get the position in params from the child
-  // (position);
+  // console.log(position);
   storeTirArc.commit("setPosV", position);
 };
 
@@ -1383,13 +1375,13 @@ const positionV = (position: number) => {
 
 // const setSoundVolume = () => {
 //   if(storeSound.state.sound > storeSound.state.oldSound){
-//     (1+(storeSound.state.sound - storeSound.state.oldSound)/100)
+//     console.log(1+(storeSound.state.sound - storeSound.state.oldSound)/100)
 //   }
 //   else if(storeSound.state.sound < storeSound.state.oldSound){
-//     (1-(storeSound.state.oldSound - storeSound.state.sound)/100)
+//     console.log(1-(storeSound.state.oldSound - storeSound.state.sound)/100)
 //   }
 //   else{
-//     (1)
+//     console.log(1)
 //   }
 // }
 
