@@ -360,7 +360,7 @@
     title="Tennis"
     name="tennistp"
     id="tennistp"
-    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="tennisBot"
@@ -1243,7 +1243,6 @@
   >
     <ResultsContent :results="storeTennis.state.results" />
   </Results>
-
 </template>
 
 <script setup lang="ts">
