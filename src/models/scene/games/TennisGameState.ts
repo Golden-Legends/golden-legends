@@ -5,6 +5,7 @@ import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
 import { TennisGameEnv } from "@/models/environments/tennisGameEnv";
 import { PlayerInputTennisGame } from "@/models/inputsMangement/PlayerInputTennisGame";
+import { handleNewRecord } from "@/services/result-service";
 import { Scaling } from "@/utils/Scaling";
 import { AbstractMesh, Color3, HemisphericLight, Mesh, MeshBuilder, Scalar, Scene, SceneLoader, StandardMaterial, UniversalCamera, Vector3 } from "@babylonjs/core";
 
@@ -70,7 +71,7 @@ export class TennisGameState extends GameState{
 			if (this.isMultiplayer) {
 				this._paddle1 = new Paddle('player', this.scene, this.input);
 				this._paddle2 = new Paddle('player2', this.scene, this.input);
-				this.ball = new Ball(this.scene, this._paddle1, this._paddle2, 3);
+				this.ball = new Ball(this.scene, this._paddle1, this._paddle2, 1);
 			} else {
 				this._paddle1 = new Paddle('player', this.scene, this.input);
 				this._paddle2 = new Paddle('cpu', this.scene, this.input);
@@ -128,11 +129,11 @@ export class TennisGameState extends GameState{
 					this.removeHandlePointerLock();
 					if (this.isMultiplayer) {
 						this.guiComponent.initFirstGuiMulti();
-						this.createFinaleScoreBoard(this.ball.getScoreMulti().scoreJ1, this.ball.getScoreMulti().scoreJ2);
+						this.createFinaleScoreBoard(this.ball.getScore());
 						console.log("Show Result Multi : ", this.ball.getScoreMulti());
 					} else {
 						this.guiComponent.initFirstGuiSolo();
-						this.createFinaleScoreBoard(this.ball.getScore(), this.ball.getScoreMulti().scoreJ2);
+						this.createFinaleScoreBoard(this.ball.getScore());
 					}
 				}
 				console.log("End Game");
@@ -207,37 +208,15 @@ export class TennisGameState extends GameState{
     storeTennis.commit("setResults", this.results);
   }
 
-	private createFinaleScoreBoard(score1:  number, score2 : number ): void {
+	private createFinaleScoreBoard(score:  number ): void {
     this.results = [];
+    // handleNewRecord("tennis", Number(score), this.playerName);
 
-		if (this.isMultiplayer) {
-			this.results.push({
-				place: 1,
-				name: this.playerName,
-				result: "" + score1,
-			});
-			this.results.push({
-				place: 2,
-				name: this.playerName+2,
-				result: "" + score2,
-			});
-
-			// effectue un tri 
-			this.results.sort((a, b) => {
-				return parseInt(b.result) - parseInt(a.result);
-			});
-
-			this.results.forEach((result, index) => {
-				result.place = index + 1;
-			});
-
-		} else {
-			this.results.push({
-				place: 1,
-				name: this.playerName,
-				result: "" + score1,
-			});
-		}
+	this.results.push({
+		place: 1,
+		name: this.playerName,
+		result: "" + score,
+	});
     
     storeTennis.commit("setResults", this.results);
   }

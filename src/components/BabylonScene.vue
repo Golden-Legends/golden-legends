@@ -1218,10 +1218,22 @@
     :score="storeTennis.state.score"
   />
   <KeyPressInteraction
-    :keys="['Haut', 'Bas']"
+    :keys="['ArrowUp', 'ArrowDown']"
     name="tennis-keyPressed"
     id="tennis-keyPressed"
     class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <KeyPressInteraction
+    :keys="['s', 'd']"
+    name="tennis-keyPressed0"
+    id="tennis-keyPressed0"
+    class="hidden absolute left-1/2 bottom-56 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <KeyPressInteraction
+    :keys="['ArrowUp', 'ArrowDown']"
+    name="tennis-keyPressed1"
+    id="tennis-keyPressed1"
+    class="hidden absolute left-1/2 bottom-40 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Results
     title="tennis"
