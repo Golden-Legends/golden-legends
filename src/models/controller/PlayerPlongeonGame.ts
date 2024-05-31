@@ -175,7 +175,7 @@ export class PlayerPlongeonGame {
             }
         }
         else{
-            console.log("endGame");
+            // console.log("endGame");
             this.descendrePerso();
         }
     }

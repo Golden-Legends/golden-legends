@@ -261,7 +261,7 @@ export class PnjMobile {
                 rotationAngle = Math.PI; // 180 degrés en radians
                 break;
             default:
-                console.log("Invalid direction");
+                // console.log("Invalid direction");
                 return;
         }
     
@@ -288,7 +288,7 @@ export class PnjMobile {
                 rotationAngle = Math.PI / 2; // 90 degrés en radians
                 break;
             default:
-                console.log("Invalid direction");
+                // console.log("Invalid direction");
                 return;
         }
     

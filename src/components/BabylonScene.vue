@@ -433,7 +433,7 @@
       <CommandContainer class="w-fit" name="COURIR" :keys="['s', 'd']" />
       <CommandContainer
         id="runningGame-help-2"
-        class="w-fit"
+        class="w-fit hidden"
         name="COURIR"
         :keys="['k', 'l']"
       />

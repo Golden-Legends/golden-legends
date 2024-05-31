@@ -42,7 +42,7 @@ export class Game {
   }
 
   private initTrack() {
-    this.soundManager.addTrack("inGame", "./sounds/musiqueJeu.m4a", 0.05);
+    this.soundManager.addTrack("inGame", "./sounds/musiqueJeuNew.m4a", 0.05);
     this.soundManager.addTrack("100m", "./sounds/100m.m4a", 0.1);
     this.soundManager.addTrack("arcJavelot", "./sounds/arcJavelot.mp3", 0.1);
     this.soundManager.addTrack("boxeTennis", "./sounds/boxeTennis.mp3", 0.1);

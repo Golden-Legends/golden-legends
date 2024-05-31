@@ -9,7 +9,7 @@ const props = defineProps({
     v-if="!props.name"
     class="group py-2 px-6 border-2 border-white bg-blue-darker rounded-lg text-white text-2xl font-bold w-64 specific-shadow hover:bg-end-blue-gradient transition-all duration-300"
   >
-    <span>Continuer</span>
+    <span>Retour ville</span>
   </button>
   <button
     v-else

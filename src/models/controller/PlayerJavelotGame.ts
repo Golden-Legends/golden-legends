@@ -213,7 +213,7 @@ export class PlayerJavelotGame {
         }
         storeJavelot.commit("setSpeedBar", this.power);
       } else {
-        console.log(this.power);
+        // console.log(this.power);
         document
           .getElementById("javelotGame-angle")!
           .classList.remove("hidden");

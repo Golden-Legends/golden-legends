@@ -198,7 +198,7 @@ export class NatationGameState extends GameState {
   }
   async exit(): Promise<void> {
     try {
-      console.log("exit natation game");
+      // console.log("exit natation game");
 
       document.getElementById("natationGame-timer")!.classList.add("hidden");
       document
@@ -268,7 +268,7 @@ export class NatationGameState extends GameState {
     // affiche le temps dans la console
     if (elapsedTime > this.limitTime) {
       this.endGame = true;
-      console.log("Game over: Time limit reached.");
+      // console.log("Game over: Time limit reached.");
       if (!this.scoreboardIsShow) {
         this.showScoreBoard();
       }
@@ -713,7 +713,7 @@ export class NatationGameState extends GameState {
         document.getElementById("position-6")!.classList.remove("hidden");
         break;
       default:
-        console.log("Position non trouvée");
+        // console.log("Position non trouvée");
         break;
     }
   }
@@ -739,7 +739,7 @@ export class NatationGameState extends GameState {
         document.getElementById("position-6")!.classList.add("hidden");
         break;
       default:
-        console.log("Position non trouvée");
+        // console.log("Position non trouvée");
         break;
     }
   }
