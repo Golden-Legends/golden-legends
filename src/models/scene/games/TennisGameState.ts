@@ -1,3 +1,6 @@
+import { Result } from "@/components/gui/results/ResultsContent.vue";
+import { storeTennis } from "@/components/gui/storeTennis";
+import { TennisGameGui } from "@/models/GUI/TennisGameGui";
 import { Game } from "@/models/Game";
 import { GameState } from "@/models/GameState";
 import { TennisGameEnv } from "@/models/environments/tennisGameEnv";
@@ -6,135 +9,242 @@ import { Scaling } from "@/utils/Scaling";
 import { AbstractMesh, Color3, HemisphericLight, Mesh, MeshBuilder, Scalar, Scene, SceneLoader, StandardMaterial, UniversalCamera, Vector3 } from "@babylonjs/core";
 
 export class TennisGameState extends GameState{
-		private _camera: UniversalCamera;
-		private environment : TennisGameEnv;
-		
-		private isMultiplayer: boolean = false;
-		// JOUEURS
-		
-		private input : PlayerInputTennisGame;
-		// BALLE 
-		private ball !: Ball;
-		_paddle1!: Paddle;
+	private _camera: UniversalCamera;
+	private environment : TennisGameEnv;
+	private isMultiplayer: boolean = false;
+	private input : PlayerInputTennisGame;
+  private results: Result[] = [];
+  private playerName: string;
+
+	// BALLE 
+	private ball !: Ball;
+	// JOUEUR
+	_paddle1!: Paddle;
     _paddle2!: Paddle;
-		// DEPLACEMENT		
-		private isEndGame = false;
+	// DEPLACEMENT		
+	private guiComponent: TennisGameGui = new TennisGameGui(this);
+	private countdownInProgress: boolean = false;
+	private isResultShown = false;
 
-    constructor(
-        game: Game,
-        canvas: HTMLCanvasElement,
-        multi?: boolean,
-      ) {
-        super(game, canvas);
-				this.isMultiplayer = multi ? multi : false;
-				this._camera = this.createCamera();
-				this.input = new PlayerInputTennisGame(this.scene, this.isMultiplayer);
-				this.environment = new TennisGameEnv(this.scene);
-				
+	constructor(
+		game: Game,
+		canvas: HTMLCanvasElement,
+		multi?: boolean,
+		) {
+		super(game, canvas);
+		this.isMultiplayer = multi ? multi : false;
+		this._camera = this.createCamera();
+		this.input = new PlayerInputTennisGame(this.scene, this.isMultiplayer);
+		this.environment = new TennisGameEnv(this.scene);
+    this.playerName = localStorage.getItem("username") || "Playertest";
+			
     }
 
-		// cameraJoueur, joueur1, filet, joueur2, boite
-    async enter(): Promise<void> {
-			try {
-				console.log("TennisGameState")
-				this.game.engine.displayLoadingUI();
-				this.scene.detachControl();
+	// cameraJoueur, joueur1, filet, joueur2, boite
+	async enter(): Promise<void> {
+		try {
+			console.log("TennisGameState")
+			this.game.engine.displayLoadingUI();
+			this.scene.detachControl();
 
-				await this.setEnvironment();
-				this.createLight();
+			await this.setEnvironment();
+			this.createLight();
 
-				const boite = this.scene.getMeshByName("boite");
-				if (boite) {
-					boite.isVisible = false;
-				}
-
-				const cameraMesh = this.scene.getMeshByName("filet");
-				if (cameraMesh) {
-					this._camera.position = new Vector3(-cameraMesh.position.clone().x, cameraMesh.position.clone().y + 10, cameraMesh.position.clone().z);
-					this._camera.rotation = new Vector3(1.50, 1.563, 0);
-					// this._camera.attachControl(this.canvas, true);
-				}
-
-				//add paddles to the scene
-				if (this.isMultiplayer) {
-					this._paddle1 = new Paddle('player', this.scene, this.input);
-					this._paddle2 = new Paddle('player2', this.scene, this.input);
-					this.ball = new Ball(this.scene, this._paddle1, this._paddle2, 3);
-				} else {
-					this._paddle1 = new Paddle('player', this.scene, this.input);
-					this._paddle2 = new Paddle('cpu', this.scene, this.input);
-					this.ball = new Ball(this.scene, this._paddle1, this._paddle2, 1);
-				}
-				
-				this.ball.initGlb();
-				if (this.isMultiplayer) {
-					console.log("multiplayer");
-				}
-
-				this.runUpdateAndRender();
-				await this.scene.whenReadyAsync(); // on attends que la scene soit bien chargé
-				this.scene.attachControl();
-				this.game.engine.hideLoadingUI();
-
-			} catch (error) {
-					throw new Error("Method not implemented.");
+			const boite = this.scene.getMeshByName("boite");
+			if (boite) {
+				boite.isVisible = false;
 			}
 
-    }
-
-    exit(): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-
-		private isResultShown = false;
-    update(): void {
-			try {
-				if(!this.ball.getIsEndGame()){
-					this._paddle1.handleEvent();
-					if (this.isMultiplayer) {
-						this._paddle2.handleEventJ2();
-					} else {
-						this._paddle2.moveByBallPosition(this.ball._body.position.x);
-					}
-					this.ball.update();
-				} else {
-					if (!this.isResultShown) {
-						this.isResultShown = true;
-						if (this.isMultiplayer) {
-							console.log("Show Result Multi : ", this.ball.getScoreMulti());
-						} else {
-							console.log("Show Result : ", this.ball.getScore(), this.ball.getScoreMulti());
-						}
-					}
-					console.log("End Game");
-				}
-			} catch (error) {
-        throw new Error("Method not implemented.");
+			const cameraMesh = this.scene.getMeshByName("filet");
+			if (cameraMesh) {
+				this._camera.position = new Vector3(-cameraMesh.position.clone().x, cameraMesh.position.clone().y + 10, cameraMesh.position.clone().z);
+				this._camera.rotation = new Vector3(1.50, 1.563, 0);
+				// this._camera.attachControl(this.canvas, true);
 			}
-    }
 
-    async setEnvironment(): Promise<void> {
-			try { 
-				await this.environment.load();	
-			} catch (error) {
+			// add GUI
+			this.guiComponent.initListeners();
+			this.guiComponent.helperComponent();
+
+			//add paddles to the scene
+			if (this.isMultiplayer) {
+				this._paddle1 = new Paddle('player', this.scene, this.input);
+				this._paddle2 = new Paddle('player2', this.scene, this.input);
+				this.ball = new Ball(this.scene, this._paddle1, this._paddle2, 3);
+			} else {
+				this._paddle1 = new Paddle('player', this.scene, this.input);
+				this._paddle2 = new Paddle('cpu', this.scene, this.input);
+				this.ball = new Ball(this.scene, this._paddle1, this._paddle2, 1);
+			}
+			
+			this.ball.initGlb();
+			
+			// reset store
+			storeTennis.commit("setScore", 0);
+			storeTennis.commit("setResults", []);
+			this.buildScoreBoard();
+		
+			this.runUpdateAndRender();
+			await this.scene.whenReadyAsync(); // on attends que la scene soit bien chargé
+			this.scene.attachControl();
+			this.game.engine.hideLoadingUI();
+
+			this.guiComponent.readyButton();
+			this.addEventListenerById("tennis-ready-button", "click", () => {
+				this.guiComponent.readyButton();
+				this.guiComponent.helperComponent();
+				this.addHandlePointerLock();
+				this.startCountdown([
+					"tennis-text-1",
+					"tennis-text-2",
+					"tennis-text-3",
+				]);
+			});	
+
+		} catch (error) {
 				throw new Error("Method not implemented.");
+		}
+	}
+
+	async exit(): Promise<void> {
+		this.cleanup();
+	}
+
+	update(): void {
+		try {
+			if (!this.countdownInProgress) return;
+			if(!this.ball.getIsEndGame()){
+				this._paddle1.handleEvent();
+				if (this.isMultiplayer) {
+					this._paddle2.handleEventJ2();
+				} else {
+					this._paddle2.moveByBallPosition(this.ball._body.position.x);
+				}
+				this.ball.update();
+			} else {
+				if (!this.isResultShown) {
+					this.isResultShown = true;
+					this.guiComponent.resultGui();
+					this.removeHandlePointerLock();
+					if (this.isMultiplayer) {
+						this.guiComponent.initFirstGuiMulti();
+						this.createFinaleScoreBoard(this.ball.getScoreMulti().scoreJ1, this.ball.getScoreMulti().scoreJ2);
+						console.log("Show Result Multi : ", this.ball.getScoreMulti());
+					} else {
+						this.guiComponent.initFirstGuiSolo();
+						this.createFinaleScoreBoard(this.ball.getScore(), this.ball.getScoreMulti().scoreJ2);
+					}
+				}
+				console.log("End Game");
 			}
-    }
-
-		private createLight() {
-			const light = new HemisphericLight(
-				"light",
-				new Vector3(1, 2, 1),
-				this.scene,
-			);
-			light.intensity = 0.8;
+		} catch (error) {
+			throw new Error("Method not implemented.");
 		}
+	}
 
-		private createCamera() : UniversalCamera {
-			const camera = new UniversalCamera("camera", new Vector3(0, 1, 0), this.scene);
-			// camera.attachControl(this.canvas, true);
-			return camera;
+	async setEnvironment(): Promise<void> {
+		try { 
+			await this.environment.load();	
+		} catch (error) {
+			throw new Error("Method not implemented.");
 		}
+	}
+
+	private createLight() {
+		const light = new HemisphericLight(
+			"light",
+			new Vector3(1, 2, 1),
+			this.scene,
+		);
+		light.intensity = 0.8;
+	}
+
+	private createCamera() : UniversalCamera {
+		const camera = new UniversalCamera("camera", new Vector3(0, 1, 0), this.scene);
+		// camera.attachControl(this.canvas, true);
+		return camera;
+	}
+
+	private startCountdown(countdownElements: string[]) {
+		if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
+		let countdownIndex = 0;
+		let previousElement = "";
+		if(this.isMultiplayer) {
+			this.guiComponent.initFirstGuiMulti();
+		} else {
+			this.guiComponent.initFirstGuiSolo();
+		}
+	
+		const countdownInterval = setInterval(() => {
+		  const countdownElement = countdownElements[countdownIndex];
+		  if (previousElement !== "")
+			document.getElementById(previousElement)!.classList.add("hidden");
+		  document.getElementById(countdownElement)!.classList.remove("hidden");
+		  previousElement = countdownElement;
+		  countdownIndex++;
+	
+		  if (countdownIndex >= countdownElements.length) {
+			clearInterval(countdownInterval);
+	
+			// Cache le dernier élément après une seconde
+			setTimeout(() => {
+			  document.getElementById(previousElement)!.classList.add("hidden");
+			}, 1000);
+	
+			// Permet au joueur de jouer ou exécutez d'autres actions nécessaires
+			this.countdownInProgress = true;
+		  }
+		}, 1000);
+	}
+
+	private buildScoreBoard(): void {
+		if(this.isMultiplayer) {
+			this.results.push({ place: 1, name: this.playerName, result: "0" });
+			this.results.push({ place: 2, name: this.playerName+2, result: "0" });
+		} else {
+			this.results.push({ place: 1, name: this.playerName, result: "0" });
+		}
+    storeTennis.commit("setResults", this.results);
+  }
+
+	private createFinaleScoreBoard(score1:  number, score2 : number ): void {
+    this.results = [];
+
+		if (this.isMultiplayer) {
+			this.results.push({
+				place: 1,
+				name: this.playerName,
+				result: "" + score1,
+			});
+			this.results.push({
+				place: 2,
+				name: this.playerName+2,
+				result: "" + score2,
+			});
+
+			// effectue un tri 
+			this.results.sort((a, b) => {
+				return parseInt(b.result) - parseInt(a.result);
+			});
+
+			this.results.forEach((result, index) => {
+				result.place = index + 1;
+			});
+
+		} else {
+			this.results.push({
+				place: 1,
+				name: this.playerName,
+				result: "" + score1,
+			});
+		}
+    
+    storeTennis.commit("setResults", this.results);
+  }
+
+	public getMultiplayer () {
+		return this.isMultiplayer;
+	}
 
 }
 
@@ -267,7 +377,7 @@ class Ball {
 	update() {
 		if (!this._isEndGame) {
 			if (this.indexGame - 1 >= this.maxGame) {
-				// this._isEndGame = true;
+				this._isEndGame = true;
 				return;
 			}
 			if (this.resetBall && this.indexGame -1  <= this.maxGame) {
@@ -331,14 +441,15 @@ class Ball {
 	private hitBallBack(paddle: Paddle) {
 		this._velocity.x = (this._body.position.x - paddle._body.position.x) / 5;
 		if (Math.abs(this._velocity.z) < 0.06) {
-			this._velocity.z *= -1.03; 
+			this._velocity.z *= -1.025; 
 		} else if (Math.abs(this._velocity.z) < 0.1) {
 			this._velocity.z *= -1.015; 
 			
-		} else if (Math.abs(this._velocity.z) >= 0.15) {
+		} else if (Math.abs(this._velocity.z) >= 0.13) {
 			this._velocity.z *= -1.0; 
 		}
 		this._score++;
+		storeTennis.commit("setScore", this._score);
 	}
 
 	private _checkBoundaryCollision() {
@@ -503,11 +614,11 @@ class Paddle {
 			if(this._type=='cpu'){
 				if(x>this._body.position.x){
 					// this._body.position.x+=0.1;
-					let horizontal = Scalar.Lerp(this.baseSpeed, 2, movementLerpSpeed);
+					let horizontal = Scalar.Lerp(this.baseSpeed, 3, movementLerpSpeed);
 					this._body.position.x += horizontal;
 				}
 				if(x<this._body.position.x){
-					let horizontal = Scalar.Lerp(this.baseSpeed, -2, movementLerpSpeed);
+					let horizontal = Scalar.Lerp(this.baseSpeed, -3, movementLerpSpeed);
 					this._body.position.x += horizontal;
 				}
 			}

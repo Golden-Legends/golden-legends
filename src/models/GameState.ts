@@ -129,4 +129,13 @@ export abstract class GameState {
     this.eventListeners = [];
   }
 
+  public getGame() : Game {
+    return this.game;
+  }
+
+  public getCanvas() : HTMLCanvasElement {
+    return this.canvas;
+  }
+  
+
 }
