@@ -87,6 +87,9 @@ import { GameState } from "../GameState";
                 case 5: 
                 document.getElementById("javelottp")!.classList.remove("hidden");
                 break;
+                case 6: 
+                document.getElementById("tennistp")!.classList.remove("hidden");
+                break;
                 default:
                   document.getElementById("tpGame-dialog")!.classList.remove("hidden");
                   // console.log("no tp");
@@ -104,6 +107,7 @@ import { GameState } from "../GameState";
               parameter: this.player,
             },
             () => {
+              this.gameState.addHandlePointerLock();
               switch (i) {
                 case 0:
                   document.getElementById("100mtp")!.classList.add("hidden");
@@ -122,6 +126,9 @@ import { GameState } from "../GameState";
                   break;
                 case 5:
                   document.getElementById("javelottp")!.classList.add("hidden");
+                  break;
+                case 6: 
+                  document.getElementById("tennistp")!.classList.add("hidden");
                   break;
                 default:
                   document.getElementById("tpGame-dialog")!.classList.add("hidden");

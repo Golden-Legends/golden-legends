@@ -356,6 +356,25 @@
       game="levelJavelot"
     />
   </GameGate>
+  <GameGate
+    title="Tennis"
+    name="tennistp"
+    id="tennistp"
+    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  >
+    <GateButton
+      id="tennisBot"
+      name="Contre un bot"
+      difficulty="easy"
+      game="levelJavelot"
+    />
+    <GateButton
+      id="tennisDuel"
+      name="1v1"
+      difficulty="easy"
+      game="levelJavelot"
+    />
+  </GameGate>
   <Position
     id="position-1"
     position="1"
@@ -1138,6 +1157,92 @@
   >
     <ResultsContent :results="storeBoxe.state.results" />
   </Results>
+  <!-- TENNISGAME GUI -->
+  <GameHelpContainer
+    id="tennis-help"
+    title="Tennis"
+    class="hidden -top-3/4 left-1/2 transform -translate-x-1/2"
+  >
+    <button
+      id="close-help-tennis"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="COURIR" :keys="['w', 's']" />
+      <CommandContainer
+        id="tennis-help-2"
+        class="w-fit"
+        name="COURIR"
+        :keys="['haut', 'bas']"
+      />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Vous devez renvoyez un maximum de balle ! Si vous êtes en multijoueur vous aurez 3 rounds pour vous départager.',
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4"></div>
+  </GameHelpContainer>
+  <RDSText
+    text="3"
+    name="tennis-text-1"
+    id="tennis-text-1"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="2"
+    name="tennis-text-2"
+    id="tennis-text-2"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <RDSText
+    text="1"
+    name="tennis-text-3"
+    id="tennis-text-3"
+    class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  />
+  <ClassicButton
+    text="Prêt"
+    name="tennis-ready-button"
+    id="tennis-ready-button"
+    class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
+  />
+  <Score
+    name="tennis-score"
+    id="tennis-score"
+    class="hidden absolute bottom-12 right-12"
+    :score="storeTennis.state.score"
+  />
+  <KeyPressInteraction
+    :keys="['ArrowUp', 'ArrowDown']"
+    name="tennis-keyPressed"
+    id="tennis-keyPressed"
+    class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <KeyPressInteraction
+    :keys="['w', 's']"
+    name="tennis-keyPressed0"
+    id="tennis-keyPressed0"
+    class="hidden absolute left-1/2 bottom-56 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <KeyPressInteraction
+    :keys="['ArrowUp', 'ArrowDown']"
+    name="tennis-keyPressed1"
+    id="tennis-keyPressed1"
+    class="hidden absolute left-1/2 bottom-40 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+  />
+  <Results
+    title="tennis"
+    name="tennis-results"
+    id="tennis-results"
+    class="hidden -mt-40 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  >
+    <ResultsContent :results="storeTennis.state.results" />
+  </Results>
 </template>
 
 <script setup lang="ts">
@@ -1173,6 +1278,7 @@ import { storePlongeon } from "@/components/gui/storePlongeon.ts";
 import { storeTirArc } from "@/components/gui/storeTirArc.ts";
 import { storeSound } from "@/components/gui/storeSound.ts";
 import { storeBoxe } from "@/components/gui/storeBoxe.ts";
+import { storeTennis } from "@/components/gui/storeTennis.ts";
 
 import Options from "./gui/options/Options.vue";
 import OnboardingContainer from "@/components/gui/onboarding/OnboardingContainer.vue";
