@@ -211,7 +211,7 @@ export class TennisGameState extends GameState{
 	private createFinaleScoreBoard(score:  number ): void {
     this.results = [];
     handleNewRecord("tennis", Number(score), this.playerName);
-
+	console.log("show score board")
 	this.results.push({
 		place: 1,
 		name: this.playerName,

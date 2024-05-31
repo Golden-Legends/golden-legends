@@ -1224,7 +1224,7 @@
     class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <KeyPressInteraction
-    :keys="['s', 'd']"
+    :keys="['w', 's']"
     name="tennis-keyPressed0"
     id="tennis-keyPressed0"
     class="hidden absolute left-1/2 bottom-56 transform -translate-x-1/2 -translate-y-1/2 w-fit"

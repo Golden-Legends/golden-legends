@@ -24,6 +24,8 @@ export class TennisGameGui {
 
     public initFirstGuiMulti(): void {
         console.log('initFirstGuiMulti');
+        this.score();
+        this.keyPressedGuiMulti();
     }
 
     public initListeners(): void {
@@ -84,6 +86,19 @@ export class TennisGameGui {
             document.getElementById("tennis-keyPressed")!.classList.remove("hidden");
         } else {
             document.getElementById("tennis-keyPressed")!.classList.add("hidden");
+        }
+        this.keyPressedComponent = !this.keyPressedComponent;
+    }
+
+    private keyPressedGuiMulti () {
+        if (!this.keyPressedComponent) {
+            document.getElementById("tennis-keyPressed0")!.classList.remove("hidden");
+            document.getElementById("tennis-keyPressed1")!.classList.remove("hidden");
+
+        } else {
+            document.getElementById("tennis-keyPressed0")!.classList.add("hidden");
+            document.getElementById("tennis-keyPressed1")!.classList.add("hidden");
+
         }
         this.keyPressedComponent = !this.keyPressedComponent;
     }
