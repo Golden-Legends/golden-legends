@@ -202,11 +202,11 @@ export const handleNewRecord = async <T extends Collection>(
     }
   } else if (isScoreBasedCollection(collectionName)) {
     const worstCurrentRecord = results.reduce((min, record) =>
-      (min as Archery | Boxing | Diving | Javelin).score <
-      (record as Archery | Boxing | Diving | Javelin).score
+      (min as Archery | Boxing | Diving | Javelin | Tennis).score <
+      (record as Archery | Boxing | Diving | Javelin | Tennis).score
         ? min
         : record,
-    ) as Archery | Boxing | Diving | Javelin;
+    ) as Archery | Boxing | Diving | Javelin | Tennis;
 
     if (newRecord > worstCurrentRecord.score) {
       await removeWorstRecord(collectionName, worstCurrentRecord.id);
