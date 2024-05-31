@@ -12,14 +12,14 @@ const props = defineProps({
 const pressedKeys = ref<string[]>([]);
 
 const keyPressed = (event: KeyboardEvent) => {
-  const key = event.key.toLowerCase();
+  const key = event.key;
   if (!pressedKeys.value.includes(key)) {
     pressedKeys.value.push(key);
   }
 };
 
 const keyReleased = (event: KeyboardEvent) => {
-  const key = event.key.toLowerCase();
+  const key = event.key;
   const index = pressedKeys.value.indexOf(key);
   if (index !== -1) {
     pressedKeys.value.splice(index, 1);
@@ -49,9 +49,13 @@ onUnmounted(() => {
 
 <template>
   <div class="relative flex gap-4">
-    <CustomKBD :class="{
+    <CustomKBD
+      :class="{
         'opacity-100': pressedKeys.includes(key),
         'opacity-30': !pressedKeys.includes(key),
-      }" v-for="key in props.keys" :keybind="key" />
+      }"
+      v-for="key in props.keys"
+      :keybind="key"
+    />
   </div>
 </template>
