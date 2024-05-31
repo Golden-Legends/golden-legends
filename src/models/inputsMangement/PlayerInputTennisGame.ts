@@ -6,7 +6,7 @@ export class PlayerInputTennisGame extends InputManager {
         KEY_LEFT: "ArrowDown",
         KEY_RIGHT: "ArrowUp",
         KEY_LEFTJ2: "KeyS",
-        KEY_RIGHTJ2: "KeyW",
+        KEY_RIGHTJ2: "KeyX",
     };
 
     public left : boolean = false;
@@ -17,10 +17,10 @@ export class PlayerInputTennisGame extends InputManager {
     constructor(scene, inverse = false) {
         super(scene);
         this.inverse = inverse;
-        this.keys.KEY_LEFT = this.inverse ? "KeyS" : "ArrowDown";
-        this.keys.KEY_RIGHT = this.inverse ? "KeyW" : "ArrowUp";
-        this.keys.KEY_LEFTJ2 = this.inverse ? "ArrowDown" : "KeyS";
-        this.keys.KEY_RIGHTJ2 = this.inverse ? "ArrowUp" : "KeyW";
+        this.keys.KEY_LEFT = this.inverse ? "KeyX" : "ArrowDown";
+        this.keys.KEY_RIGHT = this.inverse ? "KeyS" : "ArrowUp";
+        this.keys.KEY_LEFTJ2 = this.inverse ? "ArrowDown" : "KeyX";
+        this.keys.KEY_RIGHTJ2 = this.inverse ? "ArrowUp" : "KeyS";
         this.setupBeforeRenderObservable(this.updateFromKeyboard);
     }
 
