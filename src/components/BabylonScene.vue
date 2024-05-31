@@ -1266,6 +1266,14 @@
   >
     <ResultsContent :results="storeTennis.state.results" />
   </Results>
+  <div
+    id="loading-container"
+    class="hidden fixed top-0 left-0 w-screen h-screen bg-white z-0"
+  >
+    <Loading
+      class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -1315,6 +1323,7 @@ import JavelinAngle from "@/components/gui/javelin/JavelinAngle.vue";
 import BoxingContainer from "@/components/gui/boxing/BoxingContainer.vue";
 import DiveCommands from "@/components/gui/dive/DiveCommands.vue";
 import ScoreboardContainer from "@/components/gui/scoreboard/ScoreboardContainer.vue";
+import Loading from "@/components/gui/Loading.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
