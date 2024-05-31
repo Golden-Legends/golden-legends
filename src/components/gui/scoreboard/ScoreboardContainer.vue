@@ -70,9 +70,7 @@ const currentIndex = ref(0);
 // Fetch results for the current game when the index changes
 watchEffect(async () => {
   const currentGame = games[currentIndex.value];
-  if (!results.value[currentGame]) {
-    results.value[currentGame] = await fetchResults(currentGame);
-  }
+  results.value[currentGame] = await fetchResults(currentGame);
 });
 
 // Computed properties

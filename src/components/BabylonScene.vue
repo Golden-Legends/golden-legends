@@ -1014,7 +1014,7 @@
     :keys="['s', 'd']"
     name="F"
     id="javelotGame-keyPressed"
-    class="hidden absolute left-1/2 -top-1/3 mt-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/2 -top-1/3 mt-4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <RDSText
     text="Lancez !"
