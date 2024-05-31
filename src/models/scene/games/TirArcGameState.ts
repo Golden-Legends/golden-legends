@@ -110,7 +110,7 @@ export class TirArcGameState extends GameState {
   private createLight() {
     const light = new HemisphericLight(
       "light",
-      new Vector3(0, 2, 0),
+      new Vector3(0, 2, 1),
       this.scene,
     );
     light.intensity = 0.7;
