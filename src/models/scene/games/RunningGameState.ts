@@ -179,7 +179,7 @@ export class RunningGameState extends GameState {
       });
       document
         .getElementById("runningGame-command-container")!
-        .classList.remove("hidden")
+        .classList.remove("hidden");
       if (this.isMultiplayer) {
         document
           .getElementById("runningGame-command-container-2")!
@@ -344,7 +344,7 @@ export class RunningGameState extends GameState {
   }
 
   async exit(): Promise<void> {
-    console.log("exit running game");
+    ("exit running game");
 
     document.getElementById("runningGame-timer")!.classList.add("hidden");
     document.getElementById("runningGame-keyPressed")!.classList.add("hidden");
@@ -405,7 +405,7 @@ export class RunningGameState extends GameState {
       }
     }
     if (bestScore !== 100000) {
-      console.log(bestScore);
+      bestScore;
       await handleNewRecord("running", Number(bestScore), this.playerName);
     }
   }
@@ -490,7 +490,7 @@ export class RunningGameState extends GameState {
         document.getElementById("position-6")!.classList.remove("hidden");
         break;
       default:
-        console.log("Position non trouvée");
+        "Position non trouvée";
         break;
     }
   }
@@ -516,7 +516,7 @@ export class RunningGameState extends GameState {
         document.getElementById("position-6")!.classList.add("hidden");
         break;
       default:
-        console.log("Position non trouvée");
+        "Position non trouvée";
         break;
     }
   }
@@ -602,7 +602,7 @@ export class RunningGameState extends GameState {
         this.scoreboardIsShow = true;
         this.removeHandlePointerLock();
         this.showScoreBoard();
-        console.log("Game over: All players have finished.");
+        ("Game over: All players have finished.");
         return;
       }
 
@@ -687,7 +687,7 @@ export class RunningGameState extends GameState {
     // affiche le temps dans la console
     if (elapsedTime > this.limitTime) {
       this.endGame = true;
-      console.log("Game over: Time limit reached.");
+      ("Game over: Time limit reached.");
       if (!this.scoreboardIsShow) {
         this.showScoreBoard();
       }

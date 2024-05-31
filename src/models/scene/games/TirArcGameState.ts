@@ -123,7 +123,7 @@ export class TirArcGameState extends GameState {
     const placement = this.settings.level[this.difficulty].placement;
     placement.forEach((line) => {
       const startMesh = this.scene.getMeshByName(line.start) as Mesh;
-      // console.log(startMesh.getAbsolutePosition());
+      // (startMesh.getAbsolutePosition());
       const firstEndMesh = this.scene.getMeshByName(line.end) as Mesh;
       startMesh.isVisible = false;
       firstEndMesh.isVisible = false;
@@ -264,7 +264,7 @@ export class TirArcGameState extends GameState {
     if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
     let countdownIndex = 0;
     let previousElement = "";
-    // console.log(this._camera.position, this._camera.rotation);
+    // (this._camera.position, this._camera.rotation);
 
     const countdownInterval = setInterval(() => {
       const countdownElement = countdownElements[countdownIndex];
@@ -296,7 +296,7 @@ export class TirArcGameState extends GameState {
       "arc",
       new Vector3(0, 0, 0),
     );
-    // console.log(this.env.animArc);
+    // (this.env.animArc);
   }
 
   AfterCamAnim(): void {
@@ -359,7 +359,7 @@ export class TirArcGameState extends GameState {
   }
 
   async exit(): Promise<void> {
-    console.log("exit tir arc game");
+    ("exit tir arc game");
     storeBoxe.commit("setPlayable", false);
 
     document.getElementById("tirArcGame-score")!.classList.add("hidden");
@@ -392,7 +392,7 @@ export class TirArcGameState extends GameState {
           .getElementById("tirArcGame-verticalgui")!
           .classList.remove("hidden");
         this.guiGame = true;
-        console.log("afficher gui game");
+        ("afficher gui game");
         this.playActive = true;
         // this.player.setAfficherGui();
         storeTirArc.commit("setGameActive", true);
@@ -402,7 +402,7 @@ export class TirArcGameState extends GameState {
     if (!this.playActive) {
       if (this.player._isWin && !this.scoreboardIsShow) {
         this.showScoreBoard();
-        // console.log("scoreboard");
+        // ("scoreboard");
       }
     } else {
       if (this.player.compteur < 2) {
@@ -451,7 +451,7 @@ export class TirArcGameState extends GameState {
         //player en anim isWin à la fin de la flèche
         // setTimeout(() => this.player.runWin(), 4000);
       } else if (this.player._isWin && this.animationFleche) {
-        // console.log("win");
+        // ("win");
         this.score =
           this.tableauScore[Math.abs(this.player.verticalDirection)] *
           this.tableauScore[Math.abs(this.player.horizontalDirection)];
@@ -459,7 +459,7 @@ export class TirArcGameState extends GameState {
         this.score *= this.settings.level[this.difficulty].multiplier;
         storeTirArc.commit("setScore", this.score);
         this.endGame();
-        // console.log(this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]);
+        // (this.tableauScore[Math.abs(this.player.verticalDirection)] * this.tableauScore[Math.abs(this.player.horizontalDirection)]);
       }
     }
   }
@@ -472,7 +472,7 @@ export class TirArcGameState extends GameState {
   }
 
   public async animateFleche() {
-    // console.log("animate fleche");
+    // ("animate fleche");
     // this.env.flecheAssets.position = new Vector3(-0.31, 0.4, 3.85)
     //TODO faire une anim de caméra
     // this._camera.position.z = 0;
@@ -482,10 +482,10 @@ export class TirArcGameState extends GameState {
     let booleanPos3 = false;
     const verticalDirection = this.player.verticalDirection;
     const horizontalDirection = this.player.horizontalDirection;
-    console.log(verticalDirection, horizontalDirection);
+    verticalDirection, horizontalDirection;
     // this.env.flecheAssets.mesh.position.y = 0.362621;
-    // console.log(this.env.flecheAssets.mesh.position.y);
-    // console.log(this.env.flecheAssets.mesh.position.x);
+    // (this.env.flecheAssets.mesh.position.y);
+    // (this.env.flecheAssets.mesh.position.x);
 
     let booleanVertical1 = false;
     let booleanVertical2 = false;
@@ -501,7 +501,7 @@ export class TirArcGameState extends GameState {
       booleanPos3 === false
     ) {
       //z
-      // console.log(booleanPos1, booleanPos2, booleanPos3);
+      // (booleanPos1, booleanPos2, booleanPos3);
       if (booleanPos3 === false) {
         if (this.env.flecheAssets.mesh.position.z > -1.13807) {
           this.env.flecheAssets.mesh.position.z -= 0.07;
@@ -547,7 +547,7 @@ export class TirArcGameState extends GameState {
           booleanPos1 = true;
         } else if (verticalDirection === 0) {
           if (this.env.flecheAssets.mesh.position.y < 0.361) {
-            // console.log("vertical 0");
+            // ("vertical 0");
             this.env.flecheAssets.mesh.position.y += 0.007;
             await new Promise((resolve) => setTimeout(resolve, timeExec));
           } else {
@@ -605,7 +605,7 @@ export class TirArcGameState extends GameState {
           booleanPos2 = true;
         } else if (horizontalDirection === 0) {
           if (this.env.flecheAssets.mesh.position.x > -0.36) {
-            // console.log("horizontal 0");
+            // ("horizontal 0");
             this.env.flecheAssets.mesh.position.x -= 0.007;
             await new Promise((resolve) => setTimeout(resolve, timeExec));
           } else {
@@ -627,8 +627,8 @@ export class TirArcGameState extends GameState {
         }
       }
     }
-    // console.log(booleanPos1, booleanPos2, booleanPos3);
-    console.log("fin anim fleche");
+    // (booleanPos1, booleanPos2, booleanPos3);
+    ("fin anim fleche");
     this.player._isWin = true;
     // }
     // this.env.flecheAssets.mesh.position.x = -0.367833;

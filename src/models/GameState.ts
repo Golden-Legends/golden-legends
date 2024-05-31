@@ -6,14 +6,18 @@ export abstract class GameState {
   protected game: Game;
   protected scene: Scene;
   protected canvas: HTMLCanvasElement;
-  protected _player : Player | null ; 
-	protected _environment : Environment | null;
+  protected _player: Player | null;
+  protected _environment: Environment | null;
 
-  // pointer 
-	public alreadylocked: boolean;
+  // pointer
+  public alreadylocked: boolean;
   private boundOnPointerLockChange: () => void;
-  private eventListeners: { element: HTMLElement; event: string; handler: EventListenerOrEventListenerObject }[] = [];
-  
+  private eventListeners: {
+    element: HTMLElement;
+    event: string;
+    handler: EventListenerOrEventListenerObject;
+  }[] = [];
+
   constructor(game: Game, canvas: HTMLCanvasElement) {
     this.game = game;
     this.canvas = canvas;
@@ -27,7 +31,7 @@ export abstract class GameState {
   abstract enter(): Promise<void>;
   abstract exit(): Promise<void>;
   abstract update(): void;
-  abstract setEnvironment() : void;
+  abstract setEnvironment(): void;
 
   // Méthode pour nettoyer la scène
   protected clearScene(): void {
@@ -46,14 +50,14 @@ export abstract class GameState {
     this.clearScene();
     this.disposePointerLock();
     this.cleanupEventListeners();
-    console.log("Cleaned up the game state.");
+    ("Cleaned up the game state.");
   }
 
-  runRender () {
-   this.scene.render();
+  runRender() {
+    this.scene.render();
   }
 
-  runRenderLoop () {
+  runRenderLoop() {
     this.game.engine.runRenderLoop(() => {
       if (this) {
         this.scene.render();
@@ -68,8 +72,8 @@ export abstract class GameState {
         this.update();
       }
     });
-  } 
-  
+  }
+
   // Initialiser la gestion du pointer lock
   initializePointerLock(): void {
     this.scene.onPointerDown = () => {
@@ -80,12 +84,18 @@ export abstract class GameState {
     };
     // Conserver la référence à la fonction liée
     this.boundOnPointerLockChange = this.onPointerLockChange.bind(this);
-    document.addEventListener("pointerlockchange", this.boundOnPointerLockChange);
+    document.addEventListener(
+      "pointerlockchange",
+      this.boundOnPointerLockChange,
+    );
   }
 
   // Nettoyer la gestion du pointer lock
   disposePointerLock(): void {
-    document.removeEventListener("pointerlockchange", this.boundOnPointerLockChange);
+    document.removeEventListener(
+      "pointerlockchange",
+      this.boundOnPointerLockChange,
+    );
     this.scene.onPointerDown = undefined;
   }
 
@@ -106,7 +116,11 @@ export abstract class GameState {
     this.game.canvas.focus();
   }
 
-  addEventListenerById(elementId: string, event: string, handler: EventListenerOrEventListenerObject): void {
+  addEventListenerById(
+    elementId: string,
+    event: string,
+    handler: EventListenerOrEventListenerObject,
+  ): void {
     const element = document.getElementById(elementId);
     if (element) {
       element.addEventListener(event, handler);
@@ -114,8 +128,12 @@ export abstract class GameState {
     }
   }
 
-  addEventListenerByQuerySelector(elementId: string, event: string, handler: EventListenerOrEventListenerObject): void {
-    const element = document.querySelector(elementId) as HTMLElement;;
+  addEventListenerByQuerySelector(
+    elementId: string,
+    event: string,
+    handler: EventListenerOrEventListenerObject,
+  ): void {
+    const element = document.querySelector(elementId) as HTMLElement;
     if (element) {
       element.addEventListener(event, handler);
       this.eventListeners.push({ element, event, handler });
@@ -129,13 +147,11 @@ export abstract class GameState {
     this.eventListeners = [];
   }
 
-  public getGame() : Game {
+  public getGame(): Game {
     return this.game;
   }
 
-  public getCanvas() : HTMLCanvasElement {
+  public getCanvas(): HTMLCanvasElement {
     return this.canvas;
   }
-  
-
 }

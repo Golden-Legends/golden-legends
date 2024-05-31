@@ -146,41 +146,57 @@ export class runningGameEnv {
     return Array.from(nums);
   }
 
-  private loadInstance(fileNameId: number, i : number, position : Vector3, rotation : Vector3) {
-		// position, i, "public" + i, rotation
-		const child = InstanceManager.duplicateParentMesh(this.parentMesh, `publicBoxe${i}`);
-		const res = InstanceManager.duplicateInstance(this.assetContainerTab[fileNameId], position, rotation, child, 0.09);
-		const idle = res.animationGroups.find(ag => ag.name.includes("idle"));
-		const applause = res.animationGroups.find(ag => ag.name.includes("applause"));
+  private loadInstance(
+    fileNameId: number,
+    i: number,
+    position: Vector3,
+    rotation: Vector3,
+  ) {
+    // position, i, "public" + i, rotation
+    const child = InstanceManager.duplicateParentMesh(
+      this.parentMesh,
+      `publicBoxe${i}`,
+    );
+    const res = InstanceManager.duplicateInstance(
+      this.assetContainerTab[fileNameId],
+      position,
+      rotation,
+      child,
+      0.09,
+    );
+    const idle = res.animationGroups.find((ag) => ag.name.includes("idle"));
+    const applause = res.animationGroups.find((ag) =>
+      ag.name.includes("applause"),
+    );
 
-		let randomNumber = Math.floor(Math.random() * 2) + 1;
-		if(randomNumber == 1){
-			if(applause){
-				idle?.stop();
-				applause.play(true);
-			}
-		} else {
-			if(idle){
-				idle.stop();
-				idle.play(true);
-			}
-		}
-		setTimeout(() => {
-			if(randomNumber == 1){
-				if(applause){
-					idle?.stop();
-					applause.stop();
-					applause.play(true);
-				}
-			} else {
-				if(idle){
-					idle.stop();
-					applause?.stop();
-					idle.play(true);
-				}
-			}
-		}, randomNumber);
-	}
+    let randomNumber = Math.floor(Math.random() * 2) + 1;
+    if (randomNumber == 1) {
+      if (applause) {
+        idle?.stop();
+        applause.play(true);
+      }
+    } else {
+      if (idle) {
+        idle.stop();
+        idle.play(true);
+      }
+    }
+    setTimeout(() => {
+      if (randomNumber == 1) {
+        if (applause) {
+          idle?.stop();
+          applause.stop();
+          applause.play(true);
+        }
+      } else {
+        if (idle) {
+          idle.stop();
+          applause?.stop();
+          idle.play(true);
+        }
+      }
+    }, randomNumber);
+  }
 
   public loadPublicLateral() {
     for (let i = 0; i <= 1; i++) {
@@ -205,7 +221,7 @@ export class runningGameEnv {
             pos.position.y,
             pos.position.z,
           );
-          // console.log(position);
+          // (position);
           // await this._loadCharacterAssets(this._scene, position, this.filename[randomNumber1], "public" + i + randomNumber1, new Vector3(0, 160, 0));
           this.loadInstance(randomNumber1, i, position, new Vector3(0, 160, 0));
         }
@@ -216,7 +232,7 @@ export class runningGameEnv {
             pos2.position.y,
             pos2.position.z,
           );
-          // console.log(position);
+          // (position);
           // await this._loadCharacterAssets(this._scene, position, this.filename[randomNumber2], "public" + i + randomNumber1, new Vector3(0, 160, 0));
           this.loadInstance(randomNumber2, i, position, new Vector3(0, 160, 0));
         }
@@ -227,7 +243,7 @@ export class runningGameEnv {
             pos3.position.y,
             pos3.position.z,
           );
-          // console.log(position);
+          // (position);
           // await this._loadCharacterAssets(this._scene, position, this.filename[randomNumber3], "public" + i + randomNumber1, new Vector3(0, 160, 0));
           this.loadInstance(randomNumber3, i, position, new Vector3(0, 160, 0));
         }
@@ -239,7 +255,7 @@ export class runningGameEnv {
             posd.position.y,
             posd.position.z,
           );
-          // console.log(position);
+          // (position);
           this.loadInstance(randomNumber1, i, position, new Vector3(0, 0, 0));
           // await this._loadCharacterAssets(this._scene, position, this.filename[randomNumber1], "public" + i + randomNumber1, new Vector3(0, 0, 0));
         }
@@ -250,7 +266,7 @@ export class runningGameEnv {
             posd2.position.y,
             posd2.position.z,
           );
-          // console.log(position);
+          // (position);
           this.loadInstance(randomNumber2, i, position, new Vector3(0, 0, 0));
           // await this._loadCharacterAssets(this._scene, position, this.filename[randomNumber2], "public" + i + randomNumber1, new Vector3(0, 0, 0));
         }
@@ -261,7 +277,7 @@ export class runningGameEnv {
             posd3.position.y,
             posd3.position.z,
           );
-          // console.log(position);
+          // (position);
           this.loadInstance(randomNumber3, i, position, new Vector3(0, 0, 0));
           // await this._loadCharacterAssets(this._scene, position, this.filename[randomNumber3], "public" + i + randomNumber1, new Vector3(0, 0, 0));
         }

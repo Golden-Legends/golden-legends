@@ -50,7 +50,7 @@ export class JumpGame {
       localStorage.setItem("jeuSaut", "false");
     }
     //invisible platform
-    // console.log(this.player.position);
+    // (this.player.position);
     this.invisiblePlatform(1, this.TOTAL_PLATFORMS);
 
     //apparition message pour afficher les plateformes
@@ -120,7 +120,7 @@ export class JumpGame {
 
     // Continuer à afficher les plateformes progressivement
     this.player.onCollide = (collidedMesh?: AbstractMesh) => {
-      // console.log("collidedMesh", collidedMesh);
+      // ("collidedMesh", collidedMesh);
       if (
         collidedMesh &&
         collidedMesh.name.startsWith("platform") &&
@@ -129,7 +129,7 @@ export class JumpGame {
         // Plateforme visible et collision détectée
         this.platformsAlreadyJump.push(collidedMesh.name);
         this.platformsJumped++; // Incrémenter le compteur de plateformes sautées
-        console.log("Plateforme sautée: ", this.platformsJumped);
+        "Plateforme sautée: ", this.platformsJumped;
 
         // Vérifier si toutes les plateformes ont été sautées
         if (this.platformsJumped === this.TOTAL_PLATFORMS) {
@@ -155,7 +155,7 @@ export class JumpGame {
       if (collidedMesh && collidedMesh.name === "fondBassin") {
         // Afficher un message de défaite et réinitialiser le jeu
         this.showDefeatMessage();
-        console.log("endgame");
+        ("endgame");
         this.resetGame();
         this.invisiblePlatform(1, this.TOTAL_PLATFORMS);
         this.gameRunning = false;
@@ -303,7 +303,7 @@ export class JumpGame {
             if (this.progress !== 100) {
               this.isPlayerInsideTrigger = true;
 
-              // console.log("Player is inside the trigger");
+              // ("Player is inside the trigger");
             }
           },
         ),
