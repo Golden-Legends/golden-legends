@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative w-[600px] h-[650px] bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient border-4 border-black rounded-lg mt-4"
+    class="relative w-[800px] h-[650px] bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient border-4 border-black rounded-lg mt-4"
   >
     <button
       id="close-records"
@@ -60,6 +60,7 @@ const games: Collection[] = [
   "diving",
   "archery",
   "javelin",
+  "tennis",
   "jump",
 ];
 const results = ref<{ [key: string]: any[] }>({});

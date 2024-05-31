@@ -68,7 +68,7 @@ const result = computed(() => results.value[props.title as Collection]);
       </div>
     </div>
     <div
-      class="relative border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white p-4 rounded-lg h-fit w-[400px] ml-4 -mt-48"
+      class="relative border-4 border-black bg-gradient-to-b from-begin-blue-gradient to-end-blue-gradient text-white p-4 rounded-lg h-fit w-[500px] ml-4 -mt-48"
     >
       <button
         class="absolute top-3.5 right-4 w-10 h-10 bg-blue-darker rounded-lg hover:bg-blue-darker/80 transition-all"
