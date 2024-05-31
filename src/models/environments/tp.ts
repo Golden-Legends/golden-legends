@@ -132,7 +132,7 @@ import { GameState } from "../GameState";
                   break;
                 default:
                   document.getElementById("tpGame-dialog")!.classList.add("hidden");
-                  console.log("no tp");
+                  // console.log("no tp");
                   break;
               }
             },

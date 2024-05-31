@@ -162,20 +162,20 @@ export class PlayerTirArcGame {
         if(this.compteur === 0){
             if (this._input.figureh) {
                 // this.horizontalDirection = Math.floor(Math.random() * 19) - 9;
-                console.log(storeTirArc.state.positionH);
+                // console.log(storeTirArc.state.positionH);
                 this.horizontalDirection = this.mapValueToDiscreteRange(storeTirArc.state.positionH);
                 this.compteur ++;
-                console.log(this.horizontalDirection);
+                // console.log(this.horizontalDirection);
             }
         }
         else if(this.compteur === 1){
             if (this._input.figurev) {
                 // this.verticalDirection = Math.floor(Math.random() * 19) - 9;
-                console.log(storeTirArc.state.positionV);
+                // console.log(storeTirArc.state.positionV);
                 this.verticalDirection = -this.mapValueToDiscreteRange(storeTirArc.state.positionV);
                 this.compteur ++;
                 this.isEndGame = true;
-                console.log(this.verticalDirection);
+                // console.log(this.verticalDirection);
                 this.runTir();
             }
         }

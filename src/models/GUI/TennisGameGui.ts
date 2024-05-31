@@ -19,13 +19,13 @@ export class TennisGameGui {
     }
 
     public initFirstGuiSolo(): void {
-        console.log('initFirstGui');
+        // console.log('initFirstGui');
         this.score();
         this.keyPressedGui();
     }
 
     public initFirstGuiMulti(): void {
-        console.log('initFirstGuiMulti');
+        // console.log('initFirstGuiMulti');
         this.score();
         this.keyPressedGuiMulti();
     }

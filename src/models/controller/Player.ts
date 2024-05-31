@@ -376,7 +376,7 @@ export class Player extends TransformNode {
     if (!isGrounded) {
       //if the body isnt grounded, check if it's on a slope and was either falling or walking onto it
       if (this._checkSlope() && this._gravity.y <= 0) {
-        console.log("slope");
+        // console.log("slope");
         //if you are considered on a slope, you're able to jump and gravity wont affect you
         this._gravity.y = 0;
         this._jumpCount = 1;

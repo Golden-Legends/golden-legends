@@ -57,7 +57,7 @@ export class InGameState extends GameState {
   async enter() {
     const test = new CustomLoadingScreen("Chargement en cours...");
     this.game.setLoadingScreen(test);
-    console.log(this.game.engine.loadingScreen)
+    // console.log(this.game.engine.loadingScreen)
     this.game.engine.displayLoadingUI();
     this.scene.detachControl();
     // Request to server to tell that the user is in game
@@ -123,7 +123,7 @@ export class InGameState extends GameState {
   }
 
   public animStartGame() {
-    console.log("animStartGame");
+    // console.log("animStartGame");
     //camera 1
     // const camera = new FollowCamera("carteCamera", new Vector3(-145, 80, -260), this.scene);
     // camera.rotation = new Vector3(Math.PI/6, 0, 0);
@@ -233,7 +233,7 @@ export class InGameState extends GameState {
     // Nettoyer la scène lors de la sortie de cet état
     document.getElementById("map-keybind")!.classList.add("hidden");
     document.getElementById("options-keybind")!.classList.add("hidden");
-    console.log("exit in game state");
+    // console.log("exit in game state");
     this.cleanup();
   }
 

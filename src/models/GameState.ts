@@ -46,7 +46,7 @@ export abstract class GameState {
     this.clearScene();
     this.disposePointerLock();
     this.cleanupEventListeners();
-    console.log("Cleaned up the game state.");
+    // console.log("Cleaned up the game state.");
   }
 
   runRender () {

@@ -262,7 +262,7 @@ export class PlongeonGameState extends GameState {
   }
 
   async exit(): Promise<void> {
-    console.log("exit plongeon game");
+    // console.log("exit plongeon game");
 
     document.getElementById("plongeonGame-score")!.classList.add("hidden");
     document.getElementById("plongeonGame-keyPressed")!.classList.add("hidden");
@@ -329,7 +329,7 @@ export class PlongeonGameState extends GameState {
           this.showScoreBoard();
         }, 2000);
       }
-      console.log("FIN DE JEU");
+      // console.log("FIN DE JEU");
       return;
     } else if (!this.player._isWin) {
       const deltaTime = this.scene.getEngine().getDeltaTime();

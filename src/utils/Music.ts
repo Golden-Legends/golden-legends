@@ -46,12 +46,12 @@ export class Music extends Howl {
   public couperSon(): void {
     this.volumeCourant = super.volume();
     super.volume(0);
-    console.log("couper son");
+    // console.log("couper son");
   }
 
   public remettreSon(): void {
     super.volume(this.volumeCourant);
-    console.log("remettre son");
+    // console.log("remettre son");
   }
 
   public modifVolume(volume: number): void {

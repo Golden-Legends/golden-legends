@@ -13,7 +13,7 @@ export class SoundManager {
 
   private soundButtonListener(): void {
     document.getElementById("sound-button")?.addEventListener("click", () => {
-      console.log("click");
+      // console.log("click");
       if (this.etatMusic) {
         this.pauseTrack(this.currentMusic);
         this.etatMusic = false;
