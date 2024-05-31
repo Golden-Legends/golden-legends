@@ -23,7 +23,7 @@ export class TennisGameState extends GameState{
 	_paddle1!: Paddle;
     _paddle2!: Paddle;
 	// DEPLACEMENT		
-	private guiComponent: TennisGameGui = new TennisGameGui(this);
+	private guiComponent: TennisGameGui | undefined;
 	private countdownInProgress: boolean = false;
 	private isResultShown = false;
 
@@ -34,6 +34,7 @@ export class TennisGameState extends GameState{
 		) {
 		super(game, canvas);
 		this.isMultiplayer = multi ? multi : false;
+		this.guiComponent = new TennisGameGui(this, this.isMultiplayer);
 		this._camera = this.createCamera();
 		this.input = new PlayerInputTennisGame(this.scene, this.isMultiplayer);
 		this.environment = new TennisGameEnv(this.scene);
@@ -64,8 +65,8 @@ export class TennisGameState extends GameState{
 			}
 
 			// add GUI
-			this.guiComponent.initListeners();
-			this.guiComponent.helperComponent();
+			this.guiComponent!.initListeners();
+			this.guiComponent!.helperComponent();
 
 			//add paddles to the scene
 			if (this.isMultiplayer) {
@@ -90,10 +91,10 @@ export class TennisGameState extends GameState{
 			this.scene.attachControl();
 			this.game.engine.hideLoadingUI();
 
-			this.guiComponent.readyButton();
+			this.guiComponent!.readyButton();
 			this.addEventListenerById("tennis-ready-button", "click", () => {
-				this.guiComponent.readyButton();
-				this.guiComponent.helperComponent();
+				this.guiComponent!.readyButton();
+				this.guiComponent!.helperComponent();
 				this.addHandlePointerLock();
 				this.startCountdown([
 					"tennis-text-1",
@@ -125,14 +126,14 @@ export class TennisGameState extends GameState{
 			} else {
 				if (!this.isResultShown) {
 					this.isResultShown = true;
-					this.guiComponent.resultGui();
+					this.guiComponent!.resultGui();
 					this.removeHandlePointerLock();
 					if (this.isMultiplayer) {
-						this.guiComponent.initFirstGuiMulti();
+						this.guiComponent!.initFirstGuiMulti();
 						this.createFinaleScoreBoard(this.ball.getScore());
 						console.log("Show Result Multi : ", this.ball.getScoreMulti());
 					} else {
-						this.guiComponent.initFirstGuiSolo();
+						this.guiComponent!.initFirstGuiSolo();
 						this.createFinaleScoreBoard(this.ball.getScore());
 					}
 				}
@@ -171,9 +172,9 @@ export class TennisGameState extends GameState{
 		let countdownIndex = 0;
 		let previousElement = "";
 		if(this.isMultiplayer) {
-			this.guiComponent.initFirstGuiMulti();
+			this.guiComponent!.initFirstGuiMulti();
 		} else {
-			this.guiComponent.initFirstGuiSolo();
+			this.guiComponent!.initFirstGuiSolo();
 		}
 	
 		const countdownInterval = setInterval(() => {

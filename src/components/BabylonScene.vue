@@ -360,7 +360,7 @@
     title="Tennis"
     name="tennistp"
     id="tennistp"
-    class="hidden relative left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden relative mt-24 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="tennisBot"
@@ -1170,13 +1170,36 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer class="w-fit" name="COURIR" :keys="['w', 's']" />
+      <CommandContainer class="w-fit" name="J1" :keys="['ArrowUp', 'ArrowDown']" />
       <CommandContainer
         id="tennis-help-2"
         class="w-fit"
-        name="COURIR"
-        :keys="['haut', 'bas']"
+        name="J2"
+        :keys="['s', 'x']"
       />
+    </template>
+    <template #tips>
+      <Info
+        :content="[
+          'Vous devez renvoyez un maximum de balle ! Si vous êtes en multijoueur vous aurez 3 rounds pour vous départager.',
+        ]"
+      />
+    </template>
+    <div class="flex justify-center mt-4"></div>
+  </GameHelpContainer>
+  <GameHelpContainer
+    id="tennis-help-solo"
+    title="Tennis"
+    class="hidden -top-3/4 left-1/2 transform -translate-x-1/2"
+  >
+    <button
+      id="close-help-tennis-solo"
+      class="absolute -right-3 -top-3 w-10 h-10 border-2 rounded border-black bg-red-700 hover:bg-red-800 transition-all"
+    >
+      <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
+    </button>
+    <template #commands>
+      <CommandContainer class="w-fit" name="J1" :keys="['ArrowUp', 'ArrowDown']" />
     </template>
     <template #tips>
       <Info
@@ -1221,19 +1244,19 @@
     :keys="['ArrowUp', 'ArrowDown']"
     name="tennis-keyPressed"
     id="tennis-keyPressed"
-    class="hidden absolute left-1/2 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/3 bottom-20 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <KeyPressInteraction
-    :keys="['w', 's']"
+    :keys="['s', 'x']"
     name="tennis-keyPressed0"
     id="tennis-keyPressed0"
-    class="hidden absolute left-1/2 bottom-56 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-1/3 bottom-28 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <KeyPressInteraction
     :keys="['ArrowUp', 'ArrowDown']"
     name="tennis-keyPressed1"
     id="tennis-keyPressed1"
-    class="hidden absolute left-1/2 bottom-40 transform -translate-x-1/2 -translate-y-1/2 w-fit"
+    class="hidden absolute left-2/3 bottom-40 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <Results
     title="tennis"
@@ -1243,6 +1266,14 @@
   >
     <ResultsContent :results="storeTennis.state.results" />
   </Results>
+  <div
+    id="loading-container"
+    class="hidden fixed top-0 left-0 w-screen h-screen bg-white z-0"
+  >
+    <Loading
+      class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -1292,6 +1323,7 @@ import JavelinAngle from "@/components/gui/javelin/JavelinAngle.vue";
 import BoxingContainer from "@/components/gui/boxing/BoxingContainer.vue";
 import DiveCommands from "@/components/gui/dive/DiveCommands.vue";
 import ScoreboardContainer from "@/components/gui/scoreboard/ScoreboardContainer.vue";
+import Loading from "@/components/gui/Loading.vue";
 
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs

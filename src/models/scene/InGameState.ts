@@ -35,6 +35,7 @@ import { storeSound } from "@/components/gui/storeSound.ts";
 import { doc } from "prettier";
 import router from "@/router/routes.ts";
 import { TennisGameState } from "./games/TennisGameState.ts";
+import { CustomLoadingScreen } from "../loadingScreen/customLoadingScreen.ts";
 
 export class InGameState extends GameState {
   public assets;
@@ -54,6 +55,9 @@ export class InGameState extends GameState {
   }
 
   async enter() {
+    const test = new CustomLoadingScreen("Chargement en cours...");
+    this.game.setLoadingScreen(test);
+    console.log(this.game.engine.loadingScreen)
     this.game.engine.displayLoadingUI();
     this.scene.detachControl();
     // Request to server to tell that the user is in game

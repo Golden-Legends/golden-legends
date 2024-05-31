@@ -179,7 +179,12 @@ export class RunningGameState extends GameState {
       });
       document
         .getElementById("runningGame-command-container")!
-        .classList.remove("hidden");
+        .classList.remove("hidden")
+      if (this.isMultiplayer) {
+        document
+          .getElementById("runningGame-command-container-2")!
+          .classList.remove("hidden");
+      }
       this.addEventListenerById("runningGame-skip-button", "click", () => {
         document.getElementById("runningGame-help")!.classList.add("hidden");
         this.scene.stopAnimation(this._camera);
