@@ -27,7 +27,7 @@ export class Track {
 
   pause(): void {
     this._pausedAt = this.howl.seek();
-    // console.log(this.pausedAt);
+    // (this.pausedAt);
     this.howl.pause();
   }
 

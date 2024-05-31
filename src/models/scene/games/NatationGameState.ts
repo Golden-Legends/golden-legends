@@ -142,8 +142,8 @@ export class NatationGameState extends GameState {
 
       // this._camera.rotation = new Vector3(0, -Math.PI, 0);
       this._camera.setTarget(this.player.transform.position);
-      // console.log(this._camera.rotation);
-      // console.log(this._camera.position);
+      // (this._camera.rotation);
+      // (this._camera.position);
 
       document.getElementById("map-keybind")!.classList.add("hidden");
       document.getElementById("natationtp")!.classList.add("hidden");
@@ -198,7 +198,7 @@ export class NatationGameState extends GameState {
   }
   async exit(): Promise<void> {
     try {
-      console.log("exit natation game");
+      ("exit natation game");
 
       document.getElementById("natationGame-timer")!.classList.add("hidden");
       document
@@ -268,7 +268,7 @@ export class NatationGameState extends GameState {
     // affiche le temps dans la console
     if (elapsedTime > this.limitTime) {
       this.endGame = true;
-      console.log("Game over: Time limit reached.");
+      ("Game over: Time limit reached.");
       if (!this.scoreboardIsShow) {
         this.showScoreBoard();
       }
@@ -587,7 +587,7 @@ export class NatationGameState extends GameState {
     if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
     let countdownIndex = 0;
     let previousElement = "";
-    // console.log(this._camera.position, this._camera.rotation);
+    // (this._camera.position, this._camera.rotation);
 
     const countdownInterval = setInterval(() => {
       const countdownElement = countdownElements[countdownIndex];
@@ -713,7 +713,7 @@ export class NatationGameState extends GameState {
         document.getElementById("position-6")!.classList.remove("hidden");
         break;
       default:
-        console.log("Position non trouvée");
+        "Position non trouvée";
         break;
     }
   }
@@ -739,7 +739,7 @@ export class NatationGameState extends GameState {
         document.getElementById("position-6")!.classList.add("hidden");
         break;
       default:
-        console.log("Position non trouvée");
+        "Position non trouvée";
         break;
     }
   }

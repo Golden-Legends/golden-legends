@@ -273,7 +273,7 @@ export class BoxeGameState extends GameState {
     if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
     let countdownIndex = 0;
     let previousElement = "";
-    // console.log(this._camera.position, this._camera.rotation);
+    // (this._camera.position, this._camera.rotation);
 
     const countdownInterval = setInterval(() => {
       const countdownElement = countdownElements[countdownIndex];
@@ -391,7 +391,7 @@ export class BoxeGameState extends GameState {
   }
 
   update(): void {
-    // console.log("update");
+    // ("update");
     if (this.gameStart && !this.display) {
       this.display = true;
       document.getElementById("boxeGame-container")!.classList.remove("hidden");
@@ -449,11 +449,11 @@ export class BoxeGameState extends GameState {
       result: this.score,
     });
     storeBoxe.commit("setResults", this.results);
-    console.log(
+    (
       Number(this.score),
       this.settings.level[this.difficulty].pointToSucceed,
     );
-    console.log(
+    (
       Number(this.score) >= this.settings.level[this.difficulty].pointToSucceed,
     );
     if (

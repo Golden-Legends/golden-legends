@@ -132,7 +132,7 @@ export class JavelotGameState extends GameState {
     const placement = this.settings.level[this.difficulty].placement;
     placement.forEach((line) => {
       const startMesh = this.scene.getMeshByName(line.start) as Mesh;
-      // console.log(startMesh.getAbsolutePosition());
+      // (startMesh.getAbsolutePosition());
       const firstEndMesh = this.scene.getMeshByName(line.end) as Mesh;
       startMesh.isVisible = false;
       firstEndMesh.isVisible = false;
@@ -225,7 +225,9 @@ export class JavelotGameState extends GameState {
       document
         .getElementById("javelotGame-action-container")!
         .classList.remove("hidden");
-      document.getElementById("javelotGame-puissance-container")!.classList.remove("hidden");
+      document
+        .getElementById("javelotGame-puissance-container")!
+        .classList.remove("hidden");
       document
         .getElementById("javelotGame-skip-button")!
         .addEventListener("click", () => {
@@ -248,8 +250,12 @@ export class JavelotGameState extends GameState {
         document
           .getElementById("javelotGame-ready-button")!
           .addEventListener("click", () => {
-            document.getElementById("javelotGame-keyPressed")!.classList.remove("hidden");
-            document.getElementById("javelotgame-help")!.classList.add("hidden");
+            document
+              .getElementById("javelotGame-keyPressed")!
+              .classList.remove("hidden");
+            document
+              .getElementById("javelotgame-help")!
+              .classList.add("hidden");
             this.startCountdown([
               "javelotGame-text-1",
               "javelotGame-text-2",
@@ -273,7 +279,7 @@ export class JavelotGameState extends GameState {
     if (this.countdownInProgress) return; // Évite de démarrer le compte à rebours multiple fois
     let countdownIndex = 0;
     let previousElement = "";
-    // console.log(this._camera.position, this._camera.rotation);
+    // (this._camera.position, this._camera.rotation);
 
     const countdownInterval = setInterval(() => {
       const countdownElement = countdownElements[countdownIndex];
@@ -299,7 +305,7 @@ export class JavelotGameState extends GameState {
     }, 1000);
     // this.player.runPriseArc();
     // await this.env._loadGameAssets(this.scene, new Vector3(-0.38, 0.2, 4), "arc.glb", "arc", new Vector3(0, 0, 0));
-    // console.log(this.env.animArc);
+    // (this.env.animArc);
   }
 
   AfterCamAnim(): void {
@@ -364,13 +370,15 @@ export class JavelotGameState extends GameState {
   }
 
   async exit(): Promise<void> {
-    console.log("exit tir arc game");
+    ("exit tir arc game");
 
     document.getElementById("javelotGame-score")!.classList.add("hidden");
     document
       .getElementById("javelotGame-action-container")!
       .classList.add("hidden");
-    document.getElementById("javelotGame-puissance-container")!.classList.add("hidden");
+    document
+      .getElementById("javelotGame-puissance-container")!
+      .classList.add("hidden");
     document.getElementById("javelotGame-results")!.classList.add("hidden");
     document.getElementById("javelotGame-keyPressed")!.classList.add("hidden");
 
@@ -389,7 +397,7 @@ export class JavelotGameState extends GameState {
       if (this.player.isSpacedPressedForAnim && !this.guiGame) {
         //TODO ADD GUI
         this.guiGame = true;
-        console.log("afficher gui game");
+        ("afficher gui game");
         this.playActive = true;
         // this.player.setAfficherGui();
       }
@@ -397,10 +405,12 @@ export class JavelotGameState extends GameState {
 
     if (!this.playActive) {
       document.getElementById("javelotGame-angle")!.classList.add("hidden");
-      document.getElementById("javelotGame-text-speedbar")!.classList.add("hidden");
+      document
+        .getElementById("javelotGame-text-speedbar")!
+        .classList.add("hidden");
       if (this.player._isWin && !this.scoreboardIsShow) {
         this.showScoreBoard();
-        // console.log("scoreboard");
+        // ("scoreboard");
       }
     } else {
       if (this.player.compteur < 2) {
@@ -418,7 +428,7 @@ export class JavelotGameState extends GameState {
           }, 50);
         }, 1300);
       } else if (this.player._isWin && this.animationJavelot) {
-        // console.log("win");
+        // ("win");
 
         // Vertical score is between 1 and 7
         // Horizontal score is between -3 and 3
@@ -452,7 +462,7 @@ export class JavelotGameState extends GameState {
     let booleanPos3 = false;
     const verticalDirection = this.player.verticalDirection;
     const horizontalDirection = this.player.horizontalDirection;
-    console.log(verticalDirection, horizontalDirection);
+    verticalDirection, horizontalDirection;
     let booleanMonteeFinit = false;
 
     let position;
@@ -519,7 +529,7 @@ export class JavelotGameState extends GameState {
       booleanPos3 === false
     ) {
       //y
-      // console.log(booleanPos1, booleanPos2, booleanPos3);
+      // (booleanPos1, booleanPos2, booleanPos3);
       if (booleanPos3 === false) {
         if (this.env.javelotAssets.mesh.position.y < 1 && !booleanMonteeFinit) {
           this.env.javelotAssets.mesh.position.y += position;
@@ -546,7 +556,7 @@ export class JavelotGameState extends GameState {
       }
       //z
       if (booleanPos1 === false) {
-        // console.log(this.env.javelotAssets.mesh.position.z);
+        // (this.env.javelotAssets.mesh.position.z);
         const eloignement = verticalDirection - 1;
         if (
           this.env.javelotAssets.mesh.position.z >
@@ -594,7 +604,7 @@ export class JavelotGameState extends GameState {
       }
     }
     setTimeout(() => {
-      console.log("fin anim javelot");
+      ("fin anim javelot");
       this.player._isWin = true;
     }, 2500);
   }
