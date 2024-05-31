@@ -274,6 +274,7 @@ export class InGameState extends GameState {
       this._input.keyOptions &&
       !document.getElementById("options")!.classList.contains("hidden")
     ) {
+      this.addHandlePointerLock();
       document.getElementById("options")!.classList.add("hidden");
       setTimeout(() => {
         this.isOptionsInterfacedPressed = false;
