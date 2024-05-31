@@ -190,8 +190,9 @@ const position = (position: number) => {
       </SandboxContainer>
       <SandboxContainer name="Keypress interactions">
         <KeyPressInteraction :keys="['s', 'd']" />
+        <KeyPressInteraction :keys="['ArrowUp', 'ArrowDown']" />
       </SandboxContainer>
-      <SandboxContainer name="Keypress interactions">
+      <SandboxContainer name="Objects founds">
         <FoundObjectsContainer :objects="objects" />
       </SandboxContainer>
       <SandboxContainer name="Sound">

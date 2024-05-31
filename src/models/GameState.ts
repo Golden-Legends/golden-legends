@@ -100,6 +100,12 @@ export abstract class GameState {
     this.alreadylocked = false;
   }
 
+  addHandlePointerLock(): void {
+    this.canvas.requestPointerLock();
+    this.alreadylocked = true;
+    this.game.canvas.focus();
+  }
+
   addEventListenerById(elementId: string, event: string, handler: EventListenerOrEventListenerObject): void {
     const element = document.getElementById(elementId);
     if (element) {
@@ -122,5 +128,14 @@ export abstract class GameState {
     });
     this.eventListeners = [];
   }
+
+  public getGame() : Game {
+    return this.game;
+  }
+
+  public getCanvas() : HTMLCanvasElement {
+    return this.canvas;
+  }
+  
 
 }

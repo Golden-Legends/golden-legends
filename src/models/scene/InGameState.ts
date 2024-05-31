@@ -34,6 +34,7 @@ import { storeOnboard } from "@/components/gui/storeOnboard.ts";
 import { storeSound } from "@/components/gui/storeSound.ts";
 import { doc } from "prettier";
 import router from "@/router/routes.ts";
+import { TennisGameState } from "./games/TennisGameState.ts";
 
 export class InGameState extends GameState {
   public assets;
@@ -100,7 +101,6 @@ export class InGameState extends GameState {
 
     // lancer la boucle de rendu
     this.runUpdateAndRender();
-    this.initializePointerLock();
 
     // lancer le mini jeu
     if (this.jumpGame) {
@@ -114,6 +114,8 @@ export class InGameState extends GameState {
     await this.scene.whenReadyAsync();
     this.scene.attachControl();
     this.game.engine.hideLoadingUI();
+
+    this.initializePointerLock();
   }
 
   public animStartGame() {
@@ -241,11 +243,13 @@ export class InGameState extends GameState {
       !document.getElementById("map-keybind")!.classList.contains("hidden")
     ) {
       this._environment?.carte.openCarte();
+      this.removeHandlePointerLock();
     } else if (
       this._input.keyMap &&
       !document.getElementById("carte-dialog")!.classList.contains("hidden") &&
       !document.getElementById("map-keybind")!.classList.contains("hidden")
     ) {
+      this.addHandlePointerLock();
       this._environment?.carte.closeCarte();
     }
 
@@ -271,6 +275,7 @@ export class InGameState extends GameState {
       this._input.keyOptions &&
       !document.getElementById("options")!.classList.contains("hidden")
     ) {
+      this.addHandlePointerLock();
       document.getElementById("options")!.classList.add("hidden");
       setTimeout(() => {
         this.isOptionsInterfacedPressed = false;
@@ -463,6 +468,19 @@ export class InGameState extends GameState {
         new JavelotGameState(this.game, this.canvas, "intermediate"),
       );
     });
+
+    this.addEventListenerById("tennisBot", "click", () => {
+      this.game.changeState(
+        new TennisGameState(this.game, this.canvas, false),
+      );
+      document.getElementById("tennistp")!.classList.add("hidden");
+    });
+    this.addEventListenerById("tennisDuel", "click", () => {
+      this.game.changeState(
+        new TennisGameState(this.game, this.canvas, true),
+      );
+      document.getElementById("tennistp")!.classList.add("hidden");
+    });
     this.addEventListenerById("javelotDifficile", "click", () => {
       this.game.changeState(
         new JavelotGameState(this.game, this.canvas, "hard"),
@@ -474,9 +492,11 @@ export class InGameState extends GameState {
     // GUI démarrage du jeu
     this.addEventListenerById("close-onboarding", "click", () => {
       document.getElementById("onboarding-container")!.classList.add("hidden");
+      this.addHandlePointerLock();
     });
     this.addEventListenerById("close-objects", "click", () => {
       document.getElementById("objectsFound")!.classList.add("hidden");
+      this.addHandlePointerLock();
       setTimeout(() => {
         this.isGameObjectInterfacedPressed = false;
       }, 250);
@@ -499,6 +519,7 @@ export class InGameState extends GameState {
       }, 250);
     });
     this.addEventListenerById("close-aide", "click", () => {
+      this.addHandlePointerLock();
       document.getElementById("aide-container")!.classList.add("hidden");
     });
     this.addEventListenerById("open-tips-menu", "click", () => {
@@ -509,6 +530,7 @@ export class InGameState extends GameState {
       }, 250);
     });
     this.addEventListenerById("close-tips", "click", () => {
+      this.addHandlePointerLock();
       document.getElementById("tips-container")!.classList.add("hidden");
     });
     this.addEventListenerById("back-options", "click", () => {
@@ -534,6 +556,7 @@ export class InGameState extends GameState {
     });
     this.addEventListenerById("close-options", "click", () => {
       document.getElementById("options")!.classList.add("hidden");
+      this.addHandlePointerLock();
       setTimeout(() => {
         this.isOptionsInterfacedPressed = false;
       }, 250);
@@ -546,6 +569,8 @@ export class InGameState extends GameState {
       document
         .getElementById("scoreboard-station-dialog")!
         .classList.add("hidden");
+      this.addHandlePointerLock();
+
     });
 
     // GUI minimap
@@ -553,21 +578,25 @@ export class InGameState extends GameState {
       const pos = new Vector3(-185, 7, -90);
       this._player!.mesh.position = pos;
       this._environment?.carte.closeCarte(pos);
+      this.addHandlePointerLock();
     });
     this.addEventListenerById("jump-button", "click", () => {
       const pos = new Vector3(-71, 7, -128.67);
       this._player!.mesh.position = pos;
       this._environment?.carte.closeCarte(pos);
+      this.addHandlePointerLock();
     });
     this.addEventListenerById("foret-button", "click", () => {
       const pos = new Vector3(-64.1, 7, 14);
       this._player!.mesh.position = pos;
       this._environment?.carte.closeCarte(pos);
+      this.addHandlePointerLock();
     });
     this.addEventListenerById("pnj-button", "click", () => {
       const pos = new Vector3(-184.75, 7, -11.2);
       this._player!.mesh.position = pos;
       this._environment?.carte.closeCarte(pos);
+      this.addHandlePointerLock();
     });
 
     // GUI sound

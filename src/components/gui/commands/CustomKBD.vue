@@ -1,7 +1,21 @@
 <script setup lang="ts">
+import { ref } from "vue";
+
 const props = defineProps({
-  keybind: String,
+  keybind: String || Number,
 });
+
+const key = ref(props.keybind);
+
+if (key.value === "ArrowDown") {
+  key.value = "↓";
+} else if (key.value === "ArrowUp") {
+  key.value = "↑";
+} else if (key.value === "ArrowLeft") {
+  key.value = "←";
+} else if (key.value === "ArrowRight") {
+  key.value = "→";
+}
 </script>
 
 <template>
@@ -12,7 +26,7 @@ const props = defineProps({
       class="border-4 border-color w-full h-full rounded p-1 px-2 flex items-center justify-center"
     >
       <span class="font-black font-sans text-2xl uppercase text-white">
-        {{ props.keybind }}
+        {{ key }}
       </span>
     </div>
   </div>
