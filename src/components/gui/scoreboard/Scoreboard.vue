@@ -73,7 +73,7 @@ const collectionToFrenchName = (collection: Collection) => {
 </script>
 
 <template>
-  <div class="w-[340px]">
+  <div class="w-[450px]">
     <h2 class="text-3xl font-bold mb-4">
       {{ collectionToFrenchName(props.title) }}
     </h2>
@@ -86,7 +86,7 @@ const collectionToFrenchName = (collection: Collection) => {
         <div class="flex justify-between">
           <div class="flex gap-2">
             <MiniMedal :place="i + 1" />
-            <div class="max-w-[160px] truncate">{{ result.username }}</div>
+            <div class="max-w-[280px] truncate">{{ result.username }}</div>
           </div>
           <div>
             {{
