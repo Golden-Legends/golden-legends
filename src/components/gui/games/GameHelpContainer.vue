@@ -13,12 +13,12 @@ const props = defineProps<{
     </div>
 
     <div class="flex flex-col gap-2">
-      <span class="text-2xl font-bold">Comment jouer ?</span>
+      <span class="text-2xl font-bold">How to play ?</span>
       <div class="flex gap-2">
         <slot name="commands" />
       </div>
 
-      <span class="text-2xl font-bold mt-2">Astuces</span>
+      <span class="text-2xl font-bold mt-2">Tips</span>
       <slot name="tips" />
     </div>
 
