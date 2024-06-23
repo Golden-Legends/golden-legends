@@ -34,7 +34,7 @@ const carousel = ref(0);
       />
     </button>
     <div class="text-4xl font-bold text-center mt-2 mb-4">
-      Aides du jeu Golden Legends !
+      Golden Legends game help !
     </div>
     <div class="w-full h-fit flex justify-between items-center overflow-y-auto">
       <button
@@ -47,9 +47,9 @@ const carousel = ref(0);
       <div class="rounded-xl backdrop-brightness-75 px-4 py-4 w-3/4">
         <CarouselContent v-if="carousel === 0">
           <div>
-            <Title text="Déplacements dans le lobby" class="mb-4"></Title>
+            <Title text="Lobby movements" class="mb-4"></Title>
 
-            <Title text="Se déplacer" class="-mb-2"></Title>
+            <Title text="Moving around" class="-mb-2"></Title>
             <div class="flex gap-12 items-center">
               <div class="flex flex-col w-fit my-4">
                 <div class="flex justify-center">
@@ -61,7 +61,7 @@ const carousel = ref(0);
                   <CustomKBD :keybind="'d'" class="w-fit" />
                 </div>
               </div>
-              <Title text="OU"></Title>
+              <Title text="OR"></Title>
               <div class="flex flex-col w-fit my-4">
                 <div class="flex justify-center">
                   <CustomKBD :keybind="'w'" class="w-fit" />
@@ -74,12 +74,12 @@ const carousel = ref(0);
               </div>
             </div>
 
-            <Title text="Caméra" class="-mb-2"></Title>
+            <Title text="Camera" class="-mb-2"></Title>
             <CustomKBD :keybind="'souris'" class="w-fit my-4" />
             <Info
               :content="[
-                'N\'oubliez pas de verrouiller la souris en cliquant sur l\'écran pour que les mouvements de la souris soient pris en compte !',
-                'Inversement, pour récupérer la souris, appuyez sur la touche Echap.',
+                'Don\'t forget to lock the mouse by clicking on the screen so that mouse movements are taken into account!',
+                'Conversely, to retrieve the mouse, press the Esc key.',
               ]"
             />
           </div>
@@ -87,16 +87,16 @@ const carousel = ref(0);
 
         <CarouselContent v-if="carousel === 1">
           <div>
-            <Title text="Actions dans le lobby" class="mb-4"></Title>
+            <Title text="Lobby actions" class="mb-4"></Title>
 
-            <Title text="Dash (en sautant)" class="-mb-2"></Title>
+            <Title text="Dash (while jumping)" class="-mb-2"></Title>
             <div class="flex gap-4 items-center">
               <div class="flex flex-col w-fit my-4">
                 <div class="flex justify-center">
                   <CustomKBD :keybind="'a'" class="w-fit" />
                 </div>
               </div>
-              <Title text="OU"></Title>
+              <Title text="OR"></Title>
               <div class="flex flex-col w-fit my-4">
                 <div class="flex justify-center">
                   <CustomKBD :keybind="'q'" class="w-fit" />
@@ -106,15 +106,15 @@ const carousel = ref(0);
 
             <div class="flex justify-between gap-8">
               <div class="w-1/3">
-                <Title text="Ouvrir le menu" class="mt-8 -mb-2"></Title>
+                <Title text="Open menu" class="mt-8 -mb-2"></Title>
                 <CustomKBD :keybind="'o'" class="w-fit my-4" />
               </div>
               <div class="w-2/5">
-                <Title text="Ouvrir la minimap" class="mt-8 -mb-2"></Title>
+                <Title text="Open minimap" class="mt-8 -mb-2"></Title>
                 <CustomKBD :keybind="'c'" class="w-fit my-4" />
               </div>
               <div class="w-1/3">
-                <Title text="Danse" class="mt-8 -mb-2"></Title>
+                <Title text="Dance" class="mt-8 -mb-2"></Title>
                 <CustomKBD :keybind="'f'" class="w-fit my-4" />
               </div>
             </div>
@@ -123,16 +123,16 @@ const carousel = ref(0);
 
         <CarouselContent v-if="carousel === 2">
           <div>
-            <Title text="100m - Comment jouer ?" class=""></Title>
+            <Title text="100m - How to play" class=""></Title>
             <CommandContainer
-              name="COURIR"
+              name="RUN"
               :keys="['s', 'd']"
               class="w-fit my-4"
             />
-            <Title text="Astuces" class="mb-3"></Title>
+            <Title text="Tips" class="mb-3"></Title>
             <Info
               :content="[
-                'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...',
+                'To go as fast as possible, alternate the keys without making a mistake, the wrong technique can slow you down...',
               ]"
             />
           </div>
@@ -140,24 +140,24 @@ const carousel = ref(0);
 
         <CarouselContent v-if="carousel === 3">
           <div>
-            <Title text="100m Brasse - Comment jouer ?"></Title>
+            <Title text="100m Breaststroke - How to play"></Title>
             <div class="flex gap-5">
               <CommandContainer
                 name="ACTION"
-                :keys="['ESPACE']"
+                :keys="['SPACE']"
                 class="w-fit my-4"
               />
               <CommandContainer
-                name="NAGER"
+                name="SWIM"
                 :keys="['s', 'd']"
                 class="w-fit my-4"
               />
             </div>
-            <Title text="Astuces" class="mb-3"></Title>
+            <Title text="Tips" class="mb-3"></Title>
             <Info
               :content="[
-                'Appuyer sur ESPACE pour plonger et vous retourner.',
-                'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...',
+                'Press SPACE to dive and turn around.',
+                'To go as fast as possible, alternate the keys without making a mistake, the wrong technique can slow you down...',
               ]"
             />
           </div>
@@ -165,11 +165,11 @@ const carousel = ref(0);
 
         <CarouselContent v-if="carousel === 4">
           <div>
-            <Title text="Plongeon - Comment jouer ?"></Title>
+            <Title text="Diving - How to play"></Title>
             <div class="flex gap-5">
               <CommandContainer
                 name="ACTION"
-                :keys="['ESPACE']"
+                :keys="['SPACE']"
                 class="w-fit my-4"
               />
               <CommandContainer
@@ -179,11 +179,11 @@ const carousel = ref(0);
                 class="w-fit my-4"
               />
             </div>
-            <Title text="Astuces" class="mb-3"></Title>
+            <Title text="Tips" class="mb-3"></Title>
             <Info
               :content="[
-                'Appuyer sur ESPACE pour plonger.',
-                'Vous devez retenir une suite de lettres qui sera toujours différente et la restituer ensuite dans un temps imparti (chaque lettre correspondant à une figure).',
+                'Press SPACE to dive.',
+                'You have to memorise a sequence of letters, which will always be different, and then reproduce it within a given time (each letter corresponding to a figure).',
               ]"
             />
           </div>
@@ -191,68 +191,85 @@ const carousel = ref(0);
 
         <CarouselContent v-if="carousel === 5">
           <div>
-            <Title text="Tir à l'arc - Comment jouer ?"></Title>
+            <Title text="Archery - How to play"></Title>
             <div class="flex gap-5">
               <CommandContainer
                 name="ACTION"
-                :keys="['ESPACE']"
+                :keys="['SPACE']"
                 class="w-fit my-4"
               />
               <CommandContainer
-                name="VISÉE↔️"
+                name="AIM↔️"
                 :keys="['H']"
                 class="w-fit my-4"
               />
               <CommandContainer
-                name="VISÉE↕️"
+                name="AIM↕️"
                 :keys="['V']"
                 class="w-fit my-4"
               />
             </div>
-            <Title text="Astuces" class="mb-3"></Title>
+            <Title text="Tips" class="mb-3"></Title>
             <Info
               :content="[
-                'Appuyer sur ESPACE pour démarrer.',
-                'Vous disposez de 2 jauges qui vous permettent de viser et de tirer le plus possible au centre de la cible. Pour cela, vous appuyerez sur H pour régler la visée horizontale puis sur V pour régler la visée verticale.',
+                'Press SPACE to start.',
+                'You have 2 gauges that allow you to aim and shoot as close to the centre of the target as possible. To do this, press H to adjust the horizontal aim and then V to adjust the vertical aim.',
               ]"
             />
           </div>
         </CarouselContent>
         <CarouselContent v-if="carousel === 6">
           <div>
-            <Title text="Boxe - Comment jouer ?"></Title>
+            <Title text="Boxing - How to play"></Title>
             <div class="flex gap-5">
               <CommandContainer
                 name="ACTION"
-                :keys="['SOURIS']"
+                :keys="['MOUSE']"
                 class="w-fit my-4"
               />
             </div>
-            <Title text="Astuces" class="mb-3"></Title>
+            <Title text="Tips" class="mb-3"></Title>
             <Info
               :content="[
-                'Pour frapper, cliquez sur la souris dans les cibles qui apparaitront à l\'écran.',
+                'To strike, click your mouse on the targets that will appear on the screen.',
               ]"
             />
           </div>
         </CarouselContent>
         <CarouselContent v-if="carousel === 7">
           <div>
-            <Title text="Javelot - Comment jouer ?"></Title>
+            <Title text="Javelin - How to play"></Title>
             <div class="flex gap-5">
-              <CommandContainer class="w-fit my-4" name="PUISSANCE" :keys="['s', 'd']" width="180"/>
+              <CommandContainer class="w-fit my-4" name="POWER" :keys="['s', 'd']" width="180"/>
               <CommandContainer
                 name="ANGLE"
-                :keys="['ESPACE']"
+                :keys="['SPACE']"
                 class="w-fit my-4"
               />
             </div>
             <Title text="Astuces" class="mb-3"></Title>
             <Info
               :content="[
-                'Appuyer sur ESPACE pour démarrer.',
-                'Quand le barre de puissance apparaitra, vous aurez 5 secondes pour la remplir en alternant les touches S et D.',
-                'Puis, après avoir réglé la puissance, vous devrez régler l\'angle en appuyant sur ESPACE (gardez le bouton enfoncé pour régler l\'angle puis relâcher).'
+                'Press SPACE to start.',
+                'When the power bar appears, you will have 5 seconds to fill it by alternating between the S and D keys.',
+                'Then, after setting the power, you\'ll need to adjust the angle by pressing SPACE (hold the button down to adjust the angle, then release).'
+              ]"
+            />
+          </div>
+        </CarouselContent>
+
+        <CarouselContent v-if="carousel === 8">
+          <div>
+            <Title text="Tennis - How to play" class=""></Title>
+            <CommandContainer
+              name="MOVE"
+              :keys="['↑', '↓']"
+              class="w-fit my-4"
+            />
+            <Title text="Tips" class="mb-3"></Title>
+            <Info
+              :content="[
+                'Move the keyboard arrows to move up and down.',
               ]"
             />
           </div>
@@ -260,7 +277,7 @@ const carousel = ref(0);
       </div>
 
       <button
-        :disabled="carousel === 7"
+        :disabled="carousel === 8"
         @click="carousel++"
         class="disabled:opacity-30 ml-8 p-4 rounded-full backdrop-brightness-50 w-20"
       >
