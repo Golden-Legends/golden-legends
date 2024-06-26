@@ -21,7 +21,7 @@
       >
         <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
       </button>
-      <span class="text-2xl">Musique</span>
+      <span class="text-2xl">Music</span>
       <input
         id="son"
         type="range"
@@ -43,12 +43,12 @@
     class="hidden absolute mt-20 top-1/2 left-1/4 -ml-32"
   />
   <MapButton
-    text="Forêt"
+    text="Forest"
     id="foret-button"
     class="hidden absolute mt-32 top-1/2 left-3/4 -ml-8"
   />
   <MapButton
-    text="PNJ"
+    text="NPC"
     id="pnj-button"
     class="hidden absolute -mt-24 top-1/4 left-2/4 ml-20"
   />
@@ -62,7 +62,7 @@
   <KeybindHint
     class="absolute top-20 left-4"
     keybind="C"
-    name="Carte"
+    name="Map"
     eventKey="c"
     id="map-keybind"
   />
@@ -85,9 +85,8 @@
     id="objectsFound"
     class="hidden left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
-  <!-- log test carte a supprimer-->
   <Dialog
-    name="Carte"
+    name="Map"
     text="Golden Legends minimap"
     id="carte-dialog"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"

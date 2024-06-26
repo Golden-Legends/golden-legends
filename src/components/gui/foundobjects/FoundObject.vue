@@ -31,7 +31,7 @@ const getAsset = (name: string) => {
     </div>
 
     <div class="text-xl text-white font-black uppercase">
-      {{ props.object.found ? "Trouvé" : "Non trouvé" }}
+      {{ props.object.found ? "Found" : "Not found" }}
     </div>
   </div>
 </template>
