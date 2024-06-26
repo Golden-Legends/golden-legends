@@ -4,7 +4,7 @@
   <div
     class="text-8xl text-white text-stroke-green-6 font-black text-center uppercase"
   >
-    Quel lancer !
+    What a throw !
   </div>
 </template>
 

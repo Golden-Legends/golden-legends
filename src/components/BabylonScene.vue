@@ -608,7 +608,7 @@
     :timer="storeJump.state.timer"
   />
   <Results
-    title="Swimming"
+    title="100m breaststroke"
     name="natationGame-results"
     id="natationGame-results"
     class="hidden -mt-24 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -654,14 +654,14 @@
   />
   <RDSText
     text="Dive !"
-    subText="Appuyez sur Espace"
+    subText="Press SPACE"
     name="natationGame-text-plongeon"
     id="natationGame-text-plongeon"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
     text="Turn back !"
-    subText="Appuyez sur Espace"
+    subText="Press SPACE"
     name="natationGame-text-demitour"
     id="natationGame-text-demitour"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -683,7 +683,7 @@
   />
   <GameHelpContainer
     id="plongeongame-help"
-    title="Plongeon"
+    title="Diving"
     class="hidden -mt-48 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
@@ -693,7 +693,7 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer class="w-fit" name="ACTION" :keys="['espace']" />
+      <CommandContainer class="w-fit" name="ACTION" :keys="['space']" />
       <CommandContainer
         name="FIGURES"
         width="260"
@@ -703,7 +703,7 @@
     <template #tips>
       <Info
         :content="[
-          'Press ESPACE to dive.',
+          'Press SPACE to dive.',
           'You have to remember a streak of letters and writing it back when needed.',
         ]"
       />
@@ -748,7 +748,7 @@
   />
   <RDSText
     text="Dive !"
-    subText="Appuyez sur Espace"
+    subText="Press SPACE"
     name="plongeonGame-text-plongeon"
     id="plongeonGame-text-plongeon"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -890,14 +890,14 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer name="ACTION" :keys="['ESPACE']" class="w-fit my-4" />
-      <CommandContainer name="VISÉE↔️" :keys="['H']" class="w-fit my-4" />
-      <CommandContainer name="VISÉE↕️" :keys="['V']" class="w-fit my-4" />
+      <CommandContainer name="ACTION" :keys="['SPACE']" class="w-fit my-4" />
+      <CommandContainer name="AIMING↔️" :keys="['H']" class="w-fit my-4" />
+      <CommandContainer name="AIMING↕️" :keys="['V']" class="w-fit my-4" />
     </template>
     <template #tips>
       <Info
         :content="[
-          'Press ESPACE to start.',
+          'Press SPACE to start.',
           'You have 2 gauges to aim the center of the target. Press H for horizontal aim, V for vertical aim.',
         ]"
       />
@@ -995,7 +995,7 @@
   />
   <GameHelpContainer
     id="javelotgame-help"
-    title="Javelot"
+    title="Javelin"
     class="hidden -mt-72 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
@@ -1329,7 +1329,7 @@ const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 const jumpGameText =
   "Can you get to the end of the course without touching the water? Press R to start the game!";
 const objectGameText =
-  "Height objects relating to the Olympic Games are hidden around the city. Can you find them?";
+  "8 objects relating to the Olympic Games are hidden around the city. Can you find them?";
 const tpGameText =
   "Use the portals to teleport to different Olympic stadiums and challenge your friends!";
 const footGameText = "Team football ⚽ or rugby 🏉 ? 😉";

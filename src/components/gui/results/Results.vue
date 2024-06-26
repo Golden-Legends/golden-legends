@@ -22,7 +22,7 @@ const props = defineProps({
 
     <div class="flex flex-col items-center gap-4 my-4">
       <ContinueButton id="continue-button" />
-      <ContinueButton id="replay-button" name="Rejouer" />
+      <ContinueButton id="replay-button" name="Replay" />
     </div>
   </div>
 </template>
