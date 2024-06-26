@@ -16,19 +16,19 @@ const frenchToEnglish = () => {
   switch (props.title) {
     case "100m":
       return "running";
-    case "100m Brasse":
+    case "100m breaststroke":
       return "swimming";
-    case "Boxe":
+    case "Boxing":
       return "boxing";
-    case "Plongeon":
+    case "Diving":
       return "diving";
-    case "Tir à l'arc":
+    case "Archery":
       return "archery";
-    case "Javelot":
+    case "Javelin":
       return "javelin";
     case "Tennis":
       return "tennis";
-    case "Saut en longueur":
+    case "Jump":
       return "jump";
   }
   return "Unknown";
