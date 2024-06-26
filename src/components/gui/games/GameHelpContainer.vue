@@ -18,7 +18,6 @@ const props = defineProps<{
         <slot name="commands" />
       </div>
 
-      <span class="text-2xl font-bold mt-2">Tips</span>
       <slot name="tips" />
     </div>
 
