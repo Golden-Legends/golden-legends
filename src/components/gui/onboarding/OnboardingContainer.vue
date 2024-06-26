@@ -26,7 +26,7 @@ const carousel = ref(0);
       />
     </button>
     <div class="text-4xl font-bold text-center mt-2 mb-4">
-      Bienvenue sur Golden Legends !
+      Welcome to Golden Legends !
     </div>
     <div class="w-full h-fit flex justify-between items-center">
       <button
@@ -39,12 +39,12 @@ const carousel = ref(0);
       <div class="rounded-xl backdrop-brightness-75 px-4 py-4 w-3/4">
         <CarouselContent v-if="carousel === 0">
           <div>
-            <Title text="Prêt à jouer ?"></Title>
-            <span
-              >Épreuves, mini-jeux, objets... La carte de Paris n'attend que
-              toi. Explore les alentours pour trouver tous les secrets de cette
-              carte. Et des PNJ seront là pour t'aider si besoin.</span
-            >
+            <Title text="Ready to play?"></Title>
+            <span>
+                Games, easter eggs, objects... The map of Paris is waiting for you. 
+                Explore the surrounding area to find all the secrets on this map. 
+                And NPCs will be there to help you if you need them.
+            </span>
             <div class="flex justify-center">
               <img
                 :src="map_overview"
@@ -56,26 +56,26 @@ const carousel = ref(0);
         </CarouselContent>
         <CarouselContent v-if="carousel === 1">
           <div>
-            <Title text="Des portails ?"></Title>
-            <span>Ils servent à accéder à nos différentes épreuves.</span>
+            <Title text="Gates?"></Title>
+            <span>They are used to access our various games.</span>
             <div class="flex justify-center">
               <img :src="lobby" alt="lobby" class="w-[500px] rounded-lg my-2" />
             </div>
           </div>
 
           <div>
-            <Title text="Comment les utiliser ?"></Title>
-            <span>Vous n'avez qu'à aller devant pour tester 😄</span>
+            <Title text="How do you use them?"></Title>
+            <span>All you have to do is go in front of them to try them out 😄</span>
           </div>
         </CarouselContent>
         <CarouselContent v-if="carousel === 2">
           <div>
-            <Title text="Des records ?"></Title>
-            <span
-              >Approchez vous près des stations rouges pour voir les 10
-              meilleurs scores de chaque jeu. Plus la difficulté du jeu sera
-              élévée, plus vous pourrez obtenir un score élevé.</span
-            ><br />
+            <Title text="Records?"></Title>
+            <span>
+              Get close to the red stations to see the top 10 scores for each game.
+              The more difficult the game, the higher your score.
+            </span>
+            <br />
             <span></span>
             <div class="flex justify-center">
               <img
@@ -87,29 +87,26 @@ const carousel = ref(0);
           </div>
 
           <div class="-mt-4">
-            <Title text="Comment faire partie des Golden Legends ?"></Title>
-            <span
-              >Spammer nos mini-jeux pour atteindre les sommets des scoreboards
-              !</span
-            >
+            <Title text="How to become a Golden Legends?"></Title>
+            <span>
+              Spam our mini-games to reach the top of the scoreboards!
+            </span>
           </div>
         </CarouselContent>
         <CarouselContent v-if="carousel === 3">
           <div>
-            <Title text="Comment jouer ?"></Title>
+            <Title text="How to play?"></Title>
             <span>
-              Pour vous déplacer, utilisez les touches Z, Q, S, D (azerty) ou W, A, S, D (qwerty) et utilisez la souris pour bouger la caméra.
-              Vous pouvez danser avec F et vous pouvez dash avec A lorsque vous avancez en sautant.<br>
-              Si vous voulez plus de détails sur les commandes dans la ville de Paris ou dans les différents jeux, vous pouvez les retrouver dans le menu, section "Aides".
+              To move around, use the keys Z, Q, S, D (azerty) or W, A, S, D (qwerty) and use the mouse to move the camera. 
+              You can dance with F and you can dash with A as you jump forward.<br>
+              If you want more details about game controls in the city of Paris or in the different games, you can find them in the menu, in the "Help" section.
             </span>
           </div>
           <div>
-            <Title text="Mais qu'est-ce que je peux bien faire ?"></Title>
-            <span
-              >Tu peux visiter la carte, découvrir des lieux emblématiques,
-              trouver d'autres mini-jeux ou des objets cachés...pour débloquer
-              de nouveaux personnages.</span
-            >
+            <Title text="But what can I do?"></Title>
+            <span>
+              You can visit the map, discover iconic locations, find other mini-games or hidden objects... to unlock new characters.
+            </span>
           </div>
         </CarouselContent>
       </div>

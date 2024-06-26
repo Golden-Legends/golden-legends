@@ -51,21 +51,21 @@ const sortedResults = computed(() => {
 const collectionToFrenchName = (collection: Collection) => {
   switch (collection) {
     case "archery":
-      return "🏹 Tir à l'arc";
+      return "🏹 Archery";
     case "running":
       return "👟 100m";
     case "swimming":
-      return "🏊 100m brasse";
+      return "🏊 100m breaststroke";
     case "boxing":
-      return "🥊 Boxe";
+      return "🥊 Boxing";
     case "diving":
-      return "🏅 Plongeon";
+      return "🏅 Diving";
     case "javelin":
-      return "💪 Lancer de javelot";
+      return "💪 Javelin";
     case "tennis":
       return "🎾 Tennis";
     case "jump":
-      return "🐇 Épreuve de saut";
+      return "🐇 Jump game";
     default:
       return "Inconnu";
   }

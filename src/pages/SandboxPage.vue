@@ -260,7 +260,7 @@ const position = (position: number) => {
             />
           </template>
           <div class="flex justify-center mt-4">
-            <ContinueButton name="Continuer" />
+            <ContinueButton name="Continue" />
           </div>
         </GameHelpContainer>
         <GameHelpContainer title="Natation" class="mt-4">
@@ -281,7 +281,7 @@ const position = (position: number) => {
             />
           </template>
           <div class="flex justify-center mt-4">
-            <ContinueButton name="Continuer" />
+            <ContinueButton name="Continue" />
           </div>
         </GameHelpContainer>
       </SandboxContainer>

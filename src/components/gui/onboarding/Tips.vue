@@ -33,7 +33,7 @@ const carousel = ref(0);
       />
     </button>
     <div class="text-4xl font-bold text-center mt-2 mb-4">
-      Easter eggs du jeu Golden Legends !
+      Golden Legends Easter eggs !
     </div>
     <div class="w-full h-fit flex justify-between items-center">
       <button
@@ -46,23 +46,21 @@ const carousel = ref(0);
       <div class="rounded-xl backdrop-brightness-75 px-4 py-4 w-3/4">
         <CarouselContent v-if="carousel === 0">
           <div>
-            <Title text="Débloquer de nouveaux personnages !"></Title>
-            <span
-              >Arrivez au bout de ce jeu d'habilité et d'équilibre pour
-              débloquer 2 nouveaux personnages.</span
-            >
+            <Title text="Unlock new characters!"></Title>
+            <span>
+              Complete this game of skill and balance to unlock 2 new characters.
+            </span>
             <img :src="jeuSaut" alt="jeuSaut" class="w-full rounded-lg my-2" />
           </div>
         </CarouselContent>
 
         <CarouselContent v-if="carousel === 1">
           <div>
-            <Title text="Débloquer de nouveaux personnages !"></Title>
-            <span
-              >Ramassez tous les objets olympiques (il y en a 8) présents dans
-              le lobby pour débloquer 2 nouveaux personnages. Une fumée rouge
-              sort de ces objets pour vous aider.</span
-            >
+            <Title text="Unlock new characters!"></Title>
+            <span>
+              Collect all the Olympic items (there are 8) in the lobby to unlock 2 new characters.
+              Red smoke comes out of these objects to help you.
+            </span>
             <div class="flex justify-center">
               <img
                 :src="objets"
