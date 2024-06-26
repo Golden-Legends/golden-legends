@@ -995,7 +995,7 @@
   />
   <GameHelpContainer
     id="javelotgame-help"
-    title="Javelot"
+    title="Javelin"
     class="hidden -mt-72 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
