@@ -55,7 +55,7 @@ export class InGameState extends GameState {
   }
 
   async enter() {
-    const test = new CustomLoadingScreen("Chargement en cours...");
+    const test = new CustomLoadingScreen("Loading...");
     this.game.setLoadingScreen(test);
     // console.log(this.game.engine.loadingScreen)
     this.game.engine.displayLoadingUI();

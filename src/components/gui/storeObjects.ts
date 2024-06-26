@@ -3,37 +3,37 @@ import { TBF_OBJECT } from './foundobjects/FoundObjectsContainer.vue';
 
 let objects:TBF_OBJECT[] = [
     {
-      name: "Ballon de basket",
+      name: "Basketball",
       path: "ball",
       found: false,
     },
     {
-      name: "Vélo",
+      name: "Bike",
       path: "bike",
       found: false,
     },
     {
-      name: "Arc",
+      name: "Bow",
       path: "bow",
       found: false,
     },
     {
-      name: "Gants de boxe",
+      name: "Boxing gloves",
       path: "gloves",
       found: false,
     },
     {
-      name: "Haies",
+      name: "Hurdles",
       path: "hurdles",
       found: false,
     },
     {
-      name: "Raquette de tennis",
+      name: "Tennis racket",
       path: "racket",
       found: false,
     },
     {
-      name: "Chaussures",
+      name: "Running shoes",
       path: "shoes",
       found: false,
     },

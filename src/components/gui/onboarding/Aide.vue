@@ -129,7 +129,8 @@ const carousel = ref(0);
               :keys="['s', 'd']"
               class="w-fit my-4"
             />
-            <Title text="Tips" class="mb-3"></Title>
+            <br>
+            <!-- <Title text="Tips" class="mb-3"></Title> -->
             <Info
               :content="[
                 'To go as fast as possible, alternate the keys without making a mistake, the wrong technique can slow you down...',
@@ -153,7 +154,8 @@ const carousel = ref(0);
                 class="w-fit my-4"
               />
             </div>
-            <Title text="Tips" class="mb-3"></Title>
+            <br>
+            <!-- <Title text="Tips" class="mb-3"></Title> -->
             <Info
               :content="[
                 'Press SPACE to dive and turn around.',
@@ -179,7 +181,8 @@ const carousel = ref(0);
                 class="w-fit my-4"
               />
             </div>
-            <Title text="Tips" class="mb-3"></Title>
+            <br>
+            <!-- <Title text="Tips" class="mb-3"></Title> -->
             <Info
               :content="[
                 'Press SPACE to dive.',
@@ -209,7 +212,8 @@ const carousel = ref(0);
                 class="w-fit my-4"
               />
             </div>
-            <Title text="Tips" class="mb-3"></Title>
+            <br>
+            <!-- <Title text="Tips" class="mb-3"></Title> -->
             <Info
               :content="[
                 'Press SPACE to start.',
@@ -228,7 +232,8 @@ const carousel = ref(0);
                 class="w-fit my-4"
               />
             </div>
-            <Title text="Tips" class="mb-3"></Title>
+            <br>
+            <!-- <Title text="Tips" class="mb-3"></Title> -->
             <Info
               :content="[
                 'To strike, click your mouse on the targets that will appear on the screen.',
@@ -247,7 +252,8 @@ const carousel = ref(0);
                 class="w-fit my-4"
               />
             </div>
-            <Title text="Astuces" class="mb-3"></Title>
+            <br>
+            <!-- <Title text="Tips" class="mb-3"></Title> -->
             <Info
               :content="[
                 'Press SPACE to start.',
@@ -266,7 +272,8 @@ const carousel = ref(0);
               :keys="['↑', '↓']"
               class="w-fit my-4"
             />
-            <Title text="Tips" class="mb-3"></Title>
+            <br>
+            <!-- <Title text="Tips" class="mb-3"></Title> -->
             <Info
               :content="[
                 'Move the keyboard arrows to move up and down.',

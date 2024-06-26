@@ -40,11 +40,11 @@ const setPathCharacterLocalStorage = (path: Character | null) => {
     >
       <div class="flex flex-col gap-12">
         <ClassicButton
-          text="Retour"
+          text="Back"
           @click="router.push({ name: 'Landing' })"
         />
         <span class="flex text-4xl font-bold">
-          {{ getUsernameFromLocalStorage() }}, choisis ton personnage !
+          {{ getUsernameFromLocalStorage() }}, select your character !
         </span>
       </div>
       <CharactersContainer
