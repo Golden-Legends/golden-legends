@@ -205,19 +205,19 @@
   >
     <GateButton
       id="100mFacile"
-      name="Facile"
+      name="Easy"
       difficulty="easy"
       game="level100m"
     />
     <GateButton
       id="100mMoyen"
-      name="Moyen"
+      name="Medium"
       difficulty="intermediate"
       game="level100m"
     />
     <GateButton
       id="100mDifficile"
-      name="Difficile"
+      name="Hard"
       difficulty="hard"
       game="level100m"
     />
@@ -231,126 +231,126 @@
     </template>
   </GameGate>
   <GameGate
-    title="100m Brasse"
+    title="100m breaststroke"
     name="natationtp"
     id="natationtp"
     class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="natationFacile"
-      name="Facile"
+      name="Easy"
       difficulty="easy"
       game="levelNatation"
     />
     <GateButton
       id="natationMoyen"
-      name="Moyen"
+      name="Medium"
       difficulty="intermediate"
       game="levelNatation"
     />
     <GateButton
       id="natationDifficile"
-      name="Difficile"
+      name="Hard"
       difficulty="hard"
       game="levelNatation"
     />
   </GameGate>
   <GameGate
-    title="Plongeon"
+    title="Diving"
     name="plongeontp"
     id="plongeontp"
     class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="plongeonFacile"
-      name="Facile"
+      name="Easy"
       difficulty="easy"
       game="levelPlongeon"
     />
     <GateButton
       id="plongeonMoyen"
-      name="Moyen"
+      name="Medium"
       difficulty="intermediate"
       game="levelPlongeon"
     />
     <GateButton
       id="plongeonDifficile"
-      name="Difficile"
+      name="Hard"
       difficulty="hard"
       game="levelPlongeon"
     />
   </GameGate>
   <GameGate
-    title="Boxe"
+    title="Boxing"
     name="boxetp"
     id="boxetp"
     class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="boxeFacile"
-      name="Facile"
+      name="Easy"
       difficulty="easy"
       game="levelBoxe"
     />
     <GateButton
       id="boxeMoyen"
-      name="Moyen"
+      name="Medium"
       difficulty="intermediate"
       game="levelBoxe"
     />
     <GateButton
       id="boxeDifficile"
-      name="Difficile"
+      name="Hard"
       difficulty="hard"
       game="levelBoxe"
     />
   </GameGate>
   <GameGate
-    title="Tir à l'arc"
+    title="Archery"
     name="tirArctp"
     id="tirArctp"
     class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="tirArcFacile"
-      name="Facile"
+      name="Easy"
       difficulty="easy"
       game="levelTirArc"
     />
     <GateButton
       id="tirArcMoyen"
-      name="Moyen"
+      name="Medium"
       difficulty="intermediate"
       game="levelTirArc"
     />
     <GateButton
       id="tirArcDifficile"
-      name="Difficile"
+      name="Hard"
       difficulty="hard"
       game="levelTirArc"
     />
   </GameGate>
   <GameGate
-    title="Javelot"
+    title="Javelin"
     name="javelottp"
     id="javelottp"
     class="hidden relative left-1/2 -top-1/2 mt-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   >
     <GateButton
       id="javelotFacile"
-      name="Facile"
+      name="Easy"
       difficulty="easy"
       game="levelJavelot"
     />
     <GateButton
       id="javelotMoyen"
-      name="Moyen"
+      name="Medium"
       difficulty="intermediate"
       game="levelJavelot"
     />
     <GateButton
       id="javelotDifficile"
-      name="Difficile"
+      name="Hard"
       difficulty="hard"
       game="levelJavelot"
     />
@@ -363,7 +363,7 @@
   >
     <GateButton
       id="tennisBot"
-      name="Contre un bot"
+      name="Against a bot"
       difficulty="easy"
       game="levelJavelot"
     />
@@ -406,13 +406,13 @@
   />
   <!-- RUNNINGGAME -->
   <CommandContainer
-    name="COURIR"
+    name="RUN"
     :keys="['s', 'd']"
     id="runningGame-command-container"
     class="hidden -mt-20 absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <CommandContainer
-    name="COURIR"
+    name="RUN"
     :keys="['k', 'l']"
     id="runningGame-command-container-2"
     class="hidden -mt-20 absolute -top-2/3 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
@@ -429,31 +429,27 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer class="w-fit" name="COURIR" :keys="['s', 'd']" />
+      <CommandContainer class="w-fit" name="RUN" :keys="['s', 'd']" />
       <CommandContainer
         id="runningGame-help-2"
         class="w-fit hidden"
-        name="COURIR"
+        name="RUN"
         :keys="['k', 'l']"
       />
     </template>
     <template #tips>
-      <Info
-        :content="[
-          'Pour aller le plus vite possible, alternez les touches sans vous tromper !',
-        ]"
-      />
+      <Info :content="['To run faster, alternate keys without mistaking !']" />
     </template>
     <div class="flex justify-center mt-4"></div>
   </GameHelpContainer>
   <ClassicButton
-    text="Passer"
+    text="Skip"
     name="runningGame-skip-button"
     id="runningGame-skip-button"
     class="hidden absolute bottom-12 right-12"
   />
   <ClassicButton
-    text="Prêt"
+    text="Ready"
     name="runningGame-ready-button"
     id="runningGame-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
@@ -479,7 +475,7 @@
     :speed="store.state.setSpeedBar0"
     :min="0"
     :max="2.7"
-    player="Joueur 1"
+    player="Player 1"
   />
   <SpeedBar
     name="runningGame-text-speedbar0"
@@ -488,7 +484,7 @@
     :speed="store.state.setSpeedBar1"
     :min="0"
     :max="2.7"
-    player="Joueur 2"
+    player="Player 2"
   />
   <SpeedBar
     name="runningGame-text-speedbar1"
@@ -507,19 +503,19 @@
     <ResultsContent :results="store.state.results" />
   </Results>
   <RDSText
-    text="À vos marques"
+    text="Ready ?"
     name="runningGame-text-1"
     id="runningGame-text-1"
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="Prêt ?"
+    text="Steady"
     name="runningGame-text-2"
     id="runningGame-text-2"
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="Partez"
+    text="Go !"
     name="runningGame-text-3"
     id="runningGame-text-3"
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -551,20 +547,20 @@
 
   <!-- NATATION -->
   <CommandContainer
-    name="NAGER"
+    name="SWIM"
     :keys="['s', 'd']"
     id="natationGame-command-container"
     class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <CommandContainer
     name="ACTION"
-    :keys="['espace']"
+    :keys="['space']"
     id="natationGame-action-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <GameHelpContainer
     id="natationgame-help"
-    title="100m Brasse"
+    title="100m Breaststroke"
     class="hidden -mt-48 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
@@ -574,27 +570,27 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer class="w-fit" name="NAGER" :keys="['s', 'd']" />
-      <CommandContainer name="ACTION" :keys="['espace']" />
+      <CommandContainer class="w-fit" name="SWIM" :keys="['s', 'd']" />
+      <CommandContainer name="ACTION" :keys="['space']" />
     </template>
     <template #tips>
       <Info
         :content="[
-          'Appuyer sur ESPACE pour plonger et vous retourner.',
-          'Pour aller le plus vite possible, alternez les touches sans vous tromper, une mauvaise technique peut vous ralentir...',
+          'Press SPACE to dive and turning back.',
+          'To swim faster, alternate keybinds without mistaking, a bad technique will slow you down...',
         ]"
       />
     </template>
     <div class="flex justify-center mt-4"></div>
   </GameHelpContainer>
   <ClassicButton
-    text="Passer"
+    text="Skip"
     name="natationGame-skip-button"
     id="natationGame-skip-button"
     class="hidden absolute bottom-12 right-12"
   />
   <ClassicButton
-    text="Prêt"
+    text="Ready"
     name="natationGame-ready-button"
     id="natationGame-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
@@ -612,7 +608,7 @@
     :timer="storeJump.state.timer"
   />
   <Results
-    title="natation"
+    title="Swimming"
     name="natationGame-results"
     id="natationGame-results"
     class="hidden -mt-24 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -620,13 +616,13 @@
     <ResultsContent :results="storeNatation.state.results" />
   </Results>
   <RDSText
-    text="À vos marques"
+    text="Ready ?"
     name="natationGame-text-1"
     id="natationGame-text-1"
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="Prêt ?"
+    text="Steady ?"
     name="natationGame-text-2"
     id="natationGame-text-2"
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -657,14 +653,14 @@
     class="hidden absolute left-1/2 bottom-44 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <RDSText
-    text="Plongez !"
+    text="Dive !"
     subText="Appuyez sur Espace"
     name="natationGame-text-plongeon"
     id="natationGame-text-plongeon"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="Demi-tour !"
+    text="Turn back !"
     subText="Appuyez sur Espace"
     name="natationGame-text-demitour"
     id="natationGame-text-demitour"
@@ -674,7 +670,7 @@
   <!-- Plongeon -->
   <CommandContainer
     name="ACTION"
-    :keys="['espace']"
+    :keys="['space']"
     id="plongeonGame-action-container"
     class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
@@ -707,21 +703,21 @@
     <template #tips>
       <Info
         :content="[
-          'Appuyer sur ESPACE pour plonger.',
-          'Vous devez retenir une suite de lettres qui sera toujours différente et la restituer ensuite dans un temps imparti (chaque lettre correspondant à une figure).',
+          'Press ESPACE to dive.',
+          'You have to remember a streak of letters and writing it back when needed.',
         ]"
       />
     </template>
     <div class="flex justify-center mt-4"></div>
   </GameHelpContainer>
   <ClassicButton
-    text="Passer"
+    text="Skip"
     name="plongeonGame-skip-button"
     id="plongeonGame-skip-button"
     class="hidden absolute bottom-12 right-12"
   />
   <ClassicButton
-    text="Prêt"
+    text="Ready"
     name="plongeonGame-ready-button"
     id="plongeonGame-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
@@ -751,20 +747,20 @@
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="Plongez !"
+    text="Dive !"
     subText="Appuyez sur Espace"
     name="plongeonGame-text-plongeon"
     id="plongeonGame-text-plongeon"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="Retenez !"
+    text="Remember !"
     name="plongeonGame-text-retenir"
     id="plongeonGame-text-retenir"
     class="hidden absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="À vous !"
+    text="Your turn !"
     name="plongeonGame-text-avous"
     id="plongeonGame-text-avous"
     class="hidden absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -808,7 +804,7 @@
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Results
-    title="plongeon"
+    title="Diving"
     name="plongeonGame-results"
     id="plongeonGame-results"
     class="hidden -mt-40 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -823,13 +819,13 @@
 
   <!-- Tir à l'arc -->
   <ClassicButton
-    text="Passer"
+    text="Skip"
     name="tirArcGame-skip-button"
     id="tirArcGame-skip-button"
     class="hidden absolute bottom-12 right-12"
   />
   <ClassicButton
-    text="Prêt"
+    text="Ready"
     name="tirArcGame-ready-button"
     id="tirArcGame-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
@@ -853,7 +849,7 @@
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="En place !"
+    text="On your mark !"
     name="tirArcGame-text-4"
     id="tirArcGame-text-4"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -866,25 +862,25 @@
   />
   <CommandContainer
     name="ACTION"
-    :keys="['espace']"
+    :keys="['space']"
     id="tirArcGame-action-container"
     class="hidden absolute -mt-20 -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <CommandContainer
-    name="VISÉE↔️"
+    name="AIMING↔️"
     :keys="['H']"
     id="tirArcGame-horizontal-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <CommandContainer
-    name="VISÉE↕️"
+    name="AIMING↕️"
     :keys="['V']"
     id="tirArcGame-vertical-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <GameHelpContainer
     id="tirArcgame-help"
-    title="Tir à l'arc"
+    title="Archery"
     class="hidden -mt-80 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
@@ -901,16 +897,16 @@
     <template #tips>
       <Info
         :content="[
-          'Appuyer sur ESPACE pour démarrer.',
-          'Vous disposez de 2 jauges qui vous permettent de viser et de tirer le plus possible au centre de la cible. Pour cela, vous appuyerez sur H pour régler la visée horizontale puis sur V pour régler la visée verticale.',
+          'Press ESPACE to start.',
+          'You have 2 gauges to aim the center of the target. Press H for horizontal aim, V for vertical aim.',
         ]"
       />
     </template>
     <div class="flex justify-center mt-4"></div>
   </GameHelpContainer>
   <RDSText
-    text="Tirez !"
-    subText="Appuyez sur Espace"
+    text="Shoot !"
+    subText="Press Space"
     name="tirArcGame-text-tir"
     id="tirArcGame-text-tir"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -921,7 +917,7 @@
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Results
-    title="tir à l'arc"
+    title="Archery"
     name="tirArcGame-results"
     id="tirArcGame-results"
     class="hidden -mt-48 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -943,13 +939,13 @@
 
   <!-- Javelot -->
   <ClassicButton
-    text="Passer"
+    text="Skip"
     name="javelotGame-skip-button"
     id="javelotGame-skip-button"
     class="hidden absolute bottom-12 right-12"
   />
   <ClassicButton
-    text="Prêt"
+    text="Ready"
     name="javelotGame-ready-button"
     id="javelotGame-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
@@ -973,7 +969,7 @@
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <RDSText
-    text="Spammez !"
+    text="Spam !"
     name="javelotGame-text-4"
     id="javelotGame-text-4"
     class="hidden absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -985,7 +981,7 @@
     :score="storeJavelot.state.score"
   />
   <CommandContainer
-    name="PUISSANCE"
+    name="POWER"
     :keys="['s', 'd']"
     width="180"
     id="javelotGame-puissance-container"
@@ -993,7 +989,7 @@
   />
   <CommandContainer
     name="ANGLE"
-    :keys="['espace']"
+    :keys="['space']"
     id="javelotGame-action-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
@@ -1011,18 +1007,18 @@
     <template #commands>
       <CommandContainer
         class="w-fit"
-        name="PUISSANCE"
+        name="POWER"
         :keys="['s', 'd']"
         width="180"
       />
-      <CommandContainer name="ANGLE" :keys="['espace']" />
+      <CommandContainer name="ANGLE" :keys="['space']" />
     </template>
     <template #tips>
       <Info
         :content="[
-          'Appuyer sur ESPACE pour démarrer.',
-          'Quand le barre de puissance apparaitra, vous aurez 5 secondes pour la remplir en alternant les touches S et D.',
-          'Puis, après avoir réglé la puissance, vous devrez régler l\'angle en appuyant sur ESPACE (gardez le bouton enfoncé pour régler l\'angle puis relâcher).',
+          'Press SPACE to start.',
+          'When the power bar will show, you\'ll have 5 seconds to spam S D to gain power.',
+          'Then, after your power is set up, you\'ll adjust your angle by pressing SPACE (you can keep SPACE pressed to adjust the angle).',
         ]"
       />
     </template>
@@ -1035,8 +1031,8 @@
     class="hidden absolute left-1/2 -top-1/3 mt-4 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <RDSText
-    text="Lancez !"
-    subText="Appuyez sur Espace"
+    text="Throw !"
+    subText="Press SPACE"
     name="javelotGame-text-tir"
     id="javelotGame-text-tir"
     class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -1047,7 +1043,7 @@
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Results
-    title="Javelot"
+    title="Javelin"
     name="javelotGame-results"
     id="javelotGame-results"
     class="hidden left-1/2 -top-3/4 -mt-16 transform -translate-x-1/2 -translate-y-1/2"
@@ -1070,13 +1066,13 @@
   <!-- BOXE -->
   <CommandContainer
     name="ACTION"
-    :keys="['souris']"
+    :keys="['mouse']"
     id="boxeGame-action-container"
     class="hidden absolute -top-3/4 left-24 transform -translate-x-1/2 -translate-y-1/2 w-fit"
   />
   <GameHelpContainer
     id="boxeGame-help"
-    title="Boxe"
+    title="Boxing"
     class="hidden -mt-32 -top-3/4 left-1/2 transform -translate-x-1/2"
   >
     <button
@@ -1089,22 +1085,18 @@
       <CommandContainer class="w-fit" name="ACTION" :keys="['souris']" />
     </template>
     <template #tips>
-      <Info
-        :content="[
-          'Pour frapper, cliquez sur la souris dans les cibles qui apparaitront à l\'écran.',
-        ]"
-      />
+      <Info :content="['To strike, click on the target with your mouse.']" />
     </template>
     <div class="flex justify-center mt-4"></div>
   </GameHelpContainer>
   <ClassicButton
-    text="Passer"
+    text="Skip"
     name="boxeGame-skip-button"
     id="boxeGame-skip-button"
     class="hidden absolute bottom-12 right-12"
   />
   <ClassicButton
-    text="Prêt"
+    text="Ready"
     name="boxeGame-ready-button"
     id="boxeGame-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
@@ -1149,7 +1141,7 @@
     class="hidden absolute bottom-4 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <Results
-    title="Boxe"
+    title="Boxing"
     name="boxeGame-results"
     id="boxeGame-results"
     class="hidden -mt-28 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -1169,18 +1161,22 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer class="w-fit" name="J1" :keys="['ArrowUp', 'ArrowDown']" />
+      <CommandContainer
+        class="w-fit"
+        name="P1"
+        :keys="['ArrowUp', 'ArrowDown']"
+      />
       <CommandContainer
         id="tennis-help-2"
         class="w-fit"
-        name="J2"
+        name="P2"
         :keys="['s', 'x']"
       />
     </template>
     <template #tips>
       <Info
         :content="[
-          'Vous devez renvoyez un maximum de balle ! Si vous êtes en multijoueur vous aurez 3 rounds pour vous départager.',
+          'You have to return as many balls as possible ! Multiplayer : 3 rounds to determine the winner.',
         ]"
       />
     </template>
@@ -1198,12 +1194,16 @@
       <img src="../../public/close.svg" alt="close" class="w-6 h-6 ml-1.5" />
     </button>
     <template #commands>
-      <CommandContainer class="w-fit" name="J1" :keys="['ArrowUp', 'ArrowDown']" />
+      <CommandContainer
+        class="w-fit"
+        name="P1"
+        :keys="['ArrowUp', 'ArrowDown']"
+      />
     </template>
     <template #tips>
       <Info
         :content="[
-          'Vous devez renvoyez un maximum de balle ! Si vous êtes en multijoueur vous aurez 3 rounds pour vous départager.',
+          'You have to return as many balls as possible ! Multiplayer : 3 rounds to determine the winner.',
         ]"
       />
     </template>
@@ -1228,7 +1228,7 @@
     class="hidden absolute bottom-24 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
   />
   <ClassicButton
-    text="Prêt"
+    text="Ready"
     name="tennis-ready-button"
     id="tennis-ready-button"
     class="absolute bottom-12 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden"
@@ -1340,8 +1340,7 @@ const objetRaquetteText = "Retrieve the tennis racket by pressing R";
 const objetBallonText = "Retrieve the basketball by pressing R";
 const objetSkateText = "Retrieve the Skateboard by pressing R";
 const objetArcText = "Retrieve the Olympic Arc by pressing R";
-const objetChaussureText =
-  "Retrieve running shoes by pressing R";
+const objetChaussureText = "Retrieve running shoes by pressing R";
 const objetVeloText = "Retrieve the Olympic Bike by pressing R";
 const objetRecupText = "Item successfully collected!";
 const allObjetRecupText = "All the Olympic objects have been collected!";
