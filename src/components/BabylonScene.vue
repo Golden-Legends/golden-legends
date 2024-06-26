@@ -1327,28 +1327,28 @@ import Loading from "@/components/gui/Loading.vue";
 const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 //Gladiator Dialogs
 const jumpGameText =
-  "Arriveras tu à la fin du parcours sans toucher l'eau ? Appuie sur R pour commencer le jeu !";
+  "Can you get to the end of the course without touching the water? Press R to start the game!";
 const objectGameText =
-  "Des objets en référence aux JO sont cachés dans cette ville, sauras tu les retrouver ?!";
+  "Height objects relating to the Olympic Games are hidden around the city. Can you find them?";
 const tpGameText =
-  "Approche toi des portails pour te téléporter dans différents stades olympiques pour défier tes amis !";
-const footGameText = "Team foot ⚽ ou rugby 🏉 ? 😉";
+  "Use the portals to teleport to different Olympic stadiums and challenge your friends!";
+const footGameText = "Team football ⚽ or rugby 🏉 ? 😉";
 //Objects message
-const objetHaieText = "Récupére la Haie olympique en appuyant sur R";
-const objetgGantText = "Récupére le Gant de boxe en appuyant sur R";
-const objetRaquetteText = "Récupére la Raquette de tennis en appuyant sur R";
-const objetBallonText = "Récupére le Ballon de basket en appuyant sur R";
-const objetSkateText = "Récupére le Skateboard en appuyant sur R";
-const objetArcText = "Récupére l'Arc olympique en appuyant sur R";
+const objetHaieText = "Retrieve the Olympic Hurdle by pressing R";
+const objetgGantText = "Retrieve the Boxing Glove by pressing R";
+const objetRaquetteText = "Retrieve the tennis racket by pressing R";
+const objetBallonText = "Retrieve the basketball by pressing R";
+const objetSkateText = "Retrieve the Skateboard by pressing R";
+const objetArcText = "Retrieve the Olympic Arc by pressing R";
 const objetChaussureText =
-  "Récupére les Chaussures de course en appuyant sur R";
-const objetVeloText = "Récupére le Vélo olympique en appuyant sur R";
-const objetRecupText = "Objet récupéré avec succès !";
-const allObjetRecupText = "Tous les objets olympiques ont été ramassés !";
+  "Retrieve running shoes by pressing R";
+const objetVeloText = "Retrieve the Olympic Bike by pressing R";
+const objetRecupText = "Item successfully collected!";
+const allObjetRecupText = "All the Olympic objects have been collected!";
 //jump message
 const victoryJumpText =
-  "Vous avez réussi à dompter les plateformes mouvantes. Vous avez débloqué 2 nouveaux personnages, rendez vous à l'accueil !";
-const loseJumpText = "Pas pour cette fois... Retente ta chance !";
+  "You've managed to tame the moving platforms. You've unlocked 2 new characters,  go to the character selection screen!";
+const loseJumpText = "Not this time... Take another chance!";
 //scoreboard station
 const stationScoreboard = "GUI Scoreboard TODO...";
 //TP game
