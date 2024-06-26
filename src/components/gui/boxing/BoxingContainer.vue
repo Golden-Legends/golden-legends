@@ -112,7 +112,7 @@ onUnmounted(() => {
   <div>
     <div class="flex justify-between text-2xl text-white">
       <div>Score: {{ storeBoxe.state.score }}</div>
-      <div>Temps: {{ timer }}</div>
+      <div>Timer: {{ timer }}</div>
     </div>
 
     <div

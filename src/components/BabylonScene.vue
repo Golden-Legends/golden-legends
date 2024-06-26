@@ -608,7 +608,7 @@
     :timer="storeJump.state.timer"
   />
   <Results
-    title="Swimming"
+    title="100m breaststroke"
     name="natationGame-results"
     id="natationGame-results"
     class="hidden -mt-24 left-1/2 -top-1/2 transform -translate-x-1/2 -translate-y-1/2"
@@ -1329,7 +1329,7 @@ const bjsCanvas = ref<HTMLCanvasElement | null>(null);
 const jumpGameText =
   "Can you get to the end of the course without touching the water? Press R to start the game!";
 const objectGameText =
-  "Height objects relating to the Olympic Games are hidden around the city. Can you find them?";
+  "8 objects relating to the Olympic Games are hidden around the city. Can you find them?";
 const tpGameText =
   "Use the portals to teleport to different Olympic stadiums and challenge your friends!";
 const footGameText = "Team football ⚽ or rugby 🏉 ? 😉";
